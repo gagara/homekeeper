@@ -1,0 +1,10 @@
+sdptool browse local
+sdptool add SP
+
+rfcomm listen /dev/rfcomm0
+rfcomm bind /dev/rfcomm0 98:D3:31:60:3C:BD
+
+bluetoothctl
+power on/off
+
+stty -F /dev/rfcomm0 -echo -onlcr -icrnl

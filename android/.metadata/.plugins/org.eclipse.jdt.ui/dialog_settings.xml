@@ -12,10 +12,10 @@
 	<item value="-1" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
 	<item value="false" key="TypeHierarchyViewPart.linkeditors"/>
 	<item value="77" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_x"/>
-	<item value="1" key="org.eclipse.jdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
-	<item value="1" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.last_focus"/>
-	<item value="1165" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_width"/>
 	<item value="31" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_y"/>
+	<item value="1165" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_width"/>
+	<item value="1" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.last_focus"/>
+	<item value="1" key="org.eclipse.jdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
 	<section name="OptionalMessageDialog.hide.">
 		<item value="true" key="org.eclipse.jdt.ui.typecomment.deprecated"/>
 		<item value="true" key="BinaryPrimitiveConstantWarningDialog"/>
@@ -32,10 +32,10 @@
 			<item value="11" key="includeMask"/>
 			<item value="2" key="limitTo"/>
 			<item value="0" key="scope"/>
-			<item value="=HomeKeeper/src&lt;com.gagara.homekeeper.common{Constants.java[Constants^CONTROLLER_DATA_TRANSFER_ACTION" key="javaElement"/>
 			<item value="com.gagara.homekeeper.common.Constants.CONTROLLER_DATA_TRANSFER_ACTION" key="pattern"/>
-			<item value="0" key="matchLocations"/>
+			<item value="=HomeKeeper/src&lt;com.gagara.homekeeper.common{Constants.java[Constants^CONTROLLER_DATA_TRANSFER_ACTION" key="javaElement"/>
 			<item value="4" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
 			<item value="true" key="isCaseSensitive"/>
 			<list key="workingSets">
 			</list>
@@ -44,10 +44,10 @@
 			<item value="11" key="includeMask"/>
 			<item value="2" key="limitTo"/>
 			<item value="0" key="scope"/>
-			<item value="=HomeKeeper/src&lt;com.gagara.homekeeper.common{Constants.java[Constants^CONTROLLER_CONTROL_COMMAND_ACTION" key="javaElement"/>
 			<item value="com.gagara.homekeeper.common.Constants.CONTROLLER_CONTROL_COMMAND_ACTION" key="pattern"/>
-			<item value="0" key="matchLocations"/>
+			<item value="=HomeKeeper/src&lt;com.gagara.homekeeper.common{Constants.java[Constants^CONTROLLER_CONTROL_COMMAND_ACTION" key="javaElement"/>
 			<item value="4" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
 			<item value="true" key="isCaseSensitive"/>
 			<list key="workingSets">
 			</list>
@@ -56,10 +56,10 @@
 			<item value="11" key="includeMask"/>
 			<item value="2" key="limitTo"/>
 			<item value="0" key="scope"/>
-			<item value="=HomeKeeper/src&lt;com.gagara.homekeeper.nbi.request{CurrentStatusRequest.java[CurrentStatusRequest~CurrentStatusRequest" key="javaElement"/>
 			<item value="com.gagara.homekeeper.nbi.request.CurrentStatusRequest()" key="pattern"/>
-			<item value="0" key="matchLocations"/>
+			<item value="=HomeKeeper/src&lt;com.gagara.homekeeper.nbi.request{CurrentStatusRequest.java[CurrentStatusRequest~CurrentStatusRequest" key="javaElement"/>
 			<item value="3" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
 			<item value="true" key="isCaseSensitive"/>
 			<list key="workingSets">
 			</list>
@@ -68,10 +68,10 @@
 			<item value="11" key="includeMask"/>
 			<item value="2" key="limitTo"/>
 			<item value="0" key="scope"/>
-			<item value="=HomeKeeper/src&lt;com.gagara.homekeeper.nbi.response{NodeStateChangeResponse.java[NodeStateChangeResponse~fromJson~QJSONObject;" key="javaElement"/>
 			<item value="com.gagara.homekeeper.nbi.response.NodeStateChangeResponse.fromJson(JSONObject)" key="pattern"/>
-			<item value="0" key="matchLocations"/>
+			<item value="=HomeKeeper/src&lt;com.gagara.homekeeper.nbi.response{NodeStateChangeResponse.java[NodeStateChangeResponse~fromJson~QJSONObject;" key="javaElement"/>
 			<item value="1" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
 			<item value="true" key="isCaseSensitive"/>
 			<list key="workingSets">
 			</list>
@@ -80,8 +80,8 @@
 	<section name="quick_assist_proposal_size">
 	</section>
 	<section name="SourceActionDialog.methods">
-		<item value="false" key="Comments"/>
 		<item value="1" key="VisibilityModifier"/>
+		<item value="false" key="Comments"/>
 		<item value="false" key="SynchronizedModifier"/>
 		<item value="false" key="FinalModifier"/>
 	</section>
@@ -92,15 +92,15 @@
 		<section name="DialogBoundsSettings">
 			<item value="600" key="DIALOG_WIDTH"/>
 			<item value="92" key="DIALOG_Y_ORIGIN"/>
-			<item value="423" key="DIALOG_X_ORIGIN"/>
 			<item value="500" key="DIALOG_HEIGHT"/>
+			<item value="423" key="DIALOG_X_ORIGIN"/>
 			<item value="1|Liberation Sans|9.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
 		</section>
 	</section>
 	<section name="org.eclipse.jdt.internal.ui.typehierarchy.QuickHierarchy">
 		<item value="450" key="org.eclipse.jdt.internal.ui.typehierarchy.HierarchyInformationControlDIALOG_WIDTH"/>
-		<item value="false" key="org.eclipse.jdt.internal.ui.typehierarchy.HierarchyInformationControlDIALOG_USE_PERSISTED_LOCATION"/>
 		<item value="367" key="org.eclipse.jdt.internal.ui.typehierarchy.HierarchyInformationControlDIALOG_HEIGHT"/>
+		<item value="false" key="org.eclipse.jdt.internal.ui.typehierarchy.HierarchyInformationControlDIALOG_USE_PERSISTED_LOCATION"/>
 		<item value="true" key="org.eclipse.jdt.internal.ui.typehierarchy.HierarchyInformationControlDIALOG_USE_PERSISTED_SIZE"/>
 	</section>
 	<section name="org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog">
@@ -109,8 +109,8 @@
 		<section name="DialogBoundsSettings">
 			<item value="600" key="DIALOG_WIDTH"/>
 			<item value="21" key="DIALOG_Y_ORIGIN"/>
-			<item value="13" key="DIALOG_X_ORIGIN"/>
 			<item value="500" key="DIALOG_HEIGHT"/>
+			<item value="13" key="DIALOG_X_ORIGIN"/>
 			<item value="1|Liberation Sans|9.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
 		</section>
 	</section>
@@ -128,21 +128,21 @@
 	<section name="DialogBounds_GetterSetterTreeSelectionDialog">
 		<item value="631" key="DIALOG_WIDTH"/>
 		<item value="3" key="DIALOG_Y_ORIGIN"/>
-		<item value="777" key="DIALOG_HEIGHT"/>
 		<item value="408" key="DIALOG_X_ORIGIN"/>
+		<item value="777" key="DIALOG_HEIGHT"/>
 		<item value="1|Liberation Sans|9.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="RenameInformationPopup">
+	</section>
+	<section name="org.eclipse.ltk.ui.refactoring.settings">
+		<item value="false" key="renameSubpackages"/>
+		<item value="false" key="updateQualifiedNames"/>
+		<item value="*" key="patterns"/>
+		<item value="false" key="updateTextualMatches"/>
 	</section>
 	<section name="NewClassWizardPage">
 		<item value="false" key="create_constructor"/>
 		<item value="true" key="create_unimplemented"/>
-	</section>
-	<section name="org.eclipse.ltk.ui.refactoring.settings">
-		<item value="*" key="patterns"/>
-		<item value="false" key="updateQualifiedNames"/>
-		<item value="false" key="renameSubpackages"/>
-		<item value="false" key="updateTextualMatches"/>
-	</section>
-	<section name="RenameInformationPopup">
 	</section>
 	<section name="org.eclipse.jdt.internal.ui.text.QuickOutline">
 		<item value="false" key="GoIntoTopLevelTypeAction.isChecked"/>

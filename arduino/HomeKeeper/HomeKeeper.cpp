@@ -54,12 +54,13 @@ static const uint8_t HEATER_SUPPLY_REVERSE_THRESHOLD = 10;
 static const unsigned long HEATER_SHORT_CIRCUIT_PUMP_PERIOD_SEC = 180;
 
 // heating
-static const uint8_t HEATING_TEMP_THRESHOLD = 37;
+static const uint8_t HEATING_TEMP_THRESHOLD = 50;
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
-static const unsigned long BOILER_ACTIVE_PERIOD_MSEC = 3600000; // 1h
-static const unsigned long BOILER_PASSIVE_PERIOD_MSEC = 7200000; // 2h
+static const uint8_t BOILER_POWERSAVE_MIN_TEMP = 40;
+static const unsigned long BOILER_POWERSAVE_MAX_ACTIVE_PERIOD_MSEC = 3600000; // 1h
+static const double BOILER_POWERSAVE_RATIO = 2; // 66%
 
 // Circulation
 static const uint8_t CIRCULATION_TEMP_THRESHOLD = 40;
@@ -158,6 +159,8 @@ double SENSOR_SUPPLY_FACTOR = 1;
 double SENSOR_REVERSE_FACTOR = 1;
 double SENSOR_TANK_FACTOR = 1;
 double SENSOR_BOILER_FACTOR = 1;
+
+unsigned long boilerPowersaveCurrentPassivePeriod = BOILER_POWERSAVE_MAX_ACTIVE_PERIOD_MSEC * BOILER_POWERSAVE_RATIO;
 
 /* ======== End of Variables ======= */
 
@@ -315,7 +318,7 @@ void processHeatingCircuit() {
         uint8_t sensVals[] = { tempTank };
         if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
             // pump is ON
-            if (tempTank < HEATING_TEMP_THRESHOLD) {
+            if (tempTank < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)) {
                 // temp in tank is too low
                 // turn pump OFF
                 switchNodeState(NODE_HEATING, sensIds, sensVals, 1);
@@ -350,7 +353,7 @@ void processFloorCircuit() {
         uint8_t sensVals[] = { tempTank };
         if (NODE_STATE_FLAGS & NODE_FLOOR_BIT) {
             // pump is ON
-            if (tempTank < HEATING_TEMP_THRESHOLD) {
+            if (tempTank < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)) {
                 // temp in tank is too low
                 // turn pump OFF
                 switchNodeState(NODE_FLOOR, sensIds, sensVals, 1);
@@ -385,7 +388,7 @@ void processHotWaterCircuit() {
         uint8_t sensVals[] = { tempTank, tempBoiler };
         if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
             // pump is ON
-            if (tempTank <= (tempBoiler + SENSORS_APPROX)) {
+            if (tempTank <= (tempBoiler - SENSORS_APPROX)) {
                 // temp is equal
                 // turn pump OFF
                 switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
@@ -470,6 +473,8 @@ void processBoilerHeater() {
             // boiler is ON
             if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
                 // hotwater circuit is ON
+                // set current powersave period
+                boilerPowersaveCurrentPassivePeriod = diffTimestamps(tsCurr, tsNodeBoiler) * BOILER_POWERSAVE_RATIO;
                 // turn boiler OFF
                 switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
             } else {
@@ -479,10 +484,22 @@ void processBoilerHeater() {
                     // do nothing
                 } else {
                     // boiler in powersave mode
-                    if (diffTimestamps(tsCurr, tsNodeBoiler) >= BOILER_ACTIVE_PERIOD_MSEC) {
-                        // active period is over
-                        // turn boiler OFF
-                        switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
+                    if (tempBoiler > BOILER_POWERSAVE_MIN_TEMP) {
+                        // temp in boiler is high enough
+                        if (diffTimestamps(tsCurr, tsNodeBoiler) >= BOILER_POWERSAVE_MAX_ACTIVE_PERIOD_MSEC) {
+                            // powersave active period is over
+                            // set current powersave period
+                            boilerPowersaveCurrentPassivePeriod = diffTimestamps(tsCurr, tsNodeBoiler)
+                                    * BOILER_POWERSAVE_RATIO;
+                            // turn boiler OFF
+                            switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
+                        } else {
+                            // continue powersave active period
+                            // do nothing
+                        }
+                    } else {
+                        // temp in boiler is too low
+                        // do nothing
                     }
                 }
             }
@@ -495,14 +512,21 @@ void processBoilerHeater() {
                 // hotwater circuit is off
                 if (NODE_FORCED_MODE_FLAGS & NODE_HOTWATER_BIT) {
                     // hotwater node forcefully OFF
-                    // turn boiler heater ON
+                    // turn boiler ON
                     switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
                 } else {
                     // boiler in powersave mode
-                    if (diffTimestamps(tsCurr, tsNodeBoiler) >= BOILER_PASSIVE_PERIOD_MSEC) {
-                        // passive period is over
+                    if (tempBoiler <= BOILER_POWERSAVE_MIN_TEMP) {
+                        // temp in boiler is too low
                         // turn boiler ON
                         switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
+                    } else {
+                        // temp in boiler is high enough
+                        if (diffTimestamps(tsCurr, tsNodeBoiler) >= boilerPowersaveCurrentPassivePeriod) {
+                            // passive period is over
+                            // turn boiler ON
+                            switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
+                        }
                     }
                 }
             }
