@@ -53,7 +53,7 @@ static const int SENSORS_FACTORS_EEPROM_ADDR = 2;
 static const uint8_t HEATER_TANK_HIST = 3;
 
 // heating
-static const uint8_t HEATING_TEMP_THRESHOLD = 37;
+static const uint8_t HEATING_TEMP_THRESHOLD = 40;
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
@@ -63,7 +63,7 @@ static const double BOILER_POWERSAVE_RATIO = 3; // 15*3=45m
 
 // Circulation
 static const uint8_t CIRCULATION_TEMP_THRESHOLD = 40;
-static const unsigned long CIRCULATION_ACTIVE_PERIOD_MSEC = 300000; // 5m
+static const unsigned long CIRCULATION_ACTIVE_PERIOD_MSEC = 600000; // 10m
 static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 1800000; // 30m
 
 // reporting
@@ -73,7 +73,7 @@ static const unsigned long SENSORS_READ_INTERVAL_MSEC = 1000;
 
 // sensors stats
 static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 20;
-static const uint8_t SENSOR_NOISE_THRESHOLD = 20;
+static const uint8_t SENSOR_NOISE_THRESHOLD = 50;
 
 // JSON
 static const char MSG_TYPE_KEY[] = "m";
@@ -263,21 +263,33 @@ void processSupplyCircuit() {
         reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
     }
     if (diffTimestamps(tsCurr, tsNodeSupply) >= NODE_SWITCH_SAFE_TIME_MSEC) {
-        uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_TANK };
-        uint8_t sensVals[] = { tempSupply, tempTank };
+        uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_REVERSE };
+        uint8_t sensVals[] = { tempSupply, tempReverse };
         if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
             // pump is ON
-            if (tempSupply < (tempTank + HEATER_TANK_HIST)) {
+            if (tempSupply <= (tempReverse + SENSORS_APPROX)) {
                 // temp is equal
-                // turn pump OFF
-                switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
+                if (tempSupply < HEATER_VALVE_THRESHOLD) {
+                    // pump is on short circuit
+                    if (diffTimestamps(tsCurr, tsNodeSupply) > HEATER_SHORT_CIRCUIT_PUMP_PERIOD_SEC) {
+                        // turn pump OFF
+                        switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
+                    } else {
+                        // pump is just switched ON on short circuit. give it some time
+                        // do nothing
+                    }
+                } else {
+                    // pump is in production
+                    // turn pump OFF
+                    switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
+                }
             } else {
                 // delta is big enough
                 // do nothing
             }
         } else {
             // pump is OFF
-            if (tempSupply >= tempTank) {
+            if (tempSupply >= (tempReverse + HEATER_SUPPLY_REVERSE_THRESHOLD)) {
                 // delta is big enough
                 // turn pump ON
                 switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
