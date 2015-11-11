@@ -1,0 +1,249 @@
+13:03:28 **** Incremental Build of configuration Release for project Json ****
+make all 
+Building file: ../.ino.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF".ino.cpp.d" -MT".ino.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "../.ino.cpp"  -o  ".ino.cpp.o"   -Wall
+Finished building: ../.ino.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/Internals/IndentedPrint.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/Internals/IndentedPrint.cpp.d" -MT"Libraries/JSON/src/Internals/IndentedPrint.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/Internals/IndentedPrint.cpp"  -o  "Libraries/JSON/src/Internals/IndentedPrint.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/Internals/IndentedPrint.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/Internals/JsonParser.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/Internals/JsonParser.cpp.d" -MT"Libraries/JSON/src/Internals/JsonParser.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/Internals/JsonParser.cpp"  -o  "Libraries/JSON/src/Internals/JsonParser.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/Internals/JsonParser.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/Internals/List.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/Internals/List.cpp.d" -MT"Libraries/JSON/src/Internals/List.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/Internals/List.cpp"  -o  "Libraries/JSON/src/Internals/List.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/Internals/List.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/Internals/Prettyfier.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/Internals/Prettyfier.cpp.d" -MT"Libraries/JSON/src/Internals/Prettyfier.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/Internals/Prettyfier.cpp"  -o  "Libraries/JSON/src/Internals/Prettyfier.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/Internals/Prettyfier.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/Internals/QuotedString.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/Internals/QuotedString.cpp.d" -MT"Libraries/JSON/src/Internals/QuotedString.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/Internals/QuotedString.cpp"  -o  "Libraries/JSON/src/Internals/QuotedString.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/Internals/QuotedString.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/Internals/StringBuilder.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/Internals/StringBuilder.cpp.d" -MT"Libraries/JSON/src/Internals/StringBuilder.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/Internals/StringBuilder.cpp"  -o  "Libraries/JSON/src/Internals/StringBuilder.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/Internals/StringBuilder.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/Arduino/Print.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/Arduino/Print.cpp.d" -MT"Libraries/JSON/src/Arduino/Print.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/Arduino/Print.cpp"  -o  "Libraries/JSON/src/Arduino/Print.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/Arduino/Print.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/DynamicJsonBuffer.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/DynamicJsonBuffer.cpp.d" -MT"Libraries/JSON/src/DynamicJsonBuffer.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/DynamicJsonBuffer.cpp"  -o  "Libraries/JSON/src/DynamicJsonBuffer.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/DynamicJsonBuffer.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/JsonArray.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/JsonArray.cpp.d" -MT"Libraries/JSON/src/JsonArray.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/JsonArray.cpp"  -o  "Libraries/JSON/src/JsonArray.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/JsonArray.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/JsonBuffer.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/JsonBuffer.cpp.d" -MT"Libraries/JSON/src/JsonBuffer.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/JsonBuffer.cpp"  -o  "Libraries/JSON/src/JsonBuffer.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/JsonBuffer.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/JsonObject.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/JsonObject.cpp.d" -MT"Libraries/JSON/src/JsonObject.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/JsonObject.cpp"  -o  "Libraries/JSON/src/JsonObject.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/JsonObject.cpp
+ 
+Building file: /home/slg/Arduino/libraries/JSON/src/JsonVariant.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/JSON" -I"/home/slg/Arduino/libraries/JSON/src" -MMD -MP -MF"Libraries/JSON/src/JsonVariant.cpp.d" -MT"Libraries/JSON/src/JsonVariant.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/JSON/src/JsonVariant.cpp"  -o  "Libraries/JSON/src/JsonVariant.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/JSON/src/JsonVariant.cpp
+ 
+Starting combiner
+"/usr/bin/avr-gcc" -Os -Wl,--gc-sections -mmcu=atmega328p  -o "/home/slg/workspace-arduino/Json/Release/Json.elf"    ./.ino.cpp.o  ./Libraries/JSON/src/Internals/IndentedPrint.cpp.o ./Libraries/JSON/src/Internals/JsonParser.cpp.o ./Libraries/JSON/src/Internals/List.cpp.o ./Libraries/JSON/src/Internals/Prettyfier.cpp.o ./Libraries/JSON/src/Internals/QuotedString.cpp.o ./Libraries/JSON/src/Internals/StringBuilder.cpp.o  ./Libraries/JSON/src/Arduino/Print.cpp.o  ./Libraries/JSON/src/DynamicJsonBuffer.cpp.o ./Libraries/JSON/src/JsonArray.cpp.o ./Libraries/JSON/src/JsonBuffer.cpp.o ./Libraries/JSON/src/JsonObject.cpp.o ./Libraries/JSON/src/JsonVariant.cpp.o  ./Libraries/JSON/ArduinoJson.cpp.o   arduino.ar   "/home/slg/workspace-arduino/Json/Release/arduino.ar" "-L/home/slg/workspace-arduino/Json/Release" -lm
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::IndentedPrint::write(unsigned char)'
+./Libraries/JSON/src/Internals/IndentedPrint.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/IndentedPrint.cpp:11: first defined here
+makefile:86: recipe for target 'Json.elf' failed
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::StringBuilder::write(unsigned char)'
+./Libraries/JSON/src/Internals/StringBuilder.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/StringBuilder.cpp:11: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::DynamicJsonBuffer::~DynamicJsonBuffer()'
+./Libraries/JSON/src/DynamicJsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/DynamicJsonBuffer.cpp:51: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::DynamicJsonBuffer::~DynamicJsonBuffer()'
+./Libraries/JSON/src/DynamicJsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/DynamicJsonBuffer.cpp:51: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::DynamicJsonBuffer::size() const'
+./Libraries/JSON/src/DynamicJsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/DynamicJsonBuffer.cpp:51: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::DynamicJsonBuffer::createBlock(unsigned int)'
+./Libraries/JSON/src/DynamicJsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/DynamicJsonBuffer.cpp:51: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::DynamicJsonBuffer::DynamicJsonBuffer()'
+./Libraries/JSON/src/DynamicJsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/DynamicJsonBuffer.cpp:51: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::DynamicJsonBuffer::DynamicJsonBuffer()'
+./Libraries/JSON/src/DynamicJsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/DynamicJsonBuffer.cpp:51: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::DynamicJsonBuffer::alloc(unsigned int)'
+./Libraries/JSON/src/DynamicJsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/DynamicJsonBuffer.cpp:51: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::JsonParser::skipSpaces()'
+./Libraries/JSON/src/Internals/JsonParser.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/JsonParser.cpp:89: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::JsonParser::skip(char)'
+./Libraries/JSON/src/Internals/JsonParser.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/JsonParser.cpp:89: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::JsonParser::skip(char const*)'
+./Libraries/JSON/src/Internals/JsonParser.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/JsonParser.cpp:89: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::Prettyfier::indentIfNeeded()'
+./Libraries/JSON/src/Internals/Prettyfier.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/Prettyfier.cpp:11: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::Prettyfier::unindentIfNeeded()'
+./Libraries/JSON/src/Internals/Prettyfier.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/Prettyfier.cpp:11: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::Prettyfier::write(unsigned char)'
+./Libraries/JSON/src/Internals/Prettyfier.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/Prettyfier.cpp:11: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::QuotedString::printTo(char const*, Print&)'
+./Libraries/JSON/src/Internals/QuotedString.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/QuotedString.cpp:60: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::QuotedString::extractFrom(char*, char**)'
+./Libraries/JSON/src/Internals/QuotedString.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/QuotedString.cpp:60: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonArray::add()'
+./Libraries/JSON/src/JsonArray.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::_invalid'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonArray::getNodeAt(int) const'
+./Libraries/JSON/src/JsonArray.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonArray::at(int) const'
+./Libraries/JSON/src/JsonArray.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonArray::removeAt(int)'
+./Libraries/JSON/src/JsonArray.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonBuffer::createArray()'
+./Libraries/JSON/src/JsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/JsonBuffer.cpp:31: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonArray::_invalid'
+./Libraries/JSON/src/JsonArray.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonBuffer::createObject()'
+./Libraries/JSON/src/JsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/JsonBuffer.cpp:31: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonObject::_invalid'
+./Libraries/JSON/src/JsonObject.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonObject::getNodeAt(char const*) const'
+./Libraries/JSON/src/JsonObject.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonObject::at(char const*)'
+./Libraries/JSON/src/JsonObject.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonObject::at(char const*) const'
+./Libraries/JSON/src/JsonObject.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonObject::remove(char const*)'
+./Libraries/JSON/src/JsonObject.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonObject::operator[](char const*)'
+./Libraries/JSON/src/JsonObject.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::operator ArduinoJson::JsonArray&() const'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::operator ArduinoJson::JsonObject&() const'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::operator bool() const'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::operator char const*() const'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::operator double() const'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::operator long() const'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::set(bool)'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::set(char const*)'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::set(double, unsigned char)'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::set(long)'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::set(ArduinoJson::JsonArray&)'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonObject::createNestedArray(char const*)'
+./Libraries/JSON/src/JsonObject.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonArray::createNestedArray()'
+./Libraries/JSON/src/JsonArray.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::set(ArduinoJson::JsonObject&)'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonObject::createNestedObject(char const*)'
+./Libraries/JSON/src/JsonObject.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::JsonParser::parseAnythingTo(ArduinoJson::JsonVariant&)'
+./Libraries/JSON/src/Internals/JsonParser.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/JsonParser.cpp:89: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::JsonParser::parseObject()'
+./Libraries/JSON/src/Internals/JsonParser.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/JsonParser.cpp:89: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::Internals::JsonParser::parseArray()'
+./Libraries/JSON/src/Internals/JsonParser.cpp.o:/home/slg/Arduino/libraries/JSON/src/Internals/JsonParser.cpp:89: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonBuffer::parseArray(char*, unsigned char)'
+./Libraries/JSON/src/JsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/JsonBuffer.cpp:31: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonBuffer::parseObject(char*, unsigned char)'
+./Libraries/JSON/src/JsonBuffer.cpp.o:/home/slg/Arduino/libraries/JSON/src/JsonBuffer.cpp:31: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonArray::createNestedObject()'
+./Libraries/JSON/src/JsonArray.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::size() const'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::operator[](int)'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::operator[](char const*)'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonVariant::writeTo(ArduinoJson::Internals::JsonWriter&) const'
+./Libraries/JSON/src/JsonVariant.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/JsonVariant.hpp:169: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonArray::writeTo(ArduinoJson::Internals::JsonWriter&) const'
+./Libraries/JSON/src/JsonArray.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+./Libraries/JSON/ArduinoJson.cpp.o: In function `_GLOBAL__sub_I__ZN11ArduinoJson17DynamicJsonBufferC2Ev':
+/home/slg/Arduino/libraries/JSON/src/Internals/../../include/ArduinoJson/Internals/List.hpp:32: multiple definition of `ArduinoJson::JsonObject::writeTo(ArduinoJson::Internals::JsonWriter&) const'
+./Libraries/JSON/src/JsonObject.cpp.o:/home/slg/Arduino/libraries/JSON/src/../include/ArduinoJson/Internals/List.hpp:32: first defined here
+collect2: error: ld returned 1 exit status
+make: *** [Json.elf] Error 1
+
+13:03:32 Build Finished (took 3s.444ms)
+

@@ -1,0 +1,21 @@
+23:18:45 **** Incremental Build of configuration Release for project HomeKeeper ****
+make all 
+Building target: HomeKeeper
+Printing size:
+"/usr/bin/avr-size" -A "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.elf"
+/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.elf  :
+section      size      addr
+.data         112   8388864
+.text       18136         0
+.bss          605   8388976
+.stab       47472         0
+.stabstr    98348         0
+.comment       84         0
+Total      164757
+
+
+Finished building target: HomeKeeper
+ 
+
+23:18:45 Build Finished (took 178ms)
+

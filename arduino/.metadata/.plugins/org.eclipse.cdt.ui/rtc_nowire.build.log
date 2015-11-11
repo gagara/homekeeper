@@ -1,0 +1,21 @@
+14:25:18 **** Incremental Build of configuration Release for project rtc_nowire ****
+make all 
+Building target: rtc_nowire
+Printing size:
+"/usr/bin/avr-size" -A "/home/slg/workspace-arduino/rtc_nowire/Release/rtc_nowire.elf"
+/home/slg/workspace-arduino/rtc_nowire/Release/rtc_nowire.elf  :
+section     size      addr
+.data        190   8388864
+.text       4960         0
+.bss         176   8389054
+.stab      24804         0
+.stabstr   49625         0
+.comment      42         0
+Total      79797
+
+
+Finished building target: rtc_nowire
+ 
+
+14:25:19 Build Finished (took 96ms)
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="mode_entries">
+        <item>Master</item>
+        <item>Slave</item>
+    </string-array>
+    <string-array name="mode_entry_values">
+        <item>MASTER</item>
+        <item>SLAVE</item>
+    </string-array>
+
+    <string-array name="pull_interval_entries">
+        <item>10 seconds</item>
+        <item>20 seconds</item>
+        <item>30 seconds</item>
+    </string-array>
+    <string-array name="pull_interval_entry_values">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
+
+    <string-array name="pref_slave_refresh_interval_entries">
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>3 minutes</item>
+    </string-array>
+    <string-array name="pref_slave_refresh_interval_entry_values">
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+    </string-array>
+
+</resources>

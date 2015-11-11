@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HomeKeeper</string>
+    <string name="action_settings">Settings</string>
+    <string name="settings_activity_name">Settings</string>
+    <string name="action_exit">Exit</string>
+    
+    <string name="pref_general_category_title">General</string>
+    <string name="pref_mode_title">Run Mode</string>
+    <string name="pref_mode_dialog_title">Select Run Mode</string>
+    <string name="pref_mode_default_summary">select mode to run</string>
+
+    <string name="pref_master_category_title">Master Mode</string>
+    <string name="pref_bt_device_title">Bluetooth Device</string>
+    <string name="pref_bt_device_dialog_title">Select BT device</string>
+    <string name="pref_bt_device_default_summary">select one of paired BT devices</string>
+    <string name="pref_remote_endpoint_title">Remote Endpoint</string>
+    <string name="pref_remote_endpoint_default_summary">remote service endpoint URL</string>
+    <string name="pref_publish_data_title">Publish Data</string>
+    <string name="pref_publish_data_summary">publish data to remote service</string>
+    <string name="pref_remote_control_title">Remote Control</string>
+    <string name="pref_remote_control_summary">accept control commands from remote service</string>
+    <string name="pref_remote_control_pull_interval_title">Pull interval</string>
+    <string name="pref_remote_control_pull_interval_dialog_title">Select pull interval</string>
+    <string name="pref_remote_control_pull_interval_summary">remote control pull interval</string>
+
+    <string name="pref_slave_category_title">Slave Mode</string>
+    <string name="pref_slave_refresh_interval_title">Refresh interval</string>
+    <string name="pref_slave_refresh_interval_dialog_title">Select refresh interval</string>
+    <string name="pref_slave_refresh_interval_summary">remote service refresh interval</string>
+
+    <string name="bt_not_supported_error">Bluetooth is not available on this device</string>
+    <string name="bt_disabled_error">Bluetooth is disabled!</string>
+    <string name="bt_no_paired_devs_error">No paired Bluetooth devices</string>
+    <string name="db_pref_category_title">Database</string>
+    <string name="unknown_bt_dev">[unknown]</string>
+
+    <string name="updating_message">Updating&#8230;</string>
+    <string name="switch_state_on_message">%1$s is ON</string>
+    <string name="switch_state_off_message">%1$s is OFF</string>
+    
+    <string name="sensor_icon_descr">sensor</string>
+    <string name="sensor_supply_name">Supply</string>
+    <string name="sensor_reverse_name">Reverse</string>
+    <string name="sensor_tank_name">Tank</string>
+    <string name="sensor_boiler_name">Boiler</string>
+
+    <string name="sensor_value_template">%1$s&#8451;</string>
+
+    <string name="sensor_details_inc_template">&#8593;%1$s&#8451;</string>
+    <string name="sensor_details_dec_template">&#8595;%1$s&#8451;</string>
+    <string name="sensor_details_equ_template">&#8597;%1$s&#8451;</string>
+
+    <string name="node_icon_descr">node</string>
+    <string name="node_supply_name">Supply</string>
+    <string name="node_heating_name">Heating</string>
+    <string name="node_floor_name">Floor</string>
+    <string name="node_hotwater_name">Hot water</string>
+    <string name="node_circulation_name">Circulation</string>
+    <string name="node_boilder_name">Boiler</string>
+
+    <string name="node_details_unknown"></string>
+    <string name="node_details_switch_on">ON:</string>
+    <string name="node_details_switch_off">OFF:</string>
+    <string name="node_details_forced_flag">(M)</string>
+    <string name="node_details_elapsed_time_flag"> \@</string>
+    <string name="node_details_remainig_time_flag"> \#</string>
+    <string name="node_details_unknown_time">unknown</string>
+    <string name="node_details_permanent_time">perm</string>
+    <string name="node_details_time_template">%1$s [%2$s mins]</string>
+
+    <string name="node_details_sensors_template">\nSensors: </string>
+    <string name="node_details_sensor_template">%1$s:%2$s&#8451;;</string>
+    
+    <string name="bt_service_state_init">Connecting&#8230;</string>
+    <string name="bt_service_state_active">Connected</string>
+    <string name="bt_service_state_error">Disconnected</string>
+    <string name="bt_service_state_shutdown">Connection closed</string>
+    <string name="bt_service_sync_clocks_status">Synchronizing clocks&#8230;</string>
+    <string name="bt_service_listening_status">listening for incoming data</string>
+    <string name="bt_service_rceiving_data_status">receiving data</string>
+
+    <string name="service_title">%1$s@%2$s</string>
+    <string name="service_last_update">Last update %1$s</string>
+    <string name="service_status_details"> : %1$s</string>
+    
+</resources>

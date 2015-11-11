@@ -1,0 +1,12 @@
+// Do not remove the include below
+#include "Bt.h"
+
+void setup() {
+	Serial.begin(9600);
+}
+
+void loop() {
+	if (Serial.available() > 0) {
+		Serial.write("[" + Serial.readStringUntil('\n') + "]");
+	}
+}

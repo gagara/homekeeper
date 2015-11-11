@@ -1,0 +1,7 @@
+08:22:35 **** Clean-only build of configuration Release for project Test ****
+make clean 
+rm -rf  ./src/blink.o  Test.eep  Test.hex  Test.lss  ./src/blink.d  sizedummy  Test.elf
+ 
+
+08:22:35 Build Finished (took 292ms)
+

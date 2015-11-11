@@ -1,0 +1,319 @@
+07:45:04 **** Build of configuration ArduinoUnoRev3_Release for project ArduinoLibrary ****
+make -j2 all 
+Building file: ../src/Wire/utility/twi.c
+Building file: ../src/Wire/Wire.cpp
+Invoking: AVR C++ Compiler
+avr-g++ -I"/home/slg/workspace-arduino/ArduinoLibrary/src" -I"/home/slg/workspace-arduino/ArduinoCore" -I"/home/slg/workspace-arduino/ArduinoCore/src/variants/standard" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/EEPROM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Wire" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Esplora" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Firmata" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/GSM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/LiquidCrystal" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Motor" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Servo" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SoftwareSerial" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SPI" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Stepper" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi/utility" -I"/home/slg/workspace-arduino/ArduinoCore/src" -Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -funsigned-char -funsigned-bitfields -fno-exceptions -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"src/Wire/Wire.d" -MT"src/Wire/Wire.d" -c -o "src/Wire/Wire.o" "../src/Wire/Wire.cpp"
+Invoking: AVR Compiler
+avr-gcc -I"/home/slg/workspace-arduino/ArduinoCore/src" -I"/home/slg/workspace-arduino/ArduinoCore/src/variants/standard" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/EEPROM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Wire" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Wire/utility" -Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"src/Wire/utility/twi.d" -MT"src/Wire/utility/twi.d" -c -o "src/Wire/utility/twi.o" "../src/Wire/utility/twi.c"
+../src/Wire/utility/twi.c: In function ‘twi_init’:
+../src/Wire/utility/twi.c:82:10: warning: large integer implicitly truncated to unsigned type [-Woverflow]
+   TWBR = ((F_CPU / TWI_FREQ) - 16) / 2;
+          ^
+Finished building: ../src/Wire/Wire.cpp
+ 
+Building file: ../src/WiFi/utility/server_drv.cpp
+Invoking: AVR C++ Compiler
+avr-g++ -I"/home/slg/workspace-arduino/ArduinoLibrary/src" -I"/home/slg/workspace-arduino/ArduinoCore" -I"/home/slg/workspace-arduino/ArduinoCore/src/variants/standard" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/EEPROM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Wire" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Esplora" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Firmata" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/GSM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/LiquidCrystal" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Motor" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Servo" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SoftwareSerial" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SPI" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Stepper" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi/utility" -I"/home/slg/workspace-arduino/ArduinoCore/src" -Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -funsigned-char -funsigned-bitfields -fno-exceptions -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"src/WiFi/utility/server_drv.d" -MT"src/WiFi/utility/server_drv.d" -c -o "src/WiFi/utility/server_drv.o" "../src/WiFi/utility/server_drv.cpp"
+Finished building: ../src/Wire/utility/twi.c
+ 
+Building file: ../src/WiFi/utility/socket.c
+Invoking: AVR Compiler
+avr-gcc -I"/home/slg/workspace-arduino/ArduinoLibrary/src/EEPROM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Wire" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Esplora" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Firmata" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/GSM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/LiquidCrystal" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Motor" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Servo" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SoftwareSerial" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SPI" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Stepper" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi/utility" -Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"src/WiFi/utility/socket.d" -MT"src/WiFi/utility/socket.d" -c -o "src/WiFi/utility/socket.o" "../src/WiFi/utility/socket.c"
+Finished building: ../src/WiFi/utility/server_drv.cpp
+ 
+Building file: ../src/WiFi/utility/spi_drv.cpp
+Invoking: AVR C++ Compiler
+avr-g++ -I"/home/slg/workspace-arduino/ArduinoLibrary/src" -I"/home/slg/workspace-arduino/ArduinoCore" -I"/home/slg/workspace-arduino/ArduinoCore/src/variants/standard" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/EEPROM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Wire" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Esplora" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Firmata" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/GSM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/LiquidCrystal" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Motor" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Servo" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SoftwareSerial" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SPI" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Stepper" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi/utility" -I"/home/slg/workspace-arduino/ArduinoCore/src" -Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -funsigned-char -funsigned-bitfields -fno-exceptions -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"src/WiFi/utility/spi_drv.d" -MT"src/WiFi/utility/spi_drv.d" -c -o "src/WiFi/utility/spi_drv.o" "../src/WiFi/utility/spi_drv.cpp"
+Finished building: ../src/WiFi/utility/socket.c
+ 
+Building file: ../src/WiFi/utility/wifi_drv.cpp
+Invoking: AVR C++ Compiler
+avr-g++ -I"/home/slg/workspace-arduino/ArduinoLibrary/src" -I"/home/slg/workspace-arduino/ArduinoCore" -I"/home/slg/workspace-arduino/ArduinoCore/src/variants/standard" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/EEPROM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Wire" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Esplora" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Firmata" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/GSM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/LiquidCrystal" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Motor" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Servo" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SoftwareSerial" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SPI" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Stepper" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi/utility" -I"/home/slg/workspace-arduino/ArduinoCore/src" -Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -funsigned-char -funsigned-bitfields -fno-exceptions -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"src/WiFi/utility/wifi_drv.d" -MT"src/WiFi/utility/wifi_drv.d" -c -o "src/WiFi/utility/wifi_drv.o" "../src/WiFi/utility/wifi_drv.cpp"
+In file included from ../src/WiFi/utility/wifi_drv.h:6:0,
+                 from ../src/WiFi/utility/wifi_drv.cpp:7:
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h: In member function ‘IPAddress::operator uint32_t()’:
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h:51:55: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+     operator uint32_t() { return *((uint32_t*)_address); };
+                                                       ^
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h: In member function ‘bool IPAddress::operator==(const IPAddress&)’:
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h:52:75: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+     bool operator==(const IPAddress& addr) { return (*((uint32_t*)_address)) == (*((uint32_t*)addr._address)); };
+                                                                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h:52:108: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+     bool operator==(const IPAddress& addr) { return (*((uint32_t*)_address)) == (*((uint32_t*)addr._address)); };
+                                                                                                            ^
+../src/WiFi/utility/wifi_drv.cpp: In static member function ‘static uint8_t WiFiDrv::getEncTypeNetowrks(uint8_t)’:
+../src/WiFi/utility/wifi_drv.cpp:432:10: warning: converting to non-pointer type ‘uint8_t {aka unsigned char}’ from NULL [-Wconversion-null]
+   return NULL;
+          ^
+../src/WiFi/utility/wifi_drv.cpp: In static member function ‘static int32_t WiFiDrv::getRSSINetoworks(uint8_t)’:
+../src/WiFi/utility/wifi_drv.cpp:457:10: warning: converting to non-pointer type ‘int32_t {aka long int}’ from NULL [-Wconversion-null]
+   return NULL;
+          ^
+Finished building: ../src/WiFi/utility/spi_drv.cpp
+ 
+Building file: ../src/WiFi/WiFi.cpp
+Invoking: AVR C++ Compiler
+avr-g++ -I"/home/slg/workspace-arduino/ArduinoLibrary/src" -I"/home/slg/workspace-arduino/ArduinoCore" -I"/home/slg/workspace-arduino/ArduinoCore/src/variants/standard" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/EEPROM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Wire" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Esplora" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Firmata" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/GSM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/LiquidCrystal" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Motor" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Servo" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SoftwareSerial" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SPI" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Stepper" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi/utility" -I"/home/slg/workspace-arduino/ArduinoCore/src" -Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -funsigned-char -funsigned-bitfields -fno-exceptions -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"src/WiFi/WiFi.d" -MT"src/WiFi/WiFi.d" -c -o "src/WiFi/WiFi.o" "../src/WiFi/WiFi.cpp"
+In file included from /home/slg/workspace-arduino/ArduinoLibrary/src/WiFi/utility/wifi_drv.h:6:0,
+                 from ../src/WiFi/WiFi.cpp:1:
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h: In member function ‘IPAddress::operator uint32_t()’:
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h:51:55: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+     operator uint32_t() { return *((uint32_t*)_address); };
+                                                       ^
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h: In member function ‘bool IPAddress::operator==(const IPAddress&)’:
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h:52:75: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+     bool operator==(const IPAddress& addr) { return (*((uint32_t*)_address)) == (*((uint32_t*)addr._address)); };
+                                                                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h:52:108: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+     bool operator==(const IPAddress& addr) { return (*((uint32_t*)_address)) == (*((uint32_t*)addr._address)); };
+                                                                                                            ^
+Finished building: ../src/WiFi/utility/wifi_drv.cpp
+ 
+Building file: ../src/WiFi/WiFiClient.cpp
+Invoking: AVR C++ Compiler
+avr-g++ -I"/home/slg/workspace-arduino/ArduinoLibrary/src" -I"/home/slg/workspace-arduino/ArduinoCore" -I"/home/slg/workspace-arduino/ArduinoCore/src/variants/standard" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/EEPROM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Wire" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Esplora" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Firmata" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/GSM" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/LiquidCrystal" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Motor" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SD/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Servo" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SoftwareSerial" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/SPI" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/Stepper" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/TFT/utility" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi" -I"/home/slg/workspace-arduino/ArduinoLibrary/src/WiFi/utility" -I"/home/slg/workspace-arduino/ArduinoCore/src" -Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -funsigned-char -funsigned-bitfields -fno-exceptions -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"src/WiFi/WiFiClient.d" -MT"src/WiFi/WiFiClient.d" -c -o "src/WiFi/WiFiClient.o" "../src/WiFi/WiFiClient.cpp"
+In file included from /home/slg/workspace-arduino/ArduinoCore/src/Arduino.h:192:0,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/SPI.h:15,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility/w5100.h:14,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility/socket.h:4,
+                 from ../src/WiFi/WiFiClient.cpp:4:
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:116:83: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, const char*)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr);
+                                                                                   ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:115:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const String&)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:117:73: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, char c);
+                                                                         ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:116:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const char*)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:117:73: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, char c);
+                                                                         ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:115:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const String&)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:118:84: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, unsigned char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned char num);
+                                                                                    ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:117:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, char c);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:118:84: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, unsigned char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned char num);
+                                                                                    ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:116:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const char*)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:118:84: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, unsigned char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned char num);
+                                                                                    ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:115:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const String&)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:119:74: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, int num);
+                                                                          ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:118:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, unsigned char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned char num);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:119:74: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, int num);
+                                                                          ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:117:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, char c);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:119:74: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, int num);
+                                                                          ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:116:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const char*)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:119:74: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, int num);
+                                                                          ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:115:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const String&)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:120:83: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned int num);
+                                                                                   ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:119:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, int num);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:120:83: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned int num);
+                                                                                   ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:118:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, unsigned char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned char num);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:120:83: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned int num);
+                                                                                   ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:117:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, char c);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:120:83: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned int num);
+                                                                                   ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:116:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const char*)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:120:83: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned int num);
+                                                                                   ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:115:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const String&)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:121:75: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, long num);
+                                                                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:120:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned int num);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:121:75: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, long num);
+                                                                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:119:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, int num);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:121:75: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, long num);
+                                                                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:118:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, unsigned char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned char num);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:121:75: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, long num);
+                                                                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:117:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, char c);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:121:75: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, long num);
+                                                                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:116:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const char*)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:121:75: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, long num);
+                                                                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:115:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const String&)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:122:84: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long num);
+                                                                                    ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:121:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, long int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, long num);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:122:84: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long num);
+                                                                                    ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:120:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, unsigned int)’
+Finished building: ../src/WiFi/WiFi.cpp
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned int num);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:122:84: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long num);
+                                                                                    ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:119:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, int num);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:122:84: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long num);
+                                                                                    ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:118:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, unsigned char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned char num);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:122:84: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long num);
+                                                                                    ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:117:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, char)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, char c);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:122:84: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long unsigned int)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long num);
+                                                                                    ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:116:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const char*)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr);
+                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:122:84: error: conflicting declaration of C function ‘StringSumHelper& operator+(const StringSumHelper&, long unsigned int)’
+src/WiFi/subdir.mk:27: recipe for target 'src/WiFi/WiFiClient.o' failed
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long num);
+ 
+                                                                                    ^
+/home/slg/workspace-arduino/ArduinoCore/src/WString.h:115:27: note: previous declaration ‘StringSumHelper& operator+(const StringSumHelper&, const String&)’
+  friend StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs);
+                           ^
+In file included from /home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/SPI.h:15:0,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility/w5100.h:14,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility/socket.h:4,
+                 from ../src/WiFi/WiFiClient.cpp:4:
+/home/slg/workspace-arduino/ArduinoCore/src/Arduino.h:196:33: error: conflicting declaration of C function ‘uint16_t makeWord(byte, byte)’
+ uint16_t makeWord(byte h, byte l);
+                                 ^
+/home/slg/workspace-arduino/ArduinoCore/src/Arduino.h:195:10: note: previous declaration ‘uint16_t makeWord(uint16_t)’
+ uint16_t makeWord(uint16_t w);
+          ^
+/home/slg/workspace-arduino/ArduinoCore/src/Arduino.h:206:17: error: conflicting declaration of C function ‘long int random(long int)’
+ long random(long);
+                 ^
+In file included from /home/slg/workspace-arduino/ArduinoCore/src/Arduino.h:4:0,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/SPI.h:15,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility/w5100.h:14,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility/socket.h:4,
+                 from ../src/WiFi/WiFiClient.cpp:4:
+/usr/avr/include/stdlib.h:504:13: note: previous declaration ‘long int random()’
+ extern long random(void);
+             ^
+In file included from /home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/SPI.h:15:0,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility/w5100.h:14,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility/socket.h:4,
+                 from ../src/WiFi/WiFiClient.cpp:4:
+/home/slg/workspace-arduino/ArduinoCore/src/Arduino.h:207:23: error: conflicting declaration of C function ‘long int random(long int, long int)’
+ long random(long, long);
+                       ^
+/home/slg/workspace-arduino/ArduinoCore/src/Arduino.h:206:6: note: previous declaration ‘long int random(long int)’
+ long random(long);
+      ^
+/home/slg/workspace-arduino/ArduinoCore/src/Arduino.h:207:23: error: conflicting declaration of C function ‘long int random(long int, long int)’
+ long random(long, long);
+                       ^
+In file included from /home/slg/workspace-arduino/ArduinoCore/src/Arduino.h:4:0,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Robot_Control/SPI.h:15,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility/w5100.h:14,
+                 from /home/slg/workspace-arduino/ArduinoLibrary/src/Ethernet/utility/socket.h:4,
+                 from ../src/WiFi/WiFiClient.cpp:4:
+/usr/avr/include/stdlib.h:504:13: note: previous declaration ‘long int random()’
+ extern long random(void);
+             ^
+In file included from ../src/WiFi/WiFi.h:11:0,
+                 from ../src/WiFi/WiFiClient.cpp:9:
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h: In member function ‘IPAddress::operator uint32_t()’:
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h:51:55: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+     operator uint32_t() { return *((uint32_t*)_address); };
+                                                       ^
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h: In member function ‘bool IPAddress::operator==(const IPAddress&)’:
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h:52:75: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+     bool operator==(const IPAddress& addr) { return (*((uint32_t*)_address)) == (*((uint32_t*)addr._address)); };
+                                                                           ^
+/home/slg/workspace-arduino/ArduinoCore/src/IPAddress.h:52:108: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+     bool operator==(const IPAddress& addr) { return (*((uint32_t*)_address)) == (*((uint32_t*)addr._address)); };
+                                                                                                            ^
+../src/WiFi/WiFiClient.cpp: In member function ‘uint8_t WiFiClient::getFirstSocket()’:
+../src/WiFi/WiFiClient.cpp:177:12: error: ‘SOCK_NOT_AVAIL’ was not declared in this scope
+     return SOCK_NOT_AVAIL;
+            ^
+../src/WiFi/WiFiClient.cpp:178:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+make: *** [src/WiFi/WiFiClient.o] Error 1
+make: *** Waiting for unfinished jobs....
+
+07:45:06 Build Finished (took 1s.646ms)
+

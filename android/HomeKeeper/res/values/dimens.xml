@@ -1,0 +1,18 @@
+<resources>
+
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">0dp</dimen>
+    <dimen name="header_padding">5dp</dimen>
+    <dimen name="header_textSize">15sp</dimen>
+    <dimen name="footer_padding">5dp</dimen>
+    <dimen name="footer_textSize">10sp</dimen>
+    <dimen name="row_padding">3dp</dimen>
+    <dimen name="row_icon_width">24dp</dimen>
+    <dimen name="row_icon_height">24dp</dimen>
+    <dimen name="element_name_padding">5dp</dimen>
+    <dimen name="element_name_textSize">15sp</dimen>
+    <dimen name="element_details_textSize">10sp</dimen>
+    <dimen name="element_value_width">40pt</dimen>
+    <dimen name="element_value_textSize">20sp</dimen>
+    
+</resources>

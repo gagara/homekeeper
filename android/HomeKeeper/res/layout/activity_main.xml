@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.gagara.homekeeper.activity.MainActivity" >
+
+    <LinearLayout
+        android:id="@+id/headerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/header_background"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/header_padding"
+        android:paddingLeft="@dimen/header_padding"
+        android:paddingRight="@dimen/header_padding" >
+
+        <TextView
+            android:id="@+id/headerLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:text=""
+            android:textColor="@color/header_textColor"
+            android:textSize="@dimen/header_textSize" />
+
+        <TextView
+            android:id="@+id/headerRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text=""
+            android:textColor="@color/header_textColor"
+            android:textSize="@dimen/header_textSize"
+            android:textStyle="italic" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollableContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/headerView"
+        android:layout_above="@+id/footerView" >
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- Sensor Supply -->
+
+            <LinearLayout
+                android:id="@+id/sensorSupplyView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/sensorSupplyIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/sensor_icon_descr"
+                    android:src="@drawable/ic_info_outline_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/sensorSupplyInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/sensorSupplyName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/sensor_supply_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/sensorSupplyDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sensorSupplyValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textSize="@dimen/element_value_textSize" />
+            </LinearLayout>
+
+            <!-- Sensor Reverse -->
+
+            <LinearLayout
+                android:id="@+id/sensorReverseView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/sensorReverseIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/sensor_icon_descr"
+                    android:src="@drawable/ic_info_outline_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/sensorReverseInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/sensorReverseName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/sensor_reverse_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/sensorReverseDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sensorReverseValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textSize="@dimen/element_value_textSize" />
+            </LinearLayout>
+
+            <!-- Sensor Tank -->
+
+            <LinearLayout
+                android:id="@+id/sensorTankView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/sensorTankIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/sensor_icon_descr"
+                    android:src="@drawable/ic_info_outline_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/sensorTankInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/sensorTankName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/sensor_tank_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/sensorTankDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sensorTankValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textSize="@dimen/element_value_textSize" />
+            </LinearLayout>
+
+            <!-- Sensor Boiler -->
+
+            <LinearLayout
+                android:id="@+id/sensorBoilerView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/sensorBoilerIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/sensor_icon_descr"
+                    android:src="@drawable/ic_info_outline_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/sensorBoilerInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/sensorBoilerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/sensor_boiler_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/sensorBoilerDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sensorBoilerValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textSize="@dimen/element_value_textSize" />
+            </LinearLayout>
+
+            <!-- Node Supply -->
+
+            <LinearLayout
+                android:id="@+id/nodeSupplyView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/nodeSupplyIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/sensor_icon_descr"
+                    android:src="@drawable/ic_settings_applications_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/nodeSupplyInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/nodeSupplyName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/node_supply_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/nodeSupplyDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <ToggleButton
+                    android:id="@+id/nodeSupplyValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="true"
+                    android:enabled="false" />
+            </LinearLayout>
+
+            <!-- Node Heating -->
+
+            <LinearLayout
+                android:id="@+id/nodeHeatingView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/nodeHeatingIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/node_icon_descr"
+                    android:src="@drawable/ic_settings_applications_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/nodeHeatingInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/nodeHeatingName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/node_heating_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/nodeHeatingDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <ToggleButton
+                    android:id="@+id/nodeHeatingValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="true"
+                    android:enabled="false" />
+            </LinearLayout>
+
+            <!-- Node Floor -->
+
+            <LinearLayout
+                android:id="@+id/nodeFloorView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/nodeFloorIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/node_icon_descr"
+                    android:src="@drawable/ic_settings_applications_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/nodeFloorInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/nodeFloorName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/node_floor_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/nodeFloorDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <ToggleButton
+                    android:id="@+id/nodeFloorValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="true"
+                    android:enabled="false" />
+            </LinearLayout>
+
+            <!-- Node Hotwater -->
+
+            <LinearLayout
+                android:id="@+id/nodeHotwaterView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/nodeHotwaterIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/node_icon_descr"
+                    android:src="@drawable/ic_settings_applications_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/nodeHotwaterInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/nodeHotwaterName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/node_hotwater_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/nodeHotwaterDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <ToggleButton
+                    android:id="@+id/nodeHotwaterValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="true"
+                    android:enabled="false" />
+            </LinearLayout>
+
+            <!-- Node Circulation -->
+
+            <LinearLayout
+                android:id="@+id/nodeCirculationView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/nodeCirculationIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/node_icon_descr"
+                    android:src="@drawable/ic_settings_applications_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/nodeCirculationInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/nodeCirculationName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/node_circulation_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/nodeCirculationDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <ToggleButton
+                    android:id="@+id/nodeCirculationValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="true"
+                    android:enabled="false" />
+            </LinearLayout>
+
+            <!-- Node Boiler -->
+
+            <LinearLayout
+                android:id="@+id/nodeBoilerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/nodeBoilerIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/node_icon_descr"
+                    android:src="@drawable/ic_settings_applications_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/nodeBoilerInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/nodeBoilerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/node_boilder_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/nodeBoilerDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <ToggleButton
+                    android:id="@+id/nodeBoilerValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="true"
+                    android:enabled="false" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/footerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/footer_background"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/footer_padding"
+        android:paddingLeft="@dimen/footer_padding"
+        android:paddingRight="@dimen/footer_padding" >
+
+        <TextView
+            android:id="@+id/footerLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="start"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/footer_textColor"
+            android:textSize="@dimen/footer_textSize" />
+
+        <TextView
+            android:id="@+id/footerRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text=""
+            android:textColor="@color/footer_textColor"
+            android:textSize="@dimen/footer_textSize" />
+    </LinearLayout>
+
+</RelativeLayout>

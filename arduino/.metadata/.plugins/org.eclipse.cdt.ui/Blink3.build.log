@@ -1,0 +1,21 @@
+14:22:02 **** Incremental Build of configuration Release for project Blink3 ****
+make all 
+Building target: Blink3
+Printing size:
+"/usr/bin/avr-size" -A "/home/slg/workspace-arduino/Blink3/Release/Blink3.elf"
+/home/slg/workspace-arduino/Blink3/Release/Blink3.elf  :
+section     size      addr
+.data          0   8388864
+.text        840         0
+.bss           9   8388864
+.stab       7752         0
+.stabstr   19494         0
+.comment      42         0
+Total      28137
+
+
+Finished building target: Blink3
+ 
+
+14:22:02 Build Finished (took 146ms)
+

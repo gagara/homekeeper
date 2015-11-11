@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:key="pref_general_category"
+        android:title="@string/pref_general_category_title" >
+        <ListPreference
+            android:key="mode"
+            android:title="@string/pref_mode_title"
+            android:dialogTitle="@string/pref_mode_dialog_title"
+            android:summary="@string/pref_mode_default_summary"
+            android:entries="@array/mode_entries"
+            android:entryValues="@array/mode_entry_values"
+            android:defaultValue="MASTER" />
+        <EditTextPreference
+            android:key="remote_endpoint"
+            android:title="@string/pref_remote_endpoint_title"
+            android:summary="@string/pref_remote_endpoint_default_summary"
+            android:defaultValue="http://[service_host]" />
+        </PreferenceCategory>
+    <PreferenceCategory
+        android:key="pref_master_category"
+        android:title="@string/pref_master_category_title" >
+        <ListPreference
+            android:key="bt_dev"
+            android:title="@string/pref_bt_device_title"
+            android:dialogTitle="@string/pref_bt_device_dialog_title"
+            android:summary="@string/pref_bt_device_default_summary" />
+        <CheckBoxPreference
+            android:key="data_publishing"
+            android:title="@string/pref_publish_data_title"
+            android:summary="@string/pref_publish_data_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="remote_control"
+            android:title="@string/pref_remote_control_title"
+            android:summary="@string/pref_remote_control_summary"
+            android:defaultValue="false" />
+        <ListPreference
+            android:key="remote_control_pull_interval"
+            android:title="@string/pref_remote_control_pull_interval_title"
+            android:dialogTitle="@string/pref_remote_control_pull_interval_dialog_title"
+            android:summary="@string/pref_remote_control_pull_interval_summary"
+            android:entries="@array/pull_interval_entries"
+            android:entryValues="@array/pull_interval_entry_values"
+            android:defaultValue="10" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="pref_slave_category"
+        android:title="@string/pref_slave_category_title" >
+        <ListPreference
+            android:key="slave_refresh_interval"
+            android:title="@string/pref_slave_refresh_interval_title"
+            android:dialogTitle="@string/pref_slave_refresh_interval_dialog_title"
+            android:summary="@string/pref_slave_refresh_interval_summary"
+            android:entries="@array/pref_slave_refresh_interval_entries"
+            android:entryValues="@array/pref_slave_refresh_interval_entry_values"
+            android:defaultValue="60" />
+    </PreferenceCategory>
+    
+</PreferenceScreen>
