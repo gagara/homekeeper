@@ -1,0 +1,38 @@
+22:49:41 **** Incremental Build of configuration Release for project RadioReceiver ****
+make all 
+Building file: ../RadioReceiver.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"RadioReceiver.cpp.d" -MT"RadioReceiver.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "../RadioReceiver.cpp"  -o  "RadioReceiver.cpp.o"   -Wall
+Finished building: ../RadioReceiver.cpp
+ 
+Starting combiner
+"/usr/bin/avr-gcc" -Os -Wl,--gc-sections -mmcu=atmega328p  -o "/home/slg/projects/home_keeper/arduino/RadioReceiver/Release/RadioReceiver.elf"    ./RadioReceiver.cpp.o  ./Libraries/SPI/SPI.cpp.o  ./Libraries/RF24/RF24.cpp.o   arduino.ar   "/home/slg/projects/home_keeper/arduino/RadioReceiver/Release/arduino.ar" "-L/home/slg/projects/home_keeper/arduino/RadioReceiver/Release" -lm
+Finished building: RadioReceiver.elf
+ 
+Create eeprom image
+"/usr/bin/avr-objcopy" -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0  "/home/slg/projects/home_keeper/arduino/RadioReceiver/Release/RadioReceiver.elf" "/home/slg/projects/home_keeper/arduino/RadioReceiver/Release/RadioReceiver.eep"
+Finished building: RadioReceiver.eep
+ 
+Create Flash image (ihex format)
+"/usr/bin/avr-objcopy" -O ihex -R .eeprom  "/home/slg/projects/home_keeper/arduino/RadioReceiver/Release/RadioReceiver.elf" "/home/slg/projects/home_keeper/arduino/RadioReceiver/Release/RadioReceiver.hex"
+Finished building: RadioReceiver.hex
+ 
+Building target: RadioReceiver
+Printing size:
+"/usr/bin/avr-size" -A "/home/slg/projects/home_keeper/arduino/RadioReceiver/Release/RadioReceiver.elf"
+/home/slg/projects/home_keeper/arduino/RadioReceiver/Release/RadioReceiver.elf  :
+section     size      addr
+.data         18   8388864
+.text       4750         0
+.bss         186   8388882
+.stab      25896         0
+.stabstr   58268         0
+.comment      42         0
+Total      89160
+
+
+Finished building target: RadioReceiver
+ 
+
+22:49:44 Build Finished (took 2s.763ms)
+

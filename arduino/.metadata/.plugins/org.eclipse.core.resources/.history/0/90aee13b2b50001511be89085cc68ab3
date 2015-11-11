@@ -1,0 +1,37 @@
+#include "RadioReceiver.h"
+
+#include <RF24.h>
+
+const uint64_t pipe = 0xE8E8F0F0E1LL;
+const uint8_t len = 1;
+uint8_t buff[len];
+
+RF24 radio(8, 9);
+
+void setup() {
+    Serial.begin(9600);
+    pinMode(13, OUTPUT);
+    digitalWrite(13, HIGH);
+
+    radio.begin();
+    radio.openReadingPipe(1, pipe);
+
+//    radio.setAutoAck(true);
+    radio.startListening();
+    radio.powerUp();
+}
+
+void loop() {
+    if (radio.available()) {
+        bool eoi = false;
+        while (!eoi) {
+            eoi = radio.read(buff, sizeof(buff));
+        }
+        Serial.println(buff[0]);
+        if (buff[0] == 0) {
+            digitalWrite(13, LOW);
+        } else {
+            digitalWrite(13, HIGH);
+        }
+    }
+}

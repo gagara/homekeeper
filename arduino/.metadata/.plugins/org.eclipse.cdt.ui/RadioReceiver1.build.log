@@ -1,0 +1,176 @@
+23:57:33 **** Incremental Build of configuration Release for project RadioReceiver1 ****
+make all 
+Building file: ../RadioReceiver1.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"RadioReceiver1.cpp.d" -MT"RadioReceiver1.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "../RadioReceiver1.cpp"  -o  "RadioReceiver1.cpp.o"   -Wall
+Finished building: ../RadioReceiver1.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/libraries/SPI/SPI.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"Libraries/SPI/SPI.cpp.d" -MT"Libraries/SPI/SPI.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/libraries/SPI/SPI.cpp"  -o  "Libraries/SPI/SPI.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/libraries/SPI/SPI.cpp
+ 
+Building file: /home/slg/Arduino/libraries/RF24/RF24.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"Libraries/RF24/RF24.cpp.d" -MT"Libraries/RF24/RF24.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/home/slg/Arduino/libraries/RF24/RF24.cpp"  -o  "Libraries/RF24/RF24.cpp.o"   -Wall
+Finished building: /home/slg/Arduino/libraries/RF24/RF24.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/CDC.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/CDC.cpp.d" -MT"arduino/CDC.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/CDC.cpp"  -o  "arduino/CDC.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/CDC.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HID.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/HID.cpp.d" -MT"arduino/HID.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/HID.cpp"  -o  "arduino/HID.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HID.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/HardwareSerial.cpp.d" -MT"arduino/HardwareSerial.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp"  -o  "arduino/HardwareSerial.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/HardwareSerial0.cpp.d" -MT"arduino/HardwareSerial0.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp"  -o  "arduino/HardwareSerial0.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/HardwareSerial1.cpp.d" -MT"arduino/HardwareSerial1.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp"  -o  "arduino/HardwareSerial1.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/HardwareSerial2.cpp.d" -MT"arduino/HardwareSerial2.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp"  -o  "arduino/HardwareSerial2.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/HardwareSerial3.cpp.d" -MT"arduino/HardwareSerial3.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp"  -o  "arduino/HardwareSerial3.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/IPAddress.cpp.d" -MT"arduino/IPAddress.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp"  -o  "arduino/IPAddress.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/Print.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/Print.cpp.d" -MT"arduino/Print.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/Print.cpp"  -o  "arduino/Print.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/Print.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/Stream.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/Stream.cpp.d" -MT"arduino/Stream.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/Stream.cpp"  -o  "arduino/Stream.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/Stream.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/Tone.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/Tone.cpp.d" -MT"arduino/Tone.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/Tone.cpp"  -o  "arduino/Tone.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/Tone.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/USBCore.cpp.d" -MT"arduino/USBCore.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp"  -o  "arduino/USBCore.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c
+Starting C compile
+"/usr/bin/avr-gcc" -c -g -Os -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/WInterrupts.c.d" -MT"arduino/WInterrupts.c.o" -D__IN_ECLIPSE__=1 "/usr/share/arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c"  -o  "arduino/WInterrupts.c.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/WMath.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/WMath.cpp.d" -MT"arduino/WMath.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/WMath.cpp"  -o  "arduino/WMath.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/WMath.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/WString.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/WString.cpp.d" -MT"arduino/WString.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/WString.cpp"  -o  "arduino/WString.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/WString.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/abi.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/abi.cpp.d" -MT"arduino/abi.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/abi.cpp"  -o  "arduino/abi.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/abi.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/hooks.c
+Starting C compile
+"/usr/bin/avr-gcc" -c -g -Os -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/hooks.c.d" -MT"arduino/hooks.c.o" -D__IN_ECLIPSE__=1 "/usr/share/arduino/hardware/arduino/avr/cores/arduino/hooks.c"  -o  "arduino/hooks.c.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/hooks.c
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/main.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/main.cpp.d" -MT"arduino/main.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/main.cpp"  -o  "arduino/main.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/main.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/new.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/new.cpp.d" -MT"arduino/new.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "/usr/share/arduino/hardware/arduino/avr/cores/arduino/new.cpp"  -o  "arduino/new.cpp.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/new.cpp
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring.c
+Starting C compile
+"/usr/bin/avr-gcc" -c -g -Os -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/wiring.c.d" -MT"arduino/wiring.c.o" -D__IN_ECLIPSE__=1 "/usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring.c"  -o  "arduino/wiring.c.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring.c
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c
+Starting C compile
+"/usr/bin/avr-gcc" -c -g -Os -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/wiring_analog.c.d" -MT"arduino/wiring_analog.c.o" -D__IN_ECLIPSE__=1 "/usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c"  -o  "arduino/wiring_analog.c.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c
+Starting C compile
+"/usr/bin/avr-gcc" -c -g -Os -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/wiring_digital.c.d" -MT"arduino/wiring_digital.c.o" -D__IN_ECLIPSE__=1 "/usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c"  -o  "arduino/wiring_digital.c.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c
+Starting C compile
+"/usr/bin/avr-gcc" -c -g -Os -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/wiring_pulse.c.d" -MT"arduino/wiring_pulse.c.o" -D__IN_ECLIPSE__=1 "/usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c"  -o  "arduino/wiring_pulse.c.o"   -Wall
+/usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c: In function ‘pulseIn’:
+/usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c:81:3: warning: #warning "pulseIn() results may not be accurate" [-Wcpp]
+  #warning "pulseIn() results may not be accurate"
+   ^
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c
+ 
+Building file: /usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c
+Starting C compile
+"/usr/bin/avr-gcc" -c -g -Os -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/RF24" -I"/usr/share/arduino/hardware/arduino/avr/libraries/SPI" -MMD -MP -MF"arduino/wiring_shift.c.d" -MT"arduino/wiring_shift.c.o" -D__IN_ECLIPSE__=1 "/usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c"  -o  "arduino/wiring_shift.c.o"   -Wall
+Finished building: /usr/share/arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c
+ 
+Starting archiver
+"/usr/bin/avr-ar" rcs  "/home/slg/projects/home_keeper/arduino/RadioReceiver1/Release/arduino.ar"    ./arduino/CDC.cpp.o ./arduino/HID.cpp.o ./arduino/HardwareSerial.cpp.o ./arduino/HardwareSerial0.cpp.o ./arduino/HardwareSerial1.cpp.o ./arduino/HardwareSerial2.cpp.o ./arduino/HardwareSerial3.cpp.o ./arduino/IPAddress.cpp.o ./arduino/Print.cpp.o ./arduino/Stream.cpp.o ./arduino/Tone.cpp.o ./arduino/USBCore.cpp.o ./arduino/WInterrupts.c.o ./arduino/WMath.cpp.o ./arduino/WString.cpp.o ./arduino/abi.cpp.o ./arduino/hooks.c.o ./arduino/main.cpp.o ./arduino/new.cpp.o ./arduino/wiring.c.o ./arduino/wiring_analog.c.o ./arduino/wiring_digital.c.o ./arduino/wiring_pulse.c.o ./arduino/wiring_shift.c.o 
+Finished building: arduino.ar
+ 
+Starting combiner
+"/usr/bin/avr-gcc" -Os -Wl,--gc-sections -mmcu=atmega328p  -o "/home/slg/projects/home_keeper/arduino/RadioReceiver1/Release/RadioReceiver1.elf"    ./RadioReceiver1.cpp.o  ./Libraries/SPI/SPI.cpp.o  ./Libraries/RF24/RF24.cpp.o   arduino.ar   "/home/slg/projects/home_keeper/arduino/RadioReceiver1/Release/arduino.ar" "-L/home/slg/projects/home_keeper/arduino/RadioReceiver1/Release" -lm
+Finished building: RadioReceiver1.elf
+ 
+Create eeprom image
+"/usr/bin/avr-objcopy" -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0  "/home/slg/projects/home_keeper/arduino/RadioReceiver1/Release/RadioReceiver1.elf" "/home/slg/projects/home_keeper/arduino/RadioReceiver1/Release/RadioReceiver1.eep"
+Finished building: RadioReceiver1.eep
+ 
+Create Flash image (ihex format)
+"/usr/bin/avr-objcopy" -O ihex -R .eeprom  "/home/slg/projects/home_keeper/arduino/RadioReceiver1/Release/RadioReceiver1.elf" "/home/slg/projects/home_keeper/arduino/RadioReceiver1/Release/RadioReceiver1.hex"
+Finished building: RadioReceiver1.hex
+ 
+Building target: RadioReceiver1
+Printing size:
+"/usr/bin/avr-size" -A "/home/slg/projects/home_keeper/arduino/RadioReceiver1/Release/RadioReceiver1.elf"
+/home/slg/projects/home_keeper/arduino/RadioReceiver1/Release/RadioReceiver1.elf  :
+section     size      addr
+.data          0   8388864
+.text       3030         0
+.bss          27   8388864
+.stab      17232         0
+.stabstr   34862         0
+.comment      42         0
+Total      55193
+
+
+Finished building target: RadioReceiver1
+ 
+
+23:57:38 Build Finished (took 4s.805ms)
+
