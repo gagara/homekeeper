@@ -50,7 +50,7 @@ static const int NODE_FORCED_MODE_EEPROM_ADDR = 1;
 static const int SENSORS_FACTORS_EEPROM_ADDR = 2;
 
 // Heater
-static const uint8_t HEATER_TANK_HIST = 3;
+static const uint8_t HEATER_SUPPLY_REVERSE_HIST = 10;
 
 // heating
 static const uint8_t HEATING_TEMP_THRESHOLD = 37;
@@ -263,11 +263,11 @@ void processSupplyCircuit() {
         reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
     }
     if (diffTimestamps(tsCurr, tsNodeSupply) >= NODE_SWITCH_SAFE_TIME_MSEC) {
-        uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_TANK };
-        uint8_t sensVals[] = { tempSupply, tempTank };
+        uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_REVERSE };
+        uint8_t sensVals[] = { tempSupply, tempReverse };
         if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
             // pump is ON
-            if (tempSupply < (tempTank + HEATER_TANK_HIST)) {
+            if (tempSupply <= (tempReverse + SENSORS_APPROX)) {
                 // temp is equal
                 // turn pump OFF
                 switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
@@ -277,7 +277,7 @@ void processSupplyCircuit() {
             }
         } else {
             // pump is OFF
-            if (tempSupply >= tempTank) {
+            if (tempSupply >= (tempReverse + HEATER_SUPPLY_REVERSE_HIST)) {
                 // delta is big enough
                 // turn pump ON
                 switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
