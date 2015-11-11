@@ -51,4 +51,5 @@ public class ControllerConfig {
     public static final String SENSORS_KEY = "s";
     public static final String VALUE_KEY = "v";
 
+    public static final long MAX_INACTIVE_PERIOD_SEC = 90;
 }

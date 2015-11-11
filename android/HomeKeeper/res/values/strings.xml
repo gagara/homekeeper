@@ -4,6 +4,7 @@
     <string name="app_name">HomeKeeper</string>
     <string name="action_settings">Settings</string>
     <string name="settings_activity_name">Settings</string>
+    <string name="action_refresh">Refresh</string>
     <string name="action_exit">Exit</string>
     
     <string name="pref_general_category_title">General</string>
@@ -68,7 +69,7 @@
     <string name="node_details_remainig_time_flag">\n\#</string>
     <string name="node_details_unknown_time">unknown</string>
     <string name="node_details_permanent_time">perm</string>
-    <string name="node_details_time_template">%1$s [%2$s mins]</string>
+    <string name="node_details_time_template">%1$s [%2$sm]</string>
 
     <string name="node_details_sensors_template">\nSensors: </string>
     <string name="node_details_sensor_template">%1$s:%2$s&#8451;;</string>
@@ -81,6 +82,13 @@
     <string name="bt_service_listening_status">listening for incoming data</string>
     <string name="bt_service_rceiving_data_status">receiving data</string>
 
+    <string name="manage_node_dialog_title">Manage node: %1$s</string>
+    <string name="manage_node_mode_text">Manual mode:</string>
+    <string name="manage_node_state_text">Node state:</string>
+    <string name="manage_node_period_text">Period:</string>
+    <string name="manage_node_button_ok">OK</string>
+    <string name="manage_node_button_cancel">Cancel</string>
+    
     <string name="service_title">%1$s@%2$s</string>
     <string name="service_last_update">Last update %1$s</string>
     <string name="service_status_details"> : %1$s</string>

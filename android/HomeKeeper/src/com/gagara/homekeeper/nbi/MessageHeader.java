@@ -16,9 +16,10 @@ public abstract class MessageHeader {
         out.writeLong(clocksDelta);
     }
 
-    public MessageHeader(long clocksDelta) {
+    public MessageHeader() {
+        this.srcAddress = null;
         this.timestamp = new Date();
-        this.clocksDelta = clocksDelta;
+        this.clocksDelta = Long.MIN_VALUE;
     }
 
     public MessageHeader(Parcel in) {

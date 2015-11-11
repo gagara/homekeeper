@@ -14,5 +14,5 @@
     <dimen name="element_details_textSize">10sp</dimen>
     <dimen name="element_value_width">40pt</dimen>
     <dimen name="element_value_textSize">20sp</dimen>
-    
+
 </resources>

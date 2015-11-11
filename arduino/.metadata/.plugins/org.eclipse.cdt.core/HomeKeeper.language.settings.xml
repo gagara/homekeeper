@@ -4,10 +4,10 @@
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider id="it.baeyens.arduino.languageSettingsProvider">
 				<language id="org.eclipse.cdt.core.gcc">
-					<entry kind="includePath" name="/usr/lib64/gcc/avr/4.9.2/include">
+					<entry kind="includePath" name="/usr/lib64/gcc/avr/4.9.3/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/usr/lib64/gcc/avr/4.9.2/include-fixed">
+					<entry kind="includePath" name="/usr/lib64/gcc/avr/4.9.3/include-fixed">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="includePath" name="/usr/avr/include">
@@ -625,7 +625,7 @@
 					<entry kind="macro" name="__GNUC_MINOR__" value="9">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="macro" name="__GNUC_PATCHLEVEL__" value="2">
+					<entry kind="macro" name="__GNUC_PATCHLEVEL__" value="3">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__GNUC__" value="4">
@@ -1297,7 +1297,7 @@
 					<entry kind="macro" name="__UTQ_IBIT__" value="0">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="macro" name="__VERSION__" value="&quot;4.9.2&quot;">
+					<entry kind="macro" name="__VERSION__" value="&quot;4.9.3&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__WCHAR_MAX__" value="32767">
@@ -1329,10 +1329,10 @@
 					</entry>
 				</language>
 				<language id="org.eclipse.cdt.core.g++">
-					<entry kind="includePath" name="/usr/lib64/gcc/avr/4.9.2/include">
+					<entry kind="includePath" name="/usr/lib64/gcc/avr/4.9.3/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/usr/lib64/gcc/avr/4.9.2/include-fixed">
+					<entry kind="includePath" name="/usr/lib64/gcc/avr/4.9.3/include-fixed">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="includePath" name="/usr/avr/include">
@@ -1950,7 +1950,7 @@
 					<entry kind="macro" name="__GNUC_MINOR__" value="9">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="macro" name="__GNUC_PATCHLEVEL__" value="2">
+					<entry kind="macro" name="__GNUC_PATCHLEVEL__" value="3">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__GNUC__" value="4">
@@ -2625,7 +2625,7 @@
 					<entry kind="macro" name="__UTQ_IBIT__" value="0">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="macro" name="__VERSION__" value="&quot;4.9.2&quot;">
+					<entry kind="macro" name="__VERSION__" value="&quot;4.9.3&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__WCHAR_MAX__" value="32767">

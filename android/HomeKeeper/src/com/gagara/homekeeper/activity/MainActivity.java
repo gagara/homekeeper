@@ -1,7 +1,14 @@
 package com.gagara.homekeeper.activity;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static com.gagara.homekeeper.common.Constants.COMMAND_KEY;
+import static com.gagara.homekeeper.common.Constants.CONTROLLER_CONTROL_COMMAND_ACTION;
+import static com.gagara.homekeeper.common.Constants.DEFAULT_SWITCH_OFF_PERIOD_SEC;
+import static com.gagara.homekeeper.common.Constants.DEFAULT_SWITCH_ON_PERIOD_SEC;
 import static com.gagara.homekeeper.common.Constants.REQUEST_ENABLE_BT;
+
+import java.util.Map.Entry;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -10,25 +17,31 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.gagara.homekeeper.R;
+import com.gagara.homekeeper.activity.ManageNodeStateDialog.SwitchNodeStateListener;
 import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.common.Mode;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.SensorModel;
+import com.gagara.homekeeper.nbi.request.CurrentStatusRequest;
+import com.gagara.homekeeper.nbi.request.NodeStateChangeRequest;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
 import com.gagara.homekeeper.nbi.response.NodeStateChangeResponse;
 import com.gagara.homekeeper.service.BtCommunicationService;
+import com.gagara.homekeeper.ui.viewmodel.NodeModelView;
 import com.gagara.homekeeper.ui.viewmodel.TopModelView;
 import com.gagara.homekeeper.utils.BluetoothUtils;
 import com.gagara.homekeeper.utils.HomeKeeperConfig;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements SwitchNodeStateListener {
 
     private BluetoothDevice activeDev = null;
 
@@ -104,6 +117,16 @@ public class MainActivity extends ActionBarActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_refresh) {
+            CurrentStatusRequest request = new CurrentStatusRequest();
+            if (BluetoothUtils.isEnabled()) {
+                request.setSrcAddress(BluetoothUtils.getAdapter().getAddress());
+            }
+            Intent intent = new Intent();
+            intent.setAction(CONTROLLER_CONTROL_COMMAND_ACTION);
+            intent.putExtra(COMMAND_KEY, new CurrentStatusRequest());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            return true;
         } else if (id == R.id.action_exit) {
             stopControllerCommunicationService();
             finish();
@@ -123,6 +146,55 @@ public class MainActivity extends ActionBarActivity {
         super.onRestoreInstanceState(bundle);
         modelView.restoreState(bundle);
         modelView.render();
+    }
+
+    public void onManageNode(View nodeToggle) {
+        NodeModelView nodeView = null;
+        for (Entry<Integer, Integer> e : TopModelView.NODES_VALUE_VIEW_MAP.entrySet()) {
+            if (e.getValue() == nodeToggle.getId()) {
+                nodeView = modelView.getNode(e.getKey());
+                break;
+            }
+        }
+        if (nodeView != null) {
+            ManageNodeStateDialog dialog = new ManageNodeStateDialog();
+            dialog.setNodeId(nodeView.getModel().getId());
+            dialog.setNodeName(getResources().getString(
+                    TopModelView.NODES_NAME_VIEW_MAP.get(nodeView.getModel().getId())));
+            dialog.setManualMode(!nodeView.getModel().isForcedMode());
+            dialog.setState(!nodeView.getModel().getState());
+            dialog.setPeriod(nodeView.getModel().getState() ? DEFAULT_SWITCH_OFF_PERIOD_SEC
+                    : DEFAULT_SWITCH_ON_PERIOD_SEC);
+            dialog.show(getSupportFragmentManager(), Constants.SWITCH_NODE_DIALOG_TAG);
+        }
+        nodeView.render();
+    }
+
+    @Override
+    public void doSwitchNodeState(DialogFragment dialog) {
+        ManageNodeStateDialog manageDialog = (ManageNodeStateDialog) dialog;
+        NodeStateChangeRequest request = new NodeStateChangeRequest();
+        if (BluetoothUtils.isEnabled()) {
+            request.setSrcAddress(BluetoothUtils.getAdapter().getAddress());
+        }
+
+        request.setId(manageDialog.getNodeId());
+        if (manageDialog.isManualMode()) {
+            request.setState(manageDialog.getState());
+            if (manageDialog.getPeriod() != 0) {
+                request.setPeriod(manageDialog.getPeriod() * 1000L);
+            }
+        }
+
+        Intent intent = new Intent();
+        intent.setAction(CONTROLLER_CONTROL_COMMAND_ACTION);
+        intent.putExtra(COMMAND_KEY, request);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    @Override
+    public void doNotSwitchNodeState(DialogFragment dialog) {
+        // do nothing
     }
 
     @Override
@@ -188,14 +260,14 @@ public class MainActivity extends ActionBarActivity {
                     // sensors
                     for (int i = 0; i < stats.getSensors().size(); i++) {
                         SensorModel sensor = stats.getSensors().valueAt(i).getData();
-                        modelView.getSensor(sensor.getId()).updateModel(sensor);
+                        modelView.getSensor(sensor.getId()).getModel().update(sensor);
                         modelView.getSensor(sensor.getId()).render();
                     }
 
                     // nodes
                     for (int i = 0; i < stats.getNodes().size(); i++) {
                         NodeModel node = stats.getNodes().valueAt(i).getData();
-                        modelView.getNode(node.getId()).setModel(node);
+                        modelView.getNode(node.getId()).getModel().update(node);
                         modelView.getNode(node.getId()).render();
                     }
 

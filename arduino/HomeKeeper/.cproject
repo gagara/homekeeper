@@ -21,12 +21,9 @@
 								<option id="it.baeyens.arduino.compiler.cpp.sketch.option.incpath.1627283652" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.cpp.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/arduino/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/DS1307}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/JSON}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/JSON/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/aJson}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/aJson/utility}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/EEPROM}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/EEPROMEx}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.201889486" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
 							</tool>
@@ -34,10 +31,9 @@
 								<option id="it.baeyens.arduino.compiler.c.sketch.option.incpath.1928985600" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.c.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/arduino/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/DS1307}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/aJson}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/aJson/utility}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/EEPROM}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HomeKeeper/Libraries/EEPROMEx}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.1239733976" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
 							</tool>

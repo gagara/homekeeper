@@ -40,7 +40,7 @@ public class ClockSyncResponse extends MessageHeader implements Response, Parcel
     };
 
     public ClockSyncResponse() {
-        super(0);
+        super();
     }
 
     public ClockSyncResponse(Parcel in) {

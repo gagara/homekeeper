@@ -45,7 +45,8 @@ public class SensorStatusResponse extends MessageHeader implements Response, Par
     };
 
     public SensorStatusResponse(long clocksDelta) {
-        super(clocksDelta);
+        super();
+        this.clocksDelta = clocksDelta;
     }
 
     public SensorStatusResponse(Parcel in) {

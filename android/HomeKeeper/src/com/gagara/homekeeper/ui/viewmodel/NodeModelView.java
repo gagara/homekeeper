@@ -29,20 +29,18 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
         TextView detailsView = (TextView) this.detailsView;
         NumberFormat f = new DecimalFormat("#0");
         Date currDate = new Date();
-        long elapsedMins = 0;
-        long remainingMins = 0;
+        String elapsedMinsStr = "0";
+        String remainingMinsStr = "0";
 
         if (model.isInitialized()) {
             valueView.setChecked(model.getState());
             valueView.setEnabled(true);
             if (!UNDEFINED_DATE.equals(model.getSwitchTimestamp())) {
-                elapsedMins = (currDate.getTime() - model.getSwitchTimestamp().getTime())
-                        / (1000 * 60);
+                elapsedMinsStr = buildElapseTimeString(currDate, model.getSwitchTimestamp());
             }
 
             if (!UNDEFINED_DATE.equals(model.getForcedModeTimestamp())) {
-                remainingMins = (model.getForcedModeTimestamp().getTime() - currDate.getTime())
-                        / (1000 * 60);
+                remainingMinsStr = buildElapseTimeString(model.getForcedModeTimestamp(), currDate);
             }
 
             StringBuilder detailsStr = new StringBuilder();
@@ -54,11 +52,10 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
 
                 detailsStr.append(resources.getString(R.string.node_details_elapsed_time_flag));
                 if (!UNDEFINED_DATE.equals(model.getSwitchTimestamp())) {
-                    detailsStr
-                            .append(String.format(
-                                    resources.getString(R.string.node_details_time_template),
-                                    DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()),
-                                    elapsedMins));
+                    detailsStr.append(String.format(
+                            resources.getString(R.string.node_details_time_template),
+                            DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()),
+                            elapsedMinsStr));
                 } else {
                     detailsStr.append(resources.getString(R.string.node_details_unknown_time));
                 }
@@ -68,7 +65,7 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
                     detailsStr.append(String.format(
                             resources.getString(R.string.node_details_time_template),
                             DateFormat.format(DATE_FORMAT, model.getForcedModeTimestamp()),
-                            remainingMins));
+                            remainingMinsStr));
                 } else {
                     detailsStr.append(resources.getString(R.string.node_details_permanent_time));
                 }
@@ -79,11 +76,10 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
 
                 detailsStr.append(resources.getString(R.string.node_details_elapsed_time_flag));
                 if (!UNDEFINED_DATE.equals(model.getSwitchTimestamp())) {
-                    detailsStr
-                            .append(String.format(
-                                    resources.getString(R.string.node_details_time_template),
-                                    DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()),
-                                    elapsedMins));
+                    detailsStr.append(String.format(
+                            resources.getString(R.string.node_details_time_template),
+                            DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()),
+                            elapsedMinsStr));
                 } else {
                     detailsStr.append(resources.getString(R.string.node_details_unknown_time));
                 }
@@ -111,5 +107,21 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
     @Override
     public NodeModel getModel() {
         return (NodeModel) model;
+    }
+
+    private String buildElapseTimeString(Date hi, Date lo) {
+        String result;
+        double delta = hi.getTime() - lo.getTime();
+        if (delta > 0) {
+            delta = Math.round(delta / (1000 * 60));
+            if (delta == 0) {
+                result = "<1";
+            } else {
+                result = "" + Double.valueOf(delta).intValue();
+            }
+        } else {
+            result = "0";
+        }
+        return result;
     }
 }

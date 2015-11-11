@@ -40,5 +40,6 @@ SUBDIRS := \
 arduino/core \
 Libraries/aJson/utility \
 Libraries/aJson \
+Libraries/EEPROMEx \
 . \
 

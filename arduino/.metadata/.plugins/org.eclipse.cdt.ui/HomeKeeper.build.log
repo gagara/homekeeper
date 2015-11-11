@@ -1,21 +1,38 @@
-23:18:45 **** Incremental Build of configuration Release for project HomeKeeper ****
+08:06:36 **** Incremental Build of configuration Release for project HomeKeeper ****
 make all 
+Building file: ../HomeKeeper.cpp
+Starting C++ compile
+"/usr/bin/avr-g++" -c -g -Os -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=164 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR     -I"/usr/share/arduino/hardware/arduino/avr/cores/arduino" -I"/usr/share/arduino/hardware/arduino/avr/variants/standard" -I"/home/slg/Arduino/libraries/aJson" -I"/home/slg/Arduino/libraries/aJson/utility" -I"/home/slg/Arduino/libraries/EEPROMEx" -MMD -MP -MF"HomeKeeper.cpp.d" -MT"HomeKeeper.cpp.o" -D__IN_ECLIPSE__=1 -x c++ "../HomeKeeper.cpp"  -o  "HomeKeeper.cpp.o"   -Wall
+Finished building: ../HomeKeeper.cpp
+ 
+Starting combiner
+"/usr/bin/avr-gcc" -Os -Wl,--gc-sections -mmcu=atmega328p  -o "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.elf"    ./HomeKeeper.cpp.o  ./Libraries/aJson/utility/stringbuffer.c.o  ./Libraries/aJson/aJSON.cpp.o  ./Libraries/EEPROMEx/EEPROMex.cpp.o   arduino.ar   "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/arduino.ar" "-L/home/slg/projects/home_keeper/arduino/HomeKeeper/Release" -lm
+Finished building: HomeKeeper.elf
+ 
+Create eeprom image
+"/usr/bin/avr-objcopy" -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0  "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.elf" "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.eep"
+Finished building: HomeKeeper.eep
+ 
+Create Flash image (ihex format)
+"/usr/bin/avr-objcopy" -O ihex -R .eeprom  "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.elf" "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.hex"
+Finished building: HomeKeeper.hex
+ 
 Building target: HomeKeeper
 Printing size:
 "/usr/bin/avr-size" -A "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.elf"
 /home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.elf  :
 section      size      addr
-.data         112   8388864
-.text       18136         0
-.bss          605   8388976
-.stab       47472         0
-.stabstr    98348         0
-.comment       84         0
-Total      164757
+.data         260   8388864
+.text       20692         0
+.bss          609   8389124
+.stab       52800         0
+.stabstr   106134         0
+.comment      126         0
+Total      180621
 
 
 Finished building target: HomeKeeper
  
 
-23:18:45 Build Finished (took 178ms)
+08:06:43 Build Finished (took 6s.949ms)
 

@@ -8,7 +8,6 @@ import java.text.NumberFormat;
 import android.widget.TextView;
 
 import com.gagara.homekeeper.R;
-import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.model.SensorModel;
 
 public class SensorModelView extends AbstractEntryModelView implements ModelView {
@@ -52,12 +51,5 @@ public class SensorModelView extends AbstractEntryModelView implements ModelView
     @Override
     public SensorModel getModel() {
         return (SensorModel) model;
-    }
-
-    public void updateModel(SensorModel newModel) {
-        if (getModel().isInitialized() && getModel().getValue() != Constants.UNDEFINED_SENSOR_VALUE) {
-            newModel.setPrevValue(getModel().getValue());
-        }
-        setModel(newModel);
     }
 }

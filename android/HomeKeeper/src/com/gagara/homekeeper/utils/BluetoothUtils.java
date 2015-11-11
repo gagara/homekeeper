@@ -20,6 +20,10 @@ public class BluetoothUtils {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
+    public static BluetoothAdapter getAdapter() {
+        return bluetoothAdapter;
+    }
+
     public static boolean isEnabled() {
         if (bluetoothAdapter != null) {
             return bluetoothAdapter.isEnabled();

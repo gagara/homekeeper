@@ -1,6 +1,9 @@
 package com.gagara.homekeeper.model;
 
 import static com.gagara.homekeeper.common.Constants.UNDEFINED_SENSOR_VALUE;
+
+import com.gagara.homekeeper.common.Constants;
+
 import android.os.Bundle;
 
 public class SensorModel implements Model {
@@ -40,6 +43,13 @@ public class SensorModel implements Model {
     public void restoreState(Bundle bundle, String prefix) {
         value = bundle.getInt(prefix + "sensor_" + id + "_value");
         prevValue = bundle.getInt(prefix + "sensor_" + id + "_prevValue");
+    }
+
+    public void update(SensorModel newModel) {
+        if (isInitialized() && value != Constants.UNDEFINED_SENSOR_VALUE) {
+            prevValue = value;
+        }
+        value = newModel.getValue();
     }
 
     @Override

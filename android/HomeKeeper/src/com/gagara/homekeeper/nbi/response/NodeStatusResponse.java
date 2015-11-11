@@ -55,7 +55,8 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
     };
 
     public NodeStatusResponse(long clocksDelta) {
-        super(clocksDelta);
+        super();
+        this.clocksDelta = clocksDelta;
     }
 
     public NodeStatusResponse(Parcel in) {
@@ -85,6 +86,9 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
 
     @Override
     public NodeStatusResponse fromJson(JSONObject json) {
+        if (clocksDelta == Long.MIN_VALUE) {
+            throw new IllegalStateException("'clocksDelta' is not initialized");
+        }
         try {
             data = new NodeModel(json.getInt(ControllerConfig.ID_KEY));
             data.setState(json.getInt(ControllerConfig.STATE_KEY) == 1 ? true : false);

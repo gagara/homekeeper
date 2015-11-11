@@ -35,7 +35,7 @@ public class ClockSyncRequest extends MessageHeader implements Request, Parcelab
     };
 
     public ClockSyncRequest() {
-        super(0);
+        super();
     }
 
     public ClockSyncRequest(Parcel in) {

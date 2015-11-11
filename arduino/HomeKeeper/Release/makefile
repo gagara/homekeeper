@@ -12,6 +12,7 @@ RM := rm -rf
 -include arduino/core/subdir.mk
 -include Libraries/aJson/utility/subdir.mk
 -include Libraries/aJson/subdir.mk
+-include Libraries/EEPROMEx/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)

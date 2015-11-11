@@ -333,7 +333,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:checked="true"
-                    android:enabled="false" />
+                    android:enabled="false"
+                    android:onClick="onManageNode" />
             </LinearLayout>
 
             <!-- Node Heating -->
@@ -390,7 +391,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:checked="true"
-                    android:enabled="false" />
+                    android:enabled="false"
+                    android:onClick="onManageNode" />
             </LinearLayout>
 
             <!-- Node Floor -->
@@ -447,7 +449,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:checked="true"
-                    android:enabled="false" />
+                    android:enabled="false"
+                    android:onClick="onManageNode" />
             </LinearLayout>
 
             <!-- Node Hotwater -->
@@ -504,7 +507,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:checked="true"
-                    android:enabled="false" />
+                    android:enabled="false"
+                    android:onClick="onManageNode" />
             </LinearLayout>
 
             <!-- Node Circulation -->
@@ -561,7 +565,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:checked="true"
-                    android:enabled="false" />
+                    android:enabled="false"
+                    android:onClick="onManageNode" />
             </LinearLayout>
 
             <!-- Node Boiler -->
@@ -618,7 +623,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:checked="true"
-                    android:enabled="false" />
+                    android:enabled="false"
+                    android:onClick="onManageNode" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

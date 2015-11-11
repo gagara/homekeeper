@@ -71,6 +71,16 @@ public class NodeModel implements Model {
         }
     }
 
+    public void update(NodeModel newModel) {
+        state = newModel.getState();
+        switchTimestamp = newModel.getSwitchTimestamp();
+        forcedMode = newModel.isForcedMode();
+        forcedModeTimestamp = newModel.getForcedModeTimestamp();
+        for (int i = 0; i < newModel.getSensors().size(); i++) {
+            sensors.put(newModel.getSensors().keyAt(i), newModel.getSensors().valueAt(i));
+        }
+    }
+
     @Override
     public boolean isInitialized() {
         return state != null;

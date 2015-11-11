@@ -1,7 +1,5 @@
 package com.gagara.homekeeper.nbi.request;
 
-import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +16,7 @@ public class NodeStateChangeRequest extends MessageHeader implements Request, Pa
 
     private int id;
     private Boolean state = null;
-    private Date validityTimestamp = null;
+    private Long period = null;
 
     @Override
     public int describeContents() {
@@ -33,15 +31,15 @@ public class NodeStateChangeRequest extends MessageHeader implements Request, Pa
         if (state != null) {
             i++;
         }
-        if (validityTimestamp != null) {
+        if (period != null) {
             i++;
         }
         out.writeInt(i);
         if (state != null) {
             out.writeBooleanArray(new boolean[] { state });
         }
-        if (validityTimestamp != null) {
-            out.writeLong(validityTimestamp.getTime());
+        if (period != null) {
+            out.writeLong(period);
         }
     }
 
@@ -55,8 +53,8 @@ public class NodeStateChangeRequest extends MessageHeader implements Request, Pa
         }
     };
 
-    public NodeStateChangeRequest(long clockDelta) {
-        super(clockDelta);
+    public NodeStateChangeRequest() {
+        super();
     }
 
     public NodeStateChangeRequest(Parcel in) {
@@ -69,7 +67,7 @@ public class NodeStateChangeRequest extends MessageHeader implements Request, Pa
             state = states[0];
         }
         if (i > 1) {
-            validityTimestamp = new Date(in.readLong());
+            period = in.readLong();
         }
     }
 
@@ -77,12 +75,13 @@ public class NodeStateChangeRequest extends MessageHeader implements Request, Pa
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         try {
-            json.put(ControllerConfig.MSG_TYPE_KEY, ControllerConfig.MessageType.NODE_STATE_CHANGED.code());
+            json.put(ControllerConfig.MSG_TYPE_KEY,
+                    ControllerConfig.MessageType.NODE_STATE_CHANGED.code());
             json.put(ControllerConfig.ID_KEY, id);
             if (state != null) {
-                json.put(ControllerConfig.STATE_KEY, state ? "1" : "0");
-                if (validityTimestamp != null) {
-                    json.put(ControllerConfig.FORCE_TIMESTAMP_KEY, (validityTimestamp.getTime() - clocksDelta) % Math.pow(2, 32));
+                json.put(ControllerConfig.STATE_KEY, state ? 1 : 0);
+                if (period != null) {
+                    json.put(ControllerConfig.FORCE_TIMESTAMP_KEY, period.toString());
                 }
             }
         } catch (JSONException e) {
@@ -108,11 +107,11 @@ public class NodeStateChangeRequest extends MessageHeader implements Request, Pa
         this.state = state;
     }
 
-    public Date getValidityTimestamp() {
-        return validityTimestamp;
+    public Long getPeriod() {
+        return period;
     }
 
-    public void setValidityTimestamp(Date validityTimestamp) {
-        this.validityTimestamp = validityTimestamp;
+    public void setPeriod(Long period) {
+        this.period = period;
     }
 }

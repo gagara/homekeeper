@@ -27,9 +27,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Libraries/EEPROM</name>
+			<name>Libraries/EEPROMEx</name>
 			<type>2</type>
-			<locationURI>ArduinoHardwareLibPath/EEPROM</locationURI>
+			<locationURI>ArduinoPivateLibPath/EEPROMEx</locationURI>
 		</link>
 		<link>
 			<name>Libraries/aJson</name>

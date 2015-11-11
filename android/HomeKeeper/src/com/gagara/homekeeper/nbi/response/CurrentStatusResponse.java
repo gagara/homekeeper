@@ -47,7 +47,8 @@ public class CurrentStatusResponse extends MessageHeader implements Response, Pa
     };
 
     public CurrentStatusResponse(long clocksDelta) {
-        super(clocksDelta);
+        super();
+        this.clocksDelta = clocksDelta;
         nodes = new SparseArray<NodeStatusResponse>();
         sensors = new SparseArray<SensorStatusResponse>();
     }
@@ -73,6 +74,9 @@ public class CurrentStatusResponse extends MessageHeader implements Response, Pa
 
     @Override
     public CurrentStatusResponse fromJson(JSONObject json) {
+        if (clocksDelta == Long.MIN_VALUE) {
+            throw new IllegalStateException("'clocksDelta' is not initialized");
+        }
         try {
             if (ControllerConfig.MessageType.CURRENT_STATUS_REPORT == ControllerConfig.MessageType.forCode(json.get(
                     ControllerConfig.MSG_TYPE_KEY).toString())) {

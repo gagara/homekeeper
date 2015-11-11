@@ -23,18 +23,21 @@ void setup();
 
 //add your function definitions for the project HomeKeeper here
 
-void readSensors();
-void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx);
-void refreshSensorValues();
-uint8_t getTemp(uint8_t sensor);
-unsigned long getTimestamp();
-unsigned long diffTimestamps(unsigned long hi, unsigned long lo);
 void processSupplyCircuit();
 void processHeatingCircuit();
 void processFloorCircuit();
 void processHotWaterCircuit();
 void processCirculationCircuit();
 void processBoilerHeater();
+void loadSensorsCalibrationFactors();
+double readSensorCalibrationFactor(int offset);
+void writeSensorCalibrationFactor(int offset, double value);
+void readSensors();
+void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx);
+void refreshSensorValues();
+uint8_t getTemp(uint8_t sensor);
+unsigned long getTimestamp();
+unsigned long diffTimestamps(unsigned long hi, unsigned long lo);
 bool isInForcedMode(uint8_t bit, unsigned long ts);
 void switchNodeState(uint8_t id, uint8_t sensId[], uint8_t sensVal[], uint8_t sensCnt);
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts);
@@ -43,6 +46,7 @@ void unForceNodeState(uint8_t id);
 void reportStatus();
 void reportNodeStatus(uint8_t nodeId, uint8_t nodeBit, unsigned long ts, unsigned long tsf);
 void reportSensorsStatus();
+void reportConfiguration();
 void syncClocks();
 void processIncomingCmd();
 

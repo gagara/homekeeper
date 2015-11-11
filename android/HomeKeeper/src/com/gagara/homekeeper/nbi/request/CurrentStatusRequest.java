@@ -35,7 +35,7 @@ public class CurrentStatusRequest extends MessageHeader implements Request, Parc
     };
 
     public CurrentStatusRequest() {
-        super(0);
+        super();
     }
 
     public CurrentStatusRequest(Parcel in) {
@@ -46,7 +46,8 @@ public class CurrentStatusRequest extends MessageHeader implements Request, Parc
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         try {
-            json.put(ControllerConfig.MSG_TYPE_KEY, ControllerConfig.MessageType.CURRENT_STATUS_REPORT.code());
+            json.put(ControllerConfig.MSG_TYPE_KEY,
+                    ControllerConfig.MessageType.CURRENT_STATUS_REPORT.code());
         } catch (JSONException e) {
             Log.e(TAG, "failed to serialize to JSON: " + this.toString() + ": " + e.getMessage(), e);
             return null;

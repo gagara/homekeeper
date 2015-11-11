@@ -32,4 +32,31 @@
         <item>180</item>
     </string-array>
 
+    <string-array name="node_switch_period_entries">
+        <item>5 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>3 days</item>
+        <item>7 days</item>
+        <item>30 days</item>
+        <item>forever</item>
+    </string-array>
+    <integer-array name="node_switch_period_entry_values">
+        <item>300</item>
+        <item>900</item>
+        <item>1800</item>
+        <item>3600</item>
+        <item>10800</item>
+        <item>43200</item>
+        <item>86400</item>
+        <item>259200</item>
+        <item>604800</item>
+        <item>2592000</item>
+        <item>0</item>
+    </integer-array>
+
 </resources>
