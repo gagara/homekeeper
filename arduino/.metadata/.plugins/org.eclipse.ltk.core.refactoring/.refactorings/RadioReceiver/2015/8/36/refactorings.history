@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;RadioReceiver/RadioReceiver1.cpp&apos; to &apos;RadioReceiver.cpp&apos;" description="Rename resource &apos;RadioReceiver1.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="RadioReceiver1.cpp" name="RadioReceiver.cpp" stamp="1441054687941" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;RadioReceiver/RadioReceiver1.h&apos; to &apos;RadioReceiver.h&apos;" description="Rename resource &apos;RadioReceiver1.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="RadioReceiver1.h" name="RadioReceiver.h" stamp="1441054697344" updateReferences="true"/>
-</session>

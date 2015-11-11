@@ -1,7 +1,0 @@
-09:12:56 **** Clean-only build of configuration Release for project rtc ****
-make clean 
-rm -rf  arduino.ar  ./arduino/WInterrupts.c.d ./arduino/hooks.c.d ./arduino/wiring.c.d ./arduino/wiring_analog.c.d ./arduino/wiring_digital.c.d ./arduino/wiring_pulse.c.d ./arduino/wiring_shift.c.d  rtc.hex  rtc.eep  rtc.elf  ./arduino/CDC.cpp.o ./arduino/HID.cpp.o ./arduino/HardwareSerial.cpp.o ./arduino/HardwareSerial0.cpp.o ./arduino/HardwareSerial1.cpp.o ./arduino/HardwareSerial2.cpp.o ./arduino/HardwareSerial3.cpp.o ./arduino/IPAddress.cpp.o ./arduino/Print.cpp.o ./arduino/Stream.cpp.o ./arduino/Tone.cpp.o ./arduino/USBCore.cpp.o ./arduino/WInterrupts.c.o ./arduino/WMath.cpp.o ./arduino/WString.cpp.o ./arduino/abi.cpp.o ./arduino/hooks.c.o ./arduino/main.cpp.o ./arduino/new.cpp.o ./arduino/wiring.c.o ./arduino/wiring_analog.c.o ./arduino/wiring_digital.c.o ./arduino/wiring_pulse.c.o ./arduino/wiring_shift.c.o  ./rtc.cpp.d  ./arduino/CDC.cpp.d ./arduino/HID.cpp.d ./arduino/HardwareSerial.cpp.d ./arduino/HardwareSerial0.cpp.d ./arduino/HardwareSerial1.cpp.d ./arduino/HardwareSerial2.cpp.d ./arduino/HardwareSerial3.cpp.d ./arduino/IPAddress.cpp.d ./arduino/Print.cpp.d ./arduino/Stream.cpp.d ./arduino/Tone.cpp.d ./arduino/USBCore.cpp.d ./arduino/WMath.cpp.d ./arduino/WString.cpp.d ./arduino/abi.cpp.d ./arduino/main.cpp.d ./arduino/new.cpp.d  ./Libraries/DS1307/DS1307.cpp.d  ./rtc.cpp.o  ./Libraries/DS1307/DS1307.cpp.o  rtc
- 
-
-09:12:56 Build Finished (took 183ms)
-

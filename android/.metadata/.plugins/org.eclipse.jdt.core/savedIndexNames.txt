@@ -1,5 +1,0 @@
-INDEX VERSION 1.127+/home/slg/projects/home_keeper/android/.metadata/.plugins/org.eclipse.jdt.core
-3427448599.index
-3245399595.index
-1270315800.index
-686946293.index
