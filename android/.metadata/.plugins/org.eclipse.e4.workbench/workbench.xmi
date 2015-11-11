@@ -101,7 +101,7 @@
                 <children xsi:type="advanced:Placeholder" xmi:id="_agjnXDuhEeWZErdwit8PxA" elementId="org.eclipse.egit.ui.RepositoriesView" toBeRendered="false" ref="_agc5oDuhEeWZErdwit8PxA"/>
               </children>
             </children>
-            <children xsi:type="basic:PartSashContainer" xmi:id="_agjnXTuhEeWZErdwit8PxA" containerData="7256" selectedElement="_agjnZzuhEeWZErdwit8PxA">
+            <children xsi:type="basic:PartSashContainer" xmi:id="_agjnXTuhEeWZErdwit8PxA" containerData="7256" selectedElement="_agjnXjuhEeWZErdwit8PxA">
               <children xsi:type="basic:PartSashContainer" xmi:id="_agjnXjuhEeWZErdwit8PxA" containerData="5084" selectedElement="_agjnXzuhEeWZErdwit8PxA" horizontal="true">
                 <children xsi:type="advanced:Placeholder" xmi:id="_agjnXzuhEeWZErdwit8PxA" elementId="org.eclipse.ui.editorss" containerData="7500" ref="_afWGYDuhEeWZErdwit8PxA"/>
                 <children xsi:type="basic:PartStack" xmi:id="_agjnYTuhEeWZErdwit8PxA" elementId="org.eclipse.mylyn.tasks.ui.views.tasksMStack" toBeRendered="false" containerData="2500">
@@ -112,8 +112,6 @@
               <children xsi:type="basic:PartStack" xmi:id="_agjnZzuhEeWZErdwit8PxA" elementId="bottom" containerData="4916" selectedElement="_91dNcDujEeWZErdwit8PxA">
                 <tags>newtablook</tags>
                 <tags>org.eclipse.e4.secondaryDataStack</tags>
-                <tags>active</tags>
-                <tags>noFocus</tags>
                 <children xsi:type="advanced:Placeholder" xmi:id="_agjnaDuhEeWZErdwit8PxA" elementId="org.eclipse.ui.views.ProblemView" ref="_afyyUjuhEeWZErdwit8PxA"/>
                 <children xsi:type="advanced:Placeholder" xmi:id="_agjnaTuhEeWZErdwit8PxA" elementId="org.eclipse.jdt.ui.JavadocView" ref="_af0AcDuhEeWZErdwit8PxA"/>
                 <children xsi:type="advanced:Placeholder" xmi:id="_agjnajuhEeWZErdwit8PxA" elementId="org.eclipse.jdt.ui.SourceView" ref="_af0ngDuhEeWZErdwit8PxA"/>
@@ -260,6 +258,8 @@
         <tags>newtablook</tags>
         <tags>org.eclipse.e4.primaryDataStack</tags>
         <tags>EditorStack</tags>
+        <tags>active</tags>
+        <tags>noFocus</tags>
         <children xsi:type="basic:Part" xmi:id="_uUfr4DuhEeWZErdwit8PxA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="MainActivity.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.gif" closeable="true">
           <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MainActivity.java&quot; partName=&quot;MainActivity.java&quot; title=&quot;MainActivity.java&quot; tooltip=&quot;HomeKeeper/src/com/gagara/homekeeper/activity/MainActivity.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/HomeKeeper/src/com/gagara/homekeeper/activity/MainActivity.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;10264&quot; selectionTopPixel=&quot;3302&quot;/>&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
@@ -423,10 +423,12 @@
           <tags>removeOnHide</tags>
         </children>
         <children xsi:type="basic:Part" xmi:id="_LcM5IEK5EeWuops3aB3Mow" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="ControllerConfig.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.gif" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;ControllerConfig.java&quot; partName=&quot;ControllerConfig.java&quot; title=&quot;ControllerConfig.java&quot; tooltip=&quot;HomeKeeper/src/com/gagara/homekeeper/common/ControllerConfig.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/HomeKeeper/src/com/gagara/homekeeper/common/ControllerConfig.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;670&quot; selectionTopPixel=&quot;288&quot;/>&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;ControllerConfig.java&quot; partName=&quot;ControllerConfig.java&quot; title=&quot;ControllerConfig.java&quot; tooltip=&quot;HomeKeeper/src/com/gagara/homekeeper/common/ControllerConfig.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/HomeKeeper/src/com/gagara/homekeeper/common/ControllerConfig.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;823&quot; selectionTopPixel=&quot;334&quot;/>&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
           <tags>removeOnHide</tags>
+          <tags>active</tags>
+          <tags>activeOnClose</tags>
         </children>
       </children>
     </sharedElements>
@@ -490,6 +492,7 @@
       <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;view/>"/>
       <tags>View</tags>
       <tags>categoryTag:General</tags>
+      <tags>highlighted</tags>
       <menus xmi:id="_dCFv8DuhEeWZErdwit8PxA" elementId="org.eclipse.ui.console.ConsoleView">
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
@@ -551,8 +554,6 @@
       <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;view/>"/>
       <tags>View</tags>
       <tags>categoryTag:Android</tags>
-      <tags>active</tags>
-      <tags>activeOnClose</tags>
       <menus xmi:id="_91wvcDujEeWZErdwit8PxA" elementId="com.android.ide.eclipse.ddms.views.LogCatView">
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
@@ -646,7 +647,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_Zqor8DuhEeWZErdwit8PxA" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_QQn0kHgmEeW0Ev8rRwAaKw" elementId="print" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_YMPbYzuhEeWZErdwit8PxA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_poEBoICwEeWymfRzmdiYlg" elementId="print" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_YMPbYzuhEeWZErdwit8PxA"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_Zqor8TuhEeWZErdwit8PxA" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -679,7 +680,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_Zqp6EDuhEeWZErdwit8PxA" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_QQxlkHgmEeW0Ev8rRwAaKw" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_YMGRaDuhEeWZErdwit8PxA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_pomNIICwEeWymfRzmdiYlg" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_YMGRaDuhEeWZErdwit8PxA"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_ZqqhIDuhEeWZErdwit8PxA" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
