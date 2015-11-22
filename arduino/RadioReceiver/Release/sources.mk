@@ -40,7 +40,7 @@ SUBDIRS := \
 arduino/core \
 . \
 Libraries/SPI \
-Libraries/RF24/tests/pingpair_test \
-Libraries/RF24/tests/pingpair_blocking \
+Libraries/RF24Network \
+Libraries/RF24Mesh \
 Libraries/RF24 \
 

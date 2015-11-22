@@ -23,6 +23,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/arduino/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24Mesh}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24Network}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24/utility}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.236509847" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
 							</tool>
@@ -32,6 +35,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/arduino/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24Mesh}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24Network}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24/utility}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.1146150090" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
 							</tool>
