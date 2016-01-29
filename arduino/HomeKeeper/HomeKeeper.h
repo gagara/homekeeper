@@ -32,6 +32,7 @@ void processBoilerHeater();
 void loadSensorsCalibrationFactors();
 double readSensorCalibrationFactor(int offset);
 void writeSensorCalibrationFactor(int offset, double value);
+char* rfRead();
 void readSensors();
 void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx);
 void refreshSensorValues();
@@ -50,7 +51,9 @@ void reportNodeStatus(uint8_t nodeId, uint8_t nodeBit, unsigned long ts, unsigne
 void reportSensorsStatus();
 void reportConfiguration();
 void syncClocks();
-void processIncomingCmd();
+void processRfMsg();
+void processSerialMsg();
+void parseCommand(char* command);
 
 //Do not add code below this line
 #endif /* _HomeKeeper_H_ */

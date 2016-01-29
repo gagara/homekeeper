@@ -1,10 +1,12 @@
-{"m":"csr"}
 
+{"m":"csr"}
 {"m":"nsc","id":6}
 {"m":"nsc","id":6,"ns":0}
 {"m":"nsc","id":6,"ns":1,"ft":"4294967295"}
 
 {"m":"nsc","id":6,"ns":0,"ft":"1234567"}
+
+{"m":"csr","s":[{"id":14,"v":0},{"id":15,"v":0},{"id":16,"v":0},{"id":17,"v":0},{"id":30,"v":0,"ts":"0"}]}
 
 {"m":"cfg"}
 {"m":"cfg","s":{"id":14,"cf":1.25}}
@@ -45,3 +47,25 @@ A3 1.05
 {"m":"cfg","s":{"id":15,"cf":0.95}}
 {"m":"cfg","s":{"id":16,"cf":1.05}}
 {"m":"cfg","s":{"id":17,"cf":1.05}}
+
+{"m":"cfg","rfp":1}
+
+{"m":"cfg","s":[{"id":14,"cf":1.00000}],"rfp":1}
+
+AT+CWMODE=1
+AT+CWJAP="point39","87654321"
+AT+CIFSR
+AT+CWQAP
+
+AT+CIPMODE=0
+AT+CIPMUX=1
+AT+CIPSERVER=1,80
+
+AT+CIPSEND=0,64
+AT+CIPCLOSE=0
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"m":"csr"}
+----

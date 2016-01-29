@@ -3,6 +3,7 @@
 #include <aJSON.h>
 #include <Arduino.h>
 #include <EEPROMex.h>
+#include <RF24.h>
 #include <HardwareSerial.h>
 #include <pins_arduino.h>
 #include <stdbool.h>
@@ -21,14 +22,19 @@ static const uint8_t SENSOR_SUPPLY = A0;
 static const uint8_t SENSOR_REVERSE = A1;
 static const uint8_t SENSOR_TANK = A2;
 static const uint8_t SENSOR_BOILER = A3;
+static const uint8_t SENSOR_ROOM_1 = A0 + 16 * 1;
 
 // Nodes pins
-static const uint8_t NODE_SUPPLY = 6;
-static const uint8_t NODE_HEATING = 7;
-static const uint8_t NODE_FLOOR = 8;
-static const uint8_t NODE_HOTWATER = 9;
-static const uint8_t NODE_CIRCULATION = 10;
-static const uint8_t NODE_BOILER = 11;
+static const uint8_t NODE_SUPPLY = 7;
+static const uint8_t NODE_HEATING = 8;
+static const uint8_t NODE_FLOOR = 9;
+static const uint8_t NODE_HOTWATER = 10;
+static const uint8_t NODE_CIRCULATION = 11;
+static const uint8_t NODE_BOILER = 12;
+
+// RF pins
+static const uint8_t RF_CE_PIN = 5;
+static const uint8_t RF_CSN_PIN = 6;
 
 static const uint8_t HEARTBEAT_LED = 13;
 
@@ -71,8 +77,12 @@ static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 60000;
 static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 10000;
 static const unsigned long SENSORS_READ_INTERVAL_MSEC = 1000;
 
+// RF
+static const uint64_t RF_PIPE_BASE = 0xE8E8F0F0A2LL;
+static const uint8_t RF_PACKET_LENGTH = 32;
+
 // sensors stats
-static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 20;
+static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 16;
 static const uint8_t SENSOR_NOISE_THRESHOLD = 20;
 
 // JSON
@@ -93,8 +103,8 @@ const char MSG_NODE_STATE_CHANGED[] = "nsc";
 const char MSG_CLOCK_SYNC[] = "cls";
 const char MSG_CONFIGURATION[] = "cfg";
 
-static const uint8_t JSON_MAX_WRITE_SIZE = 255;
-static const uint8_t JSON_MAX_READ_SIZE = 255;
+static const uint8_t JSON_MAX_WRITE_SIZE = 128;
+static const uint8_t JSON_MAX_READ_SIZE = 128;
 
 /* ===== End of Configuration ====== */
 
@@ -106,6 +116,7 @@ uint8_t tempSupply = 0;
 uint8_t tempReverse = 0;
 uint8_t tempTank = 0;
 uint8_t tempBoiler = 0;
+uint8_t tempRoom1 = 0;
 
 // stats
 uint8_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
@@ -148,6 +159,8 @@ unsigned long tsLastStatusReport = 0;
 unsigned long tsLastSensorsRefresh = 0;
 unsigned long tsLastSensorsRead = 0;
 
+unsigned long tsLastSensorRoom1 = 0;
+
 unsigned long tsPrev = 0;
 unsigned long tsCurr = 0;
 
@@ -162,6 +175,9 @@ double SENSOR_BOILER_FACTOR = 1;
 unsigned long boilerPowersaveCurrentPassivePeriod = 0;
 
 /* ======== End of Variables ======= */
+
+// RF24
+RF24 radio(RF_CE_PIN, RF_CSN_PIN);
 
 void setup() {
     // Setup serial port
@@ -206,6 +222,16 @@ void setup() {
     // read sensors calibration factors from EEPROM
     loadSensorsCalibrationFactors();
 
+    // init RF24 radio
+    radio.begin();
+    radio.enableDynamicPayloads();
+    // listen on 2 channels
+    for (int i = 1; i <= 2; i++) {
+        radio.openReadingPipe(i, RF_PIPE_BASE + i);
+    }
+    radio.startListening();
+    radio.powerUp();
+
     // report current state
     reportStatus();
 }
@@ -249,7 +275,7 @@ void loop() {
         tsLastSensorsRefresh = tsCurr;
     }
     if (Serial.available() > 0) {
-        processIncomingCmd();
+        processSerialMsg();
     }
     tsPrev = tsCurr;
 }
@@ -540,11 +566,35 @@ void writeSensorCalibrationFactor(int offset, double value) {
     EEPROM.writeDouble(offset, value);
 }
 
+char* rfRead() {
+    char* msg = (char*) malloc(JSON_MAX_READ_SIZE);
+    char* packet = (char*) malloc(RF_PACKET_LENGTH + 1);
+    uint8_t len = 0;
+    bool eoi = false;
+    while (!eoi && len < JSON_MAX_READ_SIZE) {
+        uint8_t l = radio.getDynamicPayloadSize();
+        radio.read(packet, l);
+        packet[l] = '\0';
+        for (uint8_t i = 0; i < l && !eoi; i++) {
+            msg[len++] = packet[i];
+            eoi = (packet[i] == '\n');
+        }
+        packet[0] = '\0';
+    }
+    free(packet);
+    msg[len] = '\0';
+    return msg;
+}
+
 void readSensors() {
     readSensor(SENSOR_SUPPLY, rawSupplyValues, rawSupplyIdx);
     readSensor(SENSOR_REVERSE, rawReverseValues, rawReverseIdx);
     readSensor(SENSOR_TANK, rawTankValues, rawTankIdx);
     readSensor(SENSOR_BOILER, rawBoilerValues, rawBoilerIdx);
+    // read remote sensors
+    if (radio.available()) {
+        processRfMsg();
+    }
 }
 
 void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx) {
@@ -916,6 +966,15 @@ void reportSensorsStatus() {
     aJson.addNumberToObject(sens, VALUE_KEY, tempBoiler);
     aJson.addItemToArray(sensArr, sens);
 
+    // SENSOR_ROOM_1;
+    char tss[12];
+    sprintf(tss, "%lu", tsLastSensorRoom1);
+    sens = aJson.createObject();
+    aJson.addNumberToObject(sens, ID_KEY, SENSOR_ROOM_1);
+    aJson.addNumberToObject(sens, VALUE_KEY, tempRoom1);
+    aJson.addStringToObject(sens, TIMESTAMP_KEY, tss);
+    aJson.addItemToArray(sensArr, sens);
+
     root = aJson.createObject();
     aJson.addStringToObject(root, MSG_TYPE_KEY, MSG_CURRENT_STATUS_REPORT);
     aJson.addItemToObject(root, SENSORS_KEY, sensArr);
@@ -1000,19 +1059,46 @@ void syncClocks() {
     aJson.deleteItem(root);
 }
 
-void processIncomingCmd() {
-    aJsonObject *root;
+void processRfMsg() {
+    char* buff = rfRead();
+    parseCommand(buff);
+    free(buff);
+}
+
+void processSerialMsg() {
     char* buff = (char*) malloc(JSON_MAX_READ_SIZE);
     String s = Serial.readStringUntil('\0');
     s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
-    root = aJson.parse(buff);
+    parseCommand(buff);
+    free(buff);
+}
+
+void parseCommand(char* command) {
+    aJsonObject *root;
+    root = aJson.parse(command);
     if (root != NULL) {
         aJsonObject *msgType = aJson.getObjectItem(root, MSG_TYPE_KEY);
         if (msgType != NULL) {
             if (strcmp(msgType->valuestring, MSG_CLOCK_SYNC) == 0) {
                 syncClocks();
             } else if (strcmp(msgType->valuestring, MSG_CURRENT_STATUS_REPORT) == 0) {
-                reportStatus();
+                aJsonObject *sensorsArrObj = aJson.getObjectItem(root, SENSORS_KEY);
+                if (sensorsArrObj != NULL) {
+                    for(unsigned char i = 0; i < aJson.getArraySize(sensorsArrObj); i++) {
+                        aJsonObject *sensorsObj = aJson.getArrayItem(sensorsArrObj, i);
+                        aJsonObject *idObj = aJson.getObjectItem(sensorsObj, ID_KEY);
+                        aJsonObject *valObj = aJson.getObjectItem(sensorsObj, VALUE_KEY);
+                        if (idObj != NULL && valObj != NULL) {
+                            // find sensor
+                            if (SENSOR_ROOM_1 == idObj->valueint) {
+                                tempRoom1 = valObj->valueint;
+                                tsLastSensorRoom1 = tsCurr;
+                            }// else if(...)
+                        }
+                    }
+                } else {
+                    reportStatus();
+                }
             } else if (strcmp(msgType->valuestring, MSG_NODE_STATE_CHANGED) == 0) {
                 aJsonObject *nodeIdObj = aJson.getObjectItem(root, ID_KEY);
                 if (nodeIdObj != NULL) {
@@ -1064,6 +1150,5 @@ void processIncomingCmd() {
             }
         }
     }
-    free(buff);
     aJson.deleteItem(root);
 }
