@@ -11,8 +11,8 @@ RM := rm -rf
 -include subdir.mk
 -include arduino/core/subdir.mk
 -include Libraries/SPI/subdir.mk
--include Libraries/RF24Network/subdir.mk
--include Libraries/RF24Mesh/subdir.mk
+-include Libraries/RF24/tests/pingpair_test/subdir.mk
+-include Libraries/RF24/tests/pingpair_blocking/subdir.mk
 -include Libraries/RF24/subdir.mk
 -include objects.mk
 

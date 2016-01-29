@@ -22,8 +22,7 @@ void setup();
 
 //add your function definitions for the project RadioReceiver1 here
 
-
-
+char* rfRead();
 
 //Do not add code below this line
 #endif /* _RadioReceiver1_H_ */

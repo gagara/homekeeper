@@ -23,9 +23,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/arduino/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/SPI}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24Mesh}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24Network}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24/utility}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/aJson}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/aJson/utility}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.236509847" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
 							</tool>
@@ -33,11 +32,10 @@
 								<option id="it.baeyens.arduino.compiler.c.sketch.option.incpath.1226983222" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.c.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/arduino/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/SPI}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24Mesh}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24Network}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24/utility}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/RF24}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/aJson}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RadioReceiver/Libraries/aJson/utility}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.1146150090" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
 							</tool>
@@ -64,5 +62,10 @@
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/RadioReceiver"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

@@ -1,59 +1,62 @@
 #include "RadioReceiver.h"
 
-#include <RF24Network.h>
 #include <RF24.h>
-#include <RF24Mesh.h>
-#include <SPI.h>
+#include <aJSON.h>
 
-static const uint32_t NETWORK_TIMEOUT = 10000;
 
-/***** Configure the chosen CE,CS pins *****/
-RF24 radio(9, 10);
-RF24Network network(radio);
-RF24Mesh mesh(radio, network);
+// RF
+static const uint64_t RF_PIPE_BASE = 0xE8E8F0F0A2LL;
+static const uint8_t RF_PACKET_LENGTH = 32;
 
-struct payload_t {
-    uint8_t value;
-};
+static const uint8_t JSON_MAX_READ_SIZE = 255;
+
+RF24 radio(5, 6);
 
 void setup() {
     Serial.begin(9600);
-    Serial.println("start setup");
-    mesh.setNodeID(0);
-    mesh.begin(MESH_DEFAULT_CHANNEL, RF24_1MBPS, NETWORK_TIMEOUT);
-    Serial.println("done setup");
+
+    radio.begin();
+    radio.enableDynamicPayloads();
+    for (int i = 1; i <= 16; i++) {
+        radio.openReadingPipe(i, RF_PIPE_BASE + i);
+    }
+    radio.startListening();
+    radio.powerUp();
 }
 
 void loop() {
-
-    Serial.println("before update");
-    // Call mesh.update to keep the network updated
-    mesh.update();
-    // In addition, keep the 'DHCP service' running on the master node so addresses will
-    // be assigned to the sensor nodes
-    Serial.println("before dhcp");
-    mesh.DHCP();
-
-    Serial.println("start reading");
-    // Check for incoming data from the sensors
-    if (network.available()) {
-        Serial.println("got something");
-        RF24NetworkHeader header;
-        network.peek(header);
-        uint8_t dat = 0;
-        Serial.println("H: " + header.type);
-        switch (header.type) {
-        case 'M':
-            Serial.println(header.type + ": ");
-            network.read(header, &dat, sizeof(dat));
-            Serial.println(dat);
-            break;
-        default:
-            network.read(header, 0, 0);
-            Serial.println(header.type + ": ");
-            break;
+    Serial.print(".");
+    if (radio.available()) {
+        char* msg = rfRead();
+        aJsonObject *root;
+        root = aJson.parse(msg);
+        if (root != NULL) {
+            Serial.println(msg);
+        } else {
+            Serial.println("invalid");
         }
-    } else {
-        Serial.println("got something");
+        free(root);
+        free(msg);
     }
+    delay(1000);
+}
+
+char* rfRead() {
+    char* msg = (char*) malloc(JSON_MAX_READ_SIZE);
+    char* packet = (char*) malloc(RF_PACKET_LENGTH + 1);
+    uint8_t len = 0;
+    bool eoi = false;
+    while (!eoi && len < JSON_MAX_READ_SIZE) {
+        uint8_t l = radio.getDynamicPayloadSize();
+        radio.read(packet, l);
+        packet[l] = '\0';
+        for (uint8_t i = 0; i < l && !eoi; i++) {
+            msg[len++] = packet[i];
+            eoi = (packet[i] == '\n');
+        }
+        packet[0] = '\0';
+    }
+    free(packet);
+    msg[len] = '\0';
+    return msg;
 }

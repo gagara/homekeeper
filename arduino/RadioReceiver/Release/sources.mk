@@ -39,8 +39,10 @@ SIZEDUMMY :=
 SUBDIRS := \
 arduino/core \
 . \
+Libraries/aJson/utility \
+Libraries/aJson \
 Libraries/SPI \
-Libraries/RF24Network \
-Libraries/RF24Mesh \
+Libraries/RF24/tests/pingpair_test \
+Libraries/RF24/tests/pingpair_blocking \
 Libraries/RF24 \
 
