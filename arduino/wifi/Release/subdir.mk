@@ -6,11 +6,11 @@
 CPP_SRCS += \
 ../wifi.cpp 
 
-CPP_DEPS += \
-./wifi.cpp.d 
-
 LINK_OBJ += \
 ./wifi.cpp.o 
+
+CPP_DEPS += \
+./wifi.cpp.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

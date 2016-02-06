@@ -32,6 +32,11 @@
 			<locationURI>ArduinoPivateLibPath/EEPROMEx</locationURI>
 		</link>
 		<link>
+			<name>Libraries/MemoryFree</name>
+			<type>2</type>
+			<locationURI>ArduinoPivateLibPath/MemoryFree</locationURI>
+		</link>
+		<link>
 			<name>Libraries/RF24</name>
 			<type>2</type>
 			<locationURI>ArduinoPivateLibPath/RF24</locationURI>

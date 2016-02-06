@@ -53,8 +53,8 @@ A3 1.05
 {"m":"cfg","s":[{"id":14,"cf":1.00000}],"rfp":1}
 
 AT+CWMODE=1
-AT+CWJAP="point39","87654321"
 AT+CIFSR
+AT+CWJAP="point39","87654321"
 AT+CWQAP
 
 AT+CIPMODE=0
@@ -69,3 +69,10 @@ Content-Type: application/json
 
 {"m":"csr"}
 ----
+
+63037: {"m":"cfg","s":[{"id":14,"cf":1.00000},{"id":15,"cf":0.95000},{"id":16,"cf":1.05000},{"id":17,"cf":1.05000}]}
+
+==================
+AT+CIPSTART=0,"TCP","192.168.0.139",5000
+AT+CIPSEND=0,120
+AT+CIPCLOSE=0

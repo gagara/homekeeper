@@ -3,6 +3,7 @@
 #include <aJSON.h>
 #include <Arduino.h>
 #include <EEPROMex.h>
+#include <MemoryFree.h>
 #include <RF24.h>
 #include <HardwareSerial.h>
 #include <pins_arduino.h>
@@ -15,7 +16,7 @@
 
 /* ========= Configuration ========= */
 
-#undef __DEBUG__
+#define __DEBUG__
 
 // Sensors pins
 static const uint8_t SENSOR_SUPPLY = A0;
@@ -98,10 +99,10 @@ static const char NODES_KEY[] = "n";
 static const char SENSORS_KEY[] = "s";
 static const char VALUE_KEY[] = "v";
 
-const char MSG_CURRENT_STATUS_REPORT[] = "csr";
-const char MSG_NODE_STATE_CHANGED[] = "nsc";
-const char MSG_CLOCK_SYNC[] = "cls";
-const char MSG_CONFIGURATION[] = "cfg";
+static const char MSG_CURRENT_STATUS_REPORT[] = "csr";
+static const char MSG_NODE_STATE_CHANGED[] = "nsc";
+static const char MSG_CLOCK_SYNC[] = "cls";
+static const char MSG_CONFIGURATION[] = "cfg";
 
 static const uint8_t JSON_MAX_WRITE_SIZE = 128;
 static const uint8_t JSON_MAX_READ_SIZE = 128;
@@ -184,6 +185,8 @@ void setup() {
     Serial.begin(9600);
 #ifdef __DEBUG__
     Serial.println("STARTING");
+    Serial.print("free memory: ");
+    Serial.println(freeMemory());
 #endif
     pinMode(HEARTBEAT_LED, OUTPUT);
     digitalWrite(HEARTBEAT_LED, LOW);
@@ -249,6 +252,10 @@ void loop() {
         tsLastSensorsRead = tsCurr;
     }
     if (diffTimestamps(tsCurr, tsLastSensorsRefresh) >= SENSORS_REFRESH_INTERVAL_MSEC) {
+#ifdef __DEBUG__
+        Serial.print("free memory: ");
+        Serial.println(freeMemory());
+#endif
         digitalWrite(HEARTBEAT_LED, HIGH);
 
         // refresh sensors values
@@ -1150,5 +1157,9 @@ void parseCommand(char* command) {
             }
         }
     }
+#ifdef __DEBUG__
+    Serial.print("free memory: ");
+    Serial.println(freeMemory());
+#endif
     aJson.deleteItem(root);
 }

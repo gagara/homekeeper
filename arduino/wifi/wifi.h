@@ -22,10 +22,13 @@ void setup();
 
 //add your function definitions for the project wifi here
 
-bool wifiConnect();
-bool isWifiConnected();
+void wifiInit();
+void wifiConnect();
+bool isWifiConnected(char* ip);
 bool wifiStartServer();
-bool wifiSend(const char* msg, bool eoi=false);
+bool wifiRsp(const char* msg);
+bool wifiSend(const char* msg);
+bool wifiWrite(const char* msg, const char* rsp, const int wait = 0, const uint8_t maxRetry = 5);
 char* wifiRead();
 
 //Do not add code below this line
