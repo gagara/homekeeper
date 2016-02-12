@@ -40,6 +40,7 @@ SUBDIRS := \
 arduino/core \
 Libraries/aJson/utility \
 Libraries/aJson \
+Libraries/SoftwareSerial \
 Libraries/SPI \
 Libraries/RF24/tests/pingpair_test \
 Libraries/RF24/tests/pingpair_blocking \

@@ -12,6 +12,7 @@ RM := rm -rf
 -include arduino/core/subdir.mk
 -include Libraries/aJson/utility/subdir.mk
 -include Libraries/aJson/subdir.mk
+-include Libraries/SoftwareSerial/subdir.mk
 -include Libraries/SPI/subdir.mk
 -include Libraries/RF24/tests/pingpair_test/subdir.mk
 -include Libraries/RF24/tests/pingpair_blocking/subdir.mk

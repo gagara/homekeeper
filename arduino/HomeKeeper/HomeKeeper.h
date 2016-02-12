@@ -46,13 +46,26 @@ void restoreNodesState();
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts);
 void forceNodeState(uint8_t id, uint8_t bit, uint8_t state, unsigned long &nodeTs, unsigned long ts);
 void unForceNodeState(uint8_t id);
+void loadWifiConfig();
+void wifiInit();
+void wifiConnect();
+bool isWifiConnected(uint8_t ip[4]);
+bool wifiStartServer();
+bool wifiRsp(const char* msg);
+bool wifiSend(const char* msg);
+bool wifiWrite(const char* msg, const char* rsp, const int wait = 0, const uint8_t maxRetry = 5);
+char* wifiRead();
 void reportStatus();
 void reportNodeStatus(uint8_t nodeId, uint8_t nodeBit, unsigned long ts, unsigned long tsf);
-void reportSensorsStatus();
+void reportSensorStatus(const uint8_t id, const uint8_t value,const unsigned long ts = 0);
 void reportConfiguration();
+void reportSensorConfig(const uint8_t id, const double value);
+void reportStringConfig(const char* key, const char* value);
+void reportNumberConfig(const char* key, const int value);
 void syncClocks();
 void processRfMsg();
 void processSerialMsg();
+void processWifiReq();
 void parseCommand(char* command);
 
 //Do not add code below this line

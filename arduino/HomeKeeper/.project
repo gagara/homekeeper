@@ -47,6 +47,11 @@
 			<locationURI>ArduinoHardwareLibPath/SPI</locationURI>
 		</link>
 		<link>
+			<name>Libraries/SoftwareSerial</name>
+			<type>2</type>
+			<locationURI>ArduinoHardwareLibPath/SoftwareSerial</locationURI>
+		</link>
+		<link>
 			<name>Libraries/aJson</name>
 			<type>2</type>
 			<locationURI>ArduinoPivateLibPath/aJson</locationURI>
