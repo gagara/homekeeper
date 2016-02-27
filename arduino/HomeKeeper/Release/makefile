@@ -10,14 +10,13 @@ RM := rm -rf
 -include sources.mk
 -include subdir.mk
 -include arduino/core/subdir.mk
--include Libraries/aJson/utility/subdir.mk
--include Libraries/aJson/subdir.mk
--include Libraries/SoftwareSerial/subdir.mk
 -include Libraries/SPI/subdir.mk
 -include Libraries/RF24/tests/pingpair_test/subdir.mk
 -include Libraries/RF24/tests/pingpair_blocking/subdir.mk
 -include Libraries/RF24/subdir.mk
 -include Libraries/MemoryFree/subdir.mk
+-include Libraries/JSON/src/Internals/subdir.mk
+-include Libraries/JSON/src/subdir.mk
 -include Libraries/EEPROMEx/subdir.mk
 -include objects.mk
 
@@ -89,7 +88,7 @@ arduino.ar: $(AR_OBJ)
 
 HomeKeeper.elf: $(LINK_OBJ) $(AR)
 	@echo 'Starting combiner'
-	"/usr/bin/avr-gcc" -Os -Wl,--gc-sections -mmcu=atmega328p  -o "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.elf"   $(LINK_OBJ) $(AR)  "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/arduino.ar" "-L/home/slg/projects/home_keeper/arduino/HomeKeeper/Release" -lm
+	"/usr/bin/avr-gcc" -Os -Wl,--gc-sections -mmcu=atmega2560  -o "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/HomeKeeper.elf"   $(LINK_OBJ) $(AR)  "/home/slg/projects/home_keeper/arduino/HomeKeeper/Release/arduino.ar" "-L/home/slg/projects/home_keeper/arduino/HomeKeeper/Release" -lm
 	@echo 'Finished building: $@'
 	@echo ' '
 

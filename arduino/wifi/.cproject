@@ -30,10 +30,6 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/wifi/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/wifi/arduino/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/wifi/Libraries/SoftwareSerial}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/wifi/Libraries/ESP8266Wifi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/wifi/Libraries/ESP8266Wifi/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/wifi/Libraries/ESP8266WiFi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/wifi/Libraries/ESP8266WiFi/src}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.1094540481" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
 							</tool>

@@ -26,7 +26,7 @@ void wifiInit();
 void wifiConnect();
 bool isWifiConnected(char* ip);
 bool wifiStartServer();
-bool wifiRsp(const char* msg);
+bool wifiRsp200(const char* msg);
 bool wifiSend(const char* msg);
 bool wifiWrite(const char* msg, const char* rsp, const int wait = 0, const uint8_t maxRetry = 5);
 char* wifiRead();

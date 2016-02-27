@@ -1,8 +1,16 @@
 sdptool browse local
+
+# register serial port
 sdptool add SP
 
+# listen for incoming connection
 rfcomm listen /dev/rfcomm0
+
+# connect to BT
 rfcomm bind /dev/rfcomm0 98:D3:31:60:3C:BD
+
+# disconnect
+rfcomm release /dev/rfcomm0
 
 bluetoothctl
 power on/off

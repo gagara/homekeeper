@@ -1,13 +1,19 @@
 #include "Thermostat.h"
 
-#include <aJSON.h>
+#include <ArduinoJson.h>
+#include <DHT.h>
 #include <EEPROMex.h>
+#include <MemoryFree.h>
 #include <RF24.h>
 
 /* ========= Configuration ========= */
 
+#undef __DEBUG__
+
 // Sensor pin
-static const uint8_t SENSOR_ROOM = A0 + 16 * 1;
+static const uint8_t DHT_PIN = 2;
+static const uint8_t SENSOR_TEMP = (54 + 16) + (4 * 1) + 0;
+static const uint8_t SENSOR_HUM = (54 + 16) + (4 * 1) + 1;
 
 static const uint8_t HEARTBEAT_LED = 13;
 
@@ -15,7 +21,8 @@ static const int RF_PIPE_EEPROM_ADDR = 0;
 static const int SENSORS_FACTORS_EEPROM_ADDR = 1;
 
 // sensor calibration factors
-double SENSOR_ROOM_FACTOR = 1.0;
+double SENSOR_TEMP_FACTOR = 1.0;
+double SENSOR_HUM_FACTOR = 1.0;
 
 // sensors stats
 static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 20;
@@ -44,8 +51,8 @@ static const char CALIBRATION_FACTOR_KEY[] = "cf";
 const char MSG_CURRENT_STATUS_REPORT[] = "csr";
 const char MSG_CONFIGURATION[] = "cfg";
 
-static const uint8_t JSON_MAX_WRITE_SIZE = 255;
-static const uint8_t JSON_MAX_READ_SIZE = 255;
+static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
+static const uint8_t JSON_MAX_WRITE_SIZE = 128;
 
 /* ===== End of Configuration ====== */
 
@@ -54,10 +61,13 @@ static const uint8_t JSON_MAX_READ_SIZE = 255;
 //// Sensors
 // Values
 uint8_t tempRoom = 0;
+uint8_t humRoom = 0;
 
 // stats
-uint8_t rawRoomValues[SENSORS_RAW_VALUES_MAX_COUNT];
-uint8_t rawRoomIdx = 0;
+uint8_t rawTempValues[SENSORS_RAW_VALUES_MAX_COUNT];
+uint8_t rawHumValues[SENSORS_RAW_VALUES_MAX_COUNT];
+uint8_t rawTempIdx = 0;
+uint8_t rawHumIdx = 0;
 
 uint8_t RF_PIPE;
 
@@ -72,17 +82,23 @@ unsigned long tsCurr = 0;
 // RF24
 RF24 radio(9, 10);
 
+// DHT sensor
+DHT dht(DHT_PIN, DHT11);
+
 void setup() {
     Serial.begin(9600);
-
+#ifdef __DEBUG__
+    Serial.println("STARTING");
+    Serial.print("free memory: ");
+    Serial.println(freeMemory());
+#endif
     pinMode(HEARTBEAT_LED, OUTPUT);
     digitalWrite(HEARTBEAT_LED, LOW);
 
-    pinMode(SENSOR_ROOM, INPUT);
-
     // init sensor raw values arrays
     for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
-        rawRoomValues[i] = MAX_SENSOR_VALUE;
+        rawTempValues[i] = MAX_SENSOR_VALUE;
+        rawHumValues[i] = MAX_SENSOR_VALUE;
     }
 
     // read sensors calibration factors from EEPROM
@@ -115,6 +131,10 @@ void loop() {
 
         delay(100);
         digitalWrite(HEARTBEAT_LED, LOW);
+#ifdef __DEBUG__
+    Serial.print("free memory: ");
+    Serial.println(freeMemory());
+#endif
     }
     if (Serial.available() > 0) {
         processSerialMsg();
@@ -124,14 +144,18 @@ void loop() {
 }
 
 void loadSensorCalibrationFactor() {
-    SENSOR_ROOM_FACTOR = EEPROM.readDouble(SENSORS_FACTORS_EEPROM_ADDR);
-    if (isnan(SENSOR_ROOM_FACTOR) || SENSOR_ROOM_FACTOR < 0.01 || SENSOR_ROOM_FACTOR > 3) {
-        SENSOR_ROOM_FACTOR = 1;
+    SENSOR_TEMP_FACTOR = EEPROM.readDouble(SENSORS_FACTORS_EEPROM_ADDR + 0);
+    SENSOR_HUM_FACTOR = EEPROM.readDouble(SENSORS_FACTORS_EEPROM_ADDR + 4);
+    if (isnan(SENSOR_TEMP_FACTOR) || SENSOR_TEMP_FACTOR < 0.01 || SENSOR_TEMP_FACTOR > 3) {
+        SENSOR_TEMP_FACTOR = 1;
+    }
+    if (isnan(SENSOR_HUM_FACTOR) || SENSOR_HUM_FACTOR < 0.01 || SENSOR_HUM_FACTOR > 3) {
+        SENSOR_HUM_FACTOR = 1;
     }
 }
 
-void writeSensorCalibrationFactor(double value) {
-    EEPROM.writeDouble(SENSORS_FACTORS_EEPROM_ADDR, value);
+void writeSensorCalibrationFactor(double value, int addr) {
+    EEPROM.writeDouble(addr, value);
 }
 
 void loadRfPipeAddr() {
@@ -156,7 +180,8 @@ unsigned long diffTimestamps(unsigned long hi, unsigned long lo) {
 }
 
 void readSensors() {
-    readSensor(SENSOR_ROOM, rawRoomValues, rawRoomIdx);
+    readSensor(SENSOR_TEMP, rawTempValues, rawTempIdx);
+    readSensor(SENSOR_HUM, rawHumValues, rawHumIdx);
 }
 
 void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx) {
@@ -170,34 +195,57 @@ void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx) {
     } else {
         prevIdx = SENSORS_RAW_VALUES_MAX_COUNT;
     }
-    val = getTemp(id);
+    val = getSensorValue(id);
     if (values[prevIdx] == MAX_SENSOR_VALUE || abs(val - values[prevIdx]) < SENSOR_NOISE_THRESHOLD) {
         values[idx] = val;
     }
     idx++;
 }
 
-uint8_t getTemp(uint8_t sensor) {
+uint8_t getSensorValue(uint8_t sensor) {
+    float value = 0;
+    if (SENSOR_TEMP == sensor) {
+        value = dht.readTemperature();
+        value = value * SENSOR_TEMP_FACTOR;
+    } else if (SENSOR_HUM == sensor) {
+        value = dht.readHumidity();
+        value = value * SENSOR_HUM_FACTOR;
+    }
+    return byte(value + 0.5);
+}
+
+uint8_t getAnalogSensorValue(uint8_t sensor) {
     int rawVal = analogRead(sensor);
     double voltage = (5000 / 1024) * rawVal;
     double tempC = voltage * 0.1;
-    if (SENSOR_ROOM == sensor) {
-        tempC = tempC * SENSOR_ROOM_FACTOR;
+    if (SENSOR_TEMP == sensor) {
+        tempC = tempC * SENSOR_TEMP_FACTOR;
+    } else if (SENSOR_HUM == sensor) {
+        tempC = tempC * SENSOR_HUM_FACTOR;
     }
     return byte(tempC + 0.5);
 }
 
 void refreshSensorValues() {
-    double temp1 = 0;
+    double val1 = 0;
+    double val2 = 0;
     int j1 = 0;
+    int j2 = 0;
     for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
-        if (rawRoomValues[i] != MAX_SENSOR_VALUE) {
-            temp1 += rawRoomValues[i];
+        if (rawTempValues[i] != MAX_SENSOR_VALUE) {
+            val1 += rawTempValues[i];
             j1++;
+        }
+        if (rawHumValues[i] != MAX_SENSOR_VALUE) {
+            val2 += rawHumValues[i];
+            j2++;
         }
     }
     if (j1 > 0) {
-        tempRoom = byte(temp1 / j1 + 0.5);
+        tempRoom = byte(val1 / j1 + 0.5);
+    }
+    if (j2 > 0) {
+        humRoom = byte(val2 / j2 + 0.5);
     }
 }
 
@@ -222,100 +270,110 @@ void rfWrite(char* msg) {
 }
 
 void reportStatus() {
-    aJsonObject *root, *sensArr, *sens;
-    char* outBuf;
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
 
-    sensArr = aJson.createArray();
+    // Temp
+    JsonObject& temp = jsonBuffer.createObject();
+    temp[ID_KEY] = SENSOR_TEMP;
+    temp[VALUE_KEY] = tempRoom;
 
-    // SENSOR_SUPPLY;
-    sens = aJson.createObject();
-    aJson.addNumberToObject(sens, ID_KEY, SENSOR_ROOM);
-    aJson.addNumberToObject(sens, VALUE_KEY, tempRoom);
-    aJson.addItemToArray(sensArr, sens);
+    // Temp
+    JsonObject& hum = jsonBuffer.createObject();
+    hum[ID_KEY] = SENSOR_HUM;
+    hum[VALUE_KEY] = humRoom;
 
-    root = aJson.createObject();
-    aJson.addStringToObject(root, MSG_TYPE_KEY, MSG_CURRENT_STATUS_REPORT);
-    aJson.addItemToObject(root, SENSORS_KEY, sensArr);
+    JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
+    sensors.add(temp);
+    sensors.add(hum);
 
-    outBuf = (char*) malloc(JSON_MAX_WRITE_SIZE);
-    aJsonStringStream stringStream(NULL, outBuf, JSON_MAX_WRITE_SIZE);
-    aJson.print(root, &stringStream);
+    char json[JSON_MAX_WRITE_SIZE];
+    root.printTo(json, JSON_MAX_WRITE_SIZE);
 
     // report to serial port
-    Serial.println(outBuf);
+    Serial.println(json);
 
     // report to RF
-    rfWrite(outBuf);
-
-    free(outBuf);
-    aJson.deleteItem(root);
+    rfWrite(json);
 
     tsLastStatusReport = tsCurr;
+#ifdef __DEBUG__
+    Serial.print("reportStatus: free memory: ");
+    Serial.println(freeMemory());
+#endif
 }
 
 void reportConfiguration() {
-    aJsonObject *root, *sensArr, *sens;
-    char* outBuf;
+    reportSensorConfig(SENSOR_TEMP, SENSOR_TEMP_FACTOR);
+    reportSensorConfig(SENSOR_HUM, SENSOR_HUM_FACTOR);
+    reportNumberConfig(RF_PIPE_KEY, RF_PIPE);
+#ifdef __DEBUG__
+    Serial.print("reportConfiguration: free memory: ");
+    Serial.println(freeMemory());
+#endif
+}
 
-    sensArr = aJson.createArray();
+void reportSensorConfig(const uint8_t id, const double value) {
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
 
-    // SENSOR_ROOM;
-    sens = aJson.createObject();
-    aJson.addNumberToObject(sens, ID_KEY, SENSOR_ROOM);
-    aJson.addNumberToObject(sens, CALIBRATION_FACTOR_KEY, SENSOR_ROOM_FACTOR);
-    aJson.addItemToArray(sensArr, sens);
+    JsonObject& sens = jsonBuffer.createObject();
+    sens[ID_KEY] = id;
+    sens[CALIBRATION_FACTOR_KEY] = value;
 
-    root = aJson.createObject();
-    aJson.addStringToObject(root, MSG_TYPE_KEY, MSG_CONFIGURATION);
-    aJson.addItemToObject(root, SENSORS_KEY, sensArr);
-    aJson.addNumberToObject(root, RF_PIPE_KEY, RF_PIPE);
+    JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
+    sensors.add(sens);
 
-    outBuf = (char*) malloc(JSON_MAX_WRITE_SIZE);
-    aJsonStringStream stringStream(NULL, outBuf, JSON_MAX_WRITE_SIZE);
-    aJson.print(root, &stringStream);
+    char json[JSON_MAX_WRITE_SIZE];
+    root.printTo(json, JSON_MAX_WRITE_SIZE);
 
-    Serial.println(outBuf);
+    Serial.println(json);
+}
 
-    free(outBuf);
-    aJson.deleteItem(root);
+void reportNumberConfig(const char* key, const int value) {
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+    root[key] = value;
+
+    char json[JSON_MAX_WRITE_SIZE];
+    root.printTo(json, JSON_MAX_WRITE_SIZE);
+
+    Serial.println(json);
 }
 
 void processSerialMsg() {
-    aJsonObject *root;
-    char* buff = (char*) malloc(JSON_MAX_READ_SIZE);
-    String s = Serial.readStringUntil('\0');
-    s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
-    root = aJson.parse(buff);
-    if (root != NULL) {
-        aJsonObject *msgType = aJson.getObjectItem(root, MSG_TYPE_KEY);
-        if (msgType != NULL) {
-            if (strcmp(msgType->valuestring, MSG_CURRENT_STATUS_REPORT) == 0) {
-                reportStatus();
-            } else if (strcmp(msgType->valuestring, MSG_CONFIGURATION) == 0) {
-                aJsonObject *rfPipeObj = aJson.getObjectItem(root, RF_PIPE_KEY);
-                aJsonObject *sensorObj = aJson.getObjectItem(root, SENSORS_KEY);
-                if (rfPipeObj != NULL) {
-                    uint8_t pipe = rfPipeObj->valueint;
-                    writeRfPipeAddr(pipe);
-                } else if (sensorObj != NULL) {
-                    aJsonObject *idObj = aJson.getObjectItem(sensorObj, ID_KEY);
-                    if (idObj != NULL) {
-                        aJsonObject *cfObj = aJson.getObjectItem(sensorObj, CALIBRATION_FACTOR_KEY);
-                        if (cfObj != NULL) {
-                            uint8_t id = idObj->valueint;
-                            double cf = cfObj->valuefloat;
-                            if (id == SENSOR_ROOM) {
-                                writeSensorCalibrationFactor(cf);
-                                loadSensorCalibrationFactor();
-                            }
-                        }
-                    }
-                } else {
-                    reportConfiguration();
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.parseObject(Serial.readStringUntil('\0'));
+    if (root.success()) {
+        const char* msgType = root[MSG_TYPE_KEY];
+        if (strcmp(msgType, MSG_CURRENT_STATUS_REPORT) == 0) {
+            // CSR
+            reportStatus();
+        } else if (strcmp(msgType, MSG_CONFIGURATION) == 0) {
+            // CFG
+            if (root.containsKey(RF_PIPE_KEY)) {
+                writeRfPipeAddr(root[RF_PIPE_KEY].as<uint8_t>());
+            } else if (root.containsKey(SENSORS_KEY)) {
+                JsonObject& sensor = root[SENSORS_KEY].asObject();
+                uint8_t id = sensor[ID_KEY];
+                double value = sensor[CALIBRATION_FACTOR_KEY];
+                if (id == SENSOR_TEMP) {
+                    writeSensorCalibrationFactor(value, SENSORS_FACTORS_EEPROM_ADDR + 0);
+                    loadSensorCalibrationFactor();
+                } else if (id == SENSOR_HUM) {
+                    writeSensorCalibrationFactor(value, SENSORS_FACTORS_EEPROM_ADDR + 4);
+                    loadSensorCalibrationFactor();
                 }
+            } else {
+                reportConfiguration();
             }
         }
     }
-    free(buff);
-    aJson.deleteItem(root);
+#ifdef __DEBUG__
+    Serial.print("processSerialMsg: free memory: ");
+    Serial.println(freeMemory());
+#endif
 }

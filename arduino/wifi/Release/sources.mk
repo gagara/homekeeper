@@ -39,5 +39,4 @@ CPP_DEPS :=
 SUBDIRS := \
 . \
 arduino/core \
-Libraries/SoftwareSerial \
 

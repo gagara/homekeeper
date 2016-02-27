@@ -9,8 +9,6 @@
 #include "Arduino.h"
 //add your includes for the project HomeKeeper here
 
-#include <aJSON.h>
-
 //end of add your includes here
 #ifdef __cplusplus
 extern "C" {
@@ -32,11 +30,11 @@ void processBoilerHeater();
 void loadSensorsCalibrationFactors();
 double readSensorCalibrationFactor(int offset);
 void writeSensorCalibrationFactor(int offset, double value);
-char* rfRead();
+void rfRead(char* msg);
 void readSensors();
 void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx);
 void refreshSensorValues();
-uint8_t getTemp(uint8_t sensor);
+uint8_t getSensorValue(uint8_t sensor);
 unsigned long getTimestamp();
 unsigned long diffTimestamps(unsigned long hi, unsigned long lo);
 unsigned long getBoilerPowersavePeriod(unsigned long currActivePeriod);
@@ -49,12 +47,16 @@ void unForceNodeState(uint8_t id);
 void loadWifiConfig();
 void wifiInit();
 void wifiConnect();
-bool isWifiConnected(uint8_t ip[4]);
+bool wifiGetIP();
+bool validIP(uint8_t ip[4]);
 bool wifiStartServer();
-bool wifiRsp(const char* msg);
+bool wifiRsp(const char* body);
+bool wifiRsp200();
+bool wifiRsp404();
+bool wifiRsp400();
 bool wifiSend(const char* msg);
 bool wifiWrite(const char* msg, const char* rsp, const int wait = 0, const uint8_t maxRetry = 5);
-char* wifiRead();
+void wifiRead(char* req);
 void reportStatus();
 void reportNodeStatus(uint8_t nodeId, uint8_t nodeBit, unsigned long ts, unsigned long tsf);
 void reportSensorStatus(const uint8_t id, const uint8_t value,const unsigned long ts = 0);
@@ -63,8 +65,10 @@ void reportSensorConfig(const uint8_t id, const double value);
 void reportStringConfig(const char* key, const char* value);
 void reportNumberConfig(const char* key, const int value);
 void syncClocks();
+void broadcastMsg(const char* msg);
 void processRfMsg();
 void processSerialMsg();
+void processBtMsg();
 void processWifiReq();
 void parseCommand(char* command);
 

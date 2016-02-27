@@ -22,18 +22,21 @@ void setup();
 
 //add your function definitions for the project Thermostat here
 void loadSensorCalibrationFactor();
-void writeSensorCalibrationFactor(double value);
+void writeSensorCalibrationFactor(double value, int addr);
 void loadRfPipeAddr();
 void writeRfPipeAddr(uint8_t value);
 unsigned long getTimestamp();
 unsigned long diffTimestamps(unsigned long hi, unsigned long lo);
 void readSensors();
 void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx);
-uint8_t getTemp(uint8_t sensor);
+uint8_t getSensorValue(uint8_t sensor);
+uint8_t getAnalogSensorValue(uint8_t sensor);
 void refreshSensorValues();
 void rfWrite(char* msg);
 void reportStatus();
 void reportConfiguration();
+void reportSensorConfig(const uint8_t id, const double value);
+void reportNumberConfig(const char* key, const int value);
 void processSerialMsg();
 
 //Do not add code below this line

@@ -10,7 +10,6 @@ RM := rm -rf
 -include sources.mk
 -include subdir.mk
 -include arduino/core/subdir.mk
--include Libraries/SoftwareSerial/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -81,7 +80,7 @@ arduino.ar: $(AR_OBJ)
 
 wifi.elf: $(LINK_OBJ) $(AR)
 	@echo 'Starting combiner'
-	"/usr/bin/avr-gcc" -Os -Wl,--gc-sections -mmcu=atmega328p  -o "/home/slg/projects/home_keeper/arduino/wifi/Release/wifi.elf"   $(LINK_OBJ) $(AR)  "/home/slg/projects/home_keeper/arduino/wifi/Release/arduino.ar" "-L/home/slg/projects/home_keeper/arduino/wifi/Release" -lm
+	"/usr/bin/avr-gcc" -Os -Wl,--gc-sections -mmcu=atmega2560  -o "/home/slg/projects/home_keeper/arduino/wifi/Release/wifi.elf"   $(LINK_OBJ) $(AR)  "/home/slg/projects/home_keeper/arduino/wifi/Release/arduino.ar" "-L/home/slg/projects/home_keeper/arduino/wifi/Release" -lm
 	@echo 'Finished building: $@'
 	@echo ' '
 

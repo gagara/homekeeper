@@ -27,9 +27,24 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>Libraries/DHT</name>
+			<type>2</type>
+			<locationURI>ArduinoPivateLibPath/DHT</locationURI>
+		</link>
+		<link>
 			<name>Libraries/EEPROMEx</name>
 			<type>2</type>
 			<locationURI>ArduinoPivateLibPath/EEPROMEx</locationURI>
+		</link>
+		<link>
+			<name>Libraries/JSON</name>
+			<type>2</type>
+			<locationURI>ArduinoPivateLibPath/JSON</locationURI>
+		</link>
+		<link>
+			<name>Libraries/MemoryFree</name>
+			<type>2</type>
+			<locationURI>ArduinoPivateLibPath/MemoryFree</locationURI>
 		</link>
 		<link>
 			<name>Libraries/RF24</name>
@@ -40,11 +55,6 @@
 			<name>Libraries/SPI</name>
 			<type>2</type>
 			<locationURI>ArduinoHardwareLibPath/SPI</locationURI>
-		</link>
-		<link>
-			<name>Libraries/aJson</name>
-			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/aJson</locationURI>
 		</link>
 		<link>
 			<name>arduino/core</name>

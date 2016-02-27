@@ -1,46 +1,34 @@
 #include "HomeKeeper.h"
 
-#include <aJSON.h>
 #include <Arduino.h>
 #include <EEPROMex.h>
 #include <MemoryFree.h>
 #include <RF24.h>
-#include <HardwareSerial.h>
-#include <SoftwareSerial.h>
-#include <pins_arduino.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <WString.h>
+#include <ArduinoJson.h>
 
 /* ========= Configuration ========= */
 
-#define __DEBUG__
+#undef __DEBUG__
 
 // Sensors pins
 static const uint8_t SENSOR_SUPPLY = A0;
 static const uint8_t SENSOR_REVERSE = A1;
 static const uint8_t SENSOR_TANK = A2;
 static const uint8_t SENSOR_BOILER = A3;
-static const uint8_t SENSOR_ROOM_1 = A0 + 16 * 1;
+static const uint8_t SENSOR_TEMP_ROOM_1 = (A0 + 16) + (4 * 1) + 0;
+static const uint8_t SENSOR_HUM_ROOM_1 = (A0 + 16) + (4 * 1) + 1;
 
 // Nodes pins
-static const uint8_t NODE_SUPPLY = 7;
-static const uint8_t NODE_HEATING = 8;
-static const uint8_t NODE_FLOOR = 9;
-static const uint8_t NODE_HOTWATER = 10;
-static const uint8_t NODE_CIRCULATION = 11;
-static const uint8_t NODE_BOILER = 12;
+static const uint8_t NODE_SUPPLY = 22; //7
+static const uint8_t NODE_HEATING = 24; //8
+static const uint8_t NODE_FLOOR = 26; //9
+static const uint8_t NODE_HOTWATER = 28; //10
+static const uint8_t NODE_CIRCULATION = 30; //11
+static const uint8_t NODE_BOILER = 32; //12
 
 // RF pins
-static const uint8_t RF_CE_PIN = 5;
-static const uint8_t RF_CSN_PIN = 6;
-
-// WIFI pins
-static const uint8_t WIFI_RX_PIN = 2;
-static const uint8_t WIFI_TX_PIN = 3;
+static const uint8_t RF_CE_PIN = 9; //5
+static const uint8_t RF_CSN_PIN = 10; //6
 
 static const uint8_t HEARTBEAT_LED = 13;
 
@@ -63,8 +51,8 @@ static const int NODE_STATE_EEPROM_ADDR = 0;
 static const int NODE_FORCED_MODE_EEPROM_ADDR = 1;
 static const int SENSORS_FACTORS_EEPROM_ADDR = 2;
 static const int WIFI_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR + (4 * 4);
-static const int WIFI_PW_EEPROM_ADDR = WIFI_AP_EEPROM_ADDR + 16;
-static const int SERVER_IP_EEPROM_ADDR = WIFI_PW_EEPROM_ADDR + 16;
+static const int WIFI_PW_EEPROM_ADDR = WIFI_AP_EEPROM_ADDR + 32;
+static const int SERVER_IP_EEPROM_ADDR = WIFI_PW_EEPROM_ADDR + 32;
 static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + 4;
 
 // Heater
@@ -72,6 +60,8 @@ static const uint8_t HEATER_SUPPLY_REVERSE_HIST = 10;
 
 // heating
 static const uint8_t HEATING_TEMP_THRESHOLD = 37;
+static const uint8_t HEATING_ROOM_1_THRESHOLD = 22;
+static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 300000; // 5m
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
@@ -121,8 +111,12 @@ static const char SERVER_IP_KEY[] = "sip";
 static const char SERVER_PORT_KEY[] = "sp";
 static const char LOCAL_IP_KEY[] = "lip";
 
-static const uint8_t JSON_MAX_WRITE_SIZE = 64;
-static const uint8_t JSON_MAX_READ_SIZE = 64;
+static const uint8_t JSON_MAX_WRITE_SIZE = 128;
+static const uint8_t JSON_MAX_READ_SIZE = 128;
+static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
+static const uint8_t RF_MAX_BODY_SIZE = 65;
+static const uint8_t HTTP_MAX_BODY_SIZE = 255;
+static const uint8_t HTTP_MAX_GET_SIZE = 32;
 
 /* ===== End of Configuration ====== */
 
@@ -135,6 +129,7 @@ uint8_t tempReverse = 0;
 uint8_t tempTank = 0;
 uint8_t tempBoiler = 0;
 uint8_t tempRoom1 = 0;
+uint8_t humRoom1 = 0;
 
 // stats
 uint8_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
@@ -177,7 +172,8 @@ unsigned long tsLastStatusReport = 0;
 unsigned long tsLastSensorsRefresh = 0;
 unsigned long tsLastSensorsRead = 0;
 
-unsigned long tsLastSensorRoom1 = 0;
+unsigned long tsLastSensorTempRoom1 = 0;
+unsigned long tsLastSensorHumRoom1 = 0;
 
 unsigned long tsPrev = 0;
 unsigned long tsCurr = 0;
@@ -193,8 +189,8 @@ double SENSOR_BOILER_FACTOR = 1;
 unsigned long boilerPowersaveCurrentPassivePeriod = 0;
 
 // WiFi
-char WIFI_AP[11];
-char WIFI_PW[11];
+char WIFI_AP[32];
+char WIFI_PW[32];
 uint8_t SERVER_IP[4] = { 0, 0, 0, 0 };
 int SERVER_PORT = 80;
 uint8_t CLIENT_ID = 0;
@@ -203,17 +199,35 @@ char OK[] = "OK";
 
 /* ======== End of Variables ======= */
 
+//======== Connectivity ========//
+
+// BT
+HardwareSerial *bt = &Serial1;
+
+//WiFi
+HardwareSerial *wifi = &Serial2;
+
 // RF24
 RF24 radio(RF_CE_PIN, RF_CSN_PIN);
 
-//WiFi
-SoftwareSerial wifi(WIFI_RX_PIN, WIFI_TX_PIN);
+//======== ============ ========//
 
 void setup() {
-    // Setup serial port
-    Serial.begin(9600);
+    // Setup serial ports
+    Serial.begin(9600);     // usb
 #ifdef __DEBUG__
     Serial.println("STARTING");
+#endif
+    bt->begin(9600);         // BT
+    loadWifiConfig();
+    wifiInit();             // WiFi
+    wifiConnect();
+    wifiStartServer();
+#ifdef __DEBUG__
+    Serial.print("IP: ");
+    char lIP[16];
+    sprintf(lIP, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
+    Serial.println(lIP);
     Serial.print("free memory: ");
     Serial.println(freeMemory());
 #endif
@@ -264,16 +278,11 @@ void setup() {
     radio.startListening();
     radio.powerUp();
 
-    // init WiFi
-    loadWifiConfig();
-    wifiInit();
-    wifiConnect();
-    wifiStartServer();
-
     // report current state
-    if (!isWifiConnected(IP)) {
+    if (!wifiGetIP()) {
         wifiConnect();
         wifiStartServer();
+        wifiGetIP();
     }
     reportStatus();
 }
@@ -314,9 +323,10 @@ void loop() {
         processBoilerHeater();
 
         if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_MSEC) {
-            if (!isWifiConnected(IP)) {
+            if (!wifiGetIP()) {
                 wifiConnect();
                 wifiStartServer();
+                wifiGetIP();
             }
             reportStatus();
         }
@@ -327,7 +337,10 @@ void loop() {
     if (Serial.available() > 0) {
         processSerialMsg();
     }
-    if (wifi.available() > 0) {
+    if (bt->available() > 0) {
+        processBtMsg();
+    }
+    if (wifi->available() > 0) {
         processWifiReq();
     }
     tsPrev = tsCurr;
@@ -387,14 +400,28 @@ void processHeatingCircuit() {
                 switchNodeState(NODE_HEATING, sensIds, sensVals, 1);
             } else {
                 // temp in tank is high enough
-                // do nothing
+                if (diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+                        && tempRoom1 >= HEATING_ROOM_1_THRESHOLD) {
+                    // temp in Room1 is high enough
+                    // turn pump OFF
+                    switchNodeState(NODE_HEATING, sensIds, sensVals, 1);
+                } else {
+                    // do nothing
+                }
             }
         } else {
             // pump is OFF
             if (tempTank >= HEATING_TEMP_THRESHOLD) {
                 // temp in tank is high enough
-                // turn pump ON
-                switchNodeState(NODE_HEATING, sensIds, sensVals, 1);
+                if (diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+                        && tempRoom1 < HEATING_ROOM_1_THRESHOLD) {
+                    // temp in Room1 is low
+                    // turn pump ON
+                    switchNodeState(NODE_HEATING, sensIds, sensVals, 1);
+                } else {
+                    // temp in Room1 is high enough
+                    // do nothing
+                }
             } else {
                 // temp in tank is too low
                 // do nothing
@@ -619,24 +646,23 @@ void writeSensorCalibrationFactor(int offset, double value) {
     EEPROM.writeDouble(offset, value);
 }
 
-char* rfRead() {
-    char* msg = (char*) malloc(JSON_MAX_READ_SIZE);
-    char* packet = (char*) malloc(RF_PACKET_LENGTH + 1);
+void rfRead(char* msg) {
     uint8_t len = 0;
     bool eoi = false;
-    while (!eoi && len < JSON_MAX_READ_SIZE) {
+    while (!eoi && len < RF_MAX_BODY_SIZE - 1) {
+        char packet[RF_PACKET_LENGTH];
         uint8_t l = radio.getDynamicPayloadSize();
+        if (l > RF_PACKET_LENGTH) {
+            len = 0;
+            break;
+        }
         radio.read(packet, l);
-        packet[l] = '\0';
-        for (uint8_t i = 0; i < l && !eoi; i++) {
+        for (uint8_t i = 0; i < l && !eoi && len < RF_MAX_BODY_SIZE - 1; i++) {
             msg[len++] = packet[i];
             eoi = (packet[i] == '\n');
         }
-        packet[0] = '\0';
     }
-    free(packet);
     msg[len] = '\0';
-    return msg;
 }
 
 void readSensors() {
@@ -661,7 +687,7 @@ void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx) {
     } else {
         prevIdx = SENSORS_RAW_VALUES_MAX_COUNT;
     }
-    val = getTemp(id);
+    val = getSensorValue(id);
     if (values[prevIdx] == MAX_SENSOR_VALUE || abs(val - values[prevIdx]) < SENSOR_NOISE_THRESHOLD) {
         values[idx] = val;
     }
@@ -709,7 +735,7 @@ void refreshSensorValues() {
     }
 }
 
-uint8_t getTemp(uint8_t sensor) {
+uint8_t getSensorValue(uint8_t sensor) {
     int rawVal = analogRead(sensor);
     double voltage = (5000 / 1024) * rawVal;
     double tempC = voltage * 0.1;
@@ -822,30 +848,29 @@ void switchNodeState(uint8_t id, uint8_t sensId[], uint8_t sensVal[], uint8_t se
         sprintf(tsfStr, "%lu", *tsf);
 
         // report state change
-        aJsonObject *root;
-        root = aJson.createObject();
-        aJson.addStringToObject(root, MSG_TYPE_KEY, MSG_NODE_STATE_CHANGED);
-        aJson.addNumberToObject(root, ID_KEY, id);
-        aJson.addNumberToObject(root, STATE_KEY, NODE_STATE_FLAGS & bit ? 1 : 0);
-        aJson.addStringToObject(root, TIMESTAMP_KEY, tsStr);
-        aJson.addNumberToObject(root, FORCE_FLAG_KEY, NODE_FORCED_MODE_FLAGS & bit ? 1 : 0);
+        StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+        JsonObject& root = jsonBuffer.createObject();
+        root[MSG_TYPE_KEY] = MSG_NODE_STATE_CHANGED;
+        root[ID_KEY] = id;
+        root[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
+        root[TIMESTAMP_KEY] = tsStr;
+        root[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
         if (NODE_FORCED_MODE_FLAGS & bit) {
-            aJson.addStringToObject(root, FORCE_TIMESTAMP_KEY, tsfStr);
+            root[FORCE_TIMESTAMP_KEY] = tsfStr;
         }
-        aJsonObject* sensorsArr = aJson.createArray();
+
+        JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
         for (unsigned int i = 0; i < sensCnt; i++) {
-            aJsonObject *rec = aJson.createObject();
-            aJson.addNumberToObject(rec, ID_KEY, sensId[i]);
-            aJson.addNumberToObject(rec, VALUE_KEY, sensVal[i]);
-            aJson.addItemToArray(sensorsArr, rec);
+            JsonObject& sens = jsonBuffer.createObject();
+            sens[ID_KEY] = sensId[i];
+            sens[VALUE_KEY] = sensVal[i];
+            sensors.add(sens);
         }
-        aJson.addItemToObject(root, SENSORS_KEY, sensorsArr);
-        char* str = aJson.print(root);
 
-        Serial.println(str);
+        char json[JSON_MAX_WRITE_SIZE];
+        root.printTo(json, JSON_MAX_WRITE_SIZE);
 
-        free(str);
-        aJson.deleteItem(root);
+        broadcastMsg(json);
     }
 }
 
@@ -947,64 +972,62 @@ void loadWifiConfig() {
 }
 
 void wifiInit() {
-    wifi.begin(115200);
-    wifi.println(F("AT+CIOBAUD=9600"));
-    wifi.begin(9600);
-    wifi.setTimeout(300);
+    wifi->begin(115200);
+    wifi->println(F("AT+CIOBAUD=9600"));
+    wifi->begin(9600);
+    wifi->setTimeout(300);
 }
 
 void wifiConnect() {
-    char s[100];
-    wifi.println(F("AT+RST"));
-    wifi.println(F("AT+CIPMODE=0"));
-    wifi.println(F("AT+CWMODE=1"));
-    sprintf(s, "AT+CWJAP=\"%s\",\"%s\"", WIFI_AP, WIFI_PW);
-    wifi.println(s);
-    delay(5000);
+    if (strlen(WIFI_AP) + strlen(WIFI_PW) > 0) {
+        char msg[128];
+        wifi->println(F("AT+RST"));
+        wifi->println(F("AT+CIPMODE=0"));
+        wifi->println(F("AT+CWMODE=1"));
+        sprintf(msg, "AT+CWJAP=\"%s\",\"%s\"", WIFI_AP, WIFI_PW);
+#ifdef __DEBUG__
+        Serial.print("wifi connecting: ");
+        Serial.println(msg);
+#endif
+        wifi->println(msg);
+        delay(5000);
+    }
 }
 
-bool isWifiConnected(uint8_t ip[4]) {
-    wifi.println(F("AT+CIFSR"));
-    String s = wifi.readStringUntil('\0');
-    char s1[] = "STAIP";
-    char s2[] = "\"";
-    uint8_t i1 = s.indexOf(s1);
-    if (i1 > 0) {
-        uint8_t i2 = s.indexOf(s2, i1 + sizeof(s1));
-        uint8_t i3 = s.indexOf(s2, i2 + 1);
-        if ((i2 + i3) > 0) {
-            String ips = s.substring(i2 + 1, i3);
-            uint8_t dot1, dot2, dot3;
-            dot1 = ips.indexOf(".");
-            dot2 = ips.indexOf(".", dot1 + 1);
-            dot3 = ips.indexOf(".", dot2 + 1);
-            ip[0] = ips.substring(0, dot1).toInt();
-            ip[1] = ips.substring(dot1 + 1, dot2).toInt();
-            ip[2] = ips.substring(dot2 + 1, dot3).toInt();
-            ip[3] = ips.substring(dot3 + 1).toInt();
-            if (!ips.equals(F("0.0.0.0"))) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+bool wifiGetIP() {
+    wifi->println(F("AT+CIFSR"));
+    String s = wifi->readStringUntil('\0');
+#ifdef __DEBUG__
+    Serial.print("wifi: ");
+    Serial.println(s);
+#endif
+    char buff[JSON_MAX_READ_SIZE];
+    s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
+    int tmp[4];
+    int n = sscanf(buff, "%*[^,\"],\"%d.%d.%d.%d", &tmp[0], &tmp[1], &tmp[2], &tmp[3]);
+    if (n == 4) {
+        IP[0] = tmp[0];
+        IP[1] = tmp[1];
+        IP[2] = tmp[2];
+        IP[3] = tmp[3];
+        return validIP(IP);
     }
     return false;
 }
-
-bool wifiStartServer() {
-    wifi.println(F("AT+CIPMUX=1"));
-    if (!wifi.find(OK))
-        return false;
-    wifi.println(F("AT+CIPSERVER=1,80"));
-    return wifi.find(OK);
+bool validIP(uint8_t ip[4]) {
+    int sum = ip[0] + ip[1] + ip[2] + ip[3];
+    return sum > 0 && sum < 255 * 4;
 }
 
-bool wifiRsp(const char* msg) {
-    char body[200];
-    sprintf(body, "HTTP/1.0 200 OK\r\nContent-Type: application/json\r\nContent-Length: %d\r\n\r\n%s", strlen(msg),
-            msg);
+bool wifiStartServer() {
+    wifi->println(F("AT+CIPMUX=1"));
+    if (!wifi->find(OK))
+        return false;
+    wifi->println(F("AT+CIPSERVER=1,80"));
+    return wifi->find(OK);
+}
 
+bool wifiRsp(const char* body) {
     char send[32];
     sprintf(send, "AT+CIPSEND=%d,%d", CLIENT_ID, strlen(body));
 
@@ -1022,32 +1045,49 @@ bool wifiRsp(const char* msg) {
     return true;
 }
 
+bool wifiRsp200() {
+    return wifiRsp("HTTP/1.0 200 OK\r\n\r\n");
+}
+
+bool wifiRsp404() {
+    return wifiRsp("HTTP/1.0 404 Not Found\r\n\r\n");
+}
+
+bool wifiRsp400() {
+    return wifiRsp("HTTP/1.0 400 Bad Request\r\n\r\n");
+}
+
 bool wifiSend(const char* msg) {
-    char body[200];
-    sprintf(body, "POST / HTTP/1.1 \r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s", strlen(msg),
-            msg);
+    if (validIP(IP) && validIP(SERVER_IP)) {
+        char body[HTTP_MAX_BODY_SIZE];
+        sprintf(body,
+                "POST / HTTP/1.1 \r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s",
+                strlen(msg), msg);
 
-    char connect[64];
-    sprintf(connect, "AT+CIPSTART=0,\"TCP\",\"%s\",%d", SERVER_IP, SERVER_PORT);
+        char connect[64];
+        sprintf(connect, "AT+CIPSTART=3,\"TCP\",\"%d.%d.%d.%d\",%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2],
+                SERVER_IP[3], SERVER_PORT);
 
-    char send[32];
-    sprintf(send, "AT+CIPSEND=0,%d", strlen(body));
+        char send[32];
+        sprintf(send, "AT+CIPSEND=3,%d", strlen(body));
 
-    char close[16];
-    sprintf(close, "AT+CIPCLOSE=0");
+        char close[16];
+        sprintf(close, "AT+CIPCLOSE=3");
+        if (!wifiWrite(connect, "CONNECT", 200, 1))
+            return false;
 
-    if (!wifiWrite(connect, "CONNECT", 1000))
+        if (!wifiWrite(send, ">"))
+            return false;
+
+        if (!wifiWrite(body, OK, 200, 1))
+            return false;
+
+        wifiWrite(close, OK);
+
+        return true;
+    } else {
         return false;
-
-    if (!wifiWrite(send, ">"))
-        return false;
-
-    if (!wifiWrite(body, OK, 300, 1))
-        return false;
-
-    wifiWrite(close, OK);
-
-    return true;
+    }
 }
 
 bool wifiWrite(const char* msg, const char* rsp, const int wait, const uint8_t maxRetry) {
@@ -1056,9 +1096,9 @@ bool wifiWrite(const char* msg, const char* rsp, const int wait, const uint8_t m
     r[strlen(rsp)] = '\0';
     byte a = 0;
     while (a < maxRetry) {
-        wifi.println(msg);
+        wifi->println(msg);
         delay(wait);
-        if (wifi.find(r)) {
+        if (wifi->find(r)) {
             break;
         }
         a++;
@@ -1066,22 +1106,21 @@ bool wifiWrite(const char* msg, const char* rsp, const int wait, const uint8_t m
     return a < maxRetry;
 }
 
-char* wifiRead() {
-    String s = wifi.readStringUntil('\0');
-//    Serial.println(s);
-    uint8_t cidx = s.indexOf(F("+IPD,"));
-    if (cidx > 0) {
-        CLIENT_ID = s.substring(cidx + 5, (cidx + 5) + 1).toInt();
-        uint8_t rqidx1 = s.indexOf(F("GET /"));
-        uint8_t rqidx2 = s.indexOf(" ", rqidx1 + 5);
-        if (rqidx1 > 0 && rqidx2 > 0 && (rqidx1 + 5) < rqidx2) {
-            String rq = s.substring(rqidx1 + 5, rqidx2);
-            char* result = (char*) malloc(JSON_MAX_READ_SIZE);
-            rq.toCharArray(result, JSON_MAX_READ_SIZE, 0);
-            return result;
-        }
+void wifiRead(char* req) {
+    String s = wifi->readStringUntil('\0');
+#ifdef __DEBUG__
+    Serial.print("wifi req: ");
+    Serial.println(s);
+#endif
+    char buff[JSON_MAX_READ_SIZE];
+    s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
+    int clientId;
+    int n = sscanf(buff, "%*[^+IPD]+IPD,%d,%*d:GET%s", &clientId, req);
+    if (n == 2) {
+        CLIENT_ID = clientId;
+    } else {
+        req[0] = '\0';
     }
-    return NULL;
 }
 
 void reportStatus() {
@@ -1096,38 +1135,31 @@ void reportStatus() {
     reportSensorStatus(SENSOR_REVERSE, tempReverse);
     reportSensorStatus(SENSOR_TANK, tempTank);
     reportSensorStatus(SENSOR_BOILER, tempBoiler);
-    reportSensorStatus(SENSOR_ROOM_1, tempRoom1, tsLastSensorRoom1);
+    reportSensorStatus(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1);
+    reportSensorStatus(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1);
 
     tsLastStatusReport = tsCurr;
 }
 
 void reportNodeStatus(uint8_t id, uint8_t bit, unsigned long ts, unsigned long tsf) {
-    aJsonObject *root, *nodesArr, *node;
-    char tss[12];
-    char tsfs[12];
-    char* outBuf;
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
 
-    sprintf(tss, "%lu", ts);
-    sprintf(tsfs, "%lu", tsf);
-
-    node = aJson.createObject();
-    aJson.addNumberToObject(node, ID_KEY, id);
-    aJson.addNumberToObject(node, STATE_KEY, NODE_STATE_FLAGS & bit ? 1 : 0);
-    aJson.addStringToObject(node, TIMESTAMP_KEY, tss);
-    aJson.addNumberToObject(node, FORCE_FLAG_KEY, NODE_FORCED_MODE_FLAGS & bit ? 1 : 0);
+    JsonObject& node = jsonBuffer.createObject();
+    node[ID_KEY] = id;
+    node[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
+    node[TIMESTAMP_KEY] = ts;
+    node[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
     if (NODE_FORCED_MODE_FLAGS & bit) {
-        aJson.addStringToObject(node, FORCE_TIMESTAMP_KEY, tsfs);
+        node[FORCE_TIMESTAMP_KEY] = tsf;
     }
 
-    nodesArr = aJson.createArray();
-    aJson.addItemToArray(nodesArr, node);
-    root = aJson.createObject();
-    aJson.addStringToObject(root, MSG_TYPE_KEY, MSG_CURRENT_STATUS_REPORT);
-    aJson.addItemToObject(root, NODES_KEY, nodesArr);
+    JsonArray& nodes = root.createNestedArray(NODES_KEY);
+    nodes.add(node);
 
-    outBuf = (char*) malloc(JSON_MAX_WRITE_SIZE);
-    aJsonStringStream stringStream(NULL, outBuf, JSON_MAX_WRITE_SIZE);
-    aJson.print(root, &stringStream);
+    char json[JSON_MAX_WRITE_SIZE];
+    root.printTo(json, JSON_MAX_WRITE_SIZE);
 
 #ifdef __DEBUG__
     Serial.print(getTimestamp());
@@ -1135,36 +1167,26 @@ void reportNodeStatus(uint8_t id, uint8_t bit, unsigned long ts, unsigned long t
     Serial.print("free memory: ");
     Serial.println(freeMemory());
 #endif
-    Serial.println(outBuf);
-    wifiSend(outBuf);
-
-    free(outBuf);
-    aJson.deleteItem(root);
+    broadcastMsg(json);
 }
 
-void reportSensorStatus(const uint8_t id, const uint8_t value,const unsigned long ts) {
-    aJsonObject *root, *sensArr, *sens;
-    char* outBuf;
+void reportSensorStatus(const uint8_t id, const uint8_t value, const unsigned long ts) {
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
 
-    sensArr = aJson.createArray();
-
-    sens = aJson.createObject();
-    aJson.addNumberToObject(sens, ID_KEY, id);
-    aJson.addNumberToObject(sens, VALUE_KEY, value);
-    aJson.addItemToArray(sensArr, sens);
+    JsonObject& sens = jsonBuffer.createObject();
+    sens[ID_KEY] = id;
+    sens[VALUE_KEY] = value;
     if (ts != 0) {
-        char tss[12];
-        sprintf(tss, "%lu", ts);
-        aJson.addStringToObject(sens, TIMESTAMP_KEY, tss);
+        sens[TIMESTAMP_KEY] = ts;
     }
 
-    root = aJson.createObject();
-    aJson.addStringToObject(root, MSG_TYPE_KEY, MSG_CURRENT_STATUS_REPORT);
-    aJson.addItemToObject(root, SENSORS_KEY, sensArr);
+    JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
+    sensors.add(sens);
 
-    outBuf = (char*) malloc(JSON_MAX_WRITE_SIZE);
-    aJsonStringStream stringStream(NULL, outBuf, JSON_MAX_WRITE_SIZE);
-    aJson.print(root, &stringStream);
+    char json[JSON_MAX_WRITE_SIZE];
+    root.printTo(json, JSON_MAX_WRITE_SIZE);
 
 #ifdef __DEBUG__
     Serial.print(getTimestamp());
@@ -1172,11 +1194,7 @@ void reportSensorStatus(const uint8_t id, const uint8_t value,const unsigned lon
     Serial.print("free memory: ");
     Serial.println(freeMemory());
 #endif
-    Serial.println(outBuf);
-    wifiSend(outBuf);
-
-    free(outBuf);
-    aJson.deleteItem(root);
+    broadcastMsg(json);
 }
 
 void reportConfiguration() {
@@ -1196,146 +1214,198 @@ void reportConfiguration() {
 }
 
 void reportSensorConfig(const uint8_t id, const double value) {
-    aJsonObject *root, *sensArr, *sens;
-    char* outBuf;
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
 
-    sensArr = aJson.createArray();
+    JsonObject& sens = jsonBuffer.createObject();
+    sens[ID_KEY] = id;
+    sens[CALIBRATION_FACTOR_KEY] = value;
 
-    sens = aJson.createObject();
-    aJson.addNumberToObject(sens, ID_KEY, id);
-    aJson.addNumberToObject(sens, CALIBRATION_FACTOR_KEY, value);
-    aJson.addItemToArray(sensArr, sens);
+    JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
+    sensors.add(sens);
 
-    root = aJson.createObject();
-    aJson.addStringToObject(root, MSG_TYPE_KEY, MSG_CONFIGURATION);
-    aJson.addItemToObject(root, SENSORS_KEY, sensArr);
+    char json[JSON_MAX_WRITE_SIZE];
+    root.printTo(json, JSON_MAX_WRITE_SIZE);
 
-    outBuf = (char*) malloc(JSON_MAX_WRITE_SIZE);
-    aJsonStringStream stringStream(NULL, outBuf, JSON_MAX_WRITE_SIZE);
-    aJson.print(root, &stringStream);
-
-    Serial.println(outBuf);
-
-    free(outBuf);
-    aJson.deleteItem(root);
+    broadcastMsg(json);
 }
 
 void reportStringConfig(const char* key, const char* value) {
-    aJsonObject *root;
-    char* outBuf;
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+    root[key] = value;
 
-    root = aJson.createObject();
-    aJson.addStringToObject(root, MSG_TYPE_KEY, MSG_CONFIGURATION);
-    aJson.addStringToObject(root, key, value);
+    char json[JSON_MAX_WRITE_SIZE];
+    root.printTo(json, JSON_MAX_WRITE_SIZE);
 
-    outBuf = (char*) malloc(JSON_MAX_WRITE_SIZE);
-    aJsonStringStream stringStream(NULL, outBuf, JSON_MAX_WRITE_SIZE);
-    aJson.print(root, &stringStream);
-
-    Serial.println(outBuf);
-
-    free(outBuf);
-    aJson.deleteItem(root);
+    broadcastMsg(json);
 }
 
 void reportNumberConfig(const char* key, const int value) {
-    aJsonObject *root;
-    char* outBuf;
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+    root[key] = value;
 
-    root = aJson.createObject();
-    aJson.addStringToObject(root, MSG_TYPE_KEY, MSG_CONFIGURATION);
-    aJson.addNumberToObject(root, key, value);
+    char json[JSON_MAX_WRITE_SIZE];
+    root.printTo(json, JSON_MAX_WRITE_SIZE);
 
-    outBuf = (char*) malloc(JSON_MAX_WRITE_SIZE);
-    aJsonStringStream stringStream(NULL, outBuf, JSON_MAX_WRITE_SIZE);
-    aJson.print(root, &stringStream);
-
-    Serial.println(outBuf);
-
-    free(outBuf);
-    aJson.deleteItem(root);
+    broadcastMsg(json);
 }
 
 void syncClocks() {
     char tsStr[12];
     sprintf(tsStr, "%lu", getTimestamp());
 
-    aJsonObject *root;
-    root = aJson.createObject();
-    aJson.addStringToObject(root, MSG_TYPE_KEY, MSG_CLOCK_SYNC);
-    aJson.addStringToObject(root, TIMESTAMP_KEY, tsStr);
-    aJson.addNumberToObject(root, OVERFLOW_COUNT_KEY, overflowCount);
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CLOCK_SYNC;
+    root[TIMESTAMP_KEY] = tsStr;
+    root[OVERFLOW_COUNT_KEY] = overflowCount;
 
-    char* str = aJson.print(root);
+    char json[JSON_MAX_WRITE_SIZE];
+    root.printTo(json, JSON_MAX_WRITE_SIZE);
 
-    Serial.println(str);
-    wifiSend(str);
+    broadcastMsg(json);
+}
 
-    free(str);
-    aJson.deleteItem(root);
+void broadcastMsg(const char* msg) {
+    Serial.println(msg);
+    bt->println(msg);
+    bool r = wifiSend(msg);
+#ifdef __DEBUG__
+    Serial.print("wifi send: ");
+    if (r) {
+        Serial.println("OK");
+    } else {
+        Serial.println("FAILED");
+    }
+#endif
 }
 
 void processRfMsg() {
-    char* buff = rfRead();
+    char buff[JSON_MAX_READ_SIZE];
+    rfRead(buff);
     parseCommand(buff);
-    free(buff);
 }
 
 void processSerialMsg() {
-    char* buff = (char*) malloc(JSON_MAX_READ_SIZE);
+    char buff[JSON_MAX_READ_SIZE];
     String s = Serial.readStringUntil('\0');
     s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
     parseCommand(buff);
-    free(buff);
+}
+
+void processBtMsg() {
+    char buff[JSON_MAX_READ_SIZE];
+    String s = bt->readStringUntil('\0');
+    s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
+    parseCommand(buff);
 }
 
 void processWifiReq() {
-    char* req = wifiRead();
-    char* cmd = (char*) malloc(JSON_MAX_READ_SIZE);
-    // TODO: parse request. build json
-    parseCommand(cmd);
-    free(cmd);
-    free(req);
+    char req[HTTP_MAX_GET_SIZE];
+    wifiRead(req);
+    if (strlen(req) > 0) {
+        char cmd[4];
+        int id, state;
+        unsigned long ts;
+        int n = sscanf(req, "/%3s/%d/%d/%ld", cmd, &id, &state, &ts);
+        if (n > 0) {
+            StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+            JsonObject& root = jsonBuffer.createObject();
+            if (strcmp(cmd, MSG_CLOCK_SYNC) == 0) {
+                if (n == 1) {
+                    wifiRsp200();
+                    root[MSG_TYPE_KEY] = MSG_CLOCK_SYNC;
+                } else {
+                    wifiRsp400();
+                }
+            } else if (strcmp(cmd, MSG_CURRENT_STATUS_REPORT) == 0) {
+                if (n == 1) {
+                    wifiRsp200();
+                    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
+                } else {
+                    wifiRsp400();
+                }
+            } else if (strcmp(cmd, MSG_NODE_STATE_CHANGED) == 0) {
+                if (n > 1) {
+                    wifiRsp200();
+                    root[MSG_TYPE_KEY] = MSG_NODE_STATE_CHANGED;
+                    root[ID_KEY] = id;
+                    if (n > 2) {
+                        root[STATE_KEY] = state;
+                    }
+                    if (n > 3) {
+                        char tss[12];
+                        sprintf(tss, "%lu", ts);
+                        root[FORCE_TIMESTAMP_KEY] = tss;
+                    }
+                } else {
+                    wifiRsp400();
+                }
+            } else {
+                wifiRsp404();
+            }
+            if (root.containsKey(MSG_TYPE_KEY)) {
+                char json[JSON_MAX_WRITE_SIZE];
+                root.printTo(json, JSON_MAX_WRITE_SIZE);
+                parseCommand(json);
+            }
+        } else {
+            wifiRsp404();
+        }
+    }
 }
 
 void parseCommand(char* command) {
-    aJsonObject *root;
-    root = aJson.parse(command);
-    if (root != NULL) {
-        aJsonObject *msgType = aJson.getObjectItem(root, MSG_TYPE_KEY);
-        if (msgType != NULL) {
-            if (strcmp(msgType->valuestring, MSG_CLOCK_SYNC) == 0) {
-                // SYNC
-                syncClocks();
-            } else if (strcmp(msgType->valuestring, MSG_CURRENT_STATUS_REPORT) == 0) {
-                // CSR
-                aJsonObject *sensorsArrObj = aJson.getObjectItem(root, SENSORS_KEY);
-                if (sensorsArrObj != NULL) {
-                    for(unsigned char i = 0; i < aJson.getArraySize(sensorsArrObj); i++) {
-                        aJsonObject *sensorsObj = aJson.getArrayItem(sensorsArrObj, i);
-                        aJsonObject *idObj = aJson.getObjectItem(sensorsObj, ID_KEY);
-                        aJsonObject *valObj = aJson.getObjectItem(sensorsObj, VALUE_KEY);
-                        if (idObj != NULL && valObj != NULL) {
-                            // find sensor
-                            if (SENSOR_ROOM_1 == idObj->valueint) {
-                                tempRoom1 = valObj->valueint;
-                                tsLastSensorRoom1 = tsCurr;
-                            }// else if(...)
-                        }
-                    }
-                } else {
-                    reportStatus();
+#ifdef __DEBUG__
+    Serial.print("parsing cmd: ");
+    Serial.println(command);
+#endif
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.parseObject(command);
+#ifdef __DEBUG__
+    Serial.println("parsed");
+    Serial.print("free memory: ");
+    Serial.println(freeMemory());
+#endif
+    if (root.success()) {
+        const char* msgType = root[MSG_TYPE_KEY];
+        if (strcmp(msgType, MSG_CLOCK_SYNC) == 0) {
+            // SYNC
+            syncClocks();
+        } else if (strcmp(msgType, MSG_CURRENT_STATUS_REPORT) == 0) {
+            // CSR
+            if (root.containsKey(SENSORS_KEY)) {
+                JsonArray& sensors = root[SENSORS_KEY];
+                for (unsigned char i = 0; i < sensors.size(); i++) {
+                    uint8_t id = sensors[i][ID_KEY].as<uint8_t>();
+                    uint8_t val = sensors[i][VALUE_KEY].as<uint8_t>();
+                    // find sensor
+                    if (id == SENSOR_TEMP_ROOM_1) {
+                        tempRoom1 = val;
+                        tsLastSensorTempRoom1 = tsCurr;
+                    } else if (id == SENSOR_HUM_ROOM_1) {
+                        humRoom1 = val;
+                        tsLastSensorHumRoom1 = tsCurr;
+                    } // else if(...)
                 }
-            } else if (strcmp(msgType->valuestring, MSG_NODE_STATE_CHANGED) == 0) {
-                // NSC
-                aJsonObject *nodeIdObj = aJson.getObjectItem(root, ID_KEY);
-                if (nodeIdObj != NULL) {
-                    aJsonObject *stateObj = aJson.getObjectItem(root, STATE_KEY);
-                    if (stateObj != NULL && (stateObj->valueint == 0 || stateObj->valueint == 1)) {
+            } else {
+                reportStatus();
+            }
+        } else if (strcmp(msgType, MSG_NODE_STATE_CHANGED) == 0) {
+            // NSC
+            if (root.containsKey(ID_KEY)) {
+                uint8_t id = root[ID_KEY].as<uint8_t>();
+                if (root.containsKey(STATE_KEY)) {
+                    uint8_t state = root[STATE_KEY].as<uint8_t>();
+                    if (state == 0 || state == 1) {
                         unsigned long ts;
-                        aJsonObject *tsObj = aJson.getObjectItem(root, FORCE_TIMESTAMP_KEY);
-                        if (tsObj != NULL) {
-                            ts = atol(tsObj->valuestring);
+                        if (root.containsKey(FORCE_TIMESTAMP_KEY)) {
+                            ts = root[FORCE_TIMESTAMP_KEY].as<unsigned long>();
                             ts += tsCurr;
                             if (ts == 0) {
                                 ts++;
@@ -1343,60 +1413,52 @@ void parseCommand(char* command) {
                         } else {
                             ts = 0;
                         }
-                        forceNodeState(nodeIdObj->valueint, stateObj->valueint, ts);
-                    } else {
-                        unForceNodeState(nodeIdObj->valueint);
+                        forceNodeState(id, state, ts);
                     }
-                }
-            } else if (strcmp(msgType->valuestring, MSG_CONFIGURATION) == 0) {
-                // CFG
-                aJsonObject *sensorObj = aJson.getObjectItem(root, SENSORS_KEY);
-                aJsonObject *wifiAP = aJson.getObjectItem(root, WIFI_AP_KEY);
-                aJsonObject *wifiPW = aJson.getObjectItem(root, WIFI_PASSWORD_KEY);
-                aJsonObject *serverIP = aJson.getObjectItem(root, SERVER_IP_KEY);
-                aJsonObject *serverPort = aJson.getObjectItem(root, SERVER_PORT_KEY);
-                if (sensorObj != NULL) {
-                    aJsonObject *idObj = aJson.getObjectItem(sensorObj, ID_KEY);
-                    if (idObj != NULL) {
-                        aJsonObject *cfObj = aJson.getObjectItem(sensorObj, CALIBRATION_FACTOR_KEY);
-                        if (cfObj != NULL) {
-                            uint8_t id = idObj->valueint;
-                            double cf = cfObj->valuefloat;
-                            if (id == SENSOR_SUPPLY) {
-                                writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0, cf);
-                                SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0);
-                            } else if (id == SENSOR_REVERSE) {
-                                writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4, cf);
-                                SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
-                            } else if (id == SENSOR_TANK) {
-                                writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 8, cf);
-                                SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 8);
-                            } else if (id == SENSOR_BOILER) {
-                                writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 12, cf);
-                                SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 12);
-                            }
-                        }
-                    }
-                } else if (wifiAP != NULL) {
-                    sprintf(WIFI_AP, "%s", wifiAP->valuestring);
-                    EEPROM.writeBlock(WIFI_AP_EEPROM_ADDR, WIFI_AP, sizeof(WIFI_AP));
-                } else if (wifiPW != NULL) {
-                    sprintf(WIFI_PW, "%s", wifiPW->valuestring);
-                    EEPROM.writeBlock(WIFI_PW_EEPROM_ADDR, WIFI_PW, sizeof(WIFI_PW));
-                } else if (serverIP != NULL) {
-                    int tmpIP[4];
-                    sscanf(serverIP->valuestring, "%d.%d.%d.%d", &tmpIP[0], &tmpIP[1], &tmpIP[2], &tmpIP[3]);
-                    SERVER_IP[0] = tmpIP[0];
-                    SERVER_IP[1] = tmpIP[1];
-                    SERVER_IP[2] = tmpIP[2];
-                    SERVER_IP[3] = tmpIP[3];
-                    EEPROM.writeBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
-                } else if (serverPort != NULL) {
-                    SERVER_PORT = serverPort->valueint;
-                    EEPROM.writeInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
                 } else {
-                    reportConfiguration();
+                    unForceNodeState(id);
                 }
+            }
+        } else if (strcmp(msgType, MSG_CONFIGURATION) == 0) {
+            // CFG
+            if (root.containsKey(SENSORS_KEY)) {
+                JsonObject& sensor = root[SENSORS_KEY].asObject();
+                if (sensor.containsKey(ID_KEY) && sensor.containsKey(CALIBRATION_FACTOR_KEY)) {
+                    uint8_t id = sensor[ID_KEY].as<uint8_t>();
+                    double cf = sensor[CALIBRATION_FACTOR_KEY].as<double>();
+                    if (id == SENSOR_SUPPLY) {
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0, cf);
+                        SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0);
+                    } else if (id == SENSOR_REVERSE) {
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4, cf);
+                        SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
+                    } else if (id == SENSOR_TANK) {
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 8, cf);
+                        SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 8);
+                    } else if (id == SENSOR_BOILER) {
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 12, cf);
+                        SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 12);
+                    }
+                }
+            } else if (root.containsKey(WIFI_AP_KEY)) {
+                sprintf(WIFI_AP, "%s", root[WIFI_AP_KEY].asString());
+                EEPROM.writeBlock(WIFI_AP_EEPROM_ADDR, WIFI_AP, sizeof(WIFI_AP));
+            } else if (root.containsKey(WIFI_PASSWORD_KEY)) {
+                sprintf(WIFI_PW, "%s", root[WIFI_PASSWORD_KEY].asString());
+                EEPROM.writeBlock(WIFI_PW_EEPROM_ADDR, WIFI_PW, sizeof(WIFI_PW));
+            } else if (root.containsKey(SERVER_IP_KEY)) {
+                int tmpIP[4];
+                sscanf(root[SERVER_IP_KEY], "%d.%d.%d.%d", &tmpIP[0], &tmpIP[1], &tmpIP[2], &tmpIP[3]);
+                SERVER_IP[0] = tmpIP[0];
+                SERVER_IP[1] = tmpIP[1];
+                SERVER_IP[2] = tmpIP[2];
+                SERVER_IP[3] = tmpIP[3];
+                EEPROM.writeBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
+            } else if (root.containsKey(SERVER_PORT_KEY)) {
+                SERVER_PORT = root[SERVER_PORT_KEY].as<int>();
+                EEPROM.writeInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
+            } else {
+                reportConfiguration();
             }
         }
     }
@@ -1404,5 +1466,4 @@ void parseCommand(char* command) {
     Serial.print("free memory: ");
     Serial.println(freeMemory());
 #endif
-    aJson.deleteItem(root);
 }

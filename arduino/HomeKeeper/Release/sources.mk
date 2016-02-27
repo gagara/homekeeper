@@ -38,14 +38,13 @@ CPP_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 arduino/core \
-Libraries/aJson/utility \
-Libraries/aJson \
-Libraries/SoftwareSerial \
 Libraries/SPI \
 Libraries/RF24/tests/pingpair_test \
 Libraries/RF24/tests/pingpair_blocking \
 Libraries/RF24 \
 Libraries/MemoryFree \
+Libraries/JSON/src \
+Libraries/JSON/src/Internals \
 Libraries/EEPROMEx \
 . \
 

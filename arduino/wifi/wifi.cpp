@@ -1,7 +1,5 @@
 #include "wifi.h"
 
-#include <SoftwareSerial.h>
-
 static const char WIFI_AP[] = "point39";
 static const char WIFI_PW[] = "87654321";
 static const char WIFI_SERVER[] = "192.168.0.139";
@@ -12,7 +10,8 @@ static const uint8_t JSON_MAX_READ_SIZE = 128;
 uint8_t clientId = 0;
 uint8_t WIFI_IP[4] = { 0, 0, 0, 0 };
 
-SoftwareSerial wifi(2, 3); //RX TX
+HardwareSerial *wifi = &Serial2;
+//SoftwareSerial wifi(2, 3); //RX TX
 
 void setup() {
     Serial.begin(9600);
@@ -38,11 +37,11 @@ void setup() {
 }
 
 void loop() {
-    if (wifi.available() > 0) {
+    if (wifi->available() > 0) {
         char* cmd = wifiRead();
         // TODO: parse cmd
         if (strlen(cmd) > 1) {
-            wifiRsp(cmd);
+            wifiRsp200(cmd);
             Serial.print("sending: ");
             Serial.println(cmd);
             if (wifiSend(cmd)) {
@@ -54,67 +53,59 @@ void loop() {
         free(cmd);
     }
     if (Serial.available() > 0) {
-        wifi.println(Serial.readStringUntil('\0'));
+        wifi->println(Serial.readStringUntil('\0'));
     }
     delay(1000);
 }
 
 void wifiInit() {
-    wifi.begin(115200);
-    wifi.println("AT+CIOBAUD=9600");
-    wifi.begin(9600);
-    wifi.setTimeout(300);
+    wifi->begin(9600);
+    wifi->begin(115200);
+    wifi->println("AT+CIOBAUD=9600");
+    wifi->begin(9600);
+    wifi->setTimeout(300);
 }
 
 void wifiConnect() {
     char s[100];
-    wifi.println("AT+RST");
-    wifi.println("AT+CIPMODE=0");
-    wifi.println("AT+CWMODE=1");
+    wifi->println("AT+RST");
+    wifi->println("AT+CIPMODE=0");
+    wifi->println("AT+CWMODE=1");
     sprintf(s, "AT+CWJAP=\"%s\",\"%s\"", WIFI_AP, WIFI_PW);
-    wifi.println(s);
+    Serial.println(s);
+    wifi->println(s);
     delay(5000);
 }
 
-bool isWifiConnected(char* ip) {
-    wifi.println("AT+CIFSR");
-    String s = wifi.readStringUntil('\0');
-    char s1[] = "STAIP";
-    char s2[] = "\"";
-    uint8_t i1 = s.indexOf(s1);
-    if (i1 > 0) {
-        uint8_t i2 = s.indexOf(s2, i1 + sizeof(s1));
-        uint8_t i3 = s.indexOf(s2, i2 + 1);
-        if ((i2 + i3) > 0) {
-            String ips = s.substring(i2 + 1, i3);
-            uint8_t dot1, dot2, dot3;
-            dot1 = ips.indexOf(".");
-            dot2 = ips.indexOf(".", dot1 + 1);
-            dot3 = ips.indexOf(".", dot2 + 1);
-            WIFI_IP[0] = ips.substring(0, dot1).toInt();
-            WIFI_IP[1] = ips.substring(dot1 + 1, dot2).toInt();
-            WIFI_IP[2] = ips.substring(dot2 + 1, dot3).toInt();
-            WIFI_IP[3] = ips.substring(dot3 + 1).toInt();
-            if (!ips.equals("0.0.0.0")) {
-                ips.toCharArray(ip, 16, 0);
-                return true;
-            } else {
-                return false;
-            }
-        }
+bool isWifiConnected(char* ips) {
+    wifi->println("AT+CIFSR");
+    String s = wifi->readStringUntil('\0');
+    char* buff = (char*) malloc(JSON_MAX_READ_SIZE);
+    s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
+    int ip[4];
+    int n = sscanf(buff, "%*[^,\"],\"%d.%d.%d.%d", &ip[0], &ip[1], &ip[2], &ip[3]);
+    free(buff);
+    if (n == 4) {
+        WIFI_IP[0] = ip[0];
+        WIFI_IP[1] = ip[1];
+        WIFI_IP[2] = ip[2];
+        WIFI_IP[3] = ip[3];
+        int sum = WIFI_IP[0] + WIFI_IP[1] + WIFI_IP[2] + WIFI_IP[3];
+        return sum > 0 && sum < 255 * 4;
+    } else {
+        return false;
     }
-    return false;
 }
 
 bool wifiStartServer() {
-    wifi.println("AT+CIPMUX=1");
-    if (!wifi.find(OK))
+    wifi->println("AT+CIPMUX=1");
+    if (!wifi->find(OK))
         return false;
-    wifi.println("AT+CIPSERVER=1,80");
-    return wifi.find(OK);
+    wifi->println("AT+CIPSERVER=1,80");
+    return wifi->find(OK);
 }
 
-bool wifiRsp(const char* msg) {
+bool wifiRsp200(const char* msg) {
     char body[200];
     sprintf(body, "HTTP/1.0 200 OK\r\nContent-Type: application/json\r\nContent-Length: %d\r\n\r\n%s", strlen(msg),
             msg);
@@ -170,9 +161,9 @@ bool wifiWrite(const char* msg, const char* rsp, const int wait, const uint8_t m
     r[strlen(rsp)] = '\0';
     byte a = 0;
     while (a < maxRetry) {
-        wifi.println(msg);
+        wifi->println(msg);
         delay(wait);
-        if (wifi.find(r)) {
+        if (wifi->find(r)) {
             break;
         }
         a++;
@@ -181,8 +172,8 @@ bool wifiWrite(const char* msg, const char* rsp, const int wait, const uint8_t m
 }
 
 char* wifiRead() {
-    String s = wifi.readStringUntil('\0');
-//    Serial.println(s);
+    String s = wifi->readStringUntil('\0');
+    Serial.println(s);
     uint8_t cidx = s.indexOf("+IPD,");
     if (cidx > 0) {
         clientId = s.substring(cidx + 5, (cidx + 5) + 1).toInt();

@@ -32,6 +32,11 @@
 			<locationURI>ArduinoPivateLibPath/EEPROMEx</locationURI>
 		</link>
 		<link>
+			<name>Libraries/JSON</name>
+			<type>2</type>
+			<locationURI>ArduinoPivateLibPath/JSON</locationURI>
+		</link>
+		<link>
 			<name>Libraries/MemoryFree</name>
 			<type>2</type>
 			<locationURI>ArduinoPivateLibPath/MemoryFree</locationURI>
@@ -47,16 +52,6 @@
 			<locationURI>ArduinoHardwareLibPath/SPI</locationURI>
 		</link>
 		<link>
-			<name>Libraries/SoftwareSerial</name>
-			<type>2</type>
-			<locationURI>ArduinoHardwareLibPath/SoftwareSerial</locationURI>
-		</link>
-		<link>
-			<name>Libraries/aJson</name>
-			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/aJson</locationURI>
-		</link>
-		<link>
 			<name>arduino/core</name>
 			<type>2</type>
 			<locationURI>ArduinoPlatformPath/cores/arduino</locationURI>
@@ -64,7 +59,7 @@
 		<link>
 			<name>arduino/variant</name>
 			<type>2</type>
-			<locationURI>ArduinoPinPath/standard</locationURI>
+			<locationURI>ArduinoPinPath/mega</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

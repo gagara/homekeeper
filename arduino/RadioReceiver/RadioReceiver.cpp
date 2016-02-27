@@ -10,7 +10,7 @@ static const uint8_t RF_PACKET_LENGTH = 32;
 
 static const uint8_t JSON_MAX_READ_SIZE = 255;
 
-RF24 radio(5, 6);
+RF24 radio(9, 10);
 
 void setup() {
     Serial.begin(9600);
