@@ -1,9 +1,9 @@
 **/.settings
 client/**/bin
 client/**/gen
-firmware/**/Libraries
-firmware/**/Release
-firmware/**/arduino
+firmware/*/Libraries
+firmware/*/Release
+firmware/*/arduino
 *.d
 *.o
 *.eep
