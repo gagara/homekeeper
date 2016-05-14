@@ -4,10 +4,10 @@
 // - extern variable definitions
 // In the appropriate section
 
-#ifndef _HomeKeeper_H_
-#define _HomeKeeper_H_
+#ifndef _CentralUnit_H_
+#define _CentralUnit_H_
 #include "Arduino.h"
-//add your includes for the project HomeKeeper here
+//add your includes for the project CentralUnit here
 
 //end of add your includes here
 #ifdef __cplusplus
@@ -19,7 +19,7 @@ void setup();
 } // extern "C"
 #endif
 
-//add your function definitions for the project HomeKeeper here
+//add your function definitions for the project CentralUnit here
 
 void processSupplyCircuit();
 void processHeatingCircuit();
@@ -27,6 +27,7 @@ void processFloorCircuit();
 void processHotWaterCircuit();
 void processCirculationCircuit();
 void processBoilerHeater();
+void processStandbyHeater();
 void loadSensorsCalibrationFactors();
 double readSensorCalibrationFactor(int offset);
 void writeSensorCalibrationFactor(int offset, double value);
@@ -73,4 +74,4 @@ void processWifiReq();
 void parseCommand(char* command);
 
 //Do not add code below this line
-#endif /* _HomeKeeper_H_ */
+#endif /* _CentralUnit_H_ */

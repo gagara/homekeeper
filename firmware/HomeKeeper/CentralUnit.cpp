@@ -15,6 +15,8 @@ static const uint8_t SENSOR_SUPPLY = A0;
 static const uint8_t SENSOR_REVERSE = A1;
 static const uint8_t SENSOR_TANK = A2;
 static const uint8_t SENSOR_BOILER = A3;
+static const uint8_t SENSOR_MIX = A4;
+static const uint8_t SENSOR_SB_HEATER = A5;
 static const uint8_t SENSOR_TEMP_ROOM_1 = (A0 + 16) + (4 * 1) + 0;
 static const uint8_t SENSOR_HUM_ROOM_1 = (A0 + 16) + (4 * 1) + 1;
 
@@ -25,6 +27,7 @@ static const uint8_t NODE_FLOOR = 26; //9
 static const uint8_t NODE_HOTWATER = 28; //10
 static const uint8_t NODE_CIRCULATION = 30; //11
 static const uint8_t NODE_BOILER = 32; //12
+static const uint8_t NODE_SB_HEATER = 34;
 
 // RF pins
 static const uint8_t RF_CE_PIN = 9; //5
@@ -39,6 +42,7 @@ static const uint8_t NODE_FLOOR_BIT = 4;
 static const uint8_t NODE_HOTWATER_BIT = 8;
 static const uint8_t NODE_CIRCULATION_BIT = 16;
 static const uint8_t NODE_BOILER_BIT = 32;
+static const uint8_t NODE_SB_HEATER_BIT = 64;
 
 // etc
 static const unsigned long MAX_TIMESTAMP = -1;
@@ -50,13 +54,13 @@ static const unsigned long NODE_SWITCH_SAFE_TIME_MSEC = 60000;
 static const int NODE_STATE_EEPROM_ADDR = 0;
 static const int NODE_FORCED_MODE_EEPROM_ADDR = 1;
 static const int SENSORS_FACTORS_EEPROM_ADDR = 2;
-static const int WIFI_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR + (4 * 4);
+static const int WIFI_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR + (6 * 4);
 static const int WIFI_PW_EEPROM_ADDR = WIFI_AP_EEPROM_ADDR + 32;
 static const int SERVER_IP_EEPROM_ADDR = WIFI_PW_EEPROM_ADDR + 32;
 static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + 4;
 
-// Heater
-static const uint8_t HEATER_SUPPLY_REVERSE_HIST = 10;
+// Primary Heater
+static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 10;
 
 // heating
 static const uint8_t HEATING_TEMP_THRESHOLD = 37;
@@ -73,6 +77,12 @@ static const double BOILER_POWERSAVE_RATIO = 3; // 15*3=45m
 static const uint8_t CIRCULATION_TEMP_THRESHOLD = 40;
 static const unsigned long CIRCULATION_ACTIVE_PERIOD_MSEC = 300000; // 5m
 static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 1800000; // 30m
+
+// Standby Heater
+static const uint8_t STANDBY_HEATER_WATER_MIN_TEMP_THRESHOLD = 12;
+static const uint8_t STANDBY_HEATER_WATER_MAX_TEMP_THRESHOLD = 16;
+static const uint8_t STANDBY_HEATER_ROOM_MIN_TEMP_THRESHOLD = 12;
+static const uint8_t STANDBY_HEATER_ROOM_MAX_TEMP_THRESHOLD = 16;
 
 // reporting
 static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 60000;
@@ -128,6 +138,8 @@ uint8_t tempSupply = 0;
 uint8_t tempReverse = 0;
 uint8_t tempTank = 0;
 uint8_t tempBoiler = 0;
+uint8_t tempMix = 0;
+uint8_t tempSbHeater = 0;
 uint8_t tempRoom1 = 0;
 uint8_t humRoom1 = 0;
 
@@ -136,10 +148,14 @@ uint8_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
 uint8_t rawReverseValues[SENSORS_RAW_VALUES_MAX_COUNT];
 uint8_t rawTankValues[SENSORS_RAW_VALUES_MAX_COUNT];
 uint8_t rawBoilerValues[SENSORS_RAW_VALUES_MAX_COUNT];
+uint8_t rawMixValues[SENSORS_RAW_VALUES_MAX_COUNT];
+uint8_t rawSbHeaterValues[SENSORS_RAW_VALUES_MAX_COUNT];
 uint8_t rawSupplyIdx = 0;
 uint8_t rawReverseIdx = 0;
 uint8_t rawTankIdx = 0;
 uint8_t rawBoilerIdx = 0;
+uint8_t rawMixIdx = 0;
+uint8_t rawSbHeaterIdx = 0;
 
 //// Nodes
 
@@ -158,6 +174,7 @@ unsigned long tsNodeFloor = 0;
 unsigned long tsNodeHotwater = 0;
 unsigned long tsNodeCirculation = 0;
 unsigned long tsNodeBoiler = 0;
+unsigned long tsNodeSbHeater = 0;
 
 // Nodes forced mode timestamps
 unsigned long tsForcedNodeSupply = 0;
@@ -166,6 +183,7 @@ unsigned long tsForcedNodeFloor = 0;
 unsigned long tsForcedNodeHotwater = 0;
 unsigned long tsForcedNodeCirculation = 0;
 unsigned long tsForcedNodeBoiler = 0;
+unsigned long tsForcedNodeSbHeater = 0;
 
 // Timestamps
 unsigned long tsLastStatusReport = 0;
@@ -185,6 +203,8 @@ double SENSOR_SUPPLY_FACTOR = 1;
 double SENSOR_REVERSE_FACTOR = 1;
 double SENSOR_TANK_FACTOR = 1;
 double SENSOR_BOILER_FACTOR = 1;
+double SENSOR_MIX_FACTOR = 1;
+double SENSOR_SB_HEATER_FACTOR = 1;
 
 unsigned long boilerPowersaveCurrentPassivePeriod = 0;
 
@@ -248,6 +268,7 @@ void setup() {
     pinMode(NODE_HOTWATER, OUTPUT);
     pinMode(NODE_CIRCULATION, OUTPUT);
     pinMode(NODE_BOILER, OUTPUT);
+    pinMode(NODE_SB_HEATER, OUTPUT);
 
     // restore nodes state
     digitalWrite(NODE_SUPPLY, NODE_STATE_FLAGS & NODE_SUPPLY_BIT);
@@ -256,6 +277,7 @@ void setup() {
     digitalWrite(NODE_HOTWATER, NODE_STATE_FLAGS & NODE_HOTWATER_BIT);
     digitalWrite(NODE_CIRCULATION, NODE_STATE_FLAGS & NODE_CIRCULATION_BIT);
     digitalWrite(NODE_BOILER, NODE_STATE_FLAGS & NODE_BOILER_BIT);
+    digitalWrite(NODE_SB_HEATER, NODE_STATE_FLAGS & NODE_SB_HEATER_BIT);
 
     // init sensors raw values arrays
     for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
@@ -263,6 +285,8 @@ void setup() {
         rawReverseValues[i] = MAX_SENSOR_VALUE;
         rawTankValues[i] = MAX_SENSOR_VALUE;
         rawBoilerValues[i] = MAX_SENSOR_VALUE;
+        rawMixValues[i] = MAX_SENSOR_VALUE;
+        rawSbHeaterValues[i] = MAX_SENSOR_VALUE;
     }
 
     // read sensors calibration factors from EEPROM
@@ -321,6 +345,8 @@ void loop() {
         processCirculationCircuit();
         // boiler heater
         processBoilerHeater();
+        // standby heater
+        processStandbyHeater();
 
         if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_MSEC) {
             if (!wifiGetIP()) {
@@ -369,7 +395,7 @@ void processSupplyCircuit() {
             }
         } else {
             // pump is OFF
-            if (tempSupply >= (tempReverse + HEATER_SUPPLY_REVERSE_HIST)) {
+            if (tempSupply >= (tempReverse + PRIMARY_HEATER_SUPPLY_REVERSE_HIST)) {
                 // delta is big enough
                 // turn pump ON
                 switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
@@ -390,40 +416,43 @@ void processHeatingCircuit() {
         reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
     }
     if (diffTimestamps(tsCurr, tsNodeHeating) >= NODE_SWITCH_SAFE_TIME_MSEC) {
-        uint8_t sensIds[] = { SENSOR_TANK };
-        uint8_t sensVals[] = { tempTank };
+        uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
+        uint8_t sensVals[] = { tempTank, tempMix, tempSbHeater };
         if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
             // pump is ON
-            if (tempTank < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)) {
-                // temp in tank is too low
+            if (tempTank < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)
+                    && tempMix < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)
+                    && tempSbHeater < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)) {
+                // temp in (tank && mix && sb_heater) is too low
                 // turn pump OFF
-                switchNodeState(NODE_HEATING, sensIds, sensVals, 1);
+                switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
             } else {
-                // temp in tank is high enough
+                // temp is high enough at least in one source
                 if (diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-                        && tempRoom1 >= HEATING_ROOM_1_THRESHOLD) {
-                    // temp in Room1 is high enough
+                        && tempRoom1 >= HEATING_ROOM_1_THRESHOLD && !(NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                    // temp in Room1 is high enough and standby heater is off
                     // turn pump OFF
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, 1);
+                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
                 } else {
                     // do nothing
                 }
             }
         } else {
             // pump is OFF
-            if (tempTank >= HEATING_TEMP_THRESHOLD) {
-                // temp in tank is high enough
+            if (tempTank >= HEATING_TEMP_THRESHOLD || tempMix >= HEATING_TEMP_THRESHOLD
+                    || tempSbHeater >= HEATING_TEMP_THRESHOLD) {
+                // temp in (tank || mix || sb_heater) is high enough
                 if (diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-                        && tempRoom1 < HEATING_ROOM_1_THRESHOLD) {
-                    // temp in Room1 is low
-                    // turn pump ON
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, 1);
-                } else {
-                    // temp in Room1 is high enough
+                        && tempRoom1 >= HEATING_ROOM_1_THRESHOLD && !(NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                    // temp in Room1 is high enough and standby heater is off
                     // do nothing
+                } else {
+                    // temp in Room1 is low or standby heater is on
+                    // turn pump ON
+                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
                 }
             } else {
-                // temp in tank is too low
+                // temp in (tank && mix && sb_heater) is too low
                 // do nothing
             }
         }
@@ -439,26 +468,43 @@ void processFloorCircuit() {
         reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
     }
     if (diffTimestamps(tsCurr, tsNodeFloor) >= NODE_SWITCH_SAFE_TIME_MSEC) {
-        uint8_t sensIds[] = { SENSOR_TANK };
-        uint8_t sensVals[] = { tempTank };
+        uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
+        uint8_t sensVals[] = { tempTank, tempMix, tempSbHeater };
         if (NODE_STATE_FLAGS & NODE_FLOOR_BIT) {
             // pump is ON
-            if (tempTank < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)) {
-                // temp in tank is too low
+            if (tempTank < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)
+                    && tempMix < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)
+                    && tempSbHeater < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)) {
+                // temp in (tank && mix && sb_heater) is too low
                 // turn pump OFF
-                switchNodeState(NODE_FLOOR, sensIds, sensVals, 1);
+                switchNodeState(NODE_FLOOR, sensIds, sensVals, 3);
             } else {
-                // temp in tank is high enough
-                // do nothing
+                // temp is high enough at least in one source
+                if (diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+                        && tempRoom1 >= HEATING_ROOM_1_THRESHOLD && !(NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                    // temp in Room1 is high enough and standby heater is off
+                    // turn pump OFF
+                    switchNodeState(NODE_FLOOR, sensIds, sensVals, 3);
+                } else {
+                    // do nothing
+                }
             }
         } else {
             // pump is OFF
-            if (tempTank >= HEATING_TEMP_THRESHOLD) {
-                // temp in tank is high enough
-                // turn pump ON
-                switchNodeState(NODE_FLOOR, sensIds, sensVals, 1);
+            if (tempTank >= HEATING_TEMP_THRESHOLD || tempMix >= HEATING_TEMP_THRESHOLD
+                    || tempSbHeater >= HEATING_TEMP_THRESHOLD) {
+                // temp in (tank || mix || sb_heater) is high enough
+                if (diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+                        && tempRoom1 >= HEATING_ROOM_1_THRESHOLD && !(NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                    // temp in Room1 is high enough and standby heater is off
+                    // do nothing
+                } else {
+                    // temp in Room1 is low or standby heater is on
+                    // turn pump ON
+                    switchNodeState(NODE_FLOOR, sensIds, sensVals, 3);
+                }
             } else {
-                // temp in tank is too low
+                // temp in (tank && mix && sb_heater) is too low
                 // do nothing
             }
         }
@@ -624,6 +670,46 @@ void processBoilerHeater() {
     }
 }
 
+void processStandbyHeater() {
+    // TODO: implement this
+    uint8_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT;
+    if (isInForcedMode(NODE_SB_HEATER_BIT, tsForcedNodeSbHeater)) {
+        return;
+    }
+    if (wasForceMode) {
+        reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
+    }
+    if (diffTimestamps(tsCurr, tsNodeSbHeater) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+        uint8_t sensIds[] = { SENSOR_TANK, SENSOR_TEMP_ROOM_1 };
+        uint8_t sensVals[] = { tempTank, tempRoom1 };
+        if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
+            // heater is ON
+            if (tempTank >= STANDBY_HEATER_WATER_MAX_TEMP_THRESHOLD
+                    || (diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+                            && tempRoom1 >= STANDBY_HEATER_ROOM_MAX_TEMP_THRESHOLD)) {
+                // temp in (tank || room1) is high enough
+                // turn heater OFF
+                switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
+            } else {
+                // temp in (tank && room1) is too low
+                // do nothing
+            }
+        } else {
+            // heater is OFF
+            if (tempTank <= STANDBY_HEATER_WATER_MIN_TEMP_THRESHOLD
+                    || (diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+                            && tempRoom1 <= STANDBY_HEATER_ROOM_MIN_TEMP_THRESHOLD)) {
+                // temp in (tank || room1) is too low
+                // turn heater ON
+                switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
+            } else {
+                // temp in (tank && room1) is high enough
+                // do nothing
+            }
+        }
+    }
+}
+
 /* ============ Helper methods ============ */
 
 void loadSensorsCalibrationFactors() {
@@ -631,6 +717,8 @@ void loadSensorsCalibrationFactors() {
     SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
     SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 8);
     SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 12);
+    SENSOR_MIX_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 16);
+    SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 20);
 }
 
 double readSensorCalibrationFactor(int offset) {
@@ -670,6 +758,8 @@ void readSensors() {
     readSensor(SENSOR_REVERSE, rawReverseValues, rawReverseIdx);
     readSensor(SENSOR_TANK, rawTankValues, rawTankIdx);
     readSensor(SENSOR_BOILER, rawBoilerValues, rawBoilerIdx);
+    readSensor(SENSOR_MIX, rawMixValues, rawMixIdx);
+    readSensor(SENSOR_SB_HEATER, rawSbHeaterValues, rawSbHeaterIdx);
     // read remote sensors
     if (radio.available()) {
         processRfMsg();
@@ -699,10 +789,14 @@ void refreshSensorValues() {
     double temp2 = 0;
     double temp3 = 0;
     double temp4 = 0;
+    double temp5 = 0;
+    double temp6 = 0;
     int j1 = 0;
     int j2 = 0;
     int j3 = 0;
     int j4 = 0;
+    int j5 = 0;
+    int j6 = 0;
     for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
         if (rawSupplyValues[i] != MAX_SENSOR_VALUE) {
             temp1 += rawSupplyValues[i];
@@ -720,6 +814,14 @@ void refreshSensorValues() {
             temp4 += rawBoilerValues[i];
             j4++;
         }
+        if (rawMixValues[i] != MAX_SENSOR_VALUE) {
+            temp5 += rawMixValues[i];
+            j5++;
+        }
+        if (rawSbHeaterValues[i] != MAX_SENSOR_VALUE) {
+            temp6 += rawSbHeaterValues[i];
+            j6++;
+        }
     }
     if (j1 > 0) {
         tempSupply = byte(temp1 / j1 + 0.5);
@@ -732,6 +834,12 @@ void refreshSensorValues() {
     }
     if (j4 > 0) {
         tempBoiler = byte(temp4 / j4 + 0.5);
+    }
+    if (j5 > 0) {
+        tempMix = byte(temp5 / j5 + 0.5);
+    }
+    if (j6 > 0) {
+        tempSbHeater = byte(temp6 / j6 + 0.5);
     }
 }
 
@@ -747,6 +855,10 @@ uint8_t getSensorValue(uint8_t sensor) {
         tempC = tempC * SENSOR_TANK_FACTOR;
     } else if (SENSOR_BOILER == sensor) {
         tempC = tempC * SENSOR_BOILER_FACTOR;
+    } else if (SENSOR_MIX == sensor) {
+        tempC = tempC * SENSOR_MIX_FACTOR;
+    } else if (SENSOR_SB_HEATER == sensor) {
+        tempC = tempC * SENSOR_SB_HEATER_FACTOR;
     }
     return byte(tempC + 0.5);
 }
@@ -823,6 +935,10 @@ void switchNodeState(uint8_t id, uint8_t sensId[], uint8_t sensVal[], uint8_t se
         bit = NODE_BOILER_BIT;
         ts = &tsNodeBoiler;
         tsf = &tsForcedNodeBoiler;
+    } else if (NODE_SB_HEATER == id) {
+        bit = NODE_SB_HEATER_BIT;
+        ts = &tsNodeSbHeater;
+        tsf = &tsForcedNodeSbHeater;
     }
 
     if (ts != NULL) {
@@ -882,23 +998,26 @@ void restoreNodesState() {
 
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
     if (NODE_SUPPLY == id) {
-        forceNodeState(id, NODE_SUPPLY_BIT, state, tsForcedNodeSupply, ts);
+        forceNodeState(NODE_SUPPLY, NODE_SUPPLY_BIT, state, tsForcedNodeSupply, ts);
         reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
     } else if (NODE_HEATING == id) {
-        forceNodeState(id, NODE_HEATING_BIT, state, tsForcedNodeHeating, ts);
+        forceNodeState(NODE_HEATING, NODE_HEATING_BIT, state, tsForcedNodeHeating, ts);
         reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
     } else if (NODE_FLOOR == id) {
-        forceNodeState(id, NODE_FLOOR_BIT, state, tsForcedNodeFloor, ts);
+        forceNodeState(NODE_FLOOR, NODE_FLOOR_BIT, state, tsForcedNodeFloor, ts);
         reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
     } else if (NODE_HOTWATER == id) {
-        forceNodeState(id, NODE_HOTWATER_BIT, state, tsForcedNodeHotwater, ts);
+        forceNodeState(NODE_HOTWATER, NODE_HOTWATER_BIT, state, tsForcedNodeHotwater, ts);
         reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
     } else if (NODE_CIRCULATION == id) {
-        forceNodeState(id, NODE_CIRCULATION_BIT, state, tsForcedNodeCirculation, ts);
+        forceNodeState(NODE_CIRCULATION, NODE_CIRCULATION_BIT, state, tsForcedNodeCirculation, ts);
         reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
     } else if (NODE_BOILER == id) {
-        forceNodeState(id, NODE_BOILER_BIT, state, tsForcedNodeBoiler, ts);
+        forceNodeState(NODE_BOILER, NODE_BOILER_BIT, state, tsForcedNodeBoiler, ts);
         reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
+    } else if (NODE_SB_HEATER == id) {
+        forceNodeState(NODE_SB_HEATER, NODE_SB_HEATER_BIT, state, tsForcedNodeSbHeater, ts);
+        reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
     }
     // update node modes in EEPROM
     EEPROM.write(NODE_STATE_EEPROM_ADDR, NODE_STATE_FLAGS);
@@ -958,6 +1077,11 @@ void unForceNodeState(uint8_t id) {
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_BOILER_BIT;
         FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_BOILER_BIT;
         reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
+    } else if (NODE_SB_HEATER == id) {
+        NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SB_HEATER_BIT;
+        NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SB_HEATER_BIT;
+        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_SB_HEATER_BIT;
+        reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
     }
     // update node modes in EEPROM
     EEPROM.write(NODE_STATE_EEPROM_ADDR, NODE_STATE_FLAGS);
@@ -1130,11 +1254,14 @@ void reportStatus() {
     reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
     reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
     reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
+    reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
 
     reportSensorStatus(SENSOR_SUPPLY, tempSupply);
     reportSensorStatus(SENSOR_REVERSE, tempReverse);
     reportSensorStatus(SENSOR_TANK, tempTank);
     reportSensorStatus(SENSOR_BOILER, tempBoiler);
+    reportSensorStatus(SENSOR_MIX, tempMix);
+    reportSensorStatus(SENSOR_SB_HEATER, tempSbHeater);
     reportSensorStatus(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1);
     reportSensorStatus(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1);
 
@@ -1202,6 +1329,8 @@ void reportConfiguration() {
     reportSensorConfig(SENSOR_REVERSE, SENSOR_REVERSE_FACTOR);
     reportSensorConfig(SENSOR_TANK, SENSOR_TANK_FACTOR);
     reportSensorConfig(SENSOR_BOILER, SENSOR_BOILER_FACTOR);
+    reportSensorConfig(SENSOR_MIX, SENSOR_MIX_FACTOR);
+    reportSensorConfig(SENSOR_SB_HEATER, SENSOR_SB_HEATER_FACTOR);
     reportStringConfig(WIFI_AP_KEY, WIFI_AP);
     reportStringConfig(WIFI_PASSWORD_KEY, WIFI_PW);
     char sIP[16];
@@ -1438,6 +1567,12 @@ void parseCommand(char* command) {
                     } else if (id == SENSOR_BOILER) {
                         writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 12, cf);
                         SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 12);
+                    } else if (id == SENSOR_MIX) {
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 16, cf);
+                        SENSOR_MIX_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 16);
+                    } else if (id == SENSOR_SB_HEATER) {
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 20, cf);
+                        SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 20);
                     }
                 }
             } else if (root.containsKey(WIFI_AP_KEY)) {
