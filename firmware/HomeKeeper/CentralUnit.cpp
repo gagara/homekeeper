@@ -5,20 +5,33 @@
 #include <MemoryFree.h>
 #include <RF24.h>
 #include <ArduinoJson.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 /* ========= Configuration ========= */
 
 #undef __DEBUG__
 
-// Sensors pins
-static const uint8_t SENSOR_SUPPLY = A0;
-static const uint8_t SENSOR_REVERSE = A1;
-static const uint8_t SENSOR_TANK = A2;
-static const uint8_t SENSOR_BOILER = A3;
-static const uint8_t SENSOR_MIX = A4;
-static const uint8_t SENSOR_SB_HEATER = A5;
-static const uint8_t SENSOR_TEMP_ROOM_1 = (A0 + 16) + (4 * 1) + 0;
-static const uint8_t SENSOR_HUM_ROOM_1 = (A0 + 16) + (4 * 1) + 1;
+// Sensors IDs
+static const uint8_t SENSOR_SUPPLY = 54;
+static const uint8_t SENSOR_REVERSE = 55;
+static const uint8_t SENSOR_TANK = 56;
+static const uint8_t SENSOR_BOILER = 57;
+static const uint8_t SENSOR_MIX = 58;
+static const uint8_t SENSOR_SB_HEATER = 59;
+static const uint8_t SENSOR_TEMP_ROOM_1 = (55 + 16) + (4 * 1) + 0;
+static const uint8_t SENSOR_HUM_ROOM_1 = (55 + 16) + (4 * 1) + 1;
+
+// Sensors Addresses
+static const DeviceAddress SENSOR_SUPPLY_ADDR = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static const DeviceAddress SENSOR_REVERSE_ADDR = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static const DeviceAddress SENSOR_TANK_ADDR = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static const DeviceAddress SENSOR_BOILER_ADDR = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static const DeviceAddress SENSOR_MIX_ADDR = {0x28, 0xFF, 0x45, 0x90, 0x23, 0x16, 0x04, 0xC5};
+static const DeviceAddress SENSOR_SB_HEATER_ADDR = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// Sensors Bus pin
+static const uint8_t SENSORS_BUS = 31;
 
 // Nodes pins
 static const uint8_t NODE_SUPPLY = 22; //7
@@ -46,8 +59,9 @@ static const uint8_t NODE_SB_HEATER_BIT = 64;
 
 // etc
 static const unsigned long MAX_TIMESTAMP = -1;
-static const uint8_t MAX_SENSOR_VALUE = 255;
-static const uint8_t SENSORS_APPROX = 4;
+static const uint8_t MAX_SENSOR_VALUE = -127;
+static const uint8_t SENSORS_APPROX = 1;
+static const uint8_t SENSORS_PRECISION = 9;
 static const unsigned long NODE_SWITCH_SAFE_TIME_MSEC = 60000;
 
 // EEPROM
@@ -86,16 +100,16 @@ static const uint8_t STANDBY_HEATER_ROOM_MAX_TEMP_THRESHOLD = 16;
 
 // reporting
 static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 60000;
-static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 10000;
-static const unsigned long SENSORS_READ_INTERVAL_MSEC = 1000;
+static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 9000;
+static const unsigned long SENSORS_READ_INTERVAL_MSEC = 3000;
 
 // RF
 static const uint64_t RF_PIPE_BASE = 0xE8E8F0F0A2LL;
 static const uint8_t RF_PACKET_LENGTH = 32;
 
 // sensors stats
-static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 16;
-static const uint8_t SENSOR_NOISE_THRESHOLD = 20;
+static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 3;
+static const uint8_t SENSOR_NOISE_THRESHOLD = 150;
 
 // JSON
 static const char MSG_TYPE_KEY[] = "m";
@@ -221,6 +235,10 @@ char OK[] = "OK";
 
 //======== Connectivity ========//
 
+// Sensors
+OneWire oneWire(SENSORS_BUS);
+DallasTemperature sensors(&oneWire);
+
 // BT
 HardwareSerial *bt = &Serial1;
 
@@ -253,6 +271,24 @@ void setup() {
 #endif
     pinMode(HEARTBEAT_LED, OUTPUT);
     digitalWrite(HEARTBEAT_LED, LOW);
+
+    // Init sensors
+    sensors.begin();
+    sensors.setResolution(SENSORS_PRECISION);
+#ifdef __DEBUG__
+    DeviceAddress sensAddr;
+    Serial.println("found sensors:");
+    oneWire.reset_search();
+    while (oneWire.search(sensAddr)) {
+        for (uint8_t i = 0; i < 8; i++) {
+            // zero pad the address if necessary
+            if (sensAddr[i] < 16)
+                Serial.print("0");
+            Serial.print(sensAddr[i], HEX);
+        }
+        Serial.println("");
+    }
+#endif
 
     // sync clock
     syncClocks();
@@ -671,7 +707,6 @@ void processBoilerHeater() {
 }
 
 void processStandbyHeater() {
-    // TODO: implement this
     uint8_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT;
     if (isInForcedMode(NODE_SB_HEATER_BIT, tsForcedNodeSbHeater)) {
         return;
@@ -754,19 +789,19 @@ void rfRead(char* msg) {
 }
 
 void readSensors() {
-    readSensor(SENSOR_SUPPLY, rawSupplyValues, rawSupplyIdx);
-    readSensor(SENSOR_REVERSE, rawReverseValues, rawReverseIdx);
-    readSensor(SENSOR_TANK, rawTankValues, rawTankIdx);
-    readSensor(SENSOR_BOILER, rawBoilerValues, rawBoilerIdx);
-    readSensor(SENSOR_MIX, rawMixValues, rawMixIdx);
-    readSensor(SENSOR_SB_HEATER, rawSbHeaterValues, rawSbHeaterIdx);
+    readSensor(SENSOR_SUPPLY_ADDR, rawSupplyValues, rawSupplyIdx);
+    readSensor(SENSOR_REVERSE_ADDR, rawReverseValues, rawReverseIdx);
+    readSensor(SENSOR_TANK_ADDR, rawTankValues, rawTankIdx);
+    readSensor(SENSOR_BOILER_ADDR, rawBoilerValues, rawBoilerIdx);
+    readSensor(SENSOR_MIX_ADDR, rawMixValues, rawMixIdx);
+    readSensor(SENSOR_SB_HEATER_ADDR, rawSbHeaterValues, rawSbHeaterIdx);
     // read remote sensors
     if (radio.available()) {
         processRfMsg();
     }
 }
 
-void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx) {
+void readSensor(const DeviceAddress addr, uint8_t* const &values, uint8_t &idx) {
     uint8_t prevIdx;
     uint8_t val;
     if (idx == SENSORS_RAW_VALUES_MAX_COUNT) {
@@ -777,7 +812,7 @@ void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx) {
     } else {
         prevIdx = SENSORS_RAW_VALUES_MAX_COUNT;
     }
-    val = getSensorValue(id);
+    val = getSensorValue(addr);
     if (values[prevIdx] == MAX_SENSOR_VALUE || abs(val - values[prevIdx]) < SENSOR_NOISE_THRESHOLD) {
         values[idx] = val;
     }
@@ -843,24 +878,26 @@ void refreshSensorValues() {
     }
 }
 
-uint8_t getSensorValue(uint8_t sensor) {
-    int rawVal = analogRead(sensor);
-    double voltage = (5000 / 1024) * rawVal;
-    double tempC = voltage * 0.1;
-    if (SENSOR_SUPPLY == sensor) {
-        tempC = tempC * SENSOR_SUPPLY_FACTOR;
-    } else if (SENSOR_REVERSE == sensor) {
-        tempC = tempC * SENSOR_REVERSE_FACTOR;
-    } else if (SENSOR_TANK == sensor) {
-        tempC = tempC * SENSOR_TANK_FACTOR;
-    } else if (SENSOR_BOILER == sensor) {
-        tempC = tempC * SENSOR_BOILER_FACTOR;
-    } else if (SENSOR_MIX == sensor) {
-        tempC = tempC * SENSOR_MIX_FACTOR;
-    } else if (SENSOR_SB_HEATER == sensor) {
-        tempC = tempC * SENSOR_SB_HEATER_FACTOR;
-    }
-    return byte(tempC + 0.5);
+uint8_t getSensorValue(const DeviceAddress sensor) {
+    // TODO
+//    int rawVal = analogRead(sensor);
+//    double voltage = (5000 / 1024) * rawVal;
+//    double tempC = voltage * 0.1;
+//    if (SENSOR_SUPPLY == sensor) {
+//        tempC = tempC * SENSOR_SUPPLY_FACTOR;
+//    } else if (SENSOR_REVERSE == sensor) {
+//        tempC = tempC * SENSOR_REVERSE_FACTOR;
+//    } else if (SENSOR_TANK == sensor) {
+//        tempC = tempC * SENSOR_TANK_FACTOR;
+//    } else if (SENSOR_BOILER == sensor) {
+//        tempC = tempC * SENSOR_BOILER_FACTOR;
+//    } else if (SENSOR_MIX == sensor) {
+//        tempC = tempC * SENSOR_MIX_FACTOR;
+//    } else if (SENSOR_SB_HEATER == sensor) {
+//        tempC = tempC * SENSOR_SB_HEATER_FACTOR;
+//    }
+//    return byte(tempC + 0.5);
+    return MAX_SENSOR_VALUE;
 }
 
 unsigned long getTimestamp() {

@@ -27,6 +27,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>Libraries/DallasTemperature</name>
+			<type>2</type>
+			<locationURI>ArduinoPivateLibPath/DallasTemperature</locationURI>
+		</link>
+		<link>
 			<name>Libraries/EEPROMEx</name>
 			<type>2</type>
 			<locationURI>ArduinoPivateLibPath/EEPROMEx</locationURI>
@@ -40,6 +45,11 @@
 			<name>Libraries/MemoryFree</name>
 			<type>2</type>
 			<locationURI>ArduinoPivateLibPath/MemoryFree</locationURI>
+		</link>
+		<link>
+			<name>Libraries/OneWire</name>
+			<type>2</type>
+			<locationURI>ArduinoPivateLibPath/OneWire</locationURI>
 		</link>
 		<link>
 			<name>Libraries/RF24</name>
