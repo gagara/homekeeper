@@ -59,7 +59,7 @@ static const uint8_t NODE_SB_HEATER_BIT = 64;
 
 // etc
 static const unsigned long MAX_TIMESTAMP = -1;
-static const uint8_t MAX_SENSOR_VALUE = -127;
+static const int8_t UNKNOWN_SENSOR_VALUE = -127;
 static const uint8_t SENSORS_APPROX = 1;
 static const uint8_t SENSORS_PRECISION = 9;
 static const unsigned long NODE_SWITCH_SAFE_TIME_MSEC = 60000;
@@ -109,7 +109,7 @@ static const uint8_t RF_PACKET_LENGTH = 32;
 
 // sensors stats
 static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 3;
-static const uint8_t SENSOR_NOISE_THRESHOLD = 150;
+static const uint8_t SENSOR_NOISE_THRESHOLD = 255; // disable
 
 // JSON
 static const char MSG_TYPE_KEY[] = "m";
@@ -148,22 +148,22 @@ static const uint8_t HTTP_MAX_GET_SIZE = 32;
 
 //// Sensors
 // Values
-uint8_t tempSupply = 0;
-uint8_t tempReverse = 0;
-uint8_t tempTank = 0;
-uint8_t tempBoiler = 0;
-uint8_t tempMix = 0;
-uint8_t tempSbHeater = 0;
-uint8_t tempRoom1 = 0;
-uint8_t humRoom1 = 0;
+int8_t tempSupply = 0;
+int8_t tempReverse = 0;
+int8_t tempTank = 0;
+int8_t tempBoiler = 0;
+int8_t tempMix = 0;
+int8_t tempSbHeater = 0;
+int8_t tempRoom1 = 0;
+int8_t humRoom1 = 0;
 
 // stats
-uint8_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
-uint8_t rawReverseValues[SENSORS_RAW_VALUES_MAX_COUNT];
-uint8_t rawTankValues[SENSORS_RAW_VALUES_MAX_COUNT];
-uint8_t rawBoilerValues[SENSORS_RAW_VALUES_MAX_COUNT];
-uint8_t rawMixValues[SENSORS_RAW_VALUES_MAX_COUNT];
-uint8_t rawSbHeaterValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int8_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int8_t rawReverseValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int8_t rawTankValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int8_t rawBoilerValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int8_t rawMixValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int8_t rawSbHeaterValues[SENSORS_RAW_VALUES_MAX_COUNT];
 uint8_t rawSupplyIdx = 0;
 uint8_t rawReverseIdx = 0;
 uint8_t rawTankIdx = 0;
@@ -317,12 +317,12 @@ void setup() {
 
     // init sensors raw values arrays
     for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
-        rawSupplyValues[i] = MAX_SENSOR_VALUE;
-        rawReverseValues[i] = MAX_SENSOR_VALUE;
-        rawTankValues[i] = MAX_SENSOR_VALUE;
-        rawBoilerValues[i] = MAX_SENSOR_VALUE;
-        rawMixValues[i] = MAX_SENSOR_VALUE;
-        rawSbHeaterValues[i] = MAX_SENSOR_VALUE;
+        rawSupplyValues[i] = UNKNOWN_SENSOR_VALUE;
+        rawReverseValues[i] = UNKNOWN_SENSOR_VALUE;
+        rawTankValues[i] = UNKNOWN_SENSOR_VALUE;
+        rawBoilerValues[i] = UNKNOWN_SENSOR_VALUE;
+        rawMixValues[i] = UNKNOWN_SENSOR_VALUE;
+        rawSbHeaterValues[i] = UNKNOWN_SENSOR_VALUE;
     }
 
     // read sensors calibration factors from EEPROM
@@ -789,19 +789,19 @@ void rfRead(char* msg) {
 }
 
 void readSensors() {
-    readSensor(SENSOR_SUPPLY_ADDR, rawSupplyValues, rawSupplyIdx);
-    readSensor(SENSOR_REVERSE_ADDR, rawReverseValues, rawReverseIdx);
-    readSensor(SENSOR_TANK_ADDR, rawTankValues, rawTankIdx);
-    readSensor(SENSOR_BOILER_ADDR, rawBoilerValues, rawBoilerIdx);
-    readSensor(SENSOR_MIX_ADDR, rawMixValues, rawMixIdx);
-    readSensor(SENSOR_SB_HEATER_ADDR, rawSbHeaterValues, rawSbHeaterIdx);
+    readSensor(SENSOR_SUPPLY, rawSupplyValues, rawSupplyIdx);
+    readSensor(SENSOR_REVERSE, rawReverseValues, rawReverseIdx);
+    readSensor(SENSOR_TANK, rawTankValues, rawTankIdx);
+    readSensor(SENSOR_BOILER, rawBoilerValues, rawBoilerIdx);
+    readSensor(SENSOR_MIX, rawMixValues, rawMixIdx);
+    readSensor(SENSOR_SB_HEATER, rawSbHeaterValues, rawSbHeaterIdx);
     // read remote sensors
     if (radio.available()) {
         processRfMsg();
     }
 }
 
-void readSensor(const DeviceAddress addr, uint8_t* const &values, uint8_t &idx) {
+void readSensor(const uint8_t id, int8_t* const &values, uint8_t &idx) {
     uint8_t prevIdx;
     uint8_t val;
     if (idx == SENSORS_RAW_VALUES_MAX_COUNT) {
@@ -812,8 +812,8 @@ void readSensor(const DeviceAddress addr, uint8_t* const &values, uint8_t &idx) 
     } else {
         prevIdx = SENSORS_RAW_VALUES_MAX_COUNT;
     }
-    val = getSensorValue(addr);
-    if (values[prevIdx] == MAX_SENSOR_VALUE || abs(val - values[prevIdx]) < SENSOR_NOISE_THRESHOLD) {
+    val = getSensorValue(id);
+    if (values[prevIdx] == UNKNOWN_SENSOR_VALUE || (abs(val) - abs(values[prevIdx])) < SENSOR_NOISE_THRESHOLD) {
         values[idx] = val;
     }
     idx++;
@@ -833,27 +833,27 @@ void refreshSensorValues() {
     int j5 = 0;
     int j6 = 0;
     for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
-        if (rawSupplyValues[i] != MAX_SENSOR_VALUE) {
+        if (rawSupplyValues[i] != UNKNOWN_SENSOR_VALUE) {
             temp1 += rawSupplyValues[i];
             j1++;
         }
-        if (rawReverseValues[i] != MAX_SENSOR_VALUE) {
+        if (rawReverseValues[i] != UNKNOWN_SENSOR_VALUE) {
             temp2 += rawReverseValues[i];
             j2++;
         }
-        if (rawTankValues[i] != MAX_SENSOR_VALUE) {
+        if (rawTankValues[i] != UNKNOWN_SENSOR_VALUE) {
             temp3 += rawTankValues[i];
             j3++;
         }
-        if (rawBoilerValues[i] != MAX_SENSOR_VALUE) {
+        if (rawBoilerValues[i] != UNKNOWN_SENSOR_VALUE) {
             temp4 += rawBoilerValues[i];
             j4++;
         }
-        if (rawMixValues[i] != MAX_SENSOR_VALUE) {
+        if (rawMixValues[i] != UNKNOWN_SENSOR_VALUE) {
             temp5 += rawMixValues[i];
             j5++;
         }
-        if (rawSbHeaterValues[i] != MAX_SENSOR_VALUE) {
+        if (rawSbHeaterValues[i] != UNKNOWN_SENSOR_VALUE) {
             temp6 += rawSbHeaterValues[i];
             j6++;
         }
@@ -878,26 +878,39 @@ void refreshSensorValues() {
     }
 }
 
-uint8_t getSensorValue(const DeviceAddress sensor) {
-    // TODO
-//    int rawVal = analogRead(sensor);
-//    double voltage = (5000 / 1024) * rawVal;
-//    double tempC = voltage * 0.1;
-//    if (SENSOR_SUPPLY == sensor) {
-//        tempC = tempC * SENSOR_SUPPLY_FACTOR;
-//    } else if (SENSOR_REVERSE == sensor) {
-//        tempC = tempC * SENSOR_REVERSE_FACTOR;
-//    } else if (SENSOR_TANK == sensor) {
-//        tempC = tempC * SENSOR_TANK_FACTOR;
-//    } else if (SENSOR_BOILER == sensor) {
-//        tempC = tempC * SENSOR_BOILER_FACTOR;
-//    } else if (SENSOR_MIX == sensor) {
-//        tempC = tempC * SENSOR_MIX_FACTOR;
-//    } else if (SENSOR_SB_HEATER == sensor) {
-//        tempC = tempC * SENSOR_SB_HEATER_FACTOR;
-//    }
-//    return byte(tempC + 0.5);
-    return MAX_SENSOR_VALUE;
+int8_t getSensorValue(const uint8_t sensor) {
+    float result = UNKNOWN_SENSOR_VALUE;
+    if (SENSOR_SUPPLY == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_SUPPLY_ADDR)) {
+            result = sensors.getTempC(SENSOR_SUPPLY_ADDR)
+                    * SENSOR_SUPPLY_FACTOR;
+        }
+    } else if (SENSOR_REVERSE == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_REVERSE_ADDR)) {
+            result = sensors.getTempC(SENSOR_REVERSE_ADDR)
+                    * SENSOR_REVERSE_FACTOR;
+        }
+    } else if (SENSOR_TANK == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_TANK_ADDR)) {
+            result = sensors.getTempC(SENSOR_TANK_ADDR) * SENSOR_TANK_FACTOR;
+        }
+    } else if (SENSOR_BOILER == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_BOILER_ADDR)) {
+            result = sensors.getTempC(SENSOR_BOILER_ADDR)
+                    * SENSOR_BOILER_FACTOR;
+        }
+    } else if (SENSOR_MIX == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_MIX_ADDR)) {
+            result = sensors.getTempC(SENSOR_MIX_ADDR) * SENSOR_MIX_FACTOR;
+        }
+    } else if (SENSOR_SB_HEATER == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_SB_HEATER_ADDR)) {
+            result = sensors.getTempC(SENSOR_SB_HEATER_ADDR)
+                    * SENSOR_SB_HEATER_FACTOR;
+        }
+    }
+    result = (result > 0) ? result + 0.5 : result - 0.5;
+    return int8_t(result);
 }
 
 unsigned long getTimestamp() {

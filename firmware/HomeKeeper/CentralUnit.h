@@ -9,8 +9,6 @@
 #include "Arduino.h"
 //add your includes for the project CentralUnit here
 
-#include <DallasTemperature.h>
-
 //end of add your includes here
 #ifdef __cplusplus
 extern "C" {
@@ -35,9 +33,9 @@ double readSensorCalibrationFactor(int offset);
 void writeSensorCalibrationFactor(int offset, double value);
 void rfRead(char* msg);
 void readSensors();
-void readSensor(const DeviceAddress addr, uint8_t* const &values, uint8_t &idx);
+void readSensor(const uint8_t id, int8_t* const &values, uint8_t &idx);
 void refreshSensorValues();
-uint8_t getSensorValue(const DeviceAddress sensor);
+int8_t getSensorValue(const uint8_t sensor);
 unsigned long getTimestamp();
 unsigned long diffTimestamps(unsigned long hi, unsigned long lo);
 unsigned long getBoilerPowersavePeriod(unsigned long currActivePeriod);
