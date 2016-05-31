@@ -36,6 +36,7 @@ import com.gagara.homekeeper.nbi.request.NodeStateChangeRequest;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
 import com.gagara.homekeeper.nbi.response.NodeStateChangeResponse;
 import com.gagara.homekeeper.service.BtCommunicationService;
+import com.gagara.homekeeper.ui.view.ViewUtils;
 import com.gagara.homekeeper.ui.viewmodel.NodeModelView;
 import com.gagara.homekeeper.ui.viewmodel.TopModelView;
 import com.gagara.homekeeper.utils.BluetoothUtils;
@@ -254,25 +255,35 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                 Parcelable data = intent.getParcelableExtra(Constants.DATA_KEY);
                 if (data instanceof CurrentStatusResponse) {
                     CurrentStatusResponse stats = (CurrentStatusResponse) data;
-                    modelView.getInfo().getModel().setTimestamp(stats.getTimestamp());
-                    modelView.getInfo().render();
+
+                    boolean gotValidStats = false;
 
                     // sensors
                     for (int i = 0; i < stats.getSensors().size(); i++) {
                         SensorModel sensor = stats.getSensors().valueAt(i).getData();
-                        modelView.getSensor(sensor.getId()).getModel().update(sensor);
-                        modelView.getSensor(sensor.getId()).render();
+                        if (ViewUtils.validSensor(sensor)) {
+                            modelView.getSensor(sensor.getId()).getModel().update(sensor);
+                            modelView.getSensor(sensor.getId()).render();
+                            gotValidStats = true;
+                        }
                     }
 
                     // nodes
                     for (int i = 0; i < stats.getNodes().size(); i++) {
                         NodeModel node = stats.getNodes().valueAt(i).getData();
-                        modelView.getNode(node.getId()).getModel().update(node);
-                        modelView.getNode(node.getId()).render();
+                        if (ViewUtils.validNode(node)) {
+                            modelView.getNode(node.getId()).getModel().update(node);
+                            modelView.getNode(node.getId()).render();
+                            gotValidStats = true;
+                        }
                     }
 
-                    // Toast.makeText(MainActivity.this,
-                    // R.string.updating_message, LENGTH_LONG).show();
+                    if (gotValidStats) {
+                        modelView.getInfo().getModel().setTimestamp(stats.getTimestamp());
+                        modelView.getInfo().render();
+                        // Toast.makeText(MainActivity.this,
+                        // R.string.updating_message, LENGTH_LONG).show();
+                    }
                 } else if (data instanceof NodeStateChangeResponse) {
                     // node
                     NodeStateChangeResponse stats = (NodeStateChangeResponse) data;

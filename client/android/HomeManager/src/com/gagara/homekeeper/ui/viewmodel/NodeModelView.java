@@ -1,6 +1,7 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
 import static com.gagara.homekeeper.common.Constants.UNDEFINED_DATE;
+import static com.gagara.homekeeper.ui.view.ViewUtils.getSensorSignByType;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -13,6 +14,7 @@ import android.widget.ToggleButton;
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.SensorModel;
+import com.gagara.homekeeper.ui.view.ViewUtils;
 
 public class NodeModelView extends AbstractEntryModelView implements ModelView {
 
@@ -91,7 +93,7 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
                         detailsStr.append(String.format(resources
                                 .getString(R.string.node_details_sensor_template), resources
                                 .getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId())), f
-                                .format(s.getValue())));
+                                .format(s.getValue()), getSensorSignByType(s.getType())));
                     }
                 }
 

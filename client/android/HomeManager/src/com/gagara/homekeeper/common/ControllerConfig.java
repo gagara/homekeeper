@@ -28,17 +28,22 @@ public class ControllerConfig {
         }
     }
 
-    public static final int SENSOR_SUPPLY_ID = 14;
-    public static final int SENSOR_REVERSE_ID = 15;
-    public static final int SENSOR_TANK_ID = 16;
-    public static final int SENSOR_BOILER_ID = 17;
+    public static final int SENSOR_SUPPLY_ID = 54;
+    public static final int SENSOR_REVERSE_ID = 55;
+    public static final int SENSOR_TANK_ID = 56;
+    public static final int SENSOR_BOILER_ID = 57;
+    public static final int SENSOR_MIX_ID = 58;
+    public static final int SENSOR_SB_HEATER_ID = 59;
+    public static final int SENSOR_ROOM1_TEMP_ID = 74;
+    public static final int SENSOR_ROOM1_HUM_ID = 75;
 
-    public static final int NODE_SUPPLY_ID = 6;
-    public static final int NODE_HEATING_ID = 7;
-    public static final int NODE_FLOOR_ID = 8;
-    public static final int NODE_HOTWATER_ID = 9;
-    public static final int NODE_CIRCULATION_ID = 10;
-    public static final int NODE_BOILER_ID = 11;
+    public static final int NODE_SUPPLY_ID = 22;
+    public static final int NODE_HEATING_ID = 24;
+    public static final int NODE_FLOOR_ID = 26;
+    public static final int NODE_HOTWATER_ID = 28;
+    public static final int NODE_CIRCULATION_ID = 30;
+    public static final int NODE_BOILER_ID = 32;
+    public static final int NODE_SB_HEATER_ID = 34;
 
     public static final String MSG_TYPE_KEY = "m";
     public static final String ID_KEY = "id";

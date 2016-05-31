@@ -223,10 +223,122 @@
                     android:textSize="@dimen/element_value_textSize" />
             </LinearLayout>
 
+            <!-- Sensor Mix -->
+
+            <LinearLayout
+                android:id="@+id/sensorMixView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/sensorMixIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/sensor_icon_descr"
+                    android:src="@drawable/ic_info_outline_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/sensorMixInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/sensorMixName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/sensor_mix_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/sensorMixDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sensorMixValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textSize="@dimen/element_value_textSize" />
+            </LinearLayout>
+
+            <!-- Sensor Standby Heater -->
+
+            <LinearLayout
+                android:id="@+id/sensorSbHeaterView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/sensorSbHeaterIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/sensor_icon_descr"
+                    android:src="@drawable/ic_info_outline_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/sensorSbHeaterInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/sensorSbHeaterName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/sensor_sb_heater_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/sensorSbHeaterDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sensorSbHeaterValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textSize="@dimen/element_value_textSize" />
+            </LinearLayout>
+
             <!-- Sensor Boiler -->
 
             <LinearLayout
-                android:id="@+id/sensorBoilerView4"
+                android:id="@+id/sensorBoilerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/row_background_2"
@@ -273,6 +385,118 @@
 
                 <TextView
                     android:id="@+id/sensorBoilerValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textSize="@dimen/element_value_textSize" />
+            </LinearLayout>
+
+            <!-- Sensor Room1 Temp -->
+
+            <LinearLayout
+                android:id="@+id/sensorRoom1TempView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/sensorRoom1TempIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/sensor_icon_descr"
+                    android:src="@drawable/ic_info_outline_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/sensorRoom1TempInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/sensorRoom1TempName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/sensor_room1_temp_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/sensorRoom1TempDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sensorRoom1TempValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textSize="@dimen/element_value_textSize" />
+            </LinearLayout>
+
+            <!-- Sensor Room1 Humidity -->
+
+            <LinearLayout
+                android:id="@+id/sensorRoom1HumView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/sensorRoom1HumIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/sensor_icon_descr"
+                    android:src="@drawable/ic_info_outline_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/sensorRoom1HumInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/sensorRoom1HumName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/sensor_room1_hum_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/sensorRoom1HumDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sensorRoom1HumValue"
                     android:layout_width="@dimen/element_value_width"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
@@ -453,13 +677,71 @@
                     android:onClick="onManageNode" />
             </LinearLayout>
 
+            <!-- Node Standby Heater -->
+
+            <LinearLayout
+                android:id="@+id/nodeSbHeaterView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/row_background_2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/row_padding"
+                android:paddingLeft="@dimen/row_padding"
+                android:paddingRight="@dimen/row_padding"
+                android:paddingTop="@dimen/row_padding" >
+
+                <ImageView
+                    android:id="@+id/nodeSbHeaterIcon"
+                    android:layout_width="@dimen/row_icon_width"
+                    android:layout_height="@dimen/row_icon_height"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/sensor_icon_descr"
+                    android:src="@drawable/ic_settings_applications_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/nodeSbHeaterInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/element_name_padding"
+                    android:paddingRight="@dimen/element_name_padding" >
+
+                    <TextView
+                        android:id="@+id/nodeSbHeaterName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/node_sb_heater_name"
+                        android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/nodeSbHeaterDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_details_textSize"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <ToggleButton
+                    android:id="@+id/nodeSbHeaterValue"
+                    android:layout_width="@dimen/element_value_width"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="true"
+                    android:enabled="false"
+                    android:onClick="onManageNode" />
+            </LinearLayout>
+
             <!-- Node Hotwater -->
 
             <LinearLayout
                 android:id="@+id/nodeHotwaterView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/row_background_2"
+                android:background="@color/row_background_1"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/row_padding"
@@ -517,7 +799,7 @@
                 android:id="@+id/nodeCirculationView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/row_background_1"
+                android:background="@color/row_background_2"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/row_padding"
@@ -575,7 +857,7 @@
                 android:id="@+id/nodeBoilerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/row_background_2"
+                android:background="@color/row_background_1"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/row_padding"

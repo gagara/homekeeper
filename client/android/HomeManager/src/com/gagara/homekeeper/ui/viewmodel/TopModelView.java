@@ -37,18 +37,24 @@ public class TopModelView implements ModelView {
         SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_REVERSE_ID, R.string.sensor_reverse_name);
         SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_TANK_ID, R.string.sensor_tank_name);
         SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_BOILER_ID, R.string.sensor_boiler_name);
+        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_MIX_ID, R.string.sensor_mix_name);
+        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_SB_HEATER_ID, R.string.sensor_sb_heater_name);
 
         SENSORS_VALUE_VIEW_MAP = new HashMap<Integer, Integer>(4);
         SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_SUPPLY_ID, R.id.sensorSupplyValue);
         SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_REVERSE_ID, R.id.sensorReverseValue);
         SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_TANK_ID, R.id.sensorTankValue);
         SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_BOILER_ID, R.id.sensorBoilerValue);
+        SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_MIX_ID, R.id.sensorMixValue);
+        SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_SB_HEATER_ID, R.id.sensorSbHeaterValue);
 
         SENSORS_DETAILS_VIEW_MAP = new HashMap<Integer, Integer>(4);
         SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_SUPPLY_ID, R.id.sensorSupplyDetails);
         SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_REVERSE_ID, R.id.sensorReverseDetails);
         SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_TANK_ID, R.id.sensorTankDetails);
         SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_BOILER_ID, R.id.sensorBoilerDetails);
+        SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_MIX_ID, R.id.sensorMixDetails);
+        SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_SB_HEATER_ID, R.id.sensorSbHeaterDetails);
 
         NODES_NAME_VIEW_MAP = new HashMap<Integer, Integer>(6);
         NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_SUPPLY_ID, R.string.node_supply_name);
@@ -58,6 +64,7 @@ public class TopModelView implements ModelView {
         NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_CIRCULATION_ID,
                 R.string.node_circulation_name);
         NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_BOILER_ID, R.string.node_boilder_name);
+        NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_SB_HEATER_ID, R.string.node_sb_heater_name);
 
         NODES_VALUE_VIEW_MAP = new HashMap<Integer, Integer>(6);
         NODES_VALUE_VIEW_MAP.put(ControllerConfig.NODE_SUPPLY_ID, R.id.nodeSupplyValue);
@@ -66,6 +73,7 @@ public class TopModelView implements ModelView {
         NODES_VALUE_VIEW_MAP.put(ControllerConfig.NODE_HOTWATER_ID, R.id.nodeHotwaterValue);
         NODES_VALUE_VIEW_MAP.put(ControllerConfig.NODE_CIRCULATION_ID, R.id.nodeCirculationValue);
         NODES_VALUE_VIEW_MAP.put(ControllerConfig.NODE_BOILER_ID, R.id.nodeBoilerValue);
+        NODES_VALUE_VIEW_MAP.put(ControllerConfig.NODE_SB_HEATER_ID, R.id.nodeSbHeaterValue);
 
         NODES_DETAILS_VIEW_MAP = new HashMap<Integer, Integer>(6);
         NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_SUPPLY_ID, R.id.nodeSupplyDetails);
@@ -75,6 +83,7 @@ public class TopModelView implements ModelView {
         NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_CIRCULATION_ID,
                 R.id.nodeCirculationDetails);
         NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_BOILER_ID, R.id.nodeBoilerDetails);
+        NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_SB_HEATER_ID, R.id.nodeSbHeaterDetails);
     }
 
     public TopModelView(Activity ctx) {
@@ -202,6 +211,14 @@ public class TopModelView implements ModelView {
         return sensors.get(ControllerConfig.SENSOR_BOILER_ID);
     }
 
+    public SensorModelView getSensorMix() {
+        return sensors.get(ControllerConfig.SENSOR_MIX_ID);
+    }
+
+    public SensorModelView getSensorSbHeater() {
+        return sensors.get(ControllerConfig.SENSOR_SB_HEATER_ID);
+    }
+
     public NodeModelView getNodeHeaterToTank() {
         return nodes.get(ControllerConfig.NODE_SUPPLY_ID);
     }
@@ -220,5 +237,9 @@ public class TopModelView implements ModelView {
 
     public NodeModelView getNodeBoiler() {
         return nodes.get(ControllerConfig.NODE_BOILER_ID);
+    }
+
+    public NodeModelView getNodeSbHeater() {
+        return nodes.get(ControllerConfig.NODE_SB_HEATER_ID);
     }
 }
