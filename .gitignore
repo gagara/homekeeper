@@ -1,6 +1,7 @@
 **/.settings
 client/**/bin
 client/**/gen
+client/android/*/project.properties
 firmware/*/Libraries
 firmware/*/Release
 firmware/*/arduino

@@ -1,7 +1,7 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
 import static com.gagara.homekeeper.common.Constants.UNDEFINED_SENSOR_VALUE;
-import static com.gagara.homekeeper.ui.view.ViewUtils.getSensorSignByType;
+import static com.gagara.homekeeper.ui.view.ViewUtils.getSensorSignResourceByType;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -27,10 +27,10 @@ public class SensorModelView extends AbstractEntryModelView implements ModelView
 
         if (model.isInitialized() && model.getValue() != UNDEFINED_SENSOR_VALUE) {
             valueView.setText(String.format(resources.getString(R.string.sensor_value_template),
-                    f.format(model.getValue()), getSensorSignByType(model.getType())));
+                    f.format(model.getValue()), getSensorSignResourceByType(model.getType())));
         } else {
             valueView.setText(String.format(resources.getString(R.string.sensor_value_template),
-                    "?", getSensorSignByType(model.getType())));
+                    "?", resources.getString(getSensorSignResourceByType(model.getType()))));
         }
 
         if (model.isInitialized() && model.getPrevValue() != UNDEFINED_SENSOR_VALUE) {

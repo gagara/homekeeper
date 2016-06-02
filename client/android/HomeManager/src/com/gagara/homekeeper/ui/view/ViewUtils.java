@@ -15,7 +15,6 @@ import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_TEMP_ID
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SB_HEATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SUPPLY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TANK_ID;
-import android.content.res.Resources;
 
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.NodeModel;
@@ -24,15 +23,13 @@ import com.gagara.homekeeper.model.SensorModel.SensorType;
 
 public class ViewUtils {
 
-    private static Resources resources;
-
-    public static String getSensorSignByType(SensorType type) {
+    public static int getSensorSignResourceByType(SensorType type) {
         if (SensorType.TEMPERATURE == type) {
-            return resources.getString(R.string.temperature_sign);
+            return R.string.temperature_sign;
         } else if (SensorType.HUMIDITY == type) {
-            return resources.getString(R.string.humidity_sign);
+            return R.string.humidity_sign;
         } else {
-            return "?";
+            return R.string.unknown_sign;
         }
     }
 

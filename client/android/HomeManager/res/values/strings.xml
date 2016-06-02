@@ -59,6 +59,7 @@
 
     <string name="temperature_sign">&#8451;</string>
     <string name="humidity_sign">%</string>
+    <string name="unknown_sign">-</string>
 
     <string name="node_icon_descr">node</string>
     <string name="node_supply_name">Supply</string>

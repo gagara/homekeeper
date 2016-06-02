@@ -1,5 +1,7 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_HUM_ID;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import android.widget.ToggleButton;
 
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.common.ControllerConfig;
+import com.gagara.homekeeper.model.SensorModel.SensorType;
 
 @SuppressLint("UseSparseArrays")
 public class TopModelView implements ModelView {
@@ -39,6 +42,8 @@ public class TopModelView implements ModelView {
         SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_BOILER_ID, R.string.sensor_boiler_name);
         SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_MIX_ID, R.string.sensor_mix_name);
         SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_SB_HEATER_ID, R.string.sensor_sb_heater_name);
+        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_ROOM1_TEMP_ID, R.string.sensor_room1_temp_name);
+        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_ROOM1_HUM_ID, R.string.sensor_room1_hum_name);
 
         SENSORS_VALUE_VIEW_MAP = new HashMap<Integer, Integer>(4);
         SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_SUPPLY_ID, R.id.sensorSupplyValue);
@@ -47,6 +52,8 @@ public class TopModelView implements ModelView {
         SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_BOILER_ID, R.id.sensorBoilerValue);
         SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_MIX_ID, R.id.sensorMixValue);
         SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_SB_HEATER_ID, R.id.sensorSbHeaterValue);
+        SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_ROOM1_TEMP_ID, R.id.sensorRoom1TempValue);
+        SENSORS_VALUE_VIEW_MAP.put(ControllerConfig.SENSOR_ROOM1_HUM_ID, R.id.sensorRoom1HumValue);
 
         SENSORS_DETAILS_VIEW_MAP = new HashMap<Integer, Integer>(4);
         SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_SUPPLY_ID, R.id.sensorSupplyDetails);
@@ -55,6 +62,8 @@ public class TopModelView implements ModelView {
         SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_BOILER_ID, R.id.sensorBoilerDetails);
         SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_MIX_ID, R.id.sensorMixDetails);
         SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_SB_HEATER_ID, R.id.sensorSbHeaterDetails);
+        SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_ROOM1_TEMP_ID, R.id.sensorRoom1TempDetails);
+        SENSORS_DETAILS_VIEW_MAP.put(ControllerConfig.SENSOR_ROOM1_HUM_ID, R.id.sensorRoom1HumDetails);
 
         NODES_NAME_VIEW_MAP = new HashMap<Integer, Integer>(6);
         NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_SUPPLY_ID, R.string.node_supply_name);
@@ -100,6 +109,9 @@ public class TopModelView implements ModelView {
             s.setValueView((TextView) ctx.findViewById(SENSORS_VALUE_VIEW_MAP.get(id)));
             s.setDetailsView((TextView) ctx.findViewById(SENSORS_DETAILS_VIEW_MAP.get(id)));
             s.setResources(ctx.getResources());
+            if (SENSOR_ROOM1_HUM_ID == id) {
+                s.getModel().setType(SensorType.HUMIDITY);
+            }
             sensors.put(id, s);
         }
 
