@@ -689,14 +689,14 @@ void processStandbyHeater() {
         } else {
             // heater is OFF
             if (tempTank <= STANDBY_HEATER_WATER_MIN_TEMP_THRESHOLD
-                    && (tsLastSensorTempRoom1 != 0
+                    || (tsLastSensorTempRoom1 != 0
                             && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
                             && tempRoom1 <= STANDBY_HEATER_ROOM_MIN_TEMP_THRESHOLD)) {
-                // temp in (tank && room1) is too low
+                // temp in (tank || room1) is too low
                 // turn heater ON
                 switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
             } else {
-                // temp in (tank || room1) is high enough
+                // temp in (tank && room1) is high enough
                 // do nothing
             }
         }
