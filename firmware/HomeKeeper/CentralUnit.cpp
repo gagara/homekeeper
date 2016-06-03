@@ -31,7 +31,7 @@ static const DeviceAddress SENSOR_MIX_ADDR =        {0x28, 0xFF, 0x45, 0x90, 0x2
 static const DeviceAddress SENSOR_SB_HEATER_ADDR =  {0x28, 0xFF, 0x28, 0x5B, 0x23, 0x16, 0x04, 0x95};
 
 // Sensors Bus pin
-static const uint8_t SENSORS_BUS = 31;
+static const uint8_t SENSORS_BUS = 49;
 
 // Nodes pins
 static const uint8_t NODE_SUPPLY = 22; //7
@@ -148,14 +148,14 @@ static const uint8_t HTTP_MAX_GET_SIZE = 32;
 
 //// Sensors
 // Values
-int8_t tempSupply = 0;
-int8_t tempReverse = 0;
-int8_t tempTank = 0;
-int8_t tempBoiler = 0;
-int8_t tempMix = 0;
-int8_t tempSbHeater = 0;
-int8_t tempRoom1 = 0;
-int8_t humRoom1 = 0;
+int8_t tempSupply = UNKNOWN_SENSOR_VALUE;
+int8_t tempReverse = UNKNOWN_SENSOR_VALUE;
+int8_t tempTank = UNKNOWN_SENSOR_VALUE;
+int8_t tempBoiler = UNKNOWN_SENSOR_VALUE;
+int8_t tempMix = UNKNOWN_SENSOR_VALUE;
+int8_t tempSbHeater = UNKNOWN_SENSOR_VALUE;
+int8_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
+int8_t humRoom1 = UNKNOWN_SENSOR_VALUE;
 
 // stats
 int8_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
@@ -418,7 +418,7 @@ void processSupplyCircuit() {
     }
     if (diffTimestamps(tsCurr, tsNodeSupply) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_REVERSE };
-        uint8_t sensVals[] = { tempSupply, tempReverse };
+        int8_t sensVals[] = { tempSupply, tempReverse };
         if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
             // pump is ON
             if (tempSupply <= (tempReverse + SENSORS_APPROX)) {
@@ -453,7 +453,7 @@ void processHeatingCircuit() {
     }
     if (diffTimestamps(tsCurr, tsNodeHeating) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
-        uint8_t sensVals[] = { tempTank, tempMix, tempSbHeater };
+        int8_t sensVals[] = { tempTank, tempMix, tempSbHeater };
         if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
             // pump is ON
             if (tempTank < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)
@@ -505,7 +505,7 @@ void processFloorCircuit() {
     }
     if (diffTimestamps(tsCurr, tsNodeFloor) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
-        uint8_t sensVals[] = { tempTank, tempMix, tempSbHeater };
+        int8_t sensVals[] = { tempTank, tempMix, tempSbHeater };
         if (NODE_STATE_FLAGS & NODE_FLOOR_BIT) {
             // pump is ON
             if (tempTank < (HEATING_TEMP_THRESHOLD - SENSORS_APPROX)
@@ -557,7 +557,7 @@ void processHotWaterCircuit() {
     }
     if (diffTimestamps(tsCurr, tsNodeHotwater) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_BOILER };
-        uint8_t sensVals[] = { tempTank, tempBoiler };
+        int8_t sensVals[] = { tempTank, tempBoiler };
         if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
             // pump is ON
             if (tempTank < (tempBoiler - TANK_BOILER_HIST)) {
@@ -592,7 +592,7 @@ void processCirculationCircuit() {
     }
     if (diffTimestamps(tsCurr, tsNodeCirculation) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_BOILER };
-        uint8_t sensVals[] = { tempBoiler };
+        int8_t sensVals[] = { tempBoiler };
         if (NODE_STATE_FLAGS & NODE_CIRCULATION_BIT) {
             // pump is ON
             if (tempBoiler < CIRCULATION_TEMP_THRESHOLD) {
@@ -640,7 +640,7 @@ void processBoilerHeater() {
     }
     if (diffTimestamps(tsCurr, tsNodeBoiler) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_BOILER };
-        uint8_t sensVals[] = { tempBoiler };
+        int8_t sensVals[] = { tempBoiler };
         if (NODE_STATE_FLAGS & NODE_BOILER_BIT) {
             // boiler is ON
             if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
@@ -716,7 +716,7 @@ void processStandbyHeater() {
     }
     if (diffTimestamps(tsCurr, tsNodeSbHeater) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_TEMP_ROOM_1 };
-        uint8_t sensVals[] = { tempTank, tempRoom1 };
+        int8_t sensVals[] = { tempTank, tempRoom1 };
         if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
             // heater is ON
             if (tempTank >= STANDBY_HEATER_WATER_MAX_TEMP_THRESHOLD
@@ -813,7 +813,7 @@ void readSensor(const uint8_t id, int8_t* const &values, uint8_t &idx) {
         prevIdx = SENSORS_RAW_VALUES_MAX_COUNT;
     }
     val = getSensorValue(id);
-    if (values[prevIdx] == UNKNOWN_SENSOR_VALUE || (abs(val) - abs(values[prevIdx])) < SENSOR_NOISE_THRESHOLD) {
+    if (values[prevIdx] == UNKNOWN_SENSOR_VALUE || abs(val - values[prevIdx]) < SENSOR_NOISE_THRESHOLD) {
         values[idx] = val;
     }
     idx++;
@@ -859,22 +859,22 @@ void refreshSensorValues() {
         }
     }
     if (j1 > 0) {
-        tempSupply = byte(temp1 / j1 + 0.5);
+        tempSupply = int8_t(temp1 / j1 + 0.5);
     }
     if (j2 > 0) {
-        tempReverse = byte(temp2 / j2 + 0.5);
+        tempReverse = int8_t(temp2 / j2 + 0.5);
     }
     if (j3 > 0) {
-        tempTank = byte(temp3 / j3 + 0.5);
+        tempTank = int8_t(temp3 / j3 + 0.5);
     }
     if (j4 > 0) {
-        tempBoiler = byte(temp4 / j4 + 0.5);
+        tempBoiler = int8_t(temp4 / j4 + 0.5);
     }
     if (j5 > 0) {
-        tempMix = byte(temp5 / j5 + 0.5);
+        tempMix = int8_t(temp5 / j5 + 0.5);
     }
     if (j6 > 0) {
-        tempSbHeater = byte(temp6 / j6 + 0.5);
+        tempSbHeater = int8_t(temp6 / j6 + 0.5);
     }
 }
 
@@ -957,7 +957,7 @@ bool isInForcedMode(uint8_t bit, unsigned long ts) {
     return false;
 }
 
-void switchNodeState(uint8_t id, uint8_t sensId[], uint8_t sensVal[], uint8_t sensCnt) {
+void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sensCnt) {
     uint8_t bit;
     unsigned long* ts = NULL;
     unsigned long* tsf = NULL;
@@ -1347,7 +1347,7 @@ void reportNodeStatus(uint8_t id, uint8_t bit, unsigned long ts, unsigned long t
     broadcastMsg(json);
 }
 
-void reportSensorStatus(const uint8_t id, const uint8_t value, const unsigned long ts) {
+void reportSensorStatus(const uint8_t id, const int8_t value, const unsigned long ts) {
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.createObject();
     root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;

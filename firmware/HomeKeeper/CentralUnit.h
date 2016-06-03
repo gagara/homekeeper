@@ -40,7 +40,7 @@ unsigned long getTimestamp();
 unsigned long diffTimestamps(unsigned long hi, unsigned long lo);
 unsigned long getBoilerPowersavePeriod(unsigned long currActivePeriod);
 bool isInForcedMode(uint8_t bit, unsigned long ts);
-void switchNodeState(uint8_t id, uint8_t sensId[], uint8_t sensVal[], uint8_t sensCnt);
+void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sensCnt);
 void restoreNodesState();
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts);
 void forceNodeState(uint8_t id, uint8_t bit, uint8_t state, unsigned long &nodeTs, unsigned long ts);
@@ -60,7 +60,7 @@ bool wifiWrite(const char* msg, const char* rsp, const int wait = 0, const uint8
 void wifiRead(char* req);
 void reportStatus();
 void reportNodeStatus(uint8_t nodeId, uint8_t nodeBit, unsigned long ts, unsigned long tsf);
-void reportSensorStatus(const uint8_t id, const uint8_t value,const unsigned long ts = 0);
+void reportSensorStatus(const uint8_t id, const int8_t value,const unsigned long ts = 0);
 void reportConfiguration();
 void reportSensorConfig(const uint8_t id, const double value);
 void reportStringConfig(const char* key, const char* value);
