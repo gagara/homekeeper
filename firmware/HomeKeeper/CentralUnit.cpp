@@ -560,7 +560,7 @@ void processHotWaterCircuit() {
         int8_t sensVals[] = { tempTank, tempBoiler };
         if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
             // pump is ON
-            if (tempTank < (tempBoiler - TANK_BOILER_HIST)) {
+            if (tempTank <= tempBoiler) {
                 // temp is equal
                 // turn pump OFF
                 switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
@@ -570,7 +570,7 @@ void processHotWaterCircuit() {
             }
         } else {
             // pump is OFF
-            if (tempTank >= tempBoiler) {
+            if (tempTank > (tempBoiler + TANK_BOILER_HIST)) {
                 // temp in tank is high enough
                 // turn pump ON
                 switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
