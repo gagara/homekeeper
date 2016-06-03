@@ -14,7 +14,6 @@ import android.widget.ToggleButton;
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.SensorModel;
-import com.gagara.homekeeper.ui.view.ViewUtils;
 
 public class NodeModelView extends AbstractEntryModelView implements ModelView {
 
@@ -90,10 +89,9 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
                     detailsStr.append(resources.getString(R.string.node_details_sensors_template));
                     for (int i = 0; i < model.getSensors().size(); i++) {
                         SensorModel s = model.getSensors().valueAt(i);
-                        detailsStr.append(String.format(resources
-                                .getString(R.string.node_details_sensor_template), resources
-                                .getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId())), f
-                                .format(s.getValue()), getSensorSignResourceByType(s.getType())));
+                        detailsStr.append(String.format(resources.getString(R.string.node_details_sensor_template),
+                                resources.getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId())),
+                                f.format(s.getValue()), resources.getString(getSensorSignResourceByType(s.getType()))));
                     }
                 }
 

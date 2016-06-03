@@ -27,7 +27,7 @@ public class SensorModelView extends AbstractEntryModelView implements ModelView
 
         if (model.isInitialized() && model.getValue() != UNDEFINED_SENSOR_VALUE) {
             valueView.setText(String.format(resources.getString(R.string.sensor_value_template),
-                    f.format(model.getValue()), getSensorSignResourceByType(model.getType())));
+                    f.format(model.getValue()), resources.getString(getSensorSignResourceByType(model.getType()))));
         } else {
             valueView.setText(String.format(resources.getString(R.string.sensor_value_template),
                     "?", resources.getString(getSensorSignResourceByType(model.getType()))));
