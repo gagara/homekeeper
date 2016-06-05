@@ -1,5 +1,13 @@
 package com.gagara.homekeeper.nbi.response;
 
+import static com.gagara.homekeeper.common.ControllerConfig.FORCE_FLAG_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.FORCE_TIMESTAMP_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.ID_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSORS_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.STATE_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.TIMESTAMP_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.VALUE_KEY;
+
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -10,7 +18,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.SensorModel;
 import com.gagara.homekeeper.nbi.MessageHeader;
@@ -90,22 +97,22 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
             throw new IllegalStateException("'clocksDelta' is not initialized");
         }
         try {
-            data = new NodeModel(json.getInt(ControllerConfig.ID_KEY));
-            data.setState(json.getInt(ControllerConfig.STATE_KEY) == 1 ? true : false);
-            if (json.getLong(ControllerConfig.TIMESTAMP_KEY) != 0) {
-                data.setSwitchTimestamp(new Date(json.getLong(ControllerConfig.TIMESTAMP_KEY) + clocksDelta));
+            data = new NodeModel(json.getInt(ID_KEY));
+            data.setState(json.getInt(STATE_KEY) == 1 ? true : false);
+            if (json.getLong(TIMESTAMP_KEY) != 0) {
+                data.setSwitchTimestamp(new Date(json.getLong(TIMESTAMP_KEY) + clocksDelta));
             }
-            data.setForcedMode(json.getInt(ControllerConfig.FORCE_FLAG_KEY) == 1 ? true : false);
-            if (json.has(ControllerConfig.FORCE_TIMESTAMP_KEY)
-                    && json.getLong(ControllerConfig.FORCE_TIMESTAMP_KEY) != 0) {
-                data.setForcedModeTimestamp(new Date(json.getLong(ControllerConfig.FORCE_TIMESTAMP_KEY) + clocksDelta));
+            data.setForcedMode(json.getInt(FORCE_FLAG_KEY) == 1 ? true : false);
+            if (json.has(FORCE_TIMESTAMP_KEY)
+                    && json.getLong(FORCE_TIMESTAMP_KEY) != 0) {
+                data.setForcedModeTimestamp(new Date(json.getLong(FORCE_TIMESTAMP_KEY) + clocksDelta));
             }
-            if (json.has(ControllerConfig.SENSORS_KEY)) {
-                JSONArray sensorsJson = json.getJSONArray(ControllerConfig.SENSORS_KEY);
+            if (json.has(SENSORS_KEY)) {
+                JSONArray sensorsJson = json.getJSONArray(SENSORS_KEY);
                 for (int i = 0; i < sensorsJson.length(); i++) {
                     JSONObject sensorJson = sensorsJson.getJSONObject(i);
-                    int id = sensorJson.getInt(ControllerConfig.ID_KEY);
-                    int value = sensorJson.getInt(ControllerConfig.VALUE_KEY);
+                    int id = sensorJson.getInt(ID_KEY);
+                    int value = sensorJson.getInt(VALUE_KEY);
                     SensorModel sensor = new SensorModel(id);
                     sensor.setValue(value);
                     data.addSensor(sensor);

@@ -8,6 +8,7 @@ public class Constants {
     }
 
     public static final int UNDEFINED_SENSOR_VALUE = Integer.MAX_VALUE;
+    public static final int UNKNOWN_SENSOR_VALUE = -127;
     public static final Date UNDEFINED_DATE = new Date(0);
     public static final int UNDEFINED_ID = -1;
 

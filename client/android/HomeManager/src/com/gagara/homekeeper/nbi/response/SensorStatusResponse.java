@@ -1,5 +1,12 @@
 package com.gagara.homekeeper.nbi.response;
 
+import static com.gagara.homekeeper.common.Constants.UNDEFINED_DATE;
+import static com.gagara.homekeeper.common.ControllerConfig.ID_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.TIMESTAMP_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.VALUE_KEY;
+
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,7 +14,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.model.SensorModel;
 import com.gagara.homekeeper.nbi.MessageHeader;
 
@@ -62,10 +68,15 @@ public class SensorStatusResponse extends MessageHeader implements Response, Par
     @Override
     public SensorStatusResponse fromJson(JSONObject json) {
         try {
-            int id = json.getInt(ControllerConfig.ID_KEY);
-            int value = json.getInt(ControllerConfig.VALUE_KEY);
+            int id = json.getInt(ID_KEY);
+            int value = json.getInt(VALUE_KEY);
+            Date ts = UNDEFINED_DATE;
+            if (json.has(TIMESTAMP_KEY) && json.getLong(TIMESTAMP_KEY) != 0) {
+                ts = new Date(json.getLong(TIMESTAMP_KEY) + clocksDelta);
+            }
             data = new SensorModel(id);
             data.setValue(value);
+            data.setTimestamp(ts);
         } catch (JSONException e) {
             Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
             return null;

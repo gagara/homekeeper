@@ -56,7 +56,8 @@
     <string name="sensor_details_inc_template">&#8593;%1$s</string>
     <string name="sensor_details_dec_template">&#8595;%1$s</string>
     <string name="sensor_details_equ_template">&#8597;%1$s</string>
-
+    <string name="sensor_details_time_template">\@%1$s [%2$sm]</string>
+    
     <string name="temperature_sign">&#8451;</string>
     <string name="humidity_sign">%</string>
     <string name="unknown_sign">-</string>

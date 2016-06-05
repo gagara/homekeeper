@@ -1,6 +1,8 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
 import static com.gagara.homekeeper.common.Constants.UNDEFINED_DATE;
+import static com.gagara.homekeeper.common.Constants.UNDEFINED_SENSOR_VALUE;
+import static com.gagara.homekeeper.common.Constants.UNKNOWN_SENSOR_VALUE;
 import static com.gagara.homekeeper.ui.view.ViewUtils.getSensorSignResourceByType;
 
 import java.text.DecimalFormat;
@@ -14,6 +16,7 @@ import android.widget.ToggleButton;
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.SensorModel;
+import com.gagara.homekeeper.ui.view.ViewUtils;
 
 public class NodeModelView extends AbstractEntryModelView implements ModelView {
 
@@ -37,11 +40,11 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
             valueView.setChecked(model.getState());
             valueView.setEnabled(true);
             if (!UNDEFINED_DATE.equals(model.getSwitchTimestamp())) {
-                elapsedMinsStr = buildElapseTimeString(currDate, model.getSwitchTimestamp());
+                elapsedMinsStr = ViewUtils.buildElapseTimeString(currDate, model.getSwitchTimestamp());
             }
 
             if (!UNDEFINED_DATE.equals(model.getForcedModeTimestamp())) {
-                remainingMinsStr = buildElapseTimeString(model.getForcedModeTimestamp(), currDate);
+                remainingMinsStr = ViewUtils.buildElapseTimeString(model.getForcedModeTimestamp(), currDate);
             }
 
             StringBuilder detailsStr = new StringBuilder();
@@ -89,9 +92,13 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
                     detailsStr.append(resources.getString(R.string.node_details_sensors_template));
                     for (int i = 0; i < model.getSensors().size(); i++) {
                         SensorModel s = model.getSensors().valueAt(i);
+                        String value = "?";
+                        if (s.getValue() != UNDEFINED_SENSOR_VALUE && s.getValue() != UNKNOWN_SENSOR_VALUE) {
+                            value = f.format(s.getValue());
+                        }
                         detailsStr.append(String.format(resources.getString(R.string.node_details_sensor_template),
-                                resources.getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId())),
-                                f.format(s.getValue()), resources.getString(getSensorSignResourceByType(s.getType()))));
+                                resources.getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId())), value,
+                                resources.getString(getSensorSignResourceByType(s.getType()))));
                     }
                 }
 
@@ -107,21 +114,5 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
     @Override
     public NodeModel getModel() {
         return (NodeModel) model;
-    }
-
-    private String buildElapseTimeString(Date hi, Date lo) {
-        String result;
-        double delta = hi.getTime() - lo.getTime();
-        if (delta > 0) {
-            delta = Math.round(delta / (1000 * 60));
-            if (delta == 0) {
-                result = "<1";
-            } else {
-                result = "" + Double.valueOf(delta).intValue();
-            }
-        } else {
-            result = "0";
-        }
-        return result;
     }
 }

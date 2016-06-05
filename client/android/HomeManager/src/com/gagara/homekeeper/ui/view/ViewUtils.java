@@ -16,12 +16,30 @@ import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SB_HEATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SUPPLY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TANK_ID;
 
+import java.util.Date;
+
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.SensorModel;
 import com.gagara.homekeeper.model.SensorModel.SensorType;
 
 public class ViewUtils {
+
+    public static String buildElapseTimeString(Date hi, Date lo) {
+        String result;
+        double delta = hi.getTime() - lo.getTime();
+        if (delta > 0) {
+            delta = Math.round(delta / (1000 * 60));
+            if (delta == 0) {
+                result = "<1";
+            } else {
+                result = "" + Double.valueOf(delta).intValue();
+            }
+        } else {
+            result = "0";
+        }
+        return result;
+    }
 
     public static int getSensorSignResourceByType(SensorType type) {
         if (SensorType.TEMPERATURE == type) {
