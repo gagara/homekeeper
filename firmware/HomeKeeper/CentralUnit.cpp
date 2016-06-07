@@ -591,20 +591,13 @@ void processCirculationCircuit() {
         int8_t sensVals[] = { tempBoiler };
         if (NODE_STATE_FLAGS & NODE_CIRCULATION_BIT) {
             // pump is ON
-            if (tempBoiler < CIRCULATION_TEMP_THRESHOLD) {
-                // temp in boiler is too low
+            if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_ACTIVE_PERIOD_MSEC) {
+                // active period is over
                 // turn pump OFF
                 switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
             } else {
-                // temp in boiler is high enough
-                if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_ACTIVE_PERIOD_MSEC) {
-                    // active period is over
-                    // turn pump OFF
-                    switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
-                } else {
-                    // active period going on
-                    // do nothing
-                }
+                // active period is going on
+                // do nothing
             }
         } else {
             // pump is OFF
@@ -615,7 +608,7 @@ void processCirculationCircuit() {
                     // turn pump ON
                     switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
                 } else {
-                    // passive period going on
+                    // passive period is going on
                     // do nothing
                 }
             } else {
