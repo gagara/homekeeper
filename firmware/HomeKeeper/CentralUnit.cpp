@@ -86,7 +86,7 @@ static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 300000; // 5m
 static const uint8_t TANK_BOILER_HIST = 3;
 
 // Circulation
-static const uint8_t CIRCULATION_TEMP_THRESHOLD = 40;
+static const uint8_t CIRCULATION_TEMP_THRESHOLD = 37;
 static const unsigned long CIRCULATION_ACTIVE_PERIOD_MSEC = 300000; // 5m
 static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 1800000; // 30m
 
@@ -1119,7 +1119,7 @@ bool wifiGetIP() {
     char buff[JSON_MAX_READ_SIZE];
     s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
     int tmp[4];
-    int n = sscanf(buff, "%*[^,\"],\"%d.%d.%d.%d", &tmp[0], &tmp[1], &tmp[2], &tmp[3]);
+    int n = sscanf(strstr(buff, ":STAIP,"), "%*[^,\"],\"%d.%d.%d.%d", &tmp[0], &tmp[1], &tmp[2], &tmp[3]);
     if (n == 4) {
         IP[0] = tmp[0];
         IP[1] = tmp[1];
