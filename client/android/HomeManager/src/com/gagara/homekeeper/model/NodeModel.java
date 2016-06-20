@@ -73,6 +73,9 @@ public class NodeModel implements Model {
 
     public void update(NodeModel newModel) {
         state = newModel.getState();
+        if (!switchTimestamp.equals(newModel.getSwitchTimestamp())) {
+            sensors.clear();
+        }
         switchTimestamp = newModel.getSwitchTimestamp();
         forcedMode = newModel.isForcedMode();
         forcedModeTimestamp = newModel.getForcedModeTimestamp();
