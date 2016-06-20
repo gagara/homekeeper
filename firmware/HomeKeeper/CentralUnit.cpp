@@ -73,7 +73,7 @@ static const int SERVER_IP_EEPROM_ADDR = WIFI_PW_EEPROM_ADDR + 32;
 static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + 4;
 
 // Primary Heater
-static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 10;
+static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
 
 // heating
 static const uint8_t HEATING_TEMP_THRESHOLD = 40;
