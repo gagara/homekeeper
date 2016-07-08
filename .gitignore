@@ -5,6 +5,7 @@ client/android/*/project.properties
 firmware/*/Libraries
 firmware/*/Release
 firmware/*/arduino
+**/*.pyc
 *.d
 *.o
 *.eep
