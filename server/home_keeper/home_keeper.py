@@ -1,8 +1,10 @@
 from flask import Flask, request, abort
 from flask import jsonify
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm.exc import UnmappedInstanceError
 from sqlalchemy.exc import IntegrityError, OperationalError
+from sqlalchemy.orm.exc import UnmappedInstanceError
+
+from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 
