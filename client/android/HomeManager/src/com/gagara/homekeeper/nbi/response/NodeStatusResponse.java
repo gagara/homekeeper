@@ -3,7 +3,7 @@ package com.gagara.homekeeper.nbi.response;
 import static com.gagara.homekeeper.common.ControllerConfig.FORCE_FLAG_KEY;
 import static com.gagara.homekeeper.common.ControllerConfig.FORCE_TIMESTAMP_KEY;
 import static com.gagara.homekeeper.common.ControllerConfig.ID_KEY;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSORS_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_KEY;
 import static com.gagara.homekeeper.common.ControllerConfig.STATE_KEY;
 import static com.gagara.homekeeper.common.ControllerConfig.TIMESTAMP_KEY;
 import static com.gagara.homekeeper.common.ControllerConfig.VALUE_KEY;
@@ -107,8 +107,8 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
                     && json.getLong(FORCE_TIMESTAMP_KEY) != 0) {
                 data.setForcedModeTimestamp(new Date(json.getLong(FORCE_TIMESTAMP_KEY) + clocksDelta));
             }
-            if (json.has(SENSORS_KEY)) {
-                JSONArray sensorsJson = json.getJSONArray(SENSORS_KEY);
+            if (json.has(SENSOR_KEY)) {
+                JSONArray sensorsJson = json.getJSONArray(SENSOR_KEY);
                 for (int i = 0; i < sensorsJson.length(); i++) {
                     JSONObject sensorJson = sensorsJson.getJSONObject(i);
                     int id = sensorJson.getInt(ID_KEY);

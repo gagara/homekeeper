@@ -52,8 +52,8 @@ public class ControllerConfig {
     public static final String TIMESTAMP_KEY = "ts";
     public static final String FORCE_TIMESTAMP_KEY = "ft";
     public static final String OVERFLOW_COUNT_KEY = "oc";
-    public static final String NODES_KEY = "n";
-    public static final String SENSORS_KEY = "s";
+    public static final String NODE_KEY = "n";
+    public static final String SENSOR_KEY = "s";
     public static final String VALUE_KEY = "v";
 
     public static final long MAX_INACTIVE_PERIOD_SEC = 90;

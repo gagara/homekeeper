@@ -1,6 +1,5 @@
 package com.gagara.homekeeper.nbi.response;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,25 +79,19 @@ public class CurrentStatusResponse extends MessageHeader implements Response, Pa
         try {
             if (ControllerConfig.MessageType.CURRENT_STATUS_REPORT == ControllerConfig.MessageType.forCode(json.get(
                     ControllerConfig.MSG_TYPE_KEY).toString())) {
-                if (json.has(ControllerConfig.NODES_KEY)) {
-                    JSONArray nodesJson = json.getJSONArray(ControllerConfig.NODES_KEY);
-                    for (int i = 0; i < nodesJson.length(); i++) {
-                        JSONObject nodeJson = nodesJson.getJSONObject(i);
-                        NodeStatusResponse node = new NodeStatusResponse(clocksDelta);
-                        if (node.fromJson(nodeJson) != null) {
-                            nodes.put(node.getData().getId(), node);
-                        }
+                if (json.has(ControllerConfig.NODE_KEY)) {
+                    JSONObject nodeJson = json.getJSONObject(ControllerConfig.NODE_KEY);
+                    NodeStatusResponse node = new NodeStatusResponse(clocksDelta);
+                    if (node.fromJson(nodeJson) != null) {
+                        nodes.put(node.getData().getId(), node);
                     }
                 }
-                if (json.has(ControllerConfig.SENSORS_KEY)) {
-                    JSONArray sensorsJson = json.getJSONArray(ControllerConfig.SENSORS_KEY);
-                    for (int i = 0; i < sensorsJson.length(); i++) {
-                        JSONObject sensorJson = sensorsJson.getJSONObject(i);
-                        SensorStatusResponse sensor = new SensorStatusResponse(clocksDelta);
-                        if (sensor.fromJson(sensorJson) != null) {
-                            sensors.put(sensor.getData().getId(), sensor);
+                if (json.has(ControllerConfig.SENSOR_KEY)) {
+                    JSONObject sensorJson = json.getJSONObject(ControllerConfig.SENSOR_KEY);
+                    SensorStatusResponse sensor = new SensorStatusResponse(clocksDelta);
+                    if (sensor.fromJson(sensorJson) != null) {
+                        sensors.put(sensor.getData().getId(), sensor);
 
-                        }
                     }
                 }
                 return this;

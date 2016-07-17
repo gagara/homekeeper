@@ -137,7 +137,7 @@ static const uint8_t JSON_MAX_WRITE_SIZE = 128;
 static const uint8_t JSON_MAX_READ_SIZE = 128;
 static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
 static const uint8_t RF_MAX_BODY_SIZE = 65;
-static const uint8_t HTTP_MAX_BODY_SIZE = 255;
+static const uint16_t HTTP_MAX_BODY_SIZE = 512;
 static const uint8_t HTTP_MAX_GET_SIZE = 32;
 
 /* ===== End of Configuration ====== */
@@ -1176,7 +1176,7 @@ bool wifiSend(const char* msg) {
     if (validIP(IP) && validIP(SERVER_IP)) {
         char body[HTTP_MAX_BODY_SIZE];
         sprintf(body,
-                "POST / HTTP/1.1 \r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s",
+                "POST / HTTP/1.1\r\nUser-Agent: ESP8266\r\nAccept: */*\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s",
                 strlen(msg), msg);
 
         char connect[64];
@@ -1273,8 +1273,7 @@ void reportNodeStatus(uint8_t id, uint8_t bit, unsigned long ts, unsigned long t
         node[FORCE_TIMESTAMP_KEY] = tsf;
     }
 
-    JsonArray& nodes = root.createNestedArray(NODES_KEY);
-    nodes.add(node);
+    root[NODES_KEY] = node;
 
     char json[JSON_MAX_WRITE_SIZE];
     root.printTo(json, JSON_MAX_WRITE_SIZE);
@@ -1300,8 +1299,7 @@ void reportSensorStatus(const uint8_t id, const int8_t value, const unsigned lon
         sens[TIMESTAMP_KEY] = ts;
     }
 
-    JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
-    sensors.add(sens);
+    root[SENSORS_KEY] = sens;
 
     char json[JSON_MAX_WRITE_SIZE];
     root.printTo(json, JSON_MAX_WRITE_SIZE);
@@ -1342,8 +1340,7 @@ void reportSensorConfig(const uint8_t id, const double value) {
     sens[ID_KEY] = id;
     sens[CALIBRATION_FACTOR_KEY] = value;
 
-    JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
-    sensors.add(sens);
+    root[SENSORS_KEY] = sens;
 
     char json[JSON_MAX_WRITE_SIZE];
     root.printTo(json, JSON_MAX_WRITE_SIZE);
