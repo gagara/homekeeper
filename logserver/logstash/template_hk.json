@@ -8,12 +8,40 @@
       "_all" : {"enabled" : true, "omit_norms" : true},
       "properties" : {
         "prev_timestamp": { "type": "date" },
-        "m": { "type": "string", "index": "not_analyzed" },
-        "name": { "type": "string", "index": "not_analyzed" },
-        "state_str": { "type": "string", "index": "not_analyzed" },
         "csr_type": { "type": "string", "index": "not_analyzed" },
-        "state": { "type": "boolean" }
+        "name": { "type": "string", "index": "not_analyzed" },
+        "state": { "type": "boolean" },
+        "state_str": { "type": "string", "index": "not_analyzed" },
+        "m": { "type": "string", "index": "not_analyzed" },
+        "id": { "type": "byte" },
+        "ns": { "type": "byte" },
+        "ts": { "type": "long" },
+        "ff": { "type": "byte" },
+        "ft": { "type": "long" },
+        "n" : {
+          "properties" : {
+            "id": { "type": "byte" },
+            "ns": { "type": "byte" },
+            "ts": { "type": "long" },
+            "ff": { "type": "byte" },
+            "ft": { "type": "long" }
+          }
+        },
+        "s" : {
+          "properties" : {
+            "id": { "type": "byte" },
+            "v": { "type": "integer" },
+            "cf": { "type": "float" }
+          }
+        },
+        "ap": { "type": "string", "index": "not_analyzed" },
+        "pw": { "type": "string", "index": "not_analyzed" },
+        "sip": { "type": "ip" },
+        "lip": { "type": "ip" },
+        "sp": { "type": "integer" },
+        "oc": { "type": "integer" }
       }
     }
   }
 }
+
