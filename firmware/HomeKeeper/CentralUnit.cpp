@@ -101,6 +101,9 @@ static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 60000;
 static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 9000;
 static const unsigned long SENSORS_READ_INTERVAL_MSEC = 3000;
 
+// WiFi
+static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 600000; // 10m
+
 // RF
 static const uint64_t RF_PIPE_BASE = 0xE8E8F0F0A2LL;
 static const uint8_t RF_PACKET_LENGTH = 32;
@@ -204,6 +207,8 @@ unsigned long tsLastSensorsRead = 0;
 
 unsigned long tsLastSensorTempRoom1 = 0;
 unsigned long tsLastSensorHumRoom1 = 0;
+
+unsigned long tsLastWifiSuccessTransmission = 0;
 
 unsigned long tsPrev = 0;
 unsigned long tsCurr = 0;
@@ -382,7 +387,9 @@ void loop() {
         processStandbyHeater();
 
         if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_MSEC) {
-            if (!wifiGetIP()) {
+            if (!wifiGetIP()
+                    || (validIP(SERVER_IP)
+                            && diffTimestamps(tsCurr, tsLastWifiSuccessTransmission) >= WIFI_MAX_FAILURE_PERIOD_MSEC)) {
                 wifiConnect();
                 wifiStartServer();
                 wifiGetIP();
@@ -1393,6 +1400,7 @@ void broadcastMsg(const char* msg) {
     bt->println(msg);
     bool r = wifiSend(msg);
     if (r) {
+        tsLastWifiSuccessTransmission = tsCurr;
 #ifdef __DEBUG__
         Serial.println("wifi send: OK");
 #endif
