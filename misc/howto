@@ -16,3 +16,14 @@ bluetoothctl
 power on/off
 
 stty -F /dev/rfcomm0 -echo -onlcr -icrnl
+
+echo "{\"m\":\"cfg\",\"sip\":\"192.168.0.146\"}\" > /dev/rfcomm0
+echo "{\"m\":\"cfg\"}\" > /dev/rfcomm0
+
+==========================
+
+curl --basic -u proxy:proxy -H "Content-Type: application/json" -XPOST http://localhost:8088 -d '{"m":"csr"}'
+curl -v --basic -u proxy:proxy -H "Content-Type: application/json" -XPOST http://localhost:8088 -d '{"m":"log", "ts": 1469353609341}'
+
+curl -XPOST http://localhost:9200/logstash_hk-*/_count?pretty -d '{"query": {"bool": {"filter": [{"term": {"headers.http_user_agent": "ESP8266"}}, {"range": {"@timestamp": {"gt": "1469338359"}}}]}}}'
+
