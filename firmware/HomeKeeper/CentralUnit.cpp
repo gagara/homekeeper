@@ -398,8 +398,8 @@ void loop() {
                 wifiInit();
                 wifiConnect();
                 wifiStartServer();
+                delay(5000);
                 wifiGetIP();
-                tsLastWifiSuccessTransmission = tsCurr;
             }
             reportStatus();
         }
@@ -1111,6 +1111,10 @@ void wifiInit() {
     wifi->println(F("AT+CIOBAUD=9600"));
     wifi->begin(9600);
     wifi->setTimeout(300);
+    IP[0] = 0;
+    IP[1] = 0;
+    IP[2] = 0;
+    IP[3] = 0;
 }
 
 void wifiConnect() {
