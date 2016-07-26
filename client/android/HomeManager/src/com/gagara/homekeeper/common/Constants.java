@@ -40,12 +40,8 @@ public class Constants {
     public static final String CFG_PROXY_USER = "proxy_user";
     public static final String CFG_PROXY_PASSWORD = "proxy_password";
     public static final String CFG_PROXY_PULL_PERIOD = "proxy_pull_period";
-//    public static final String CFG_DATA_PUBLISHING = "data_publishing";
-//    public static final String CFG_REMOTE_CONTROL = "remote_control";
-//    public static final String CFG_REMOTE_CONTROL_PULL_INTERVAL = "remote_control_pull_interval";
-//    public static final String CFG_SLAVE_REFRESH_INTERVAL = "slave_refresh_interval";
-//    public static final String CFG_REMOTE_SERVICE_ENDPOINT = "remote_endpoint";
 
-//    public static final String PREFERENCE_GENERAL_CATEGORY_KEY = "pref_general_category";
-//    public static final String PREFERENCE_MASTER_CATEGORY_KEY = "pref_master_category";
+    public static final String MESSAGE_KEY = "message";
+    public static final String TIMESTAMP_KEY = "@timestamp";
+    
 }

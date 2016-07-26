@@ -1,4 +1,9 @@
-package com.gagara.homekeeper.service;
+package com.gagara.homekeeper.nbi.service;
+
+import static com.gagara.homekeeper.nbi.service.ServiceState.ACTIVE;
+import static com.gagara.homekeeper.nbi.service.ServiceState.ERROR;
+import static com.gagara.homekeeper.nbi.service.ServiceState.INIT;
+import static com.gagara.homekeeper.nbi.service.ServiceState.SHUTDOWN;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,7 +69,6 @@ public class BluetoothNbiService extends AbstractNbiService {
             dev = HomeKeeperConfig.getBluetoothDevice(BluetoothNbiService.this);
             initOngoingNotification();
             if (dev != null) {
-                startHealthckecker();
                 runService();
             }
         } catch (InterruptedException e) {
@@ -81,7 +85,7 @@ public class BluetoothNbiService extends AbstractNbiService {
 
     @Override
     public void send(Request request) {
-        if (state == State.ACTIVE && out != null) {
+        if (state == ACTIVE && out != null) {
             try {
                 if (request instanceof ClockSyncRequest) {
                     out.write(request.toJson().toString().getBytes());
@@ -101,25 +105,25 @@ public class BluetoothNbiService extends AbstractNbiService {
     }
 
     private void startHealthckecker() {
-        state = State.INIT;
+        state = INIT;
         notifyStatusChange(null);
         if (!healthckeckExecutor.isTerminated()) {
             healthckeckExecutor.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    if (state == State.INIT) {
+                    if (state == INIT) {
                         // connect
                         initConnection();
-                    } else if (state == State.ERROR) {
+                    } else if (state == ERROR) {
                         // re-connection
                         initConnection();
-                    } else if (state == State.ACTIVE) {
+                    } else if (state == ACTIVE) {
                         Date currTs = new Date();
                         if ((currTs.getTime() - lastMessageTimestamp.getTime()) > ControllerConfig.MAX_INACTIVE_PERIOD_SEC * 1000) {
                             closeConnection();
-                            state = State.ERROR;
+                            state = ERROR;
                         }
-                    } else if (state == State.SHUTDOWN) {
+                    } else if (state == SHUTDOWN) {
                         // do nothing
                     }
                 }
@@ -134,7 +138,7 @@ public class BluetoothNbiService extends AbstractNbiService {
             socket.connect();
             in = socket.getInputStream();
             out = socket.getOutputStream();
-            state = State.ACTIVE;
+            state = ACTIVE;
             lastMessageTimestamp = new Date();
             notifyStatusChange(null);
             synchronized (serviceExecutor) {
@@ -142,7 +146,7 @@ public class BluetoothNbiService extends AbstractNbiService {
             }
         } catch (IOException e) {
             Log.e(TAG, e.getMessage(), e);
-            state = State.ERROR;
+            state = ERROR;
             notifyStatusChange(e.getMessage());
         }
     }
@@ -175,8 +179,9 @@ public class BluetoothNbiService extends AbstractNbiService {
     private void runService() throws InterruptedException {
         LocalBroadcastManager.getInstance(this).registerReceiver(controllerCommandReceiver,
                 new IntentFilter(Constants.CONTROLLER_CONTROL_COMMAND_ACTION));
+        startHealthckecker();
         while (true) {
-            if (state == State.ACTIVE) {
+            if (state == ACTIVE) {
                 clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
                 clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L, INITIAL_CLOCK_SYNC_INTERVAL_SEC,
                         TimeUnit.SECONDS);
@@ -192,7 +197,7 @@ public class BluetoothNbiService extends AbstractNbiService {
                         }
                     } catch (IOException e) {
                         Log.e(TAG, e.getMessage(), e);
-                        state = State.ERROR;
+                        state = ERROR;
                         notifyStatusChange(e.getMessage());
                         break;
                     }

@@ -17,14 +17,12 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
-import android.view.inputmethod.EditorInfo;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.gagara.homekeeper.R;
@@ -41,7 +39,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
     private EditTextPreference proxyPort;
     private EditTextPreference proxyUser;
     private EditTextPreference proxyPassword;
-    private EditTextPreference proxyPullPeriod;
+    private ListPreference proxyPullPeriod;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -55,7 +53,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         proxyPort = (EditTextPreference) findPreference(Constants.CFG_PROXY_PORT);
         proxyUser = (EditTextPreference) findPreference(Constants.CFG_PROXY_USER);
         proxyPassword = (EditTextPreference) findPreference(Constants.CFG_PROXY_PASSWORD);
-        proxyPullPeriod = (EditTextPreference) findPreference(Constants.CFG_PROXY_PULL_PERIOD);
+        proxyPullPeriod = (ListPreference) findPreference(Constants.CFG_PROXY_PULL_PERIOD);
 
         initComponents();
 
@@ -82,6 +80,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         refreshProxyHostControl(null);
         refreshProxyPortControl(null);
         refreshProxyUserControl(null);
+        refreshProxyPasswordControl(null);
         refreshProxyPullPeriodControl(null);
     }
     
@@ -137,48 +136,43 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         proxyHost.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                refresh!!!((String) newValue);
+                refreshProxyHostControl((String) newValue);
                 return true;
             }
         });
 
-
-        // remoteEndpoint
-        remoteEndpoint.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+        // proxyPort
+        proxyPort.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                refreshRemoteEndpointControl((String) newValue);
-                return true;
-            }
-        });
-        // dataPub
-        dataPub.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                refreshProxyPortControl((Integer) newValue);
                 return true;
             }
         });
 
-        // remoteCtrl
-        remoteCtrl.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+        // proxyUser
+        proxyUser.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
+                refreshProxyUserControl((String) newValue);
                 return true;
             }
         });
 
-        // pullIntList
-        pullIntList.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+        // proxyPassword
+        proxyPassword.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
+                refreshProxyPasswordControl((String) newValue);
                 return true;
             }
         });
 
-        // refreshIntList
-        refreshIntList.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+        // proxyPullPeriod
+        proxyPullPeriod.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
+                refreshProxyPullPeriodControl((Integer) newValue);
                 return true;
             }
         });
@@ -210,14 +204,41 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         if (newValue != null) {
             proxyHost.setSummary(newValue);
         } else {
-            proxyHost.setSummary(R.string.proxy_host_default_summary);
+            proxyHost.setSummary(R.string.pref_proxy_host_default_summary);
         }
     }
-!!!!!!!!!!!
-    refreshProxyHostControl(null);
-    refreshProxyPortControl(null);
-    refreshProxyUserControl(null);
-    refreshProxyPullPeriodControl(null);
+
+    private void refreshProxyPortControl(Integer newValue) {
+        if (newValue != null) {
+            proxyPort.setSummary(newValue);
+        } else {
+            proxyPort.setSummary(R.string.pref_proxy_port_default_summary);
+        }
+    }
+
+    private void refreshProxyUserControl(String newValue) {
+        if (newValue != null) {
+            proxyUser.setSummary(newValue);
+        } else {
+            proxyUser.setSummary(R.string.pref_proxy_user_default_summary);
+        }
+    }
+
+    private void refreshProxyPasswordControl(String newValue) {
+        if (newValue != null) {
+            proxyPassword.setSummary(R.string.pref_proxy_password_non_empty_summary);
+        } else {
+            proxyPassword.setSummary(R.string.pref_proxy_password_default_summary);
+        }
+    }
+
+    private void refreshProxyPullPeriodControl(Integer newValue) {
+        if (newValue != null) {
+            proxyPullPeriod.setSummary(newValue);
+        } else {
+            proxyPullPeriod.setSummary(R.string.pref_proxy_pull_period_default_summary);
+        }
+    }
 
     private void updateBtDevList() {
         Map<String, String> availableBtDevices = BluetoothUtils.getPairedDevicesMap();

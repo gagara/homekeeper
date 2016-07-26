@@ -1,4 +1,4 @@
-package com.gagara.homekeeper.service;
+package com.gagara.homekeeper.nbi.service;
 
 import static com.gagara.homekeeper.common.Constants.COMMAND_KEY;
 import static com.gagara.homekeeper.common.Constants.CONTROLLER_CONTROL_COMMAND_ACTION;
@@ -41,7 +41,7 @@ public abstract class AbstractNbiService extends Service {
 
     protected static final long INITIAL_CLOCK_SYNC_INTERVAL_SEC = 10;
 
-    protected volatile State state;
+    protected volatile ServiceState state;
 
     protected int startId;
 
@@ -56,33 +56,6 @@ public abstract class AbstractNbiService extends Service {
 
     private Future<?> currentTask = null;
 
-    public enum State {
-        INIT, ACTIVE, ERROR, SHUTDOWN;
-
-        public int toStringResource() {
-            if (this == INIT) {
-                return R.string.service_state_init;
-            } else if (this == ACTIVE) {
-                return R.string.service_state_active;
-            } else if (this == ERROR) {
-                return R.string.service_state_error;
-            } else if (this == SHUTDOWN) {
-                return R.string.service_state_shutdown;
-            } else {
-                return -1;
-            }
-        }
-
-        public static State fromString(String str) {
-            for (State s : values()) {
-                if (s.toString().equalsIgnoreCase(str)) {
-                    return s;
-                }
-            }
-            return null;
-        }
-    }
-
     abstract void send(Request request);
 
     abstract String getServiceProviderName();
@@ -91,7 +64,7 @@ public abstract class AbstractNbiService extends Service {
 
     @Override
     public void onCreate() {
-        state = State.SHUTDOWN;
+        state = ServiceState.SHUTDOWN;
         startId = 0;
         serviceExecutor = Executors.newSingleThreadExecutor();
         controllerCommandReceiver = new ControllerCommandsReceiver();
@@ -121,7 +94,7 @@ public abstract class AbstractNbiService extends Service {
     public void onDestroy() {
         serviceNotification = null;
         startId = 0;
-        state = State.SHUTDOWN;
+        state = ServiceState.SHUTDOWN;
         notifyStatusChange(null);
         serviceExecutor.shutdownNow();
         if (clockSyncExecutor != null) {

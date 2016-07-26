@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -29,7 +30,7 @@
             android:name="com.gagara.homekeeper.activity.SettingsActivity"
             android:label="@string/settings_activity_name" >
         </activity>
-        <service android:name="com.gagara.homekeeper.service.BluetoothNbiService" />
+        <service android:name="com.gagara.homekeeper.nbi.service.BluetoothNbiService" />
     </application>
 
 </manifest>
