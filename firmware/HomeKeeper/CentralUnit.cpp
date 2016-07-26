@@ -46,6 +46,9 @@ static const uint8_t NODE_SB_HEATER = 34;
 static const uint8_t RF_CE_PIN = 9; //5
 static const uint8_t RF_CSN_PIN = 10; //6
 
+// WiFi pins
+static const uint8_t WIFI_RST_PIN = 12;
+
 static const uint8_t HEARTBEAT_LED = 13;
 
 // Nodes State
@@ -260,6 +263,8 @@ void setup() {
 #endif
     bt->begin(9600);         // BT
     loadWifiConfig();
+    pinMode(WIFI_RST_PIN, OUTPUT);
+    digitalWrite(WIFI_RST_PIN, LOW);
     wifiInit();             // WiFi
     wifiConnect();
     wifiStartServer();
@@ -390,9 +395,11 @@ void loop() {
             if (!wifiGetIP()
                     || (validIP(SERVER_IP)
                             && diffTimestamps(tsCurr, tsLastWifiSuccessTransmission) >= WIFI_MAX_FAILURE_PERIOD_MSEC)) {
+                wifiInit();
                 wifiConnect();
                 wifiStartServer();
                 wifiGetIP();
+                tsLastWifiSuccessTransmission = tsCurr;
             }
             reportStatus();
         }
@@ -1094,6 +1101,12 @@ void loadWifiConfig() {
 }
 
 void wifiInit() {
+    // hardware reset
+    digitalWrite(WIFI_RST_PIN, HIGH);
+    delay(500);
+    digitalWrite(WIFI_RST_PIN, LOW);
+    delay(1000);
+
     wifi->begin(115200);
     wifi->println(F("AT+CIOBAUD=9600"));
     wifi->begin(9600);
@@ -1103,10 +1116,7 @@ void wifiInit() {
 void wifiConnect() {
     if (strlen(WIFI_AP) + strlen(WIFI_PW) > 0) {
         char msg[128];
-        wifi->println(F("AT+CWQAP"));
-        delay(1000);
         wifi->println(F("AT+RST"));
-        delay(1000);
         wifi->println(F("AT+CIPMODE=0"));
         wifi->println(F("AT+CWMODE=1"));
         sprintf(msg, "AT+CWJAP=\"%s\",\"%s\"", WIFI_AP, WIFI_PW);
