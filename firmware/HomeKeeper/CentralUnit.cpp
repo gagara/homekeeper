@@ -264,7 +264,7 @@ void setup() {
     bt->begin(9600);         // BT
     loadWifiConfig();
     pinMode(WIFI_RST_PIN, OUTPUT);
-    digitalWrite(WIFI_RST_PIN, LOW);
+    digitalWrite(WIFI_RST_PIN, HIGH);
     wifiInit();             // WiFi
     wifiConnect();
     wifiStartServer();
@@ -1102,9 +1102,9 @@ void loadWifiConfig() {
 
 void wifiInit() {
     // hardware reset
-    digitalWrite(WIFI_RST_PIN, HIGH);
-    delay(500);
     digitalWrite(WIFI_RST_PIN, LOW);
+    delay(500);
+    digitalWrite(WIFI_RST_PIN, HIGH);
     delay(1000);
 
     wifi->begin(115200);
