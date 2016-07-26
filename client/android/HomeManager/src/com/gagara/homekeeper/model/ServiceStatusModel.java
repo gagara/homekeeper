@@ -2,17 +2,17 @@ package com.gagara.homekeeper.model;
 
 import android.os.Bundle;
 
-import com.gagara.homekeeper.service.BtCommunicationService;
+import com.gagara.homekeeper.service.BluetoothNbiService;
 
 public class ServiceStatusModel implements Model {
 
-    private BtCommunicationService.State state = null;
+    private BluetoothNbiService.State state = null;
     private String details = null;
 
     public ServiceStatusModel() {
     }
 
-    public ServiceStatusModel(BtCommunicationService.State state, String details) {
+    public ServiceStatusModel(BluetoothNbiService.State state, String details) {
         super();
         this.state = state;
         this.details = details;
@@ -50,11 +50,11 @@ public class ServiceStatusModel implements Model {
         return state != null;
     }
 
-    public BtCommunicationService.State getState() {
+    public BluetoothNbiService.State getState() {
         return state;
     }
 
-    public void setState(BtCommunicationService.State state) {
+    public void setState(BluetoothNbiService.State state) {
         this.state = state;
     }
 

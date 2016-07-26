@@ -35,7 +35,8 @@
     <string name="bt_disabled_error">Bluetooth is disabled!</string>
     <string name="bt_no_paired_devs_error">No paired Bluetooth devices</string>
     <string name="db_pref_category_title">Database</string>
-    <string name="unknown_bt_dev">[unknown]</string>
+
+    <string name="unknown_service_provider">[unknown]</string>
 
     <string name="updating_message">Updating&#8230;</string>
     <string name="switch_state_on_message">%1$s is ON</string>
@@ -85,13 +86,13 @@
     <string name="node_details_sensors_template">\nSensors: </string>
     <string name="node_details_sensor_template">%1$s:%2$s%3$s;</string>
     
-    <string name="bt_service_state_init">Connecting&#8230;</string>
-    <string name="bt_service_state_active">Connected</string>
-    <string name="bt_service_state_error">Disconnected</string>
-    <string name="bt_service_state_shutdown">Connection closed</string>
-    <string name="bt_service_sync_clocks_status">Synchronizing clocks&#8230;</string>
-    <string name="bt_service_listening_status">listening for incoming data</string>
-    <string name="bt_service_rceiving_data_status">receiving data</string>
+    <string name="service_state_init">Connecting&#8230;</string>
+    <string name="service_state_active">Connected</string>
+    <string name="service_state_error">Disconnected</string>
+    <string name="service_state_shutdown">Connection closed</string>
+    <string name="service_sync_clocks_status">Synchronizing clocks&#8230;</string>
+    <string name="service_listening_status">listening for incoming data</string>
+    <string name="service_receiving_data_status">receiving data</string>
 
     <string name="manage_node_dialog_title">Manage node: %1$s</string>
     <string name="manage_node_mode_text">Manual mode:</string>

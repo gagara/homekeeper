@@ -1103,7 +1103,10 @@ void wifiInit() {
 void wifiConnect() {
     if (strlen(WIFI_AP) + strlen(WIFI_PW) > 0) {
         char msg[128];
+        wifi->println(F("AT+CWQAP"));
+        delay(1000);
         wifi->println(F("AT+RST"));
+        delay(1000);
         wifi->println(F("AT+CIPMODE=0"));
         wifi->println(F("AT+CWMODE=1"));
         sprintf(msg, "AT+CWJAP=\"%s\",\"%s\"", WIFI_AP, WIFI_PW);

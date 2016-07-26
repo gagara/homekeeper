@@ -24,7 +24,7 @@ public class Constants {
 
     public static final String CONTROLLER_DATA_TRANSFER_ACTION = "HOME_KEEPER_CONTROLLER_DATA_TRANSFER";
     public static final String CONTROLLER_CONTROL_COMMAND_ACTION = "HOME_KEEPER_CONTROLLER_CONTROL_COMMAND";
-    public static final String BT_SERVICE_STATUS_ACTION = "HOME_KEEPER_BT_SERVICE_STATUS_COMMAND";
+    public static final String SERVICE_STATUS_ACTION = "HOME_KEEPER_SERVICE_STATUS_COMMAND";
 
     public static final String SWITCH_NODE_DIALOG_TAG = "SWITCH_NODE_STATE_DIALOG";
 
@@ -35,12 +35,17 @@ public class Constants {
 
     public static final String CFG_MODE = "mode";
     public static final String CFG_BT_DEV = "bt_dev";
-    public static final String CFG_DATA_PUBLISHING = "data_publishing";
-    public static final String CFG_REMOTE_CONTROL = "remote_control";
-    public static final String CFG_REMOTE_CONTROL_PULL_INTERVAL = "remote_control_pull_interval";
-    public static final String CFG_SLAVE_REFRESH_INTERVAL = "slave_refresh_interval";
-    public static final String CFG_REMOTE_SERVICE_ENDPOINT = "remote_endpoint";
+    public static final String CFG_PROXY_HOST = "proxy_host";
+    public static final String CFG_PROXY_PORT = "proxy_port";
+    public static final String CFG_PROXY_USER = "proxy_user";
+    public static final String CFG_PROXY_PASSWORD = "proxy_password";
+    public static final String CFG_PROXY_PULL_PERIOD = "proxy_pull_period";
+//    public static final String CFG_DATA_PUBLISHING = "data_publishing";
+//    public static final String CFG_REMOTE_CONTROL = "remote_control";
+//    public static final String CFG_REMOTE_CONTROL_PULL_INTERVAL = "remote_control_pull_interval";
+//    public static final String CFG_SLAVE_REFRESH_INTERVAL = "slave_refresh_interval";
+//    public static final String CFG_REMOTE_SERVICE_ENDPOINT = "remote_endpoint";
 
-    public static final String PREFERENCE_GENERAL_CATEGORY_KEY = "pref_general_category";
-    public static final String PREFERENCE_MASTER_CATEGORY_KEY = "pref_master_category";
+//    public static final String PREFERENCE_GENERAL_CATEGORY_KEY = "pref_general_category";
+//    public static final String PREFERENCE_MASTER_CATEGORY_KEY = "pref_master_category";
 }

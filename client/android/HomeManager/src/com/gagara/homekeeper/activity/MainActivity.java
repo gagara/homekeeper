@@ -29,13 +29,16 @@ import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.activity.ManageNodeStateDialog.SwitchNodeStateListener;
 import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.common.Mode;
+import com.gagara.homekeeper.common.Proxy;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.SensorModel;
 import com.gagara.homekeeper.nbi.request.CurrentStatusRequest;
 import com.gagara.homekeeper.nbi.request.NodeStateChangeRequest;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
 import com.gagara.homekeeper.nbi.response.NodeStateChangeResponse;
-import com.gagara.homekeeper.service.BtCommunicationService;
+import com.gagara.homekeeper.service.AbstractNbiService;
+import com.gagara.homekeeper.service.BluetoothNbiService;
+import com.gagara.homekeeper.service.ProxyNbiService;
 import com.gagara.homekeeper.ui.view.ViewUtils;
 import com.gagara.homekeeper.ui.viewmodel.NodeModelView;
 import com.gagara.homekeeper.ui.viewmodel.TopModelView;
@@ -45,10 +48,11 @@ import com.gagara.homekeeper.utils.HomeKeeperConfig;
 public class MainActivity extends ActionBarActivity implements SwitchNodeStateListener {
 
     private BluetoothDevice activeDev = null;
+    private Proxy activeProxy = null;
 
     private BroadcastReceiver btStateChangedReceiver;
-    private BtServiceDataReceiver dataReceiver;
-    private BtServiceStatusReceiver serviceStatusReceiver;
+    private NbiServiceDataReceiver dataReceiver;
+    private NbiServiceStatusReceiver serviceStatusReceiver;
 
     private TopModelView modelView;
 
@@ -60,41 +64,22 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         modelView = new TopModelView(this);
         modelView.render();
 
-        btStateChangedReceiver = new BroadcastReceiver() {
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
-                    int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
-                            BluetoothAdapter.ERROR);
-                    switch (state) {
-                    case BluetoothAdapter.STATE_OFF:
-                        stopControllerCommunicationService();
-                        break;
-                    case BluetoothAdapter.STATE_ON:
-                        if (HomeKeeperConfig.getMode(MainActivity.this) == Mode.MASTER) {
-                            startControllerCommunicationService();
-                        }
-                        break;
-                    }
-                }
-            }
-        };
-        dataReceiver = new BtServiceDataReceiver();
-        serviceStatusReceiver = new BtServiceStatusReceiver();
+        btStateChangedReceiver = new BluetoothStateChangedReceiver();
+        dataReceiver = new NbiServiceDataReceiver();
+        serviceStatusReceiver = new NbiServiceStatusReceiver();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        registerReceiver(btStateChangedReceiver, new IntentFilter(
-                BluetoothAdapter.ACTION_STATE_CHANGED));
+        registerReceiver(btStateChangedReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
         LocalBroadcastManager.getInstance(this).registerReceiver(dataReceiver,
                 new IntentFilter(Constants.CONTROLLER_DATA_TRANSFER_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceStatusReceiver,
-                new IntentFilter(Constants.BT_SERVICE_STATUS_ACTION));
+                new IntentFilter(Constants.SERVICE_STATUS_ACTION));
 
-        initControllerService();
+        initNbiService();
     }
 
     @Override
@@ -119,17 +104,13 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
             startActivity(intent);
             return true;
         } else if (id == R.id.action_refresh) {
-            CurrentStatusRequest request = new CurrentStatusRequest();
-            if (BluetoothUtils.isEnabled()) {
-                request.setSrcAddress(BluetoothUtils.getAdapter().getAddress());
-            }
             Intent intent = new Intent();
             intent.setAction(CONTROLLER_CONTROL_COMMAND_ACTION);
             intent.putExtra(COMMAND_KEY, new CurrentStatusRequest());
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
             return true;
         } else if (id == R.id.action_exit) {
-            stopControllerCommunicationService();
+            stopBluetoothNbiService();
             finish();
             return true;
         }
@@ -175,9 +156,6 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
     public void doSwitchNodeState(DialogFragment dialog) {
         ManageNodeStateDialog manageDialog = (ManageNodeStateDialog) dialog;
         NodeStateChangeRequest request = new NodeStateChangeRequest();
-        if (BluetoothUtils.isEnabled()) {
-            request.setSrcAddress(BluetoothUtils.getAdapter().getAddress());
-        }
 
         request.setId(manageDialog.getNodeId());
         if (manageDialog.isManualMode()) {
@@ -202,7 +180,8 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (REQUEST_ENABLE_BT == requestCode) {
             if (RESULT_OK == resultCode) {
-                startControllerCommunicationService();
+                stopProxyNbiService();
+                startBluetoothNbiService();
             } else {
                 Toast.makeText(this, R.string.bt_disabled_error, LENGTH_LONG).show();
                 finish();
@@ -212,29 +191,33 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         }
     }
 
-    private void initControllerService() {
-        if (HomeKeeperConfig.getMode(this, null) == Mode.MASTER) {
+    private void initNbiService() {
+        if (HomeKeeperConfig.getMode(this, null) == Mode.DIRECT) {
             if (!BluetoothUtils.enableBluetooth(this)) {
                 Toast.makeText(this, R.string.bt_not_supported_error, LENGTH_LONG).show();
                 finish();
             }
             if (BluetoothUtils.isEnabled()) {
-                startControllerCommunicationService();
+                stopProxyNbiService();
+                startBluetoothNbiService();
             }
+        } else if (HomeKeeperConfig.getMode(this, null) == Mode.PROXY) {
+            stopBluetoothNbiService();
+            startProxyNbiService();
         } else {
-            stopControllerCommunicationService();
+            stopBluetoothNbiService();
+            stopProxyNbiService();
         }
     }
 
-    private void startControllerCommunicationService() {
+    private void startBluetoothNbiService() {
         if (activeDev != null && !activeDev.equals(HomeKeeperConfig.getBluetoothDevice(this))) {
-            stopControllerCommunicationService();
+            stopBluetoothNbiService();
         }
         if (HomeKeeperConfig.getBluetoothDevice(this) != null) {
-            startService(new Intent(this, BtCommunicationService.class));
+            startService(new Intent(this, BluetoothNbiService.class));
             activeDev = HomeKeeperConfig.getBluetoothDevice(this);
-            modelView.getTitle().getModel()
-                    .setName(HomeKeeperConfig.getBluetoothDevice(this).getName());
+            modelView.getTitle().getModel().setName(HomeKeeperConfig.getBluetoothDevice(this).getName());
         } else {
             modelView.getTitle().getModel().setName(null);
         }
@@ -243,12 +226,38 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         modelView.getInfo().render();
     }
 
-    private void stopControllerCommunicationService() {
-        stopService(new Intent(this, BtCommunicationService.class));
+    private void startProxyNbiService() {
+        if (activeProxy != null && !activeProxy.equals(HomeKeeperConfig.getNbiProxy(this))) {
+            stopProxyNbiService();
+        }
+        if (HomeKeeperConfig.getNbiProxy(this) != null) {
+            startService(new Intent(this, ProxyNbiService.class));
+            activeProxy = HomeKeeperConfig.getNbiProxy(this);
+            modelView
+                    .getTitle()
+                    .getModel()
+                    .setName(
+                            HomeKeeperConfig.getNbiProxy(this).getHost() + ":"
+                                    + HomeKeeperConfig.getNbiProxy(this).getPort());
+        } else {
+            modelView.getTitle().getModel().setName(null);
+        }
+        modelView.getTitle().getModel().setMode(HomeKeeperConfig.getMode(this));
+        modelView.getTitle().render();
+        modelView.getInfo().render();
+    }
+
+    private void stopBluetoothNbiService() {
+        stopService(new Intent(this, BluetoothNbiService.class));
         activeDev = null;
     }
 
-    public class BtServiceDataReceiver extends BroadcastReceiver {
+    private void stopProxyNbiService() {
+        stopService(new Intent(this, ProxyNbiService.class));
+        activeProxy = null;
+    }
+
+    public class NbiServiceDataReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (Constants.CONTROLLER_DATA_TRANSFER_ACTION.equals(action)) {
@@ -293,15 +302,11 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
 
                     String msg = null;
                     if (node.getState()) {
-                        msg = String.format(getResources().getString(
-                                R.string.switch_state_on_message,
-                                getResources().getString(
-                                        TopModelView.NODES_NAME_VIEW_MAP.get(node.getId()))));
+                        msg = String.format(getResources().getString(R.string.switch_state_on_message,
+                                getResources().getString(TopModelView.NODES_NAME_VIEW_MAP.get(node.getId()))));
                     } else {
-                        msg = String.format(getResources().getString(
-                                R.string.switch_state_off_message,
-                                getResources().getString(
-                                        TopModelView.NODES_NAME_VIEW_MAP.get(node.getId()))));
+                        msg = String.format(getResources().getString(R.string.switch_state_off_message,
+                                getResources().getString(TopModelView.NODES_NAME_VIEW_MAP.get(node.getId()))));
                     }
                     Toast.makeText(MainActivity.this, msg, LENGTH_LONG).show();
                 } else {
@@ -311,20 +316,40 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         }
     }
 
-    public class BtServiceStatusReceiver extends BroadcastReceiver {
+    public class NbiServiceStatusReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (Constants.BT_SERVICE_STATUS_ACTION.equals(action)) {
+            if (Constants.SERVICE_STATUS_ACTION.equals(action)) {
                 modelView
                         .getStatus()
                         .getModel()
                         .setState(
-                                BtCommunicationService.State.fromString(intent
-                                        .getStringExtra(Constants.SERVICE_STATUS_KEY)));
+                                AbstractNbiService.State.fromString(intent.getStringExtra(Constants.SERVICE_STATUS_KEY)));
                 modelView.getStatus().getModel()
                         .setDetails(intent.getStringExtra(Constants.SERVICE_STATUS_DETAILS_KEY));
 
                 modelView.getStatus().render();
+            }
+        }
+    }
+
+    public class BluetoothStateChangedReceiver extends BroadcastReceiver {
+        public void onReceive(Context context, Intent intent) {
+            // check if we in direct mode
+            String action = intent.getAction();
+            if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+                int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                switch (state) {
+                case BluetoothAdapter.STATE_OFF:
+                    stopBluetoothNbiService();
+                    break;
+                case BluetoothAdapter.STATE_ON:
+                    if (HomeKeeperConfig.getMode(MainActivity.this) == Mode.DIRECT) {
+                        stopProxyNbiService();
+                        startBluetoothNbiService();
+                    }
+                    break;
+                }
             }
         }
     }

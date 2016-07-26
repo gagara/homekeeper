@@ -1,6 +1,8 @@
 package com.gagara.homekeeper.activity;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static com.gagara.homekeeper.common.Constants.CFG_BT_DEV;
+import static com.gagara.homekeeper.common.Constants.CFG_MODE;
 import static com.gagara.homekeeper.common.Constants.REQUEST_ENABLE_BT;
 
 import java.util.Collections;
@@ -22,6 +24,7 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 
 import com.gagara.homekeeper.R;
@@ -33,12 +36,12 @@ import com.gagara.homekeeper.utils.HomeKeeperConfig;
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
     private ListPreference modeList;
-    private EditTextPreference remoteEndpoint;
     private ListPreference btDevList;
-    private CheckBoxPreference dataPub;
-    private CheckBoxPreference remoteCtrl;
-    private ListPreference pullIntList;
-    private ListPreference refreshIntList;
+    private EditTextPreference proxyHost;
+    private EditTextPreference proxyPort;
+    private EditTextPreference proxyUser;
+    private EditTextPreference proxyPassword;
+    private EditTextPreference proxyPullPeriod;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -46,13 +49,13 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.layout.preferences);
 
-        modeList = (ListPreference) findPreference(Constants.CFG_MODE);
-        remoteEndpoint = (EditTextPreference) findPreference(Constants.CFG_REMOTE_SERVICE_ENDPOINT);
-        btDevList = (ListPreference) findPreference(Constants.CFG_BT_DEV);
-        dataPub = (CheckBoxPreference) findPreference(Constants.CFG_DATA_PUBLISHING);
-        remoteCtrl = (CheckBoxPreference) findPreference(Constants.CFG_REMOTE_CONTROL);
-        pullIntList = (ListPreference) findPreference(Constants.CFG_REMOTE_CONTROL_PULL_INTERVAL);
-        refreshIntList = (ListPreference) findPreference(Constants.CFG_SLAVE_REFRESH_INTERVAL);
+        modeList = (ListPreference) findPreference(CFG_MODE);
+        btDevList = (ListPreference) findPreference(CFG_BT_DEV);
+        proxyHost = (EditTextPreference) findPreference(Constants.CFG_PROXY_HOST);
+        proxyPort = (EditTextPreference) findPreference(Constants.CFG_PROXY_PORT);
+        proxyUser = (EditTextPreference) findPreference(Constants.CFG_PROXY_USER);
+        proxyPassword = (EditTextPreference) findPreference(Constants.CFG_PROXY_PASSWORD);
+        proxyPullPeriod = (EditTextPreference) findPreference(Constants.CFG_PROXY_PULL_PERIOD);
 
         initComponents();
 
@@ -75,8 +78,11 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 
         // refresh components
         refreshModeControl(null);
-        refreshRemoteEndpointControl(null);
         refreshBtDevListControl(null);
+        refreshProxyHostControl(null);
+        refreshProxyPortControl(null);
+        refreshProxyUserControl(null);
+        refreshProxyPullPeriodControl(null);
     }
     
     @Override
@@ -101,7 +107,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(Constants.CFG_MODE)) {
-            if (HomeKeeperConfig.getMode(this) == Mode.MASTER) {
+            if (HomeKeeperConfig.getMode(this) == Mode.DIRECT) {
                 BluetoothUtils.enableBluetooth(this);
             }
         }
@@ -117,15 +123,6 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
             }
         });
 
-        // remoteEndpoint
-        remoteEndpoint.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                refreshRemoteEndpointControl((String) newValue);
-                return true;
-            }
-        });
-
         // btDevList
         btDevList.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
@@ -135,6 +132,25 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
             }
         });
 
+
+        // proxyHost
+        proxyHost.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                refresh!!!((String) newValue);
+                return true;
+            }
+        });
+
+
+        // remoteEndpoint
+        remoteEndpoint.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                refreshRemoteEndpointControl((String) newValue);
+                return true;
+            }
+        });
         // dataPub
         dataPub.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
@@ -180,20 +196,6 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         }
     }
 
-    private void refreshRemoteEndpointControl(String newValue) {
-        String newEndpoint = null;
-        if (newValue == null) {
-            newEndpoint = HomeKeeperConfig.getRemoteEndpoint(this);
-        } else {
-            newEndpoint = newValue;
-        }
-        if (newEndpoint != null) {
-            remoteEndpoint.setSummary(newEndpoint);
-        } else {
-            remoteEndpoint.setSummary(R.string.pref_remote_endpoint_default_summary);
-        }
-    }
-
     private void refreshBtDevListControl(String newValue) {
         updateBtDevList();
         updateBtDevListSummary(newValue);
@@ -203,6 +205,19 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
             btDevList.setEnabled(false);
         }
     }
+
+    private void refreshProxyHostControl(String newValue) {
+        if (newValue != null) {
+            proxyHost.setSummary(newValue);
+        } else {
+            proxyHost.setSummary(R.string.proxy_host_default_summary);
+        }
+    }
+!!!!!!!!!!!
+    refreshProxyHostControl(null);
+    refreshProxyPortControl(null);
+    refreshProxyUserControl(null);
+    refreshProxyPullPeriodControl(null);
 
     private void updateBtDevList() {
         Map<String, String> availableBtDevices = BluetoothUtils.getPairedDevicesMap();

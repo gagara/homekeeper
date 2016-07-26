@@ -29,7 +29,7 @@
             android:name="com.gagara.homekeeper.activity.SettingsActivity"
             android:label="@string/settings_activity_name" >
         </activity>
-        <service android:name="com.gagara.homekeeper.service.BtCommunicationService" />
+        <service android:name="com.gagara.homekeeper.service.BluetoothNbiService" />
     </application>
 
 </manifest>
