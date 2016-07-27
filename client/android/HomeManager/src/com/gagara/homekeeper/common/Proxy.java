@@ -59,6 +59,10 @@ public class Proxy {
         this.pullPeriod = pullPeriod;
     }
 
+    public String asUrl() {
+        return "http://" + host + ":" + port;
+    }
+
     @Override
     public String toString() {
         return "Proxy [host=" + host + ", port=" + port + ", username=" + username + ", pullPeriod=" + pullPeriod + "]";
