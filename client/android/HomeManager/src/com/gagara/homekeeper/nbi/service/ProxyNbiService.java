@@ -22,11 +22,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.common.Constants;
@@ -148,40 +151,51 @@ public class ProxyNbiService extends AbstractNbiService {
                 @Override
                 public void run() {
                     try {
-                        JsonArrayRequest req = new JsonArrayRequest("", null, null);
+                        JsonRequest<JSONArray> req = new JsonLogRequest(
+                                com.android.volley.Request.Method.POST, proxy
+                                        .asUrl(), new LogRequest(
+                                        lastMessageTimestamp).toJson()
+                                        .toString(),
+                                new Response.Listener<JSONArray>() {
 
-//                                com.android.volley.Request.Method.POST, proxy.asUrl(),
-//                                new LogRequest(lastMessageTimestamp).toJson(), new Response.Listener<JSONArray>() {
-//
-//                                    @Override
-//                                    public void onResponse(JSONArray response) {
-//                                        //processMessage(message, timestamp);
-//                                    }
-//                                }, new Response.ErrorListener() {
-//
-//                                    @Override
-//                                    public void onErrorResponse(VolleyError e) {
-//                                        Log.e(TAG, e.getMessage(), e);
-//                                        state = ERROR;
-//                                        synchronized (serviceExecutor) {
-//                                            serviceExecutor.notifyAll();
-//                                        }
-//                                    }
-//                                });
-                        req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT,
+                                    @Override
+                                    public void onResponse(JSONArray response) {
+                                        try {
+                                            for (int i = 0; i < response
+                                                    .length(); i++) {
+                                                JSONObject log = response
+                                                        .getJSONObject(i);
+                                                JSONObject message = log
+                                                        .getJSONObject(MESSAGE_KEY);
+                                                Date timestamp = df.parse(log
+                                                        .getString(TIMESTAMP_KEY));
+                                                processMessage(message,
+                                                        timestamp);
+                                            }
+                                        } catch (Exception e) {
+                                            Log.e(TAG,
+                                                    "failed to process ["
+                                                            + response + "]: "
+                                                            + e.getMessage(), e);
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+
+                                    @Override
+                                    public void onErrorResponse(VolleyError e) {
+                                        Log.e(TAG, e.getMessage(), e);
+                                        state = ERROR;
+                                        synchronized (serviceExecutor) {
+                                            serviceExecutor.notifyAll();
+                                        }
+                                    }
+                                });
+                        req.setRetryPolicy(new DefaultRetryPolicy(
+                                HTTP_CONNECTION_TIMEOUT,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                         // add basic auth
                         httpRequestQueue.add(req);
-                        
-                        JSONArray logs = requestLogs(lastMessageTimestamp);
-                        for (int i = 0; i < logs.length(); i++) {
-                            JSONObject log = logs.getJSONObject(i);
-                            JSONObject message = log.getJSONObject(MESSAGE_KEY);
-                            Date timestamp = df.parse(log
-                                    .getString(TIMESTAMP_KEY));
-                            processMessage(message, timestamp);
-                        }
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage(), e);
                         state = ERROR;
@@ -194,9 +208,18 @@ public class ProxyNbiService extends AbstractNbiService {
         }
     }
 
-//    private JSONArray requestLogs(Date timestamp) {
-//        JSONArray result = new JSONArray();
-//        // TODO
-//        return result;
-//    }
+    private class JsonLogRequest extends JsonRequest<JSONArray> {
+
+        public JsonLogRequest(int method, String url, String requestBody,
+                Listener<JSONArray> listener, ErrorListener errorListener) {
+            super(method, url, requestBody, listener, errorListener);
+        }
+
+        @Override
+        protected Response<JSONArray> parseNetworkResponse(NetworkResponse arg0) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+    }
 }
