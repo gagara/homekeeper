@@ -2,23 +2,12 @@
 <resources>
 
     <string-array name="mode_entries">
-        <item>Master</item>
-        <item>Slave</item>
+        <item>Direct</item>
+        <item>Proxy</item>
     </string-array>
     <string-array name="mode_entry_values">
-        <item>MASTER</item>
-        <item>SLAVE</item>
-    </string-array>
-
-    <string-array name="pull_interval_entries">
-        <item>10 seconds</item>
-        <item>20 seconds</item>
-        <item>30 seconds</item>
-    </string-array>
-    <string-array name="pull_interval_entry_values">
-        <item>10</item>
-        <item>20</item>
-        <item>30</item>
+        <item>DIRECT</item>
+        <item>PROXY</item>
     </string-array>
 
     <string-array name="pref_proxy_pull_period_entries">
@@ -28,13 +17,13 @@
         <item>30 seconds</item>
         <item>1 minute</item>
     </string-array>
-    <string-array name="pref_proxy_pull_period_entries_values">
+    <integer-array name="pref_proxy_pull_period_entries_values">
         <item>2</item>
         <item>5</item>
         <item>10</item>
         <item>30</item>
         <item>60</item>
-    </string-array>
+    </integer-array>
 
     <string-array name="node_switch_period_entries">
         <item>5 minutes</item>

@@ -10,26 +10,26 @@
     <string name="pref_general_category_title">General</string>
     <string name="pref_mode_title">Connection Mode</string>
     <string name="pref_mode_dialog_title">Select connection Mode</string>
-    <string name="pref_mode_default_summary">select mode to run</string>
+    <string name="pref_mode_default_summary">[select mode to run]</string>
 
     <string name="pref_direct_category_title">Direct Connection</string >
     <string name="pref_bt_device_title">Bluetooth Device</string>
     <string name="pref_bt_device_dialog_title">Select BT device</string>
-    <string name="pref_bt_device_default_summary">select one of paired BT devices</string>
+    <string name="pref_bt_device_default_summary">[select one of paired BT devices]</string>
 
     <string name="pref_proxy_category_title">Proxy Connection</string>
     <string name="pref_proxy_host_title">Host</string>
-    <string name="pref_proxy_host_default_summary">specify host/IP</string>
+    <string name="pref_proxy_host_default_summary">[specify host/IP]</string>
     <string name="pref_proxy_port_title">Port</string>
-    <string name="pref_proxy_port_default_summary">specify port</string>
+    <string name="pref_proxy_port_default_summary">[specify port]</string>
     <string name="pref_proxy_user_title">User</string>
-    <string name="pref_proxy_user_default_summary">specify user</string>
+    <string name="pref_proxy_user_default_summary">[specify user]</string>
     <string name="pref_proxy_password_title">Password</string>
-    <string name="pref_proxy_password_default_summary">specify password</string>
+    <string name="pref_proxy_password_default_summary">[specify password]</string>
     <string name="pref_proxy_password_non_empty_summary">********</string>
     <string name="pref_proxy_pull_period_title">Pull period</string>
     <string name="pref_proxy_pull_period_summary">pull period</string>
-    <string name="pref_proxy_pull_period_default_summary">specify pull period</string>
+    <string name="pref_proxy_pull_period_default_summary">[specify pull period]</string>
     <string name="pref_proxy_pull_period_dialog_title">Period</string>
     
     <string name="bt_not_supported_error">Bluetooth is not available on this device</string>

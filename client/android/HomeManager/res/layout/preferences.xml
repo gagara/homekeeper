@@ -43,7 +43,7 @@
             android:title="@string/pref_proxy_password_title"
             android:summary="@string/pref_proxy_password_default_summary" />
         <ListPreference
-            android:key="proxy_pull_period1"
+            android:key="proxy_pull_period"
             android:title="@string/pref_proxy_pull_period_title"
             android:dialogTitle="@string/pref_proxy_pull_period_dialog_title"
             android:summary="@string/pref_proxy_pull_period_summary"
