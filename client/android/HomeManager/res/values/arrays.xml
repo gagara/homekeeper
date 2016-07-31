@@ -17,13 +17,13 @@
         <item>30 seconds</item>
         <item>1 minute</item>
     </string-array>
-    <integer-array name="pref_proxy_pull_period_entries_values">
+    <string-array name="pref_proxy_pull_period_entry_values">
         <item>2</item>
         <item>5</item>
         <item>10</item>
         <item>30</item>
         <item>60</item>
-    </integer-array>
+    </string-array>
 
     <string-array name="node_switch_period_entries">
         <item>5 minutes</item>

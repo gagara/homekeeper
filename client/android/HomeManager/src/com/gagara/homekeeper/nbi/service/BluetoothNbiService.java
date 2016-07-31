@@ -1,5 +1,7 @@
 package com.gagara.homekeeper.nbi.service;
 
+import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
+import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
 import static com.gagara.homekeeper.nbi.service.ServiceState.ACTIVE;
 import static com.gagara.homekeeper.nbi.service.ServiceState.ERROR;
 import static com.gagara.homekeeper.nbi.service.ServiceState.INIT;
@@ -20,6 +22,7 @@ import org.json.JSONTokener;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -61,16 +64,20 @@ public class BluetoothNbiService extends AbstractNbiService {
     public void onCreate() {
         super.onCreate();
         healthckeckExecutor = Executors.newSingleThreadScheduledExecutor();
+        dev = HomeKeeperConfig.getBluetoothDevice(BluetoothNbiService.this);
+
+        // update title
+        Intent intent = new Intent();
+        intent.setAction(SERVICE_TITLE_CHANGE_ACTION);
+        intent.putExtra(SERVICE_TITLE_KEY, dev.getName());
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     @Override
     public void setupService() {
         try {
-            dev = HomeKeeperConfig.getBluetoothDevice(BluetoothNbiService.this);
             initOngoingNotification();
-            if (dev != null) {
-                runService();
-            }
+            runService();
         } catch (InterruptedException e) {
             // just terminating
         }

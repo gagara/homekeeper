@@ -23,7 +23,7 @@ public class ServiceTitleModelView extends AbstractInfoModelView implements Mode
         ServiceTitleModel model = (ServiceTitleModel) this.model;
         TextView view = (TextView) this.view;
         if (model.getMode() != null && model.getName() != null) {
-            view.setText(String.format(resources.getString(R.string.service_title), model.getMode().toString(),
+            view.setText(String.format(resources.getString(R.string.service_title),
                     model.getName() != null ? model.getName() : resources.getString(R.string.unknown_service_provider)));
         } else {
             view.setText(null);

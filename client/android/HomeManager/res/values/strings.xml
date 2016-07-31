@@ -19,24 +19,31 @@
 
     <string name="pref_proxy_category_title">Proxy Connection</string>
     <string name="pref_proxy_host_title">Host</string>
-    <string name="pref_proxy_host_default_summary">[specify host/IP]</string>
+    <string name="pref_proxy_host_default_summary">[unknown]</string>
     <string name="pref_proxy_port_title">Port</string>
-    <string name="pref_proxy_port_default_summary">[specify port]</string>
+    <string name="pref_proxy_port_default_summary">[unknown]</string>
     <string name="pref_proxy_user_title">User</string>
-    <string name="pref_proxy_user_default_summary">[specify user]</string>
+    <string name="pref_proxy_user_default_summary">[unknown]</string>
     <string name="pref_proxy_password_title">Password</string>
-    <string name="pref_proxy_password_default_summary">[specify password]</string>
+    <string name="pref_proxy_password_default_summary">[empty]</string>
     <string name="pref_proxy_password_non_empty_summary">********</string>
     <string name="pref_proxy_pull_period_title">Pull period</string>
     <string name="pref_proxy_pull_period_summary">pull period</string>
-    <string name="pref_proxy_pull_period_default_summary">[specify pull period]</string>
+    <string name="pref_proxy_pull_period_default_summary">[unknown]</string>
     <string name="pref_proxy_pull_period_dialog_title">Period</string>
     
     <string name="bt_not_supported_error">Bluetooth is not available on this device</string>
-    <string name="bt_disabled_error">Bluetooth is disabled!</string>
+    <string name="bt_disabled_error">Bluetooth is disabled</string>
     <string name="bt_no_paired_devs_error">No paired Bluetooth devices</string>
-    <string name="db_pref_category_title">Database</string>
+    <string name="bt_not_configured_error">not configured</string>
 
+    <string name="network_not_supported_error">Network connectivity is not supported on this device</string>
+    <string name="networks_disabled_error">Network is not available</string>
+    <string name="proxy_not_configured_error">not configured</string>
+    <string name="manage_networks_connectivity_required_title">Network</string>
+    <string name="manage_networks_connectivity_required_message">Network connectivity required</string>
+    <string name="manage_networks_button_ok">Settings</string>
+    <string name="manage_networks_button_cancel">Cancel</string>
     <string name="unknown_service_provider">[unknown]</string>
 
     <string name="updating_message">Updating&#8230;</string>
@@ -102,9 +109,11 @@
     <string name="manage_node_button_ok">OK</string>
     <string name="manage_node_button_cancel">Cancel</string>
     
-    <string name="service_title">%1$s@%2$s</string>
+    <string name="service_title">%1$s</string>
     <string name="service_last_update">Last update %1$s</string>
-    <string name="service_status_details"> : %1$s</string>
-
+    <string name="service_status_mode">%1$s</string>
+    <string name="service_status_state">: %1$s</string>
+    <string name="service_status_details">: %1$s</string>
+    
 </resources>
 

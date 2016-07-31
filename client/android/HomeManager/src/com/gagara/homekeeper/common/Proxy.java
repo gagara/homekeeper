@@ -1,22 +1,28 @@
 package com.gagara.homekeeper.common;
 
 public class Proxy {
-    private String host;
-    private int port;
-    private String username;
-    private String password;
-    private int pullPeriod;
+    private String host = null;
+    private Integer port = null;
+    private String username = "";
+    private String password = "";
+    private Integer pullPeriod = null;
 
     public Proxy() {
     }
 
-    public Proxy(String host, int port, String username, String password, int pullPeriod) {
+    public Proxy(String host, Integer port, String username, String password, Integer pullPeriod) {
         super();
-        this.host = host;
-        this.port = port;
+        if (host != null && host.length() > 0) {
+            this.host = host;
+        }
+        if (port != null && port > 0) {
+            this.port = port;
+        }
         this.username = username;
         this.password = password;
-        this.pullPeriod = pullPeriod;
+        if (pullPeriod != null && pullPeriod > 0) {
+            this.pullPeriod = pullPeriod;
+        }
     }
 
     public String getHost() {
@@ -27,11 +33,11 @@ public class Proxy {
         this.host = host;
     }
 
-    public int getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
@@ -51,16 +57,20 @@ public class Proxy {
         this.password = password;
     }
 
-    public int getPullPeriod() {
+    public Integer getPullPeriod() {
         return pullPeriod;
     }
 
-    public void setPullPeriod(int pullPeriod) {
+    public void setPullPeriod(Integer pullPeriod) {
         this.pullPeriod = pullPeriod;
     }
 
     public String asUrl() {
         return "http://" + host + ":" + port;
+    }
+
+    public boolean valid() {
+        return host != null && port != null && pullPeriod != null;
     }
 
     @Override

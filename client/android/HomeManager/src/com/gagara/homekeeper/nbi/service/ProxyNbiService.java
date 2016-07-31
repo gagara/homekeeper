@@ -2,6 +2,8 @@ package com.gagara.homekeeper.nbi.service;
 
 import static com.android.volley.Request.Method.POST;
 import static com.gagara.homekeeper.common.Constants.MESSAGE_KEY;
+import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
+import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
 import static com.gagara.homekeeper.common.Constants.TIMESTAMP_KEY;
 import static com.gagara.homekeeper.nbi.service.ServiceState.ACTIVE;
 import static com.gagara.homekeeper.nbi.service.ServiceState.ERROR;
@@ -22,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
@@ -53,7 +56,7 @@ public class ProxyNbiService extends AbstractNbiService {
 
     private static final int HTTP_CONNECTION_TIMEOUT = 5000;
 
-    private static final String PROXY_DATE_FORMAT = "yyyy-MM-ddTHH:mm:ss.SSS'Z'";
+    private static final String PROXY_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     private static DateFormat df = new SimpleDateFormat(PROXY_DATE_FORMAT, Locale.getDefault());
 
     private Proxy proxy = null;
@@ -73,19 +76,23 @@ public class ProxyNbiService extends AbstractNbiService {
     @Override
     public void onCreate() {
         super.onCreate();
+        proxy = HomeKeeperConfig.getNbiProxy(ProxyNbiService.this);
         logMonitorExecutor = Executors.newSingleThreadScheduledExecutor();
         httpRequestQueue = Volley.newRequestQueue(this);
         httpRequestQueue.start();
+
+        // update title
+        Intent intent = new Intent();
+        intent.setAction(SERVICE_TITLE_CHANGE_ACTION);
+        intent.putExtra(SERVICE_TITLE_KEY, proxy.getHost() + ":" + proxy.getPort());
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     @Override
     public void setupService() {
         try {
-            proxy = HomeKeeperConfig.getNbiProxy(ProxyNbiService.this);
             initOngoingNotification();
-            if (proxy != null) {
-                runService();
-            }
+            runService();
         } catch (InterruptedException e) {
             // just terminating
         }

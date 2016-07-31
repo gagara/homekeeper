@@ -16,6 +16,7 @@ public class Constants {
     public static final int DEFAULT_SLAVE_REFRESH_INTERVAL = 30;
 
     public static final int REQUEST_ENABLE_BT = 306;
+    public static final int REQUEST_ENABLE_NETWORK = 506;
     public static final int CONTROLLER_SERVICE_ONGOING_NOTIFICATION_ID = 1006;
     public static final int CONTROLLER_SERVICE_PENDING_INTENT_ID = 2206;
     
@@ -24,7 +25,8 @@ public class Constants {
 
     public static final String CONTROLLER_DATA_TRANSFER_ACTION = "HOME_KEEPER_CONTROLLER_DATA_TRANSFER";
     public static final String CONTROLLER_CONTROL_COMMAND_ACTION = "HOME_KEEPER_CONTROLLER_CONTROL_COMMAND";
-    public static final String SERVICE_STATUS_ACTION = "HOME_KEEPER_SERVICE_STATUS_COMMAND";
+    public static final String SERVICE_STATUS_CHANGE_ACTION = "HOME_KEEPER_SERVICE_STATUS_CHANGE_COMMAND";
+    public static final String SERVICE_TITLE_CHANGE_ACTION = "HOME_KEEPER_SERVICE_TITLE_CHANGE_COMMAND";
 
     public static final String SWITCH_NODE_DIALOG_TAG = "SWITCH_NODE_STATE_DIALOG";
 
@@ -32,6 +34,7 @@ public class Constants {
     public static final String COMMAND_KEY = "COMMAND";
     public static final String SERVICE_STATUS_KEY = "STATUS";
     public static final String SERVICE_STATUS_DETAILS_KEY = "STATUS_DETAILS";
+    public static final String SERVICE_TITLE_KEY = "TITLE";
 
     public static final String CFG_MODE = "mode";
     public static final String CFG_BT_DEV = "bt_dev";

@@ -3,6 +3,10 @@ package com.gagara.homekeeper.nbi.service;
 import static com.gagara.homekeeper.common.Constants.COMMAND_KEY;
 import static com.gagara.homekeeper.common.Constants.CONTROLLER_CONTROL_COMMAND_ACTION;
 import static com.gagara.homekeeper.common.Constants.CONTROLLER_SERVICE_ONGOING_NOTIFICATION_ID;
+import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_CHANGE_ACTION;
+import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
+import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_KEY;
+import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
 
 import java.io.IOException;
 import java.util.Date;
@@ -95,7 +99,10 @@ public abstract class AbstractNbiService extends Service {
         serviceNotification = null;
         startId = 0;
         state = ServiceState.SHUTDOWN;
+        // update status
         notifyStatusChange(null);
+        // update title
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(SERVICE_TITLE_CHANGE_ACTION));
         serviceExecutor.shutdownNow();
         if (clockSyncExecutor != null) {
             clockSyncExecutor.shutdownNow();
@@ -173,10 +180,10 @@ public abstract class AbstractNbiService extends Service {
             manager.notify(CONTROLLER_SERVICE_ONGOING_NOTIFICATION_ID, serviceNotification.build());
         }
         Intent intent = new Intent();
-        intent.setAction(Constants.SERVICE_STATUS_ACTION);
-        intent.putExtra(Constants.SERVICE_STATUS_KEY, state.toString());
+        intent.setAction(SERVICE_STATUS_CHANGE_ACTION);
+        intent.putExtra(SERVICE_STATUS_KEY, state.toString());
         if (details != null) {
-            intent.putExtra(Constants.SERVICE_STATUS_DETAILS_KEY, details);
+            intent.putExtra(SERVICE_STATUS_DETAILS_KEY, details);
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }

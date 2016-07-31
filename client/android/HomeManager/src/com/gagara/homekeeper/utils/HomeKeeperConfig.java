@@ -54,15 +54,27 @@ public class HomeKeeperConfig {
     }
 
     public static Proxy getNbiProxy(Context ctx, Proxy defValue) {
-        return new Proxy(PreferenceManager.getDefaultSharedPreferences(ctx).getString(CFG_PROXY_HOST,
-                defValue != null ? defValue.getHost() : null), PreferenceManager.getDefaultSharedPreferences(ctx)
-                .getInt(CFG_PROXY_PORT, defValue != null ? defValue.getPort() : 0), PreferenceManager
-                .getDefaultSharedPreferences(ctx).getString(Constants.CFG_PROXY_USER,
-                        defValue != null ? defValue.getUsername() : null), PreferenceManager
-                .getDefaultSharedPreferences(ctx).getString(Constants.CFG_PROXY_PASSWORD,
-                        defValue != null ? defValue.getPassword() : null), PreferenceManager
-                .getDefaultSharedPreferences(ctx).getInt(Constants.CFG_PROXY_PULL_PERIOD,
-                        defValue != null ? defValue.getPullPeriod() : 0));
+        String host = PreferenceManager.getDefaultSharedPreferences(ctx).getString(CFG_PROXY_HOST,
+                defValue != null ? defValue.getHost() : null);
+        Integer port = null;
+        try {
+            port = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(ctx).getString(CFG_PROXY_PORT,
+                    defValue != null ? defValue.getPort() + "" : "0"));
+        } catch (NumberFormatException e) {
+            // ignore
+        }
+        String username = PreferenceManager.getDefaultSharedPreferences(ctx).getString(Constants.CFG_PROXY_USER,
+                defValue != null ? defValue.getUsername() : null);
+        String password = PreferenceManager.getDefaultSharedPreferences(ctx).getString(Constants.CFG_PROXY_PASSWORD,
+                defValue != null ? defValue.getPassword() : null);
+        Integer period = null;
+        try {
+            period = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(ctx).getString(
+                    Constants.CFG_PROXY_PULL_PERIOD, defValue != null ? defValue.getPullPeriod() + "" : "0"));
+        } catch (NumberFormatException e) {
+            // ignore
+        }
+        return new Proxy(host, port, username, password, period);
     }
 
 }

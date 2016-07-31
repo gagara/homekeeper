@@ -23,12 +23,18 @@ public class ServiceStatusModelView extends AbstractInfoModelView implements Mod
         ServiceStatusModel model = (ServiceStatusModel) this.model;
         TextView view = (TextView) this.view;
         StringBuilder statusStr = new StringBuilder();
+        if (model.getMode() != null) {
+            statusStr.append(String.format(resources.getString(R.string.service_status_mode), model.getMode()
+                    .toString()));
+        }
         if (model.getState() != null) {
-            statusStr.append(resources.getString(model.getState().toStringResource()));
-            if (model.getDetails() != null) {
-                statusStr
-                        .append(String.format(resources.getString(R.string.service_status_details), model.getDetails()));
-            }
+            statusStr.append(String.format(resources.getString(R.string.service_status_state),
+                    resources.getString(model.getState().toStringResource())));
+        }
+        if (model.getDetails() != null) {
+            statusStr.append(String.format(resources.getString(R.string.service_status_details), model.getDetails()));
+        }
+        if (statusStr.length() > 0) {
             view.setText(statusStr);
         } else {
             view.setText(null);

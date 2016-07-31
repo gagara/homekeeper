@@ -10,7 +10,7 @@
             android:summary="@string/pref_mode_default_summary"
             android:entries="@array/mode_entries"
             android:entryValues="@array/mode_entry_values"
-            android:defaultValue="MASTER" />
+            android:defaultValue="DIRECT" />
         </PreferenceCategory>
     <PreferenceCategory
         android:key="pref_direct_category"
@@ -48,7 +48,7 @@
             android:dialogTitle="@string/pref_proxy_pull_period_dialog_title"
             android:summary="@string/pref_proxy_pull_period_summary"
             android:entries="@array/pref_proxy_pull_period_entries"
-            android:entryValues="@array/pref_proxy_pull_period_entries_values"
+            android:entryValues="@array/pref_proxy_pull_period_entry_values"
             android:defaultValue="5" />
     </PreferenceCategory>
 </PreferenceScreen>
