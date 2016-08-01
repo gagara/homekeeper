@@ -44,17 +44,21 @@ def controller_send(req):
     if 'ft' in req:
         url += '/%d' % req['ft']
     host = "http://%s:%d/" % (app.config['CONTROLLER_HOST'], app.config['CONTROLLER_PORT'])
+    if app.debug : print('>>>CONTROLLER: %s' % host + url)
     requests.get(host + url, timeout=app.config['CONTROLLER_CONN_TIMEOUT_SEC'])
 
 def logserver_send(req):
     headers = {'User-Agent': 'proxy','Content-Type': 'application/x-www-form-urlencoded'}
     host = "http://%s:%d" % (app.config['LOGSERVER_HOST'], app.config['LOGSERVER_PORT'])
+    if app.debug : print('>>>LOGSERVER: %s; %s' % (host, req))
     requests.post(host, json=req, headers=headers, timeout=app.config['LOGSERVER_CONN_TIMEOUT_SEC'])
 
 def query_logs(timestamp):
     query = {"query": {"bool": {"filter": [{"term": {"headers.http_user_agent": "ESP8266"}}, {"range": {"@timestamp": {"gt": timestamp}}}]}}, "sort": {"@timestamp": "asc"}}
     logs = []
+    if app.debug : print('>>>ELASTICSEARCH: %s' % query)
     res = es.search(index=app.config['ELASTICSEARCH_INDEX'], body=query)
+    if app.debug : print('<<<ELASTICSEARCH: %d' % res['hits']['total'])
     for hit in res['hits']['hits']:
         if '@timestamp' in hit['_source'] and 'message' in hit['_source']:
             logs.append({'@timestamp': hit['_source']['@timestamp'], 'message': hit['_source']['message']})
@@ -64,6 +68,7 @@ def query_logs(timestamp):
 @app.route("/", methods=['POST'])
 @requires_auth
 def client_request():
+    if app.debug : print('REQUEST: %s' % request.json)
     try:
         req = request.json
         if req['m'] == 'log':
