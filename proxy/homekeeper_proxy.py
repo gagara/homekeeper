@@ -52,7 +52,7 @@ def logserver_send(req):
     requests.post(host, json=req, headers=headers, timeout=app.config['LOGSERVER_CONN_TIMEOUT_SEC'])
 
 def query_logs(timestamp):
-    query = {"query": {"bool": {"filter": [{"term": {"headers.http_user_agent": "ESP8266"}}, {"range": {"@timestamp": {"gt": timestamp}}}]}}}
+    query = {"query": {"bool": {"filter": [{"term": {"headers.http_user_agent": "ESP8266"}}, {"range": {"@timestamp": {"gt": timestamp}}}]}}, "sort": {"@timestamp": "asc"}}
     logs = []
     res = es.search(index=app.config['ELASTICSEARCH_INDEX'], body=query)
     for hit in res['hits']['hits']:
