@@ -74,14 +74,14 @@ def client_request():
         if req['m'] == 'log':
             timestamp = req['ts']
             try:
-                return jsonify(query_logs(timestamp))
+                return jsonify(query_logs(timestamp)), 200
             except Exception as e:
                 return (str(e), 504)
         else:
             try:
                 controller_send(req)
                 logserver_send(req)
-                return "OK", 200
+                return jsonify({'result': 'OK'}), 200
             except Exception as e:
                 return (str(e), 504)
     except Exception as e:

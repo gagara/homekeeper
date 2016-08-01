@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -63,6 +65,10 @@ public class ProxyNbiService extends AbstractNbiService {
     private RequestQueue httpRequestQueue = null;
 
     private ScheduledExecutorService logMonitorExecutor = null;
+
+    static {
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     @Override
     public String getServiceProviderName() {
@@ -129,8 +135,8 @@ public class ProxyNbiService extends AbstractNbiService {
                         clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
                         clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L, proxy.getPullPeriod() * 3,
                                 TimeUnit.SECONDS);
-                        notifyStatusChange(getText(R.string.service_sync_clocks_status));
                     }
+                    notifyStatusChange(getText(R.string.service_sync_clocks_status));
                 }
                 state = ACTIVE;
             }
@@ -154,6 +160,7 @@ public class ProxyNbiService extends AbstractNbiService {
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage(), e);
                         state = ERROR;
+                        notifyStatusChange(e.getMessage());
                         synchronized (serviceExecutor) {
                             clocksDelta = null;
                             serviceExecutor.notifyAll();
@@ -186,6 +193,7 @@ public class ProxyNbiService extends AbstractNbiService {
                 public void onErrorResponse(VolleyError e) {
                     Log.e(TAG, e.getMessage(), e);
                     state = ERROR;
+                    notifyStatusChange(e.getMessage());
                     synchronized (serviceExecutor) {
                         clocksDelta = null;
                         serviceExecutor.notifyAll();
@@ -214,15 +222,17 @@ public class ProxyNbiService extends AbstractNbiService {
 
                         @Override
                         public void onResponse(JSONArray response) {
-                            try {
-                                for (int i = 0; i < response.length(); i++) {
+                            for (int i = 0; i < response.length(); i++) {
+                                try {
                                     JSONObject log = response.getJSONObject(i);
-                                    JSONObject message = log.getJSONObject(MESSAGE_KEY);
                                     Date timestamp = df.parse(log.getString(TIMESTAMP_KEY));
+                                    lastMessageTimestamp = timestamp;
+                                    JSONObject message = (JSONObject) new JSONTokener(log.getString(MESSAGE_KEY))
+                                            .nextValue();
                                     processMessage(message, timestamp);
+                                } catch (Exception e) {
+                                    Log.e(TAG, "failed to process [" + response + "]: " + e.getMessage(), e);
                                 }
-                            } catch (Exception e) {
-                                Log.e(TAG, "failed to process [" + response + "]: " + e.getMessage(), e);
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -231,6 +241,7 @@ public class ProxyNbiService extends AbstractNbiService {
                         public void onErrorResponse(VolleyError e) {
                             Log.e(TAG, e.getMessage(), e);
                             state = ERROR;
+                            notifyStatusChange(e.getMessage());
                             synchronized (serviceExecutor) {
                                 clocksDelta = null;
                                 serviceExecutor.notifyAll();
