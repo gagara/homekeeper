@@ -27,3 +27,5 @@ curl -v --basic -u proxy:proxy -H "Content-Type: application/json" -XPOST http:/
 
 curl -XPOST http://localhost:9200/logstash_hk-*/_count?pretty -d '{"query": {"bool": {"filter": [{"term": {"headers.http_user_agent": "ESP8266"}}, {"range": {"@timestamp": {"gt": "1469338359"}}}]}}}'
 
+curl -v -H "User-Agent: ESP8266" -H "Content-Type: application/x-www-form-urlencoded" -XPOST http://localhost:8085/ -d '{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}'
+

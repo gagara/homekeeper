@@ -125,7 +125,7 @@ public abstract class AbstractNbiService extends Service {
     }
 
     protected void processMessage(JSONObject message, Date timestamp) throws JSONException, IOException {
-        lastMessageTimestamp = new Date();
+        lastMessageTimestamp = timestamp;
         ControllerConfig.MessageType msgType = ControllerConfig.MessageType.forCode(message
                 .getString(ControllerConfig.MSG_TYPE_KEY));
         if (msgType == ControllerConfig.MessageType.CLOCK_SYNC) {
@@ -134,7 +134,7 @@ public abstract class AbstractNbiService extends Service {
                 clockSyncExecutor = null;
                 long controllerTimestamp = message.getLong(ControllerConfig.TIMESTAMP_KEY);
                 int overflowCount = message.getInt(ControllerConfig.OVERFLOW_COUNT_KEY);
-                long delta = timestamp.getTime() - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
+                long delta = lastMessageTimestamp.getTime() - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
                 notifyStatusChange(getText(R.string.service_listening_status));
                 if (clocksDelta == null) {
                     // initial sync: request for status
