@@ -94,7 +94,7 @@
     <string name="node_details_sensors_template">\nSensors: </string>
     <string name="node_details_sensor_template">%1$s:%2$s%3$s;</string>
     
-    <string name="service_state_init">Connecting&#8230;</string>
+    <string name="service_state_init">Connecting</string>
     <string name="service_state_active">Connected</string>
     <string name="service_state_error">Disconnected</string>
     <string name="service_state_shutdown">Connection closed</string>

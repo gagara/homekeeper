@@ -104,10 +104,10 @@ public abstract class AbstractNbiService extends Service {
         // update title
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(SERVICE_TITLE_CHANGE_ACTION));
         serviceExecutor.shutdownNow();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(controllerCommandReceiver);
         if (clockSyncExecutor != null) {
             clockSyncExecutor.shutdownNow();
         }
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(controllerCommandReceiver);
     }
 
     protected void initOngoingNotification() {
@@ -129,17 +129,20 @@ public abstract class AbstractNbiService extends Service {
         ControllerConfig.MessageType msgType = ControllerConfig.MessageType.forCode(message
                 .getString(ControllerConfig.MSG_TYPE_KEY));
         if (msgType == ControllerConfig.MessageType.CLOCK_SYNC) {
-            long controllerTimestamp = message.getLong(ControllerConfig.TIMESTAMP_KEY);
-            int overflowCount = message.getInt(ControllerConfig.OVERFLOW_COUNT_KEY);
-            long delta = timestamp.getTime() - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
-            clockSyncExecutor.shutdownNow();
-            notifyStatusChange(getText(R.string.service_listening_status));
-            if (clocksDelta == null) {
-                // initial sync: request for status
-                CurrentStatusRequest csr = new CurrentStatusRequest();
-                send(csr);
+            synchronized (serviceExecutor) {
+                clockSyncExecutor.shutdownNow();
+                clockSyncExecutor = null;
+                long controllerTimestamp = message.getLong(ControllerConfig.TIMESTAMP_KEY);
+                int overflowCount = message.getInt(ControllerConfig.OVERFLOW_COUNT_KEY);
+                long delta = timestamp.getTime() - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
+                notifyStatusChange(getText(R.string.service_listening_status));
+                if (clocksDelta == null) {
+                    // initial sync: request for status
+                    CurrentStatusRequest csr = new CurrentStatusRequest();
+                    send(csr);
+                }
+                clocksDelta = delta;
             }
-            clocksDelta = delta;
         } else {
             if (clocksDelta != null) {
                 Intent intent = new Intent();

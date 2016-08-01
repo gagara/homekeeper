@@ -114,7 +114,7 @@ public class BluetoothNbiService extends AbstractNbiService {
     private void startHealthckecker() {
         state = INIT;
         notifyStatusChange(null);
-        if (!healthckeckExecutor.isTerminated()) {
+        if (!healthckeckExecutor.isShutdown()) {
             healthckeckExecutor.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
@@ -189,10 +189,14 @@ public class BluetoothNbiService extends AbstractNbiService {
         startHealthckecker();
         while (true) {
             if (state == ACTIVE) {
-                clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
-                clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L, INITIAL_CLOCK_SYNC_INTERVAL_SEC,
-                        TimeUnit.SECONDS);
-                notifyStatusChange(getText(R.string.service_sync_clocks_status));
+                synchronized (serviceExecutor) {
+                    if (clocksDelta == null && clockSyncExecutor == null) {
+                        clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
+                        clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L,
+                                INITIAL_CLOCK_SYNC_INTERVAL_SEC, TimeUnit.SECONDS);
+                        notifyStatusChange(getText(R.string.service_sync_clocks_status));
+                    }
+                }
                 while (true) {
                     try {
                         String msg = waitForMessage();

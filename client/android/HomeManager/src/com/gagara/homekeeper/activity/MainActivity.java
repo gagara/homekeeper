@@ -16,7 +16,6 @@ import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
 import java.util.Map.Entry;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -55,9 +54,6 @@ import com.gagara.homekeeper.utils.NetworkUtils;
 
 public class MainActivity extends ActionBarActivity implements SwitchNodeStateListener {
 
-    private BluetoothDevice activeDev = null;
-    private Proxy activeProxy = null;
-
     private BroadcastReceiver btStateChangedReceiver;
     private BroadcastReceiver proxyStateChangedReceiver;
     private BroadcastReceiver dataReceiver;
@@ -79,16 +75,6 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         dataReceiver = new NbiServiceDataReceiver();
         serviceTitleReceiver = new NbiServiceTitleReceiver();
         serviceStatusReceiver = new NbiServiceStatusReceiver();
-
-        if (HomeKeeperConfig.getMode(this, null) == Mode.DIRECT) {
-            if (!BluetoothUtils.enableBluetooth(this)) {
-                Toast.makeText(this, R.string.bt_not_supported_error, LENGTH_LONG).show();
-            }
-        } else if (HomeKeeperConfig.getMode(this, null) == Mode.PROXY) {
-            if (!NetworkUtils.enableNetwork(this)) {
-                Toast.makeText(this, R.string.network_not_supported_error, LENGTH_LONG).show();
-            }
-        }
     }
 
     @Override
@@ -222,15 +208,11 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         }
     }
 
-    private void startBluetoothNbiService() {
+    private synchronized void startBluetoothNbiService() {
         if (HomeKeeperConfig.getMode(this, null) == Mode.DIRECT) {
-            if (activeDev != null && !activeDev.equals(HomeKeeperConfig.getBluetoothDevice(this))) {
-                stopBluetoothNbiService();
-            }
             if (BluetoothUtils.isEnabled()) {
                 if (HomeKeeperConfig.getBluetoothDevice(this) != null) {
                     startService(new Intent(this, BluetoothNbiService.class));
-                    activeDev = HomeKeeperConfig.getBluetoothDevice(this);
                 } else {
                     Intent intent = new Intent(SERVICE_STATUS_CHANGE_ACTION);
                     intent.putExtra(SERVICE_STATUS_DETAILS_KEY,
@@ -245,16 +227,12 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         }
     }
 
-    private void startProxyNbiService() {
+    private synchronized void startProxyNbiService() {
         if (HomeKeeperConfig.getMode(this, null) == Mode.PROXY) {
-            if (activeProxy != null && !activeProxy.equals(HomeKeeperConfig.getNbiProxy(this))) {
-                stopProxyNbiService();
-            }
             Proxy proxy = HomeKeeperConfig.getNbiProxy(this);
             if (NetworkUtils.isEnabled(this)) {
                 if (proxy != null && proxy.valid()) {
                     startService(new Intent(this, ProxyNbiService.class));
-                    activeProxy = HomeKeeperConfig.getNbiProxy(this);
                 } else {
                     Intent intent = new Intent(SERVICE_STATUS_CHANGE_ACTION);
                     intent.putExtra(SERVICE_STATUS_DETAILS_KEY,
@@ -271,12 +249,10 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
 
     private void stopBluetoothNbiService() {
         stopService(new Intent(this, BluetoothNbiService.class));
-        activeDev = null;
     }
 
     private void stopProxyNbiService() {
         stopService(new Intent(this, ProxyNbiService.class));
-        activeProxy = null;
     }
 
     public class NbiServiceDataReceiver extends BroadcastReceiver {

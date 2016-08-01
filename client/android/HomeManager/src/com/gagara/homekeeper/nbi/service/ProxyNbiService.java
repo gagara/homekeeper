@@ -118,16 +118,20 @@ public class ProxyNbiService extends AbstractNbiService {
                 new IntentFilter(Constants.CONTROLLER_CONTROL_COMMAND_ACTION));
 
         lastMessageTimestamp = new Date();
+        state = INIT;
 
         startLogMonitor();
 
         while (true) {
             if (state == INIT || state == ERROR) {
-                clocksDelta = null;
-                clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
-                clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L, proxy.getPullPeriod() * 3,
-                        TimeUnit.SECONDS);
-                notifyStatusChange(getText(R.string.service_sync_clocks_status));
+                synchronized (serviceExecutor) {
+                    if (clocksDelta == null && clockSyncExecutor == null) {
+                        clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
+                        clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L, proxy.getPullPeriod() * 3,
+                                TimeUnit.SECONDS);
+                        notifyStatusChange(getText(R.string.service_sync_clocks_status));
+                    }
+                }
                 state = ACTIVE;
             }
             synchronized (serviceExecutor) {
@@ -137,9 +141,8 @@ public class ProxyNbiService extends AbstractNbiService {
     }
 
     private void startLogMonitor() {
-        state = INIT;
         notifyStatusChange(null);
-        if (!logMonitorExecutor.isTerminated()) {
+        if (!logMonitorExecutor.isShutdown()) {
             logMonitorExecutor.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
@@ -152,6 +155,7 @@ public class ProxyNbiService extends AbstractNbiService {
                         Log.e(TAG, e.getMessage(), e);
                         state = ERROR;
                         synchronized (serviceExecutor) {
+                            clocksDelta = null;
                             serviceExecutor.notifyAll();
                         }
                     }
@@ -183,6 +187,7 @@ public class ProxyNbiService extends AbstractNbiService {
                     Log.e(TAG, e.getMessage(), e);
                     state = ERROR;
                     synchronized (serviceExecutor) {
+                        clocksDelta = null;
                         serviceExecutor.notifyAll();
                     }
                 }
@@ -227,6 +232,7 @@ public class ProxyNbiService extends AbstractNbiService {
                             Log.e(TAG, e.getMessage(), e);
                             state = ERROR;
                             synchronized (serviceExecutor) {
+                                clocksDelta = null;
                                 serviceExecutor.notifyAll();
                             }
                         }
