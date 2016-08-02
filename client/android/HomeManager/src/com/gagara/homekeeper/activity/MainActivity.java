@@ -29,6 +29,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.gagara.homekeeper.R;
@@ -334,6 +335,8 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                 modelView.getStatus().getModel()
                         .setState(ServiceState.fromString(intent.getStringExtra(SERVICE_STATUS_KEY)));
                 modelView.getStatus().getModel().setDetails(intent.getStringExtra(SERVICE_STATUS_DETAILS_KEY));
+                modelView.getStatus().getView()
+                        .setAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_bottom));
 
                 modelView.getStatus().render();
             }

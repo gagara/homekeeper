@@ -59,7 +59,7 @@ public class ProxyNbiService extends AbstractNbiService {
     private static final int HTTP_CONNECTION_TIMEOUT = 5000;
 
     private static final String PROXY_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    private static DateFormat df = new SimpleDateFormat(PROXY_DATE_FORMAT, Locale.getDefault());
+    private static final DateFormat df = new SimpleDateFormat(PROXY_DATE_FORMAT, Locale.getDefault());
 
     private Proxy proxy = null;
     private RequestQueue httpRequestQueue = null;

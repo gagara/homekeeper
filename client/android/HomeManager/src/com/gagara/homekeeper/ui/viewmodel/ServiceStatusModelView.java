@@ -1,5 +1,6 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
+import static com.gagara.homekeeper.common.Constants.MAX_STATUS_RECORDS_TO_SHOW;
 import android.content.res.Resources;
 import android.widget.TextView;
 
@@ -7,6 +8,8 @@ import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.ServiceStatusModel;
 
 public class ServiceStatusModelView extends AbstractInfoModelView implements ModelView {
+
+    private String buffer = "";
 
     public ServiceStatusModelView() {
         this.model = new ServiceStatusModel();
@@ -34,15 +37,43 @@ public class ServiceStatusModelView extends AbstractInfoModelView implements Mod
         if (model.getDetails() != null) {
             statusStr.append(String.format(resources.getString(R.string.service_status_details), model.getDetails()));
         }
-        if (statusStr.length() > 0) {
-            view.setText(statusStr);
-        } else {
-            view.setText(null);
-        }
+        append(statusStr.toString());
+        view.setText(fetch());
     }
 
     @Override
     public ServiceStatusModel getModel() {
         return (ServiceStatusModel) model;
+    }
+
+    private void append(String line) {
+        if (line.length() > 0) {
+            if (buffer.length() > 0) {
+                buffer += "\n";
+            }
+            buffer += line;
+        }
+    }
+
+    private String fetch() {
+        if (buffer.length() > 0) {
+            String[] lines = buffer.split("\n");
+            buffer = "";
+            int j = 0;
+            for (int i = lines.length; i > 0; i--) {
+                if (j < MAX_STATUS_RECORDS_TO_SHOW) {
+                    if (j > 0) {
+                        buffer = "\n" + buffer;
+                    }
+                    buffer = lines[i - 1] + buffer;
+                    j++;
+                } else {
+                    break;
+                }
+            }
+            return buffer;
+        } else {
+            return null;
+        }
     }
 }

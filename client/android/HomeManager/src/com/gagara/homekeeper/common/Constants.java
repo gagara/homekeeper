@@ -23,6 +23,8 @@ public class Constants {
     public static final int DEFAULT_SWITCH_OFF_PERIOD_SEC = 0;     // forever
     public static final int DEFAULT_SWITCH_ON_PERIOD_SEC = 330;    // 5 minutes
 
+    public static final int MAX_STATUS_RECORDS_TO_SHOW = 2;
+
     public static final String CONTROLLER_DATA_TRANSFER_ACTION = "HOME_KEEPER_CONTROLLER_DATA_TRANSFER";
     public static final String CONTROLLER_CONTROL_COMMAND_ACTION = "HOME_KEEPER_CONTROLLER_CONTROL_COMMAND";
     public static final String SERVICE_STATUS_CHANGE_ACTION = "HOME_KEEPER_SERVICE_STATUS_CHANGE_COMMAND";

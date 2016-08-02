@@ -928,7 +928,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:gravity="start"
-            android:singleLine="true"
             android:text=""
             android:textColor="@color/footer_textColor"
             android:textSize="@dimen/footer_textSize" />
