@@ -185,7 +185,6 @@ public class ProxyNbiService extends AbstractNbiService {
                 @Override
                 public void onResponse(JSONObject response) {
                     // do nothing
-                    Log.i(TAG, response.toString());
                 }
             }, new Response.ErrorListener() {
 
