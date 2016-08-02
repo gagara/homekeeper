@@ -18,7 +18,7 @@ import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.SensorModel;
 import com.gagara.homekeeper.ui.view.ViewUtils;
 
-public class NodeModelView extends AbstractEntryModelView implements ModelView {
+public class NodeModelView extends AbstractEntryModelView<NodeModel> implements ModelView<NodeModel> {
 
     private static final String DATE_FORMAT = "HH:mm dd/MM";
 
@@ -28,7 +28,6 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
 
     @Override
     public void render() {
-        NodeModel model = (NodeModel) this.model;
         ToggleButton valueView = (ToggleButton) this.valueView;
         TextView detailsView = (TextView) this.detailsView;
         NumberFormat f = new DecimalFormat("#0");
@@ -50,40 +49,32 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
             StringBuilder detailsStr = new StringBuilder();
             if (model.isForcedMode()) {
                 detailsStr.append(resources.getString(R.string.node_details_forced_flag));
-                detailsStr.append(model.getState() ? resources
-                        .getString(R.string.node_details_switch_on) : resources
+                detailsStr.append(model.getState() ? resources.getString(R.string.node_details_switch_on) : resources
                         .getString(R.string.node_details_switch_off));
 
                 detailsStr.append(resources.getString(R.string.node_details_elapsed_time_flag));
                 if (!UNDEFINED_DATE.equals(model.getSwitchTimestamp())) {
-                    detailsStr.append(String.format(
-                            resources.getString(R.string.node_details_time_template),
-                            DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()),
-                            elapsedMinsStr));
+                    detailsStr.append(String.format(resources.getString(R.string.node_details_time_template),
+                            DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()), elapsedMinsStr));
                 } else {
                     detailsStr.append(resources.getString(R.string.node_details_unknown_time));
                 }
 
                 detailsStr.append(resources.getString(R.string.node_details_remainig_time_flag));
                 if (!UNDEFINED_DATE.equals(model.getForcedModeTimestamp())) {
-                    detailsStr.append(String.format(
-                            resources.getString(R.string.node_details_time_template),
-                            DateFormat.format(DATE_FORMAT, model.getForcedModeTimestamp()),
-                            remainingMinsStr));
+                    detailsStr.append(String.format(resources.getString(R.string.node_details_time_template),
+                            DateFormat.format(DATE_FORMAT, model.getForcedModeTimestamp()), remainingMinsStr));
                 } else {
                     detailsStr.append(resources.getString(R.string.node_details_permanent_time));
                 }
             } else {
-                detailsStr.append(model.getState() ? resources
-                        .getString(R.string.node_details_switch_on) : resources
+                detailsStr.append(model.getState() ? resources.getString(R.string.node_details_switch_on) : resources
                         .getString(R.string.node_details_switch_off));
 
                 detailsStr.append(resources.getString(R.string.node_details_elapsed_time_flag));
                 if (!UNDEFINED_DATE.equals(model.getSwitchTimestamp())) {
-                    detailsStr.append(String.format(
-                            resources.getString(R.string.node_details_time_template),
-                            DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()),
-                            elapsedMinsStr));
+                    detailsStr.append(String.format(resources.getString(R.string.node_details_time_template),
+                            DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()), elapsedMinsStr));
                 } else {
                     detailsStr.append(resources.getString(R.string.node_details_unknown_time));
                 }
@@ -109,10 +100,5 @@ public class NodeModelView extends AbstractEntryModelView implements ModelView {
             valueView.setEnabled(false);
             detailsView.setText(R.string.node_details_unknown);
         }
-    }
-
-    @Override
-    public NodeModel getModel() {
-        return (NodeModel) model;
     }
 }

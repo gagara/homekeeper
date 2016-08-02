@@ -13,10 +13,11 @@ import android.widget.ToggleButton;
 
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.common.ControllerConfig;
+import com.gagara.homekeeper.model.Model;
 import com.gagara.homekeeper.model.SensorModel.SensorType;
 
 @SuppressLint("UseSparseArrays")
-public class TopModelView implements ModelView {
+public class TopModelView implements ModelView<Model> {
 
     public static final Map<Integer, Integer> SENSORS_NAME_VIEW_MAP;
     public static final Map<Integer, Integer> NODES_NAME_VIEW_MAP;
@@ -29,7 +30,7 @@ public class TopModelView implements ModelView {
 
     private ServiceTitleModelView title;
     private ServiceInfoModelView info;
-    private ServiceStatusModelView status;
+    private ServiceLogModelView log;
 
     private Map<Integer, SensorModelView> sensors;
     private Map<Integer, NodeModelView> nodes;
@@ -70,8 +71,7 @@ public class TopModelView implements ModelView {
         NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_HEATING_ID, R.string.node_heating_name);
         NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_FLOOR_ID, R.string.node_floor_name);
         NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_HOTWATER_ID, R.string.node_hotwater_name);
-        NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_CIRCULATION_ID,
-                R.string.node_circulation_name);
+        NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_CIRCULATION_ID, R.string.node_circulation_name);
         NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_BOILER_ID, R.string.node_boilder_name);
         NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_SB_HEATER_ID, R.string.node_sb_heater_name);
 
@@ -89,19 +89,15 @@ public class TopModelView implements ModelView {
         NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_HEATING_ID, R.id.nodeHeatingDetails);
         NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_FLOOR_ID, R.id.nodeFloorDetails);
         NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_HOTWATER_ID, R.id.nodeHotwaterDetails);
-        NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_CIRCULATION_ID,
-                R.id.nodeCirculationDetails);
+        NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_CIRCULATION_ID, R.id.nodeCirculationDetails);
         NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_BOILER_ID, R.id.nodeBoilerDetails);
         NODES_DETAILS_VIEW_MAP.put(ControllerConfig.NODE_SB_HEATER_ID, R.id.nodeSbHeaterDetails);
     }
 
     public TopModelView(Activity ctx) {
-        title = new ServiceTitleModelView((TextView) ctx.findViewById(R.id.headerLeft),
-                ctx.getResources());
-        info = new ServiceInfoModelView((TextView) ctx.findViewById(R.id.headerRight),
-                ctx.getResources());
-        status = new ServiceStatusModelView((TextView) ctx.findViewById(R.id.footerLeft),
-                ctx.getResources());
+        title = new ServiceTitleModelView((TextView) ctx.findViewById(R.id.headerLeft), ctx.getResources());
+        info = new ServiceInfoModelView((TextView) ctx.findViewById(R.id.headerRight), ctx.getResources());
+        log = new ServiceLogModelView((TextView) ctx.findViewById(R.id.footerLeft), ctx.getResources());
 
         sensors = new HashMap<Integer, SensorModelView>();
         for (Integer id : SENSORS_VALUE_VIEW_MAP.keySet()) {
@@ -134,7 +130,7 @@ public class TopModelView implements ModelView {
     public void saveState(Bundle bundle, String prefix) {
         title.saveState(bundle, prefix);
         info.saveState(bundle, prefix);
-        status.saveState(bundle, prefix);
+        log.saveState(bundle, prefix);
         for (SensorModelView s : sensors.values()) {
             s.saveState(bundle, prefix);
         }
@@ -152,7 +148,7 @@ public class TopModelView implements ModelView {
     public void restoreState(Bundle bundle, String prefix) {
         title.restoreState(bundle, prefix);
         info.restoreState(bundle, prefix);
-        status.restoreState(bundle, prefix);
+        log.restoreState(bundle, prefix);
         for (SensorModelView s : sensors.values()) {
             s.restoreState(bundle, prefix);
         }
@@ -165,7 +161,7 @@ public class TopModelView implements ModelView {
     public void render() {
         title.render();
         info.render();
-        status.render();
+        log.render();
         for (SensorModelView s : sensors.values()) {
             s.render();
         }
@@ -195,8 +191,8 @@ public class TopModelView implements ModelView {
         return info;
     }
 
-    public ServiceStatusModelView getStatus() {
-        return status;
+    public ServiceLogModelView getLog() {
+        return log;
     }
 
     public SensorModelView getSensor(int id) {

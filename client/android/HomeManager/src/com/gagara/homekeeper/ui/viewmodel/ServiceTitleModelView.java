@@ -6,7 +6,8 @@ import android.widget.TextView;
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.ServiceTitleModel;
 
-public class ServiceTitleModelView extends AbstractInfoModelView implements ModelView {
+public class ServiceTitleModelView extends AbstractInfoModelView<ServiceTitleModel> implements
+        ModelView<ServiceTitleModel> {
 
     public ServiceTitleModelView() {
         this.model = new ServiceTitleModel();
@@ -20,7 +21,6 @@ public class ServiceTitleModelView extends AbstractInfoModelView implements Mode
 
     @Override
     public void render() {
-        ServiceTitleModel model = (ServiceTitleModel) this.model;
         TextView view = (TextView) this.view;
         if (model.getMode() != null && model.getName() != null) {
             view.setText(String.format(resources.getString(R.string.service_title),
@@ -32,6 +32,6 @@ public class ServiceTitleModelView extends AbstractInfoModelView implements Mode
 
     @Override
     public ServiceTitleModel getModel() {
-        return (ServiceTitleModel) model;
+        return model;
     }
 }

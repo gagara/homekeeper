@@ -147,7 +147,6 @@ public class ProxyNbiService extends AbstractNbiService {
     }
 
     private void startLogMonitor() {
-        notifyStatusChange(null);
         if (!logMonitorExecutor.isShutdown()) {
             logMonitorExecutor.scheduleAtFixedRate(new Runnable() {
                 @Override
@@ -160,7 +159,7 @@ public class ProxyNbiService extends AbstractNbiService {
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage(), e);
                         state = ERROR;
-                        notifyStatusChange(e.getMessage());
+                        notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
                         synchronized (serviceExecutor) {
                             clocksDelta = null;
                             serviceExecutor.notifyAll();
@@ -186,6 +185,7 @@ public class ProxyNbiService extends AbstractNbiService {
                 @Override
                 public void onResponse(JSONObject response) {
                     // do nothing
+                    Log.i(TAG, response.toString());
                 }
             }, new Response.ErrorListener() {
 
@@ -193,7 +193,7 @@ public class ProxyNbiService extends AbstractNbiService {
                 public void onErrorResponse(VolleyError e) {
                     Log.e(TAG, e.getMessage(), e);
                     state = ERROR;
-                    notifyStatusChange(e.getMessage());
+                    notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
                     synchronized (serviceExecutor) {
                         clocksDelta = null;
                         serviceExecutor.notifyAll();
@@ -241,7 +241,7 @@ public class ProxyNbiService extends AbstractNbiService {
                         public void onErrorResponse(VolleyError e) {
                             Log.e(TAG, e.getMessage(), e);
                             state = ERROR;
-                            notifyStatusChange(e.getMessage());
+                            notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
                             synchronized (serviceExecutor) {
                                 clocksDelta = null;
                                 serviceExecutor.notifyAll();

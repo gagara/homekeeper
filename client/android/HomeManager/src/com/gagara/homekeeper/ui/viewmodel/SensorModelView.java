@@ -16,7 +16,7 @@ import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.SensorModel;
 import com.gagara.homekeeper.ui.view.ViewUtils;
 
-public class SensorModelView extends AbstractEntryModelView implements ModelView {
+public class SensorModelView extends AbstractEntryModelView<SensorModel> implements ModelView<SensorModel> {
 
     private static final String DATE_FORMAT = "HH:mm dd/MM";
 
@@ -26,7 +26,6 @@ public class SensorModelView extends AbstractEntryModelView implements ModelView
 
     @Override
     public void render() {
-        SensorModel model = (SensorModel) this.model;
         TextView valueView = (TextView) this.valueView;
         TextView detailsView = (TextView) this.detailsView;
 
@@ -66,10 +65,5 @@ public class SensorModelView extends AbstractEntryModelView implements ModelView
                     DateFormat.format(DATE_FORMAT, model.getTimestamp()), elapsedMinsStr));
         }
         detailsView.setText(detailsStr);
-    }
-
-    @Override
-    public SensorModel getModel() {
-        return (SensorModel) model;
     }
 }

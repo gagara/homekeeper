@@ -7,7 +7,8 @@ import android.widget.TextView;
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.ServiceInfoModel;
 
-public class ServiceInfoModelView extends AbstractInfoModelView implements ModelView {
+public class ServiceInfoModelView extends AbstractInfoModelView<ServiceInfoModel> implements
+        ModelView<ServiceInfoModel> {
 
     public ServiceInfoModelView() {
         this.model = new ServiceInfoModel();
@@ -21,7 +22,6 @@ public class ServiceInfoModelView extends AbstractInfoModelView implements Model
 
     @Override
     public void render() {
-        ServiceInfoModel model = (ServiceInfoModel) this.model;
         TextView view = (TextView) this.view;
         if (model.getTimestamp() != null) {
             view.setText(String.format(resources.getString(R.string.service_last_update),
@@ -30,10 +30,4 @@ public class ServiceInfoModelView extends AbstractInfoModelView implements Model
             view.setText(String.format(resources.getString(R.string.service_last_update), "--:--:--"));
         }
     }
-
-    @Override
-    public ServiceInfoModel getModel() {
-        return (ServiceInfoModel) model;
-    }
-
 }

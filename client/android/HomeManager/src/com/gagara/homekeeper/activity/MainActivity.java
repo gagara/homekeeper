@@ -39,6 +39,7 @@ import com.gagara.homekeeper.common.Mode;
 import com.gagara.homekeeper.common.Proxy;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.SensorModel;
+import com.gagara.homekeeper.model.ServiceStatusModel;
 import com.gagara.homekeeper.nbi.request.CurrentStatusRequest;
 import com.gagara.homekeeper.nbi.request.NodeStateChangeRequest;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
@@ -331,14 +332,15 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (SERVICE_STATUS_CHANGE_ACTION.equals(action)) {
-                modelView.getStatus().getModel().setMode(HomeKeeperConfig.getMode(context, null));
-                modelView.getStatus().getModel()
-                        .setState(ServiceState.fromString(intent.getStringExtra(SERVICE_STATUS_KEY)));
-                modelView.getStatus().getModel().setDetails(intent.getStringExtra(SERVICE_STATUS_DETAILS_KEY));
-                modelView.getStatus().getView()
+                ServiceStatusModel status = new ServiceStatusModel();
+                status.setMode(HomeKeeperConfig.getMode(context, null));
+                status.setState(ServiceState.fromString(intent.getStringExtra(SERVICE_STATUS_KEY)));
+                status.setDetails(intent.getStringExtra(SERVICE_STATUS_DETAILS_KEY));
+                modelView.getLog().getModel().add(status);
+                modelView.getLog().getView()
                         .setAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_bottom));
 
-                modelView.getStatus().render();
+                modelView.getLog().render();
             }
         }
     }

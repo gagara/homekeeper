@@ -7,9 +7,9 @@ import android.widget.TextView;
 
 import com.gagara.homekeeper.model.Model;
 
-public abstract class AbstractInfoModelView implements ModelView {
+public abstract class AbstractInfoModelView<M extends Model> implements ModelView<M> {
 
-    protected Model model;
+    protected M model;
     protected View view;
 
     protected Resources resources;
@@ -43,11 +43,11 @@ public abstract class AbstractInfoModelView implements ModelView {
         return model.isInitialized();
     }
 
-    public Model getModel() {
+    public M getModel() {
         return model;
     }
 
-    public void setModel(Model model) {
+    public void setModel(M model) {
         this.model = model;
     }
 
