@@ -81,7 +81,7 @@ public class NodeStateChangeRequest extends MessageHeader implements Request, Pa
             if (state != null) {
                 json.put(ControllerConfig.STATE_KEY, state ? 1 : 0);
                 if (period != null) {
-                    json.put(ControllerConfig.FORCE_TIMESTAMP_KEY, period.toString());
+                    json.put(ControllerConfig.FORCE_TIMESTAMP_KEY, period);
                 }
             }
         } catch (JSONException e) {
