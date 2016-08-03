@@ -13,6 +13,7 @@ import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
 
+import java.util.Date;
 import java.util.Map.Entry;
 
 import android.bluetooth.BluetoothAdapter;
@@ -262,55 +263,54 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
             String action = intent.getAction();
             if (Constants.CONTROLLER_DATA_TRANSFER_ACTION.equals(action)) {
                 Parcelable data = intent.getParcelableExtra(Constants.DATA_KEY);
+                Date latestTimestamp = null;
                 if (data instanceof CurrentStatusResponse) {
                     CurrentStatusResponse stats = (CurrentStatusResponse) data;
 
-                    boolean gotValidStats = false;
-
-                    // sensors
-                    for (int i = 0; i < stats.getSensors().size(); i++) {
-                        SensorModel sensor = stats.getSensors().valueAt(i).getData();
+                    // sensor
+                    if (stats.getSensor() != null) {
+                        SensorModel sensor = stats.getSensor().getData();
                         if (ViewUtils.validSensor(sensor)) {
                             modelView.getSensor(sensor.getId()).getModel().update(sensor);
                             modelView.getSensor(sensor.getId()).render();
-                            gotValidStats = true;
+                            latestTimestamp = stats.getTimestamp();
                         }
                     }
-
-                    // nodes
-                    for (int i = 0; i < stats.getNodes().size(); i++) {
-                        NodeModel node = stats.getNodes().valueAt(i).getData();
+                    // node
+                    if (stats.getNode() != null) {
+                        NodeModel node = stats.getNode().getData();
                         if (ViewUtils.validNode(node)) {
                             modelView.getNode(node.getId()).getModel().update(node);
                             modelView.getNode(node.getId()).render();
-                            gotValidStats = true;
+                            latestTimestamp = stats.getTimestamp();
                         }
                     }
 
-                    if (gotValidStats) {
-                        modelView.getInfo().getModel().setTimestamp(stats.getTimestamp());
-                        modelView.getInfo().render();
-                        // Toast.makeText(MainActivity.this,
-                        // R.string.updating_message, LENGTH_LONG).show();
-                    }
                 } else if (data instanceof NodeStateChangeResponse) {
                     // node
                     NodeStateChangeResponse stats = (NodeStateChangeResponse) data;
                     NodeModel node = stats.getData();
-                    modelView.getNode(node.getId()).setModel(node);
-                    modelView.getNode(node.getId()).render();
+                    if (ViewUtils.validNode(node)) {
+                        modelView.getNode(node.getId()).setModel(node);
+                        modelView.getNode(node.getId()).render();
+                        latestTimestamp = stats.getTimestamp();
 
-                    String msg = null;
-                    if (node.getState()) {
-                        msg = String.format(getResources().getString(R.string.switch_state_on_message,
-                                getResources().getString(TopModelView.NODES_NAME_VIEW_MAP.get(node.getId()))));
-                    } else {
-                        msg = String.format(getResources().getString(R.string.switch_state_off_message,
-                                getResources().getString(TopModelView.NODES_NAME_VIEW_MAP.get(node.getId()))));
+                        String msg = null;
+                        if (node.getState()) {
+                            msg = String.format(getResources().getString(R.string.switch_state_on_message,
+                                    getResources().getString(TopModelView.NODES_NAME_VIEW_MAP.get(node.getId()))));
+                        } else {
+                            msg = String.format(getResources().getString(R.string.switch_state_off_message,
+                                    getResources().getString(TopModelView.NODES_NAME_VIEW_MAP.get(node.getId()))));
+                        }
+                        Toast.makeText(MainActivity.this, msg, LENGTH_LONG).show();
                     }
-                    Toast.makeText(MainActivity.this, msg, LENGTH_LONG).show();
                 } else {
                     // unknown data. ignoring
+                }
+                if (latestTimestamp != null) {
+                    modelView.getInfo().getModel().setTimestamp(latestTimestamp);
+                    modelView.getInfo().render();
                 }
             }
         }
@@ -336,6 +336,7 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                 status.setMode(HomeKeeperConfig.getMode(context, null));
                 status.setState(ServiceState.fromString(intent.getStringExtra(SERVICE_STATUS_KEY)));
                 status.setDetails(intent.getStringExtra(SERVICE_STATUS_DETAILS_KEY));
+                status.setTimestamp(new Date());
                 modelView.getLog().getModel().add(status);
                 modelView.getLog().getView()
                         .setAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_bottom));

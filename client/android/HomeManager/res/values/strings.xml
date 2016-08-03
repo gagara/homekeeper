@@ -50,6 +50,7 @@
     <string name="switch_state_on_message">%1$s is ON</string>
     <string name="switch_state_off_message">%1$s is OFF</string>
     
+    <string name="sensor_title">Sensor</string>
     <string name="sensor_icon_descr">sensor</string>
     <string name="sensor_supply_name">Supply</string>
     <string name="sensor_reverse_name">Reverse</string>
@@ -71,6 +72,7 @@
     <string name="humidity_sign">%</string>
     <string name="unknown_sign">-</string>
 
+    <string name="node_title">Node</string>
     <string name="node_icon_descr">node</string>
     <string name="node_supply_name">Supply</string>
     <string name="node_heating_name">Heating</string>
@@ -98,10 +100,11 @@
     <string name="service_state_active">Connected</string>
     <string name="service_state_error">Disconnected</string>
     <string name="service_state_shutdown">Connection closed</string>
-    <string name="service_sync_clocks_status">Synchronizing clocks&#8230;</string>
-    <string name="service_listening_status">listening for incoming data</string>
-    <string name="service_receiving_data_status">receiving data</string>
-
+    <string name="service_sync_clocks_status">synchronizing clocks&#8230;</string>
+    <string name="service_listening_status">waiting for incoming data&#8230;</string>
+    <string name="service_csr_message_status">status received for %1$s %2$s</string>
+    <string name="service_nsc_message_status">state changed for %1$s %2$s</string>
+    
     <string name="manage_node_dialog_title">Manage node: %1$s</string>
     <string name="manage_node_mode_text">Manual mode:</string>
     <string name="manage_node_state_text">Node state:</string>
@@ -111,6 +114,7 @@
     
     <string name="service_title">%1$s</string>
     <string name="service_last_update">Last update %1$s</string>
+    <string name="service_status_timestamp">[%1$s]&#160;</string>
     <string name="service_status_mode">%1$s</string>
     <string name="service_status_state">: %1$s</string>
     <string name="service_status_details">: %1$s</string>

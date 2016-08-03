@@ -52,14 +52,14 @@ public class ViewUtils {
     }
 
     public static boolean validSensor(SensorModel sensor) {
-        int id = sensor.getId();
+        int id = sensor != null ? sensor.getId() : -1;
         return id == SENSOR_SUPPLY_ID || id == SENSOR_REVERSE_ID || id == SENSOR_TANK_ID || id == SENSOR_BOILER_ID
                 || id == SENSOR_MIX_ID || id == SENSOR_SB_HEATER_ID || id == SENSOR_ROOM1_TEMP_ID
                 || id == SENSOR_ROOM1_HUM_ID;
     }
 
     public static boolean validNode(NodeModel node) {
-        int id = node.getId();
+        int id = node != null ? node.getId() : -1;
         return id == NODE_SUPPLY_ID || id == NODE_HEATING_ID || id == NODE_FLOOR_ID || id == NODE_HOTWATER_ID
                 || id == NODE_CIRCULATION_ID || id == NODE_BOILER_ID || id == NODE_SB_HEATER_ID;
     }

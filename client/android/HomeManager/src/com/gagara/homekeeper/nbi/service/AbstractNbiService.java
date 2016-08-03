@@ -38,6 +38,8 @@ import com.gagara.homekeeper.nbi.request.CurrentStatusRequest;
 import com.gagara.homekeeper.nbi.request.Request;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
 import com.gagara.homekeeper.nbi.response.NodeStateChangeResponse;
+import com.gagara.homekeeper.ui.view.ViewUtils;
+import com.gagara.homekeeper.ui.viewmodel.TopModelView;
 
 public abstract class AbstractNbiService extends Service {
 
@@ -134,7 +136,8 @@ public abstract class AbstractNbiService extends Service {
                 clockSyncExecutor = null;
                 long controllerTimestamp = message.getLong(ControllerConfig.TIMESTAMP_KEY);
                 int overflowCount = message.getInt(ControllerConfig.OVERFLOW_COUNT_KEY);
-                long delta = lastMessageTimestamp.getTime() - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
+                long delta = lastMessageTimestamp.getTime()
+                        - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
                 notifyStatusChange(getText(R.string.service_listening_status));
                 if (clocksDelta == null) {
                     // initial sync: request for status
@@ -152,14 +155,48 @@ public abstract class AbstractNbiService extends Service {
                     if (stats != null) {
                         intent.putExtra(Constants.DATA_KEY, stats);
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-                        notifyStatusChange(getText(R.string.service_receiving_data_status));
+
+                        String title = null;
+                        String name = null;
+                        if (stats.getNode() != null) {
+                            title = getResources().getString(R.string.node_title);
+                            if (ViewUtils.validNode(stats.getNode().getData())) {
+                                name = getResources().getString(
+                                        TopModelView.NODES_NAME_VIEW_MAP.get(stats.getNode().getData().getId()));
+                            } else {
+                                name = stats.getNode().getData().getId() + "";
+                            }
+                        } else if (stats.getSensor() != null) {
+                            title = getResources().getString(R.string.sensor_title);
+                            if (ViewUtils.validSensor(stats.getSensor().getData())) {
+                                name = getResources().getString(
+                                        TopModelView.SENSORS_NAME_VIEW_MAP.get(stats.getSensor().getData().getId()));
+                            } else {
+                                name = stats.getSensor().getData().getId() + "";
+                            }
+                        }
+
+                        notifyStatusChange(String.format(getResources().getString(R.string.service_csr_message_status),
+                                title, name));
                     }
                 } else if (msgType == ControllerConfig.MessageType.NODE_STATE_CHANGED) {
                     NodeStateChangeResponse nodeState = new NodeStateChangeResponse(clocksDelta).fromJson(message);
                     if (nodeState != null) {
                         intent.putExtra(Constants.DATA_KEY, nodeState);
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-                        notifyStatusChange(getText(R.string.service_receiving_data_status));
+
+                        String title = null;
+                        String name = null;
+                        title = getResources().getString(R.string.node_title);
+                        if (ViewUtils.validNode(nodeState.getData())) {
+                            name = getResources().getString(
+                                    TopModelView.NODES_NAME_VIEW_MAP.get(nodeState.getData().getId()));
+                        } else {
+                            name = nodeState.getData().getId() + "";
+                        }
+
+                        notifyStatusChange(String.format(getResources().getString(R.string.service_nsc_message_status),
+                                title, name));
                     }
                 } else {
                     // unknown message

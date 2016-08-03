@@ -1,6 +1,9 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
+import static com.gagara.homekeeper.common.Constants.TIME_FORMAT;
+import static com.gagara.homekeeper.common.Constants.UNKNOWN_TIME;
 import android.content.res.Resources;
+import android.text.format.DateFormat;
 import android.widget.TextView;
 
 import com.gagara.homekeeper.R;
@@ -26,6 +29,12 @@ public class ServiceLogModelView extends AbstractInfoModelView<ServiceLogModel> 
         for (ServiceStatusModel status : model.getLogs()) {
             if (logStr.length() > 0) {
                 logStr.append("\n");
+            }
+            if (status.getTimestamp() != null) {
+                logStr.append(String.format(resources.getString(R.string.service_status_timestamp),
+                        DateFormat.format(TIME_FORMAT, status.getTimestamp())));
+            } else {
+                logStr.append(String.format(resources.getString(R.string.service_status_timestamp), UNKNOWN_TIME));
             }
             if (status.getMode() != null) {
                 logStr.append(String.format(resources.getString(R.string.service_status_mode), status.getMode()

@@ -87,9 +87,12 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
                         if (s.getValue() != UNDEFINED_SENSOR_VALUE && s.getValue() != UNKNOWN_SENSOR_VALUE) {
                             value = f.format(s.getValue());
                         }
+                        String sensorName = "id_" + s.getId();
+                        if (ViewUtils.validSensor(s)) {
+                            sensorName = resources.getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId()));
+                        }
                         detailsStr.append(String.format(resources.getString(R.string.node_details_sensor_template),
-                                resources.getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId())), value,
-                                resources.getString(getSensorSignResourceByType(s.getType()))));
+                                sensorName, value, resources.getString(getSensorSignResourceByType(s.getType()))));
                     }
                 }
 

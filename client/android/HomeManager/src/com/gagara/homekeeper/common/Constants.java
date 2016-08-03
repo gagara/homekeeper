@@ -25,6 +25,9 @@ public class Constants {
 
     public static final int MAX_STATUS_RECORDS_TO_SHOW = 3;
 
+    public static final String TIME_FORMAT = "HH:mm:ss";
+    public static final String UNKNOWN_TIME = "--:--:--";
+
     public static final String CONTROLLER_DATA_TRANSFER_ACTION = "HOME_KEEPER_CONTROLLER_DATA_TRANSFER";
     public static final String CONTROLLER_CONTROL_COMMAND_ACTION = "HOME_KEEPER_CONTROLLER_CONTROL_COMMAND";
     public static final String SERVICE_STATUS_CHANGE_ACTION = "HOME_KEEPER_SERVICE_STATUS_CHANGE_COMMAND";

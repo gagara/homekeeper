@@ -1,5 +1,7 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
+import static com.gagara.homekeeper.common.Constants.TIME_FORMAT;
+import static com.gagara.homekeeper.common.Constants.UNKNOWN_TIME;
 import android.content.res.Resources;
 import android.text.format.DateFormat;
 import android.widget.TextView;
@@ -25,9 +27,9 @@ public class ServiceInfoModelView extends AbstractInfoModelView<ServiceInfoModel
         TextView view = (TextView) this.view;
         if (model.getTimestamp() != null) {
             view.setText(String.format(resources.getString(R.string.service_last_update),
-                    DateFormat.format("HH:mm:ss", model.getTimestamp())));
+                    DateFormat.format(TIME_FORMAT, model.getTimestamp())));
         } else {
-            view.setText(String.format(resources.getString(R.string.service_last_update), "--:--:--"));
+            view.setText(String.format(resources.getString(R.string.service_last_update), UNKNOWN_TIME));
         }
     }
 }

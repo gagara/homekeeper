@@ -1,5 +1,7 @@
 package com.gagara.homekeeper.model;
 
+import java.util.Date;
+
 import android.os.Bundle;
 
 import com.gagara.homekeeper.common.Mode;
@@ -10,15 +12,17 @@ public class ServiceStatusModel implements Model {
     private Mode mode = null;
     private ServiceState state = null;
     private String details = null;
+    private Date timestamp = null;
 
     public ServiceStatusModel() {
     }
 
-    public ServiceStatusModel(Mode mode, ServiceState state, String details) {
+    public ServiceStatusModel(Mode mode, ServiceState state, String details, Date timestamp) {
         super();
         this.mode = mode;
         this.state = state;
         this.details = details;
+        this.timestamp = timestamp;
     }
 
     @Override
@@ -35,6 +39,9 @@ public class ServiceStatusModel implements Model {
             bundle.putString(prefix + "service_status_state", state.toString());
         }
         bundle.putString(prefix + "service_status_details", details);
+        if (timestamp != null) {
+            bundle.putLong(prefix + "service_status_timestamp", timestamp.getTime());
+        }
     }
 
     @Override
@@ -53,6 +60,11 @@ public class ServiceStatusModel implements Model {
             state = ServiceState.fromString(stateStr);
         }
         details = bundle.getString(prefix + "service_status_details");
+        Long ts = bundle.getLong(prefix + "service_status_timestamp");
+        if (ts > 0) {
+            this.timestamp = new Date(ts);
+        }
+
     }
 
     @Override
@@ -82,5 +94,13 @@ public class ServiceStatusModel implements Model {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }
