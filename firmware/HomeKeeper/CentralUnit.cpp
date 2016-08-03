@@ -1482,9 +1482,7 @@ void processWifiReq() {
                         root[STATE_KEY] = state;
                     }
                     if (n > 3) {
-                        char tss[12];
-                        sprintf(tss, "%lu", ts);
-                        root[FORCE_TIMESTAMP_KEY] = tss;
+                        root[FORCE_TIMESTAMP_KEY] = ts;
                     }
                 } else {
                     wifiRsp400();
