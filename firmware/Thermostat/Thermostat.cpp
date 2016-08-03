@@ -35,6 +35,7 @@ static const uint8_t MAX_SENSOR_VALUE = 255;
 // reporting
 static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 60000;
 static const unsigned long SENSORS_READ_INTERVAL_MSEC = 6000;
+static const unsigned long RADIO_MAX_INACTIVE_PERION_MSEC = 60000; // 10 minutes
 
 // RF
 static const uint64_t RF_PIPE_BASE = 0xE8E8F0F0A2LL;
@@ -74,6 +75,7 @@ uint8_t RF_PIPE;
 // Timestamps
 unsigned long tsLastStatusReport = 0;
 unsigned long tsLastSensorRead = 0;
+unsigned long tsLastSuccessTransmit = 0;
 unsigned long tsPrev = 0;
 unsigned long tsCurr = 0;
 
@@ -108,10 +110,7 @@ void setup() {
     loadRfPipeAddr();
 
     // init RF24 radio
-    radio.begin();
-    radio.enableDynamicPayloads();
-    radio.openWritingPipe(RF_PIPE_BASE + RF_PIPE);
-    radio.powerUp();
+    initRF24();
 }
 
 void loop() {
@@ -126,14 +125,19 @@ void loop() {
         // refresh sensors values
         refreshSensorValues();
 
+        if (diffTimestamps(tsCurr, tsLastSuccessTransmit) >= RADIO_MAX_INACTIVE_PERION_MSEC) {
+            radio.powerDown();
+            initRF24();
+        }
+
         // report status
         reportStatus();
 
         delay(100);
         digitalWrite(HEARTBEAT_LED, LOW);
 #ifdef __DEBUG__
-    Serial.print("free memory: ");
-    Serial.println(freeMemory());
+        Serial.print("free memory: ");
+        Serial.println(freeMemory());
 #endif
     }
     if (Serial.available() > 0) {
@@ -177,6 +181,13 @@ unsigned long diffTimestamps(unsigned long hi, unsigned long lo) {
     } else {
         return hi - lo;
     }
+}
+
+void initRF24() {
+    radio.begin();
+    radio.enableDynamicPayloads();
+    radio.openWritingPipe(RF_PIPE_BASE + RF_PIPE);
+    radio.powerUp();
 }
 
 void readSensors() {
@@ -249,7 +260,7 @@ void refreshSensorValues() {
     }
 }
 
-void rfWrite(char* msg) {
+bool rfWrite(char* msg) {
     uint8_t len = strlen(msg);
     for (uint8_t i = 0; i * (RF_PACKET_LENGTH - 1) < len; i++) {
         char packet[RF_PACKET_LENGTH];
@@ -263,10 +274,12 @@ void rfWrite(char* msg) {
         }
         packet[l] = '\0';
         radio.setPayloadSize(l);
-        radio.write(packet, l, 0);
+        if (!radio.write(packet, l, 0)) {
+            return false;
+        }
     }
     radio.setPayloadSize(1);
-    radio.write("\n", 1, 0);
+    return radio.write("\n", 1, 0);
 }
 
 void reportStatus() {
@@ -295,7 +308,9 @@ void reportStatus() {
     Serial.println(json);
 
     // report to RF
-    rfWrite(json);
+    if (rfWrite(json)) {
+        tsLastSuccessTransmit = tsCurr;
+    }
 
     tsLastStatusReport = tsCurr;
 #ifdef __DEBUG__
