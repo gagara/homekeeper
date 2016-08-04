@@ -2,12 +2,11 @@ package com.gagara.homekeeper.nbi.service;
 
 import static com.android.volley.Request.Method.POST;
 import static com.gagara.homekeeper.common.Constants.MESSAGE_KEY;
-import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
-import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
 import static com.gagara.homekeeper.common.Constants.TIMESTAMP_KEY;
 import static com.gagara.homekeeper.nbi.service.ServiceState.ACTIVE;
 import static com.gagara.homekeeper.nbi.service.ServiceState.ERROR;
 import static com.gagara.homekeeper.nbi.service.ServiceState.INIT;
+import static com.gagara.homekeeper.nbi.service.ServiceState.SHUTDOWN;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
@@ -26,7 +25,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
@@ -86,12 +84,6 @@ public class ProxyNbiService extends AbstractNbiService {
         logMonitorExecutor = Executors.newSingleThreadScheduledExecutor();
         httpRequestQueue = Volley.newRequestQueue(this);
         httpRequestQueue.start();
-
-        // update title
-        Intent intent = new Intent();
-        intent.setAction(SERVICE_TITLE_CHANGE_ACTION);
-        intent.putExtra(SERVICE_TITLE_KEY, proxy.getHost() + ":" + proxy.getPort());
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     @Override
@@ -113,10 +105,12 @@ public class ProxyNbiService extends AbstractNbiService {
 
     @Override
     public void send(Request request) {
-        JsonObjectRequest req = new ProxySendRequest(request);
-        req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        httpRequestQueue.add(req);
+        if (state != SHUTDOWN) {
+            JsonObjectRequest req = new ProxySendRequest(request);
+            req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            httpRequestQueue.add(req);
+        }
     }
 
     private void runService() throws InterruptedException {
@@ -125,20 +119,21 @@ public class ProxyNbiService extends AbstractNbiService {
 
         lastMessageTimestamp = new Date();
         state = INIT;
-
         startLogMonitor();
 
         while (true) {
             if (state == INIT || state == ERROR) {
                 synchronized (serviceExecutor) {
-                    if (clocksDelta == null && clockSyncExecutor == null) {
-                        clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
-                        clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L, proxy.getPullPeriod() * 3,
-                                TimeUnit.SECONDS);
+                    if (state != ACTIVE) {
+                        state = INIT;
+                        if (clocksDelta == null && clockSyncExecutor == null) {
+                            clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
+                            clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L,
+                                    proxy.getPullPeriod() * 3, TimeUnit.SECONDS);
+                        }
+                        notifyStatusChange(getText(R.string.service_sync_clocks_status));
                     }
-                    notifyStatusChange(getText(R.string.service_sync_clocks_status));
                 }
-                state = ACTIVE;
             }
             synchronized (serviceExecutor) {
                 serviceExecutor.wait();
@@ -151,18 +146,20 @@ public class ProxyNbiService extends AbstractNbiService {
             logMonitorExecutor.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        JsonRequest<JSONArray> req = new ProxyLogRequest();
-                        req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                        httpRequestQueue.add(req);
-                    } catch (Exception e) {
-                        Log.e(TAG, e.getMessage(), e);
-                        state = ERROR;
-                        notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
-                        synchronized (serviceExecutor) {
-                            clocksDelta = null;
-                            serviceExecutor.notifyAll();
+                    if (state != SHUTDOWN) {
+                        try {
+                            JsonRequest<JSONArray> req = new ProxyLogRequest();
+                            req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT,
+                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                            httpRequestQueue.add(req);
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage(), e);
+                            state = ERROR;
+                            notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
+                            synchronized (serviceExecutor) {
+                                clocksDelta = null;
+                                serviceExecutor.notifyAll();
+                            }
                         }
                     }
                 }
@@ -192,7 +189,11 @@ public class ProxyNbiService extends AbstractNbiService {
                 public void onErrorResponse(VolleyError e) {
                     Log.e(TAG, e.getMessage(), e);
                     state = ERROR;
-                    notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
+                    String msg = e.getMessage();
+                    if (msg == null && e.networkResponse != null) {
+                        msg = new String(e.networkResponse.data);
+                    }
+                    notifyStatusChange(e.getClass().getSimpleName() + ": " + msg);
                     synchronized (serviceExecutor) {
                         clocksDelta = null;
                         serviceExecutor.notifyAll();
@@ -240,7 +241,11 @@ public class ProxyNbiService extends AbstractNbiService {
                         public void onErrorResponse(VolleyError e) {
                             Log.e(TAG, e.getMessage(), e);
                             state = ERROR;
-                            notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
+                            String msg = e.getMessage();
+                            if (msg == null && e.networkResponse != null) {
+                                msg = new String(e.networkResponse.data);
+                            }
+                            notifyStatusChange(e.getClass().getSimpleName() + ": " + msg);
                             synchronized (serviceExecutor) {
                                 clocksDelta = null;
                                 serviceExecutor.notifyAll();

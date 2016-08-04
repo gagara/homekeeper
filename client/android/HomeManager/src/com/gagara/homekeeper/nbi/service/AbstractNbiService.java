@@ -7,6 +7,10 @@ import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_CHANGE_ACTIO
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
+import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
+import static com.gagara.homekeeper.nbi.service.ServiceState.ACTIVE;
+import static com.gagara.homekeeper.nbi.service.ServiceState.INIT;
+import static com.gagara.homekeeper.nbi.service.ServiceState.SHUTDOWN;
 
 import java.io.IOException;
 import java.util.Date;
@@ -70,7 +74,7 @@ public abstract class AbstractNbiService extends Service {
 
     @Override
     public void onCreate() {
-        state = ServiceState.SHUTDOWN;
+        state = INIT;
         startId = 0;
         serviceExecutor = Executors.newSingleThreadExecutor();
         controllerCommandReceiver = new ControllerCommandsReceiver();
@@ -88,6 +92,15 @@ public abstract class AbstractNbiService extends Service {
             this.startId = startId;
             Log.i(TAG, "started with ID: " + this.startId);
         }
+
+        // update title
+        Intent titleUpdate = new Intent(SERVICE_TITLE_CHANGE_ACTION);
+        titleUpdate.putExtra(SERVICE_TITLE_KEY, getServiceProviderName());
+        LocalBroadcastManager.getInstance(this).sendBroadcast(titleUpdate);
+
+        // update status
+        notifyStatusChange(null);
+
         return START_STICKY;
     }
 
@@ -100,7 +113,7 @@ public abstract class AbstractNbiService extends Service {
     public void onDestroy() {
         serviceNotification = null;
         startId = 0;
-        state = ServiceState.SHUTDOWN;
+        state = SHUTDOWN;
         // update status
         notifyStatusChange(null);
         // update title
@@ -132,19 +145,22 @@ public abstract class AbstractNbiService extends Service {
                 .getString(ControllerConfig.MSG_TYPE_KEY));
         if (msgType == ControllerConfig.MessageType.CLOCK_SYNC) {
             synchronized (serviceExecutor) {
-                clockSyncExecutor.shutdownNow();
+                if (clockSyncExecutor != null) {
+                    clockSyncExecutor.shutdownNow();
+                }
                 clockSyncExecutor = null;
                 long controllerTimestamp = message.getLong(ControllerConfig.TIMESTAMP_KEY);
                 int overflowCount = message.getInt(ControllerConfig.OVERFLOW_COUNT_KEY);
                 long delta = lastMessageTimestamp.getTime()
                         - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
-                notifyStatusChange(getText(R.string.service_listening_status));
                 if (clocksDelta == null) {
                     // initial sync: request for status
                     CurrentStatusRequest csr = new CurrentStatusRequest();
                     send(csr);
                 }
                 clocksDelta = delta;
+                state = ACTIVE;
+                notifyStatusChange(getText(R.string.service_listening_status));
             }
         } else {
             if (clocksDelta != null) {

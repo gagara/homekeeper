@@ -1,7 +1,5 @@
 package com.gagara.homekeeper.nbi.service;
 
-import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
-import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
 import static com.gagara.homekeeper.nbi.service.ServiceState.ACTIVE;
 import static com.gagara.homekeeper.nbi.service.ServiceState.ERROR;
 import static com.gagara.homekeeper.nbi.service.ServiceState.INIT;
@@ -22,7 +20,6 @@ import org.json.JSONTokener;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -65,12 +62,6 @@ public class BluetoothNbiService extends AbstractNbiService {
         super.onCreate();
         healthckeckExecutor = Executors.newSingleThreadScheduledExecutor();
         dev = HomeKeeperConfig.getBluetoothDevice(BluetoothNbiService.this);
-
-        // update title
-        Intent intent = new Intent();
-        intent.setAction(SERVICE_TITLE_CHANGE_ACTION);
-        intent.putExtra(SERVICE_TITLE_KEY, dev.getName());
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     @Override
@@ -92,7 +83,7 @@ public class BluetoothNbiService extends AbstractNbiService {
 
     @Override
     public void send(Request request) {
-        if (state == ACTIVE && out != null) {
+        if ((state == INIT || state == ACTIVE) && out != null) {
             try {
                 if (request instanceof ClockSyncRequest) {
                     out.write(request.toJson().toString().getBytes());
@@ -112,8 +103,6 @@ public class BluetoothNbiService extends AbstractNbiService {
     }
 
     private void startHealthckecker() {
-        state = INIT;
-        notifyStatusChange(null);
         if (!healthckeckExecutor.isShutdown()) {
             healthckeckExecutor.scheduleAtFixedRate(new Runnable() {
                 @Override
@@ -139,15 +128,15 @@ public class BluetoothNbiService extends AbstractNbiService {
     }
 
     private void initConnection() {
+        notifyStatusChange(getText(R.string.service_bt_init_status));
         try {
             BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
             socket = dev.createRfcommSocketToServiceRecord(UUID.fromString(SP_UUID));
             socket.connect();
             in = socket.getInputStream();
             out = socket.getOutputStream();
-            state = ACTIVE;
             lastMessageTimestamp = new Date();
-            notifyStatusChange(null);
+            state = ACTIVE;
             synchronized (serviceExecutor) {
                 serviceExecutor.notify();
             }
@@ -186,17 +175,17 @@ public class BluetoothNbiService extends AbstractNbiService {
     private void runService() throws InterruptedException {
         LocalBroadcastManager.getInstance(this).registerReceiver(controllerCommandReceiver,
                 new IntentFilter(Constants.CONTROLLER_CONTROL_COMMAND_ACTION));
+
+        state = INIT;
         startHealthckecker();
+
         while (true) {
             if (state == ACTIVE) {
-                synchronized (serviceExecutor) {
-                    if (clocksDelta == null && clockSyncExecutor == null) {
-                        clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
-                        clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L,
-                                INITIAL_CLOCK_SYNC_INTERVAL_SEC, TimeUnit.SECONDS);
-                        notifyStatusChange(getText(R.string.service_sync_clocks_status));
-                    }
-                }
+                clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
+                clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L, INITIAL_CLOCK_SYNC_INTERVAL_SEC,
+                        TimeUnit.SECONDS);
+                notifyStatusChange(getText(R.string.service_sync_clocks_status));
+
                 while (true) {
                     try {
                         String msg = waitForMessage();
@@ -209,11 +198,14 @@ public class BluetoothNbiService extends AbstractNbiService {
                     } catch (IOException e) {
                         Log.e(TAG, e.getMessage(), e);
                         state = ERROR;
+                        clocksDelta = null;
+                        if (clockSyncExecutor != null) {
+                            clockSyncExecutor.shutdownNow();
+                        }
                         notifyStatusChange(e.getMessage());
                         break;
                     }
                 }
-                clocksDelta = null;
             }
             synchronized (serviceExecutor) {
                 serviceExecutor.wait();

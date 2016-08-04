@@ -102,8 +102,9 @@
     <string name="service_state_shutdown">Connection closed</string>
     <string name="service_sync_clocks_status">synchronizing clocks&#8230;</string>
     <string name="service_listening_status">waiting for incoming data&#8230;</string>
-    <string name="service_csr_message_status">status received for %1$s %2$s</string>
-    <string name="service_nsc_message_status">state changed for %1$s %2$s</string>
+    <string name="service_csr_message_status">report:  %1$s %2$s</string>
+    <string name="service_nsc_message_status">switch: %1$s %2$s</string>
+    <string name="service_bt_init_status">initializing&#8230;</string>
     
     <string name="manage_node_dialog_title">Manage node: %1$s</string>
     <string name="manage_node_mode_text">Manual mode:</string>
