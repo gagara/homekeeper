@@ -55,7 +55,7 @@ public abstract class AbstractNbiService extends Service {
 
     protected int startId;
 
-    protected Date lastMessageTimestamp = new Date(0);
+    protected volatile Date lastMessageTimestamp = new Date(0);
     protected Long clocksDelta = null;
 
     private NotificationCompat.Builder serviceNotification;
