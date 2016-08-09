@@ -66,7 +66,7 @@ public class Proxy {
     }
 
     public String asUrl() {
-        return "http://" + host + ":" + port;
+        return "https://" + host + ":" + port;
     }
 
     public boolean valid() {

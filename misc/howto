@@ -34,3 +34,14 @@ curl -v -H "User-Agent: ESP8266" -H "Content-Type: application/x-www-form-urlenc
 
 curl -v -H "User-Agent: ESP8266" -H "Content-Type: application/x-www-form-urlencoded" -XPOST http://localhost:8085/ -d '{"m":"nsc","id":22,"ns":0,"ts":"60001","ff":0,"s":[{"id":54,"v":33},{"id":55,"v":72}]}'
 
+==============
+openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mykey.key -out mycert.cert
+
+        SSLEngine on
+        SSLCertificateFile "/etc/ssl/certs/homekeeper.cert"
+        SSLCertificateKeyFile "/etc/ssl/private/homekeeper.key"
+
+
+
+
+

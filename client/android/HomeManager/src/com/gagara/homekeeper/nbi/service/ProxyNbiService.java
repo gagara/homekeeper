@@ -9,6 +9,8 @@ import static com.gagara.homekeeper.nbi.service.ServiceState.INIT;
 import static com.gagara.homekeeper.nbi.service.ServiceState.SHUTDOWN;
 
 import java.io.UnsupportedEncodingException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,6 +48,7 @@ import com.android.volley.toolbox.Volley;
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.common.Proxy;
+import com.gagara.homekeeper.nbi.https.HttpsTrustManager;
 import com.gagara.homekeeper.nbi.request.LogRequest;
 import com.gagara.homekeeper.nbi.request.Request;
 import com.gagara.homekeeper.utils.HomeKeeperConfig;
@@ -84,6 +87,13 @@ public class ProxyNbiService extends AbstractNbiService {
         logMonitorExecutor = Executors.newSingleThreadScheduledExecutor();
         httpRequestQueue = Volley.newRequestQueue(this);
         httpRequestQueue.start();
+        try {
+            HttpsTrustManager.allowAllSSL();
+        } catch (KeyManagementException e) {
+            Log.e(TAG, e.getMessage(), e);
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
     }
 
     @Override
