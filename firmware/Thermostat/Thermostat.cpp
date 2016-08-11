@@ -33,7 +33,7 @@ static const unsigned long MAX_TIMESTAMP = -1;
 static const uint8_t MAX_SENSOR_VALUE = 255;
 
 // reporting
-static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 45000; // 45 seconds
+static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 15000; // 15 seconds
 static const unsigned long SENSORS_READ_INTERVAL_MSEC = 6000;
 static const unsigned long RADIO_MAX_INACTIVE_PERION_MSEC = 60000; // 10 minutes
 

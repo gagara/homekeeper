@@ -66,12 +66,12 @@
     "_type": "visualization",
     "_source": {
       "title": "Room",
-      "visState": "{\"aggs\":[{\"id\":\"1\",\"params\":{\"customLabel\":\"Value\",\"field\":\"s.v\"},\"schema\":\"metric\",\"type\":\"avg\"},{\"id\":\"2\",\"params\":{\"customInterval\":\"2h\",\"customLabel\":\"timestamp\",\"extended_bounds\":{},\"field\":\"@timestamp\",\"interval\":\"m\",\"min_doc_count\":1},\"schema\":\"segment\",\"type\":\"date_histogram\"},{\"id\":\"3\",\"params\":{\"customLabel\":\"sensor\",\"field\":\"name\",\"order\":\"asc\",\"orderAgg\":{\"id\":\"3-orderAgg\",\"params\":{\"customLabel\":\"Sensor\",\"field\":\"s.id\"},\"schema\":\"orderAgg\",\"type\":\"max\"},\"orderBy\":\"custom\",\"row\":true,\"size\":5},\"schema\":\"split\",\"type\":\"terms\"}],\"listeners\":{},\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"defaultYExtents\":false,\"drawLinesBetweenPoints\":true,\"interpolate\":\"linear\",\"radiusRatio\":9,\"scale\":\"linear\",\"setYExtents\":false,\"shareYAxis\":true,\"showCircles\":true,\"smoothLines\":false,\"times\":[],\"yAxis\":{}},\"title\":\"Room\",\"type\":\"line\"}",
+      "visState": "{\"title\":\"Room\",\"type\":\"line\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"defaultYExtents\":false,\"drawLinesBetweenPoints\":true,\"interpolate\":\"linear\",\"radiusRatio\":9,\"scale\":\"linear\",\"setYExtents\":false,\"shareYAxis\":true,\"showCircles\":true,\"smoothLines\":false,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"s.v\",\"customLabel\":\"Value\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"m\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"timestamp\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":5,\"orderAgg\":{\"id\":\"3-orderAgg\",\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"s.id\",\"customLabel\":\"Sensor\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"sensor\",\"row\":true}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"csr_type:sensor AND csr_state:actual AND (s.id:74 OR s.id:75)\",\"analyze_wildcard\":true}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"csr_type:sensor AND csr_state:actual AND (s.id:74 OR s.id:75) AND NOT s.v:\\\"-127\\\"\",\"analyze_wildcard\":true}},\"filter\":[]}"
       }
     }
   }
