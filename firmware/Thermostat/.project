@@ -42,6 +42,11 @@
 			<locationURI>ArduinoPivateLibPath/JSON</locationURI>
 		</link>
 		<link>
+			<name>Libraries/LowPower</name>
+			<type>2</type>
+			<locationURI>ArduinoPivateLibPath/LowPower</locationURI>
+		</link>
+		<link>
 			<name>Libraries/MemoryFree</name>
 			<type>2</type>
 			<locationURI>ArduinoPivateLibPath/MemoryFree</locationURI>

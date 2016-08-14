@@ -5,6 +5,7 @@
 #include <EEPROMex.h>
 #include <MemoryFree.h>
 #include <RF24.h>
+#include <LowPower.h>
 
 /* ========= Configuration ========= */
 
@@ -25,16 +26,16 @@ double SENSOR_TEMP_FACTOR = 1.0;
 double SENSOR_HUM_FACTOR = 1.0;
 
 // sensors stats
-static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 20;
-static const uint8_t SENSOR_NOISE_THRESHOLD = 20;
+static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 1;
+static const uint8_t SENSOR_NOISE_THRESHOLD = 255; // disabled
 
 // etc
 static const unsigned long MAX_TIMESTAMP = -1;
 static const uint8_t MAX_SENSOR_VALUE = 255;
 
 // reporting
-static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 15000; // 15 seconds
-static const unsigned long SENSORS_READ_INTERVAL_MSEC = 6000;
+static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 0; // 15 seconds. disabled in LowPower mode
+static const unsigned long SENSORS_READ_INTERVAL_MSEC = 0; // disabled in LowPower mode
 static const unsigned long RADIO_MAX_INACTIVE_PERION_MSEC = 60000; // 10 minutes
 
 // RF
@@ -144,7 +145,8 @@ void loop() {
         processSerialMsg();
     }
     tsPrev = tsCurr;
-    delay(SENSORS_READ_INTERVAL_MSEC);
+    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+//    delay(SENSORS_READ_INTERVAL_MSEC);
 }
 
 void loadSensorCalibrationFactor() {
