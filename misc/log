@@ -90,6 +90,13 @@ A3 1.05
 {"m":"cfg","sip":"192.168.0.139"}
 {"m":"cfg","sip":"0.0.0.0"}
 {"m":"cfg","sp":8085}
+
+{"m":"cfg","rap":"UKrtelecom_uDRXex"}
+{"m":"cfg","rpw":"12345678"}
+
+{"m":"cfg","lap":"18FE34"}
+{"m":"cfg","lpw":"1234567890"}
+
 =====
 
 
@@ -114,16 +121,24 @@ DeviceAddress SENSOR_BOILER =       {0x28, 0xFF, 0xD1, 0x84, 0x23, 0x16, 0x04, 0
 DeviceAddress SENSOR_MIX =          {0x28, 0xFF, 0x45, 0x90, 0x23, 0x16, 0x04, 0xC5};
 DeviceAddress SENSOR_SB_HEATER =    {0x28, 0xFF, 0x28, 0x5B, 0x23, 0x16, 0x04, 0x95};
 
-
-AT+CWMODE=1
-AT+CIFSR
-AT+CWJAP="point39","87654321"
-AT+CWQAP -- disconnect
-
+// setup
+AT+RST
 AT+CIPMODE=0
+AT+CWMODE=1
+AT+CWJAP="point39","87654321"
+
+AT+CWQAP // disconnect
+AT+CIFSR // get IP
+
+AT+CWSAP_CUR="ESP8266","1234567890",5,3
+AT+CWJAP_CUR="UKrtelecom_uDRXex","12345678"
+
+
+// start server
 AT+CIPMUX=1
 AT+CIPSERVER=1,80
 
+// send
 AT+CIPSEND=0,64
 AT+CIPCLOSE=0
 ----

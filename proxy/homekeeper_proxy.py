@@ -1,10 +1,11 @@
 from functools import wraps
 
 from elasticsearch import Elasticsearch
-from flask import Flask
-from flask import request, Response
 import requests
+
+from flask import Flask
 from flask import jsonify
+from flask import request, Response
 
 
 app = Flask(__name__)
@@ -36,16 +37,9 @@ def requires_auth(f):
 ####### #### ######### #########
 
 def controller_send(req):
-    url = req['m']
-    if 'id' in req:
-        url += '/%d' % req['id']
-    if 'ns' in req:
-        url += '/%d' % req['ns']
-    if 'ft' in req:
-        url += '/%d' % req['ft']
-    host = "http://%s:%d/" % (app.config['CONTROLLER_HOST'], app.config['CONTROLLER_PORT'])
-    if app.debug : print('>>>CONTROLLER: %s' % host + url)
-    requests.get(host + url, timeout=app.config['CONTROLLER_CONN_TIMEOUT_SEC'])
+    host = "http://%s:%d" % (app.config['CONTROLLER_HOST'], app.config['CONTROLLER_PORT'])
+    if app.debug : print('>>>CONTROLLER: %s; %s' % (host, req))
+    requests.post(host, json=req, timeout=app.config['CONTROLLER_CONN_TIMEOUT_SEC'])
 
 def logserver_send(req):
     headers = {'User-Agent': 'proxy','Content-Type': 'application/x-www-form-urlencoded'}

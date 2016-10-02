@@ -10,7 +10,7 @@
 
 /* ========= Configuration ========= */
 
-#undef __DEBUG__
+#define __DEBUG__
 
 // Sensors IDs
 static const uint8_t SENSOR_SUPPLY = 54;
@@ -67,13 +67,15 @@ static const uint8_t SENSORS_PRECISION = 9;
 static const unsigned long NODE_SWITCH_SAFE_TIME_MSEC = 60000;
 
 // EEPROM
-static const int NODE_STATE_EEPROM_ADDR = 0;
-static const int NODE_FORCED_MODE_EEPROM_ADDR = 1;
-static const int SENSORS_FACTORS_EEPROM_ADDR = 2;
-static const int WIFI_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR + (6 * 4);
-static const int WIFI_PW_EEPROM_ADDR = WIFI_AP_EEPROM_ADDR + 32;
-static const int SERVER_IP_EEPROM_ADDR = WIFI_PW_EEPROM_ADDR + 32;
-static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + 4;
+static const int NODE_STATE_EEPROM_ADDR = 0; // 1 byte
+static const int NODE_FORCED_MODE_EEPROM_ADDR = 1; // 1 byte
+static const int SENSORS_FACTORS_EEPROM_ADDR = 2; // 6 x 4 bytes
+static const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR + (6 * 4); // 32 bytes
+static const int WIFI_REMOTE_PW_EEPROM_ADDR = WIFI_REMOTE_AP_EEPROM_ADDR + 32; // 32 bytes
+static const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + 32; // 4 bytes
+static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + 4; // 2 bytes
+static const int WIFI_LOCAL_AP_EEPROM_ADDR = SERVER_PORT_EEPROM_ADDR + 2; // 32 bytes
+static const int WIFI_LOCAL_PW_EEPROM_ADDR = WIFI_LOCAL_AP_EEPROM_ADDR + 32; // 32 bytes
 
 // Primary Heater
 static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
@@ -133,8 +135,10 @@ static const char MSG_NODE_STATE_CHANGED[] = "nsc";
 static const char MSG_CLOCK_SYNC[] = "cls";
 static const char MSG_CONFIGURATION[] = "cfg";
 
-static const char WIFI_AP_KEY[] = "ap";
-static const char WIFI_PASSWORD_KEY[] = "pw";
+static const char WIFI_REMOTE_AP_KEY[] = "rap";
+static const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
+static const char WIFI_LOCAL_AP_KEY[] = "lap";
+static const char WIFI_LOCAL_PASSWORD_KEY[] = "lpw";
 static const char SERVER_IP_KEY[] = "sip";
 static const char SERVER_PORT_KEY[] = "sp";
 static const char LOCAL_IP_KEY[] = "lip";
@@ -143,8 +147,8 @@ static const uint8_t JSON_MAX_WRITE_SIZE = 128;
 static const uint8_t JSON_MAX_READ_SIZE = 128;
 static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
 static const uint8_t RF_MAX_BODY_SIZE = 65;
-static const uint16_t HTTP_MAX_BODY_SIZE = 512;
-static const uint8_t HTTP_MAX_GET_SIZE = 32;
+static const uint16_t WIFI_MAX_READ_SIZE = 512;
+static const uint16_t WIFI_MAX_WRITE_SIZE = 512;
 
 /* ===== End of Configuration ====== */
 
@@ -229,10 +233,12 @@ double SENSOR_SB_HEATER_FACTOR = 1;
 unsigned long boilerPowersaveCurrentPassivePeriod = 0;
 
 // WiFi
-char WIFI_AP[32];
-char WIFI_PW[32];
+char WIFI_REMOTE_AP[32];
+char WIFI_REMOTE_PW[32];
+char WIFI_LOCAL_AP[32];
+char WIFI_LOCAL_PW[32];
 uint8_t SERVER_IP[4] = { 0, 0, 0, 0 };
-int SERVER_PORT = 80;
+uint16_t SERVER_PORT = 80;
 uint8_t CLIENT_ID = 0;
 uint8_t IP[4] = { 0, 0, 0, 0 };
 char OK[] = "OK";
@@ -259,20 +265,25 @@ void setup() {
     // Setup serial ports
     Serial.begin(9600);     // usb
 #ifdef __DEBUG__
-            Serial.println("STARTING");
+    Serial.println("STARTING");
 #endif
     bt->begin(9600);         // BT
     loadWifiConfig();
+/////////////////////
+    pinMode(11, OUTPUT);
+    digitalWrite(11, HIGH);
+/////////////////////
     pinMode(WIFI_RST_PIN, OUTPUT);
-    digitalWrite(WIFI_RST_PIN, HIGH);
     wifiInit();             // WiFi
-    wifiConnect();
-    wifiStartServer();
+    wifiSetup();
+    if (wifiGetRemoteIP()) {
+        wifiStartServer();
+    }
 #ifdef __DEBUG__
-    Serial.print("IP: ");
-    char lIP[16];
-    sprintf(lIP, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
-    Serial.println(lIP);
+    Serial.print("Remote IP: ");
+    char ipStr[16];
+    sprintf(ipStr, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
+    Serial.println(ipStr);
     Serial.print("free memory: ");
     Serial.println(freeMemory());
 #endif
@@ -290,7 +301,7 @@ void setup() {
         for (uint8_t i = 0; i < 8; i++) {
             // zero pad the address if necessary
             if (sensAddr[i] < 16)
-            Serial.print("0");
+                Serial.print("0");
             Serial.print(sensAddr[i], HEX);
         }
         Serial.println("");
@@ -346,11 +357,6 @@ void setup() {
     radio.powerUp();
 
     // report current state
-    if (!wifiGetIP()) {
-        wifiConnect();
-        wifiStartServer();
-        wifiGetIP();
-    }
     reportStatus();
 }
 
@@ -392,18 +398,9 @@ void loop() {
         processStandbyHeater();
 
         if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_MSEC) {
-            if (!wifiGetIP()
-                    || (validIP(SERVER_IP)
-                            && diffTimestamps(tsCurr, tsLastWifiSuccessTransmission) >= WIFI_MAX_FAILURE_PERIOD_MSEC)) {
-                wifiInit();
-                wifiConnect();
-                wifiStartServer();
-                delay(5000);
-                wifiGetIP();
-            }
             reportStatus();
         }
-        delay(100);
+        //delay(100);
         digitalWrite(HEARTBEAT_LED, LOW);
         tsLastSensorsRefresh = tsCurr;
     }
@@ -1094,10 +1091,20 @@ void unForceNodeState(uint8_t id) {
 }
 
 void loadWifiConfig() {
-    EEPROM.readBlock(WIFI_AP_EEPROM_ADDR, WIFI_AP, sizeof(WIFI_AP));
-    EEPROM.readBlock(WIFI_PW_EEPROM_ADDR, WIFI_PW, sizeof(WIFI_PW));
+    EEPROM.readBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
+    EEPROM.readBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
     EEPROM.readBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
     SERVER_PORT = EEPROM.readInt(SERVER_PORT_EEPROM_ADDR);
+    EEPROM.readBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
+    EEPROM.readBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
+}
+
+bool wifiStationMode() {
+    return strlen(WIFI_REMOTE_AP) + strlen(WIFI_REMOTE_PW) > 0;
+}
+
+bool wifiAPMode() {
+    return strlen(WIFI_LOCAL_AP) + strlen(WIFI_LOCAL_PW) > 0;
 }
 
 void wifiInit() {
@@ -1108,42 +1115,90 @@ void wifiInit() {
     delay(1000);
 
     wifi->begin(115200);
-    wifi->println(F("AT+CIOBAUD=9600"));
-    wifi->begin(9600);
-    wifi->setTimeout(300);
+    wifi->println(F("AT+CIOBAUD=115200"));
     IP[0] = 0;
     IP[1] = 0;
     IP[2] = 0;
     IP[3] = 0;
 }
 
-void wifiConnect() {
-    if (strlen(WIFI_AP) + strlen(WIFI_PW) > 0) {
-        char msg[128];
-        wifi->println(F("AT+RST"));
-        wifi->println(F("AT+CIPMODE=0"));
-        wifi->println(F("AT+CWMODE=1"));
-        sprintf(msg, "AT+CWJAP=\"%s\",\"%s\"", WIFI_AP, WIFI_PW);
+void wifiSetup() {
+    char msg[128];
+    wifi->println(F("AT+RST"));
+    delay(500);
+    wifi->println(F("AT+CIPMODE=0"));
+    delay(100);
+    if (wifiAPMode() && wifiStationMode()) {
+        wifi->println(F("AT+CWMODE_CUR=3"));
 #ifdef __DEBUG__
-        Serial.print("wifi connecting: ");
+        Serial.println("runing in STATION & SoftAP mode");
+#endif
+    } else if (wifiAPMode()) {
+        wifi->println(F("AT+CWMODE_CUR=2"));
+#ifdef __DEBUG__
+        Serial.println("runing in SoftAP mode");
+#endif
+    } else {
+        wifi->println(F("AT+CWMODE_CUR=1"));
+#ifdef __DEBUG__
+        Serial.println("runing in STATION mode");
+#endif
+    }
+    delay(100);
+    if (wifiAPMode()) {
+        // setup AP
+        sprintf(msg, "AT+CWSAP_CUR=\"%s\",\"%s\",%d,%d", WIFI_LOCAL_AP, WIFI_LOCAL_PW, 5, 3);
+#ifdef __DEBUG__
+        Serial.print("wifi setup AP: ");
         Serial.println(msg);
 #endif
         wifi->println(msg);
-        delay(5000);
+        delay(100);
+    }
+    if (wifiStationMode()) {
+        // join AP
+        sprintf(msg, "AT+CWJAP_CUR=\"%s\",\"%s\"", WIFI_REMOTE_AP, WIFI_REMOTE_PW);
+#ifdef __DEBUG__
+        Serial.print("wifi join AP: ");
+        Serial.println(msg);
+#endif
+        wifi->println(msg);
+        delay(100);
+    }
+    delay(10000);
+}
+
+void wifiCheckConnection() {
+    if (wifiStationMode()) {
+        if (!wifiGetRemoteIP()
+                || (validIP(SERVER_IP)
+                        && diffTimestamps(tsCurr, tsLastWifiSuccessTransmission) >= WIFI_MAX_FAILURE_PERIOD_MSEC)) {
+            wifiInit();
+            wifiSetup();
+            if (wifiGetRemoteIP()) {
+                wifiStartServer();
+            }
+            //delay(5000);
+        }
     }
 }
 
-bool wifiGetIP() {
+bool wifiGetRemoteIP() {
     wifi->println(F("AT+CIFSR"));
-    String s = wifi->readStringUntil('\0');
+    char s[WIFI_MAX_READ_SIZE + 1];
+    uint16_t l = wifi->readBytesUntil('\0', s, WIFI_MAX_READ_SIZE);
+    s[l] = '\0';
 #ifdef __DEBUG__
     Serial.print("wifi: ");
     Serial.println(s);
 #endif
-    char buff[JSON_MAX_READ_SIZE];
-    s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
+    int n = 0;
     int tmp[4];
-    int n = sscanf(strstr(buff, ":STAIP,"), "%*[^,\"],\"%d.%d.%d.%d", &tmp[0], &tmp[1], &tmp[2], &tmp[3]);
+    char *substr;
+    substr = strstr(s, ":STAIP,");
+    if (substr != NULL) {
+        n += sscanf(substr, ":STAIP,\"%d.%d.%d.%d", &tmp[0], &tmp[1], &tmp[2], &tmp[3]);
+    }
     if (n == 4) {
         IP[0] = tmp[0];
         IP[1] = tmp[1];
@@ -1153,17 +1208,19 @@ bool wifiGetIP() {
     }
     return false;
 }
+
 bool validIP(uint8_t ip[4]) {
     int sum = ip[0] + ip[1] + ip[2] + ip[3];
     return sum > 0 && sum < 255 * 4;
 }
 
-bool wifiStartServer() {
+void wifiStartServer() {
+#ifdef __DEBUG__
+    Serial.print("starting TCP server");
+#endif
     wifi->println(F("AT+CIPMUX=1"));
-    if (!wifi->find(OK))
-        return false;
+    delay(100);
     wifi->println(F("AT+CIPSERVER=1,80"));
-    return wifi->find(OK);
 }
 
 bool wifiRsp(const char* body) {
@@ -1188,17 +1245,13 @@ bool wifiRsp200() {
     return wifiRsp("HTTP/1.0 200 OK\r\n\r\n");
 }
 
-bool wifiRsp404() {
-    return wifiRsp("HTTP/1.0 404 Not Found\r\n\r\n");
-}
-
 bool wifiRsp400() {
     return wifiRsp("HTTP/1.0 400 Bad Request\r\n\r\n");
 }
 
 bool wifiSend(const char* msg) {
     if (validIP(IP) && validIP(SERVER_IP)) {
-        char body[HTTP_MAX_BODY_SIZE];
+        char body[WIFI_MAX_WRITE_SIZE];
         sprintf(body,
                 "POST / HTTP/1.1\r\nUser-Agent: ESP8266\r\nAccept: */*\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s",
                 strlen(msg), msg);
@@ -1246,15 +1299,26 @@ bool wifiWrite(const char* msg, const char* rsp, const int wait, const uint8_t m
 }
 
 void wifiRead(char* req) {
-    String s = wifi->readStringUntil('\0');
+    char s[WIFI_MAX_READ_SIZE + 1];
+    uint16_t l = wifi->readBytesUntil('\0', s, WIFI_MAX_READ_SIZE);
+    s[l] = '\0';
 #ifdef __DEBUG__
+    Serial.print("wifi req len: ");
+    Serial.println(l);
     Serial.print("wifi req: ");
     Serial.println(s);
 #endif
-    char buff[JSON_MAX_READ_SIZE];
-    s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
+    char *substr;
+    int n = 0;
     int clientId;
-    int n = sscanf(buff, "%*[^+IPD]+IPD,%d,%*d:GET%s", &clientId, req);
+    substr = strstr(s, "+IPD");
+    if (substr != NULL) {
+        n += sscanf(substr, "+IPD,%d", &clientId);
+    }
+    substr = strstr(substr, "\r\n\r\n");
+    if (substr != NULL) {
+        n += sscanf(substr, "\r\n\r\n%[^\\0]", req);
+    }
     if (n == 2) {
         CLIENT_ID = clientId;
     } else {
@@ -1263,6 +1327,9 @@ void wifiRead(char* req) {
 }
 
 void reportStatus() {
+    // check WiFi connectivity
+    wifiCheckConnection();
+
     reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
     reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
     reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
@@ -1338,14 +1405,19 @@ void reportSensorStatus(const uint8_t id, const int8_t value, const unsigned lon
 }
 
 void reportConfiguration() {
+    // check WiFi connectivity
+    wifiCheckConnection();
+
     reportSensorConfig(SENSOR_SUPPLY, SENSOR_SUPPLY_FACTOR);
     reportSensorConfig(SENSOR_REVERSE, SENSOR_REVERSE_FACTOR);
     reportSensorConfig(SENSOR_TANK, SENSOR_TANK_FACTOR);
     reportSensorConfig(SENSOR_BOILER, SENSOR_BOILER_FACTOR);
     reportSensorConfig(SENSOR_MIX, SENSOR_MIX_FACTOR);
     reportSensorConfig(SENSOR_SB_HEATER, SENSOR_SB_HEATER_FACTOR);
-    reportStringConfig(WIFI_AP_KEY, WIFI_AP);
-    reportStringConfig(WIFI_PASSWORD_KEY, WIFI_PW);
+    reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
+    reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
+    reportStringConfig(WIFI_LOCAL_AP_KEY, WIFI_LOCAL_AP);
+    reportStringConfig(WIFI_LOCAL_PASSWORD_KEY, WIFI_LOCAL_PW);
     char sIP[16];
     sprintf(sIP, "%d.%d.%d.%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2], SERVER_IP[3]);
     reportStringConfig(SERVER_IP_KEY, sIP);
@@ -1429,75 +1501,36 @@ void broadcastMsg(const char* msg) {
 }
 
 void processRfMsg() {
-    char buff[JSON_MAX_READ_SIZE];
+    char buff[JSON_MAX_READ_SIZE + 1];
     rfRead(buff);
     parseCommand(buff);
 }
 
 void processSerialMsg() {
-    char buff[JSON_MAX_READ_SIZE];
-    String s = Serial.readStringUntil('\0');
-    s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
+    char buff[JSON_MAX_READ_SIZE + 1];
+    uint16_t l = Serial.readBytesUntil('\0', buff, JSON_MAX_READ_SIZE);
+    buff[l] = '\0';
     parseCommand(buff);
 }
 
 void processBtMsg() {
-    char buff[JSON_MAX_READ_SIZE];
-    String s = bt->readStringUntil('\0');
-    s.toCharArray(buff, JSON_MAX_READ_SIZE, 0);
+    char buff[JSON_MAX_READ_SIZE + 1];
+    uint16_t l = bt->readBytesUntil('\0', buff, JSON_MAX_READ_SIZE);
+    buff[l] = '\0';
     parseCommand(buff);
 }
 
 void processWifiReq() {
-    char req[HTTP_MAX_GET_SIZE];
-    wifiRead(req);
-    if (strlen(req) > 0) {
-        char cmd[4];
-        int id, state;
-        unsigned long ts;
-        int n = sscanf(req, "/%3s/%d/%d/%ld", cmd, &id, &state, &ts);
-        if (n > 0) {
-            StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-            JsonObject& root = jsonBuffer.createObject();
-            if (strcmp(cmd, MSG_CLOCK_SYNC) == 0) {
-                if (n == 1) {
-                    wifiRsp200();
-                    root[MSG_TYPE_KEY] = MSG_CLOCK_SYNC;
-                } else {
-                    wifiRsp400();
-                }
-            } else if (strcmp(cmd, MSG_CURRENT_STATUS_REPORT) == 0) {
-                if (n == 1) {
-                    wifiRsp200();
-                    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
-                } else {
-                    wifiRsp400();
-                }
-            } else if (strcmp(cmd, MSG_NODE_STATE_CHANGED) == 0) {
-                if (n > 1) {
-                    wifiRsp200();
-                    root[MSG_TYPE_KEY] = MSG_NODE_STATE_CHANGED;
-                    root[ID_KEY] = id;
-                    if (n > 2) {
-                        root[STATE_KEY] = state;
-                    }
-                    if (n > 3) {
-                        root[FORCE_TIMESTAMP_KEY] = ts;
-                    }
-                } else {
-                    wifiRsp400();
-                }
-            } else {
-                wifiRsp404();
-            }
-            if (root.containsKey(MSG_TYPE_KEY)) {
-                char json[JSON_MAX_WRITE_SIZE];
-                root.printTo(json, JSON_MAX_WRITE_SIZE);
-                parseCommand(json);
-            }
-        } else {
-            wifiRsp404();
-        }
+    char buff[JSON_MAX_READ_SIZE + 1];
+    wifiRead(buff);
+    // check if JSON valid
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.parseObject(buff);
+    if (root.success()) {
+        wifiRsp200();
+        parseCommand(buff);
+    } else {
+        wifiRsp400();
     }
 }
 
@@ -1505,6 +1538,13 @@ void parseCommand(char* command) {
 #ifdef __DEBUG__
     Serial.print("parsing cmd: ");
     Serial.println(command);
+    if (strstr(command, "AT") == command) {
+        // this is AT command for ESP8266
+        Serial.print("sending to wifi: ");
+        Serial.println(command);
+        wifi->println(command);
+        return;
+    }
 #endif
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.parseObject(command);
@@ -1587,12 +1627,18 @@ void parseCommand(char* command) {
                         SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 20);
                     }
                 }
-            } else if (root.containsKey(WIFI_AP_KEY)) {
-                sprintf(WIFI_AP, "%s", root[WIFI_AP_KEY].asString());
-                EEPROM.writeBlock(WIFI_AP_EEPROM_ADDR, WIFI_AP, sizeof(WIFI_AP));
-            } else if (root.containsKey(WIFI_PASSWORD_KEY)) {
-                sprintf(WIFI_PW, "%s", root[WIFI_PASSWORD_KEY].asString());
-                EEPROM.writeBlock(WIFI_PW_EEPROM_ADDR, WIFI_PW, sizeof(WIFI_PW));
+            } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {
+                sprintf(WIFI_REMOTE_AP, "%s", root[WIFI_REMOTE_AP_KEY].asString());
+                EEPROM.writeBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
+            } else if (root.containsKey(WIFI_REMOTE_PASSWORD_KEY)) {
+                sprintf(WIFI_REMOTE_PW, "%s", root[WIFI_REMOTE_PASSWORD_KEY].asString());
+                EEPROM.writeBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
+            } else if (root.containsKey(WIFI_LOCAL_AP_KEY)) {
+                sprintf(WIFI_LOCAL_AP, "%s", root[WIFI_LOCAL_AP_KEY].asString());
+                EEPROM.writeBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
+            } else if (root.containsKey(WIFI_LOCAL_PASSWORD_KEY)) {
+                sprintf(WIFI_LOCAL_PW, "%s", root[WIFI_LOCAL_PASSWORD_KEY].asString());
+                EEPROM.writeBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
             } else if (root.containsKey(SERVER_IP_KEY)) {
                 int tmpIP[4];
                 sscanf(root[SERVER_IP_KEY], "%d.%d.%d.%d", &tmpIP[0], &tmpIP[1], &tmpIP[2], &tmpIP[3]);
