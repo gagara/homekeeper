@@ -21,14 +21,14 @@
 								<option id="it.baeyens.arduino.compiler.cpp.sketch.option.incpath.567608976" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.cpp.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/arduino/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/JSON}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/JSON/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/DHT}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/EEPROMEx}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/MemoryFree}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/RF24}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/SPI}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/LowPower}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/SoftwareSerial}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/JSON}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/JSON/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/SPI}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.2129841120" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
 							</tool>
@@ -36,14 +36,14 @@
 								<option id="it.baeyens.arduino.compiler.c.sketch.option.incpath.1694628060" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.c.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/arduino/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/JSON}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/JSON/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/DHT}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/EEPROMEx}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/MemoryFree}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/RF24}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/SPI}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/LowPower}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/SoftwareSerial}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/JSON}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/JSON/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/Libraries/SPI}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.843004161" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
 							</tool>

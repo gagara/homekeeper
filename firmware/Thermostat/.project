@@ -52,14 +52,9 @@
 			<locationURI>ArduinoPivateLibPath/MemoryFree</locationURI>
 		</link>
 		<link>
-			<name>Libraries/RF24</name>
+			<name>Libraries/SoftwareSerial</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/RF24</locationURI>
-		</link>
-		<link>
-			<name>Libraries/SPI</name>
-			<type>2</type>
-			<locationURI>ArduinoHardwareLibPath/SPI</locationURI>
+			<locationURI>ArduinoHardwareLibPath/SoftwareSerial</locationURI>
 		</link>
 		<link>
 			<name>arduino/core</name>
