@@ -147,8 +147,8 @@ static const uint8_t JSON_MAX_WRITE_SIZE = 128;
 static const uint8_t JSON_MAX_READ_SIZE = 128;
 static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
 static const uint8_t RF_MAX_BODY_SIZE = 65;
-static const uint16_t WIFI_MAX_READ_SIZE = 255;
-static const uint16_t WIFI_MAX_WRITE_SIZE = 255;
+static const uint16_t WIFI_MAX_READ_SIZE = 512;
+static const uint16_t WIFI_MAX_WRITE_SIZE = 512;
 
 /* ===== End of Configuration ====== */
 
