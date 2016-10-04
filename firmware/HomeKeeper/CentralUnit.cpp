@@ -10,7 +10,7 @@
 
 /* ========= Configuration ========= */
 
-#define __DEBUG__
+#undef __DEBUG__
 
 // Sensors IDs
 static const uint8_t SENSOR_SUPPLY = 54;
@@ -107,7 +107,7 @@ static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 9000;
 static const unsigned long SENSORS_READ_INTERVAL_MSEC = 3000;
 
 // WiFi
-static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 600000; // 10m
+static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 300000; // 5m
 
 // RF
 static const uint64_t RF_PIPE_BASE = 0xE8E8F0F0A2LL;
@@ -147,8 +147,8 @@ static const uint8_t JSON_MAX_WRITE_SIZE = 128;
 static const uint8_t JSON_MAX_READ_SIZE = 128;
 static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
 static const uint8_t RF_MAX_BODY_SIZE = 65;
-static const uint16_t WIFI_MAX_READ_SIZE = 512;
-static const uint16_t WIFI_MAX_WRITE_SIZE = 512;
+static const uint16_t WIFI_MAX_READ_SIZE = 255;
+static const uint16_t WIFI_MAX_WRITE_SIZE = 255;
 
 /* ===== End of Configuration ====== */
 
@@ -265,20 +265,14 @@ void setup() {
     // Setup serial ports
     Serial.begin(9600);     // usb
 #ifdef __DEBUG__
-    Serial.println("STARTING");
+            Serial.println("STARTING");
 #endif
     bt->begin(9600);         // BT
     loadWifiConfig();
-/////////////////////
-    pinMode(11, OUTPUT);
-    digitalWrite(11, HIGH);
-/////////////////////
     pinMode(WIFI_RST_PIN, OUTPUT);
     wifiInit();             // WiFi
     wifiSetup();
-    if (wifiGetRemoteIP()) {
-        wifiStartServer();
-    }
+    wifiGetRemoteIP();
 #ifdef __DEBUG__
     Serial.print("Remote IP: ");
     char ipStr[16];
@@ -301,7 +295,7 @@ void setup() {
         for (uint8_t i = 0; i < 8; i++) {
             // zero pad the address if necessary
             if (sensAddr[i] < 16)
-                Serial.print("0");
+            Serial.print("0");
             Serial.print(sensAddr[i], HEX);
         }
         Serial.println("");
@@ -1115,7 +1109,8 @@ void wifiInit() {
     delay(1000);
 
     wifi->begin(115200);
-    wifi->println(F("AT+CIOBAUD=115200"));
+    wifi->println(F("AT+CIOBAUD=9600"));
+    wifi->begin(9600);
     IP[0] = 0;
     IP[1] = 0;
     IP[2] = 0;
@@ -1145,8 +1140,16 @@ void wifiSetup() {
 #endif
     }
     delay(100);
+#ifdef __DEBUG__
+    Serial.println("starting TCP server");
+#endif
+    wifi->println(F("AT+CIPMUX=1"));
+    delay(100);
+    wifi->println(F("AT+CIPSERVER=1,80"));
+    delay(100);
     if (wifiAPMode()) {
         // setup AP
+        // note: only channel 5 supported. bug?
         sprintf(msg, "AT+CWSAP_CUR=\"%s\",\"%s\",%d,%d", WIFI_LOCAL_AP, WIFI_LOCAL_PW, 5, 3);
 #ifdef __DEBUG__
         Serial.print("wifi setup AP: ");
@@ -1175,10 +1178,7 @@ void wifiCheckConnection() {
                         && diffTimestamps(tsCurr, tsLastWifiSuccessTransmission) >= WIFI_MAX_FAILURE_PERIOD_MSEC)) {
             wifiInit();
             wifiSetup();
-            if (wifiGetRemoteIP()) {
-                wifiStartServer();
-            }
-            //delay(5000);
+            wifiGetRemoteIP();
         }
     }
 }
@@ -1204,6 +1204,12 @@ bool wifiGetRemoteIP() {
         IP[1] = tmp[1];
         IP[2] = tmp[2];
         IP[3] = tmp[3];
+#ifdef __DEBUG__
+        char ip[16];
+        sprintf(ip, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
+        Serial.print("wifi got ip: ");
+        Serial.println(ip);
+#endif
         return validIP(IP);
     }
     return false;
@@ -1212,15 +1218,6 @@ bool wifiGetRemoteIP() {
 bool validIP(uint8_t ip[4]) {
     int sum = ip[0] + ip[1] + ip[2] + ip[3];
     return sum > 0 && sum < 255 * 4;
-}
-
-void wifiStartServer() {
-#ifdef __DEBUG__
-    Serial.print("starting TCP server");
-#endif
-    wifi->println(F("AT+CIPMUX=1"));
-    delay(100);
-    wifi->println(F("AT+CIPSERVER=1,80"));
 }
 
 bool wifiRsp(const char* body) {
@@ -1316,14 +1313,22 @@ void wifiRead(char* req) {
         n += sscanf(substr, "+IPD,%d", &clientId);
     }
     substr = strstr(substr, "\r\n\r\n");
+    char subbuf[JSON_MAX_READ_SIZE + 1];
+    strncpy(subbuf, substr, JSON_MAX_READ_SIZE);
     if (substr != NULL) {
-        n += sscanf(substr, "\r\n\r\n%[^\\0]", req);
+        n += sscanf(subbuf, "\r\n\r\n%[^\n]", req);
     }
     if (n == 2) {
         CLIENT_ID = clientId;
     } else {
         req[0] = '\0';
     }
+#ifdef __DEBUG__
+    Serial.print("wifi client: ");
+    Serial.println(clientId);
+    Serial.print("wifi body: ");
+    Serial.println(req);
+#endif
 }
 
 void reportStatus() {
@@ -1524,8 +1529,10 @@ void processWifiReq() {
     char buff[JSON_MAX_READ_SIZE + 1];
     wifiRead(buff);
     // check if JSON valid
+    char buff1[JSON_MAX_READ_SIZE + 1];
+    strcpy(buff1, buff);
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.parseObject(buff);
+    JsonObject& root = jsonBuffer.parseObject(buff1);
     if (root.success()) {
         wifiRsp200();
         parseCommand(buff);

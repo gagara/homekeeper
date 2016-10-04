@@ -52,7 +52,6 @@ void wifiSetup();
 void wifiCheckConnection();
 bool wifiGetRemoteIP();
 bool validIP(uint8_t ip[4]);
-void wifiStartServer();
 bool wifiRsp(const char* body);
 bool wifiRsp200();
 bool wifiRsp400();
