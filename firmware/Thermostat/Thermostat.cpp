@@ -9,16 +9,17 @@
 
 /* ========= Configuration ========= */
 
-#define __DEBUG__
+#undef __DEBUG__
 
 // Sensor pin
-static const uint8_t DHT_PIN = 2;
+static const uint8_t DHT_PIN = 5;
 static const uint8_t SENSOR_TEMP = (54 + 16) + (4 * 1) + 0;
 static const uint8_t SENSOR_HUM = (54 + 16) + (4 * 1) + 1;
 
 // WiFi pins
-static const uint8_t WIFI_CH_PD_PIN = 6;
-static const uint8_t WIFI_RST_PIN = 7;
+static const uint8_t WIFI_RST_PIN = 4;
+static const uint8_t WIFI_TX_PIN = 3;
+static const uint8_t WIFI_RX_PIN = 2;
 
 static const uint8_t HEARTBEAT_LED = 13;
 
@@ -41,8 +42,8 @@ static const unsigned long MAX_TIMESTAMP = -1;
 static const uint8_t MAX_SENSOR_VALUE = 255;
 
 // reporting
-static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 0; // 15 seconds. disabled in LowPower mode
-static const unsigned long SENSORS_READ_INTERVAL_MSEC = 0; // disabled in LowPower mode
+static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 17000; // 17s //disabled in LowPower mode
+static const unsigned long SENSORS_READ_INTERVAL_MSEC = 17000; // 17s //disabled in LowPower mode
 
 // WiFi
 static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 300000; // 5m
@@ -62,11 +63,12 @@ static const char SERVER_IP_KEY[] = "sip";
 static const char SERVER_PORT_KEY[] = "sp";
 static const char LOCAL_IP_KEY[] = "lip";
 
-static const uint8_t JSON_MAX_WRITE_SIZE = 128;
-static const uint8_t JSON_MAX_READ_SIZE = 128;
-static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
-static const uint16_t WIFI_MAX_READ_SIZE = 512;
-static const uint16_t WIFI_MAX_WRITE_SIZE = 512;
+static const uint8_t JSON_MAX_WRITE_SIZE = 64;
+static const uint8_t JSON_MAX_READ_SIZE = 64;
+static const uint8_t JSON_MAX_BUFFER_SIZE = 128;
+
+static const uint8_t WIFI_MAX_READ_SIZE = 64;
+static const uint16_t WIFI_MAX_WRITE_SIZE = 255;
 
 /* ===== End of Configuration ====== */
 
@@ -99,10 +101,14 @@ uint16_t SERVER_PORT = 80;
 uint8_t IP[4] = { 0, 0, 0, 0 };
 char OK[] = "OK";
 
+// do reporting in round robin fashion because central unit
+// sometimes unable to accept all report at a time
+uint8_t rrFlag = 1;
+
 /* ======== End of Variables ======= */
 
 //WiFi
-SoftwareSerial wifi(2, 3); // RX TX
+SoftwareSerial wifi(WIFI_RX_PIN, WIFI_TX_PIN);
 
 // DHT sensor
 DHT dht(DHT_PIN, DHT11);
@@ -113,8 +119,6 @@ void setup() {
     Serial.println("STARTING");
 #endif
     loadWifiConfig();
-    pinMode(WIFI_CH_PD_PIN, OUTPUT);
-    digitalWrite(WIFI_CH_PD_PIN, HIGH);
     pinMode(WIFI_RST_PIN, OUTPUT);
     wifiInit();             // WiFi
     wifiSetup();
@@ -164,9 +168,16 @@ void loop() {
     if (Serial.available() > 0) {
         processSerialMsg();
     }
+#ifdef __DEBUG__
+    if (wifi.available() > 0) {
+        Serial.print("wifi msg: ");
+        Serial.println(wifi.readStringUntil('\0'));
+    }
+#endif
     tsPrev = tsCurr;
-//    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
-    delay(SENSORS_READ_INTERVAL_MSEC);
+    // LowPower disabled for now
+    //LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+    //delay(SENSORS_READ_INTERVAL_MSEC);
 }
 
 void loadSensorsCalibrationFactors() {
@@ -278,6 +289,9 @@ void loadWifiConfig() {
 
 void wifiInit() {
     // hardware reset
+#ifdef __DEBUG__
+    Serial.println("reboot wifi");
+#endif
     digitalWrite(WIFI_RST_PIN, LOW);
     delay(500);
     digitalWrite(WIFI_RST_PIN, HIGH);
@@ -372,7 +386,7 @@ bool wifiSend(const char* msg) {
     if (validIP(IP) && validIP(SERVER_IP)) {
         char body[WIFI_MAX_WRITE_SIZE];
         sprintf(body,
-                "POST / HTTP/1.1\r\nUser-Agent: ESP8266\r\nAccept: */*\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s",
+                "POST / HTTP/1.1\r\nUser-Agent: ESP8266\r\nAccept: */*\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s\r\n",
                 strlen(msg), msg);
 
         char connect[64];
@@ -381,16 +395,15 @@ bool wifiSend(const char* msg) {
 
         char send[32];
         sprintf(send, "AT+CIPSEND=3,%d", strlen(body));
-
         char close[16];
         sprintf(close, "AT+CIPCLOSE=3");
-        if (!wifiWrite(connect, "CONNECT", 200, 1))
+        if (!wifiWrite(connect, "CONNECT", 200, 2))
             return false;
 
         if (!wifiWrite(send, ">"))
             return false;
 
-        if (!wifiWrite(body, OK, 200, 1))
+        if (!wifiWrite(body, OK, 300, 1))
             return false;
 
         wifiWrite(close, OK);
@@ -421,8 +434,12 @@ void reportStatus() {
     // check WiFi connectivity
     wifiCheckConnection();
 
-    reportSensorStatus(SENSOR_TEMP, tempRoom);
-    reportSensorStatus(SENSOR_HUM, humRoom);
+    if (rrFlag) {
+        reportSensorStatus(SENSOR_TEMP, tempRoom);
+    } else {
+        reportSensorStatus(SENSOR_HUM, humRoom);
+    }
+    rrFlag = rrFlag ^ 1;
 
     tsLastStatusReport = tsCurr;
 }
@@ -555,7 +572,9 @@ void parseCommand(char* command) {
         const char* msgType = root[MSG_TYPE_KEY];
         if (strcmp(msgType, MSG_CURRENT_STATUS_REPORT) == 0) {
             // CSR
-            reportStatus();
+            // workaround to prevent OOM
+            //reportStatus();
+            tsLastStatusReport = tsCurr - STATUS_REPORTING_PERIOD_MSEC;
         } else if (strcmp(msgType, MSG_CONFIGURATION) == 0) {
             // CFG
             JsonObject& sensor = root[SENSORS_KEY].asObject();
@@ -596,4 +615,3 @@ void parseCommand(char* command) {
     Serial.println(freeMemory());
 #endif
 }
-

@@ -1250,7 +1250,7 @@ bool wifiSend(const char* msg) {
     if (validIP(IP) && validIP(SERVER_IP)) {
         char body[WIFI_MAX_WRITE_SIZE];
         sprintf(body,
-                "POST / HTTP/1.1\r\nUser-Agent: ESP8266\r\nAccept: */*\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s",
+                "POST / HTTP/1.1\r\nUser-Agent: ESP8266\r\nAccept: */*\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s\r\n",
                 strlen(msg), msg);
 
         char connect[64];
@@ -1262,13 +1262,13 @@ bool wifiSend(const char* msg) {
 
         char close[16];
         sprintf(close, "AT+CIPCLOSE=3");
-        if (!wifiWrite(connect, "CONNECT", 200, 1))
+        if (!wifiWrite(connect, "CONNECT", 200, 2))
             return false;
 
         if (!wifiWrite(send, ">"))
             return false;
 
-        if (!wifiWrite(body, OK, 200, 1))
+        if (!wifiWrite(body, OK, 300, 1))
             return false;
 
         wifiWrite(close, OK);
@@ -1568,19 +1568,17 @@ void parseCommand(char* command) {
         } else if (strcmp(msgType, MSG_CURRENT_STATUS_REPORT) == 0) {
             // CSR
             if (root.containsKey(SENSORS_KEY)) {
-                JsonArray& sensors = root[SENSORS_KEY];
-                for (unsigned char i = 0; i < sensors.size(); i++) {
-                    uint8_t id = sensors[i][ID_KEY].as<uint8_t>();
-                    uint8_t val = sensors[i][VALUE_KEY].as<uint8_t>();
-                    // find sensor
-                    if (id == SENSOR_TEMP_ROOM_1) {
-                        tempRoom1 = val;
-                        tsLastSensorTempRoom1 = tsCurr;
-                    } else if (id == SENSOR_HUM_ROOM_1) {
-                        humRoom1 = val;
-                        tsLastSensorHumRoom1 = tsCurr;
-                    } // else if(...)
-                }
+                JsonObject& sensor = root[SENSORS_KEY];
+                uint8_t id = sensor[ID_KEY].as<uint8_t>();
+                uint8_t val = sensor[VALUE_KEY].as<uint8_t>();
+                // find sensor
+                if (id == SENSOR_TEMP_ROOM_1) {
+                    tempRoom1 = val;
+                    tsLastSensorTempRoom1 = tsCurr;
+                } else if (id == SENSOR_HUM_ROOM_1) {
+                    humRoom1 = val;
+                    tsLastSensorHumRoom1 = tsCurr;
+                } // else if(...)
             } else {
                 reportStatus();
             }
