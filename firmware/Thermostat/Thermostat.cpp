@@ -42,8 +42,8 @@ static const unsigned long MAX_TIMESTAMP = -1;
 static const uint8_t MAX_SENSOR_VALUE = 255;
 
 // reporting
-static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 17000; // 17s //disabled in LowPower mode
-static const unsigned long SENSORS_READ_INTERVAL_MSEC = 17000; // 17s //disabled in LowPower mode
+static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 15000; // 15s //disabled in LowPower mode
+static const unsigned long SENSORS_READ_INTERVAL_MSEC = 15000; // 15s //disabled in LowPower mode
 
 // WiFi
 static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 300000; // 5m
@@ -397,16 +397,16 @@ bool wifiSend(const char* msg) {
         sprintf(send, "AT+CIPSEND=3,%d", strlen(body));
         char close[16];
         sprintf(close, "AT+CIPCLOSE=3");
-        if (!wifiWrite(connect, "CONNECT", 200, 2))
+        if (!wifiWrite(connect, "CONNECT", 300, 3))
             return false;
 
-        if (!wifiWrite(send, ">"))
+        if (!wifiWrite(send, ">", 300, 3))
             return false;
 
         if (!wifiWrite(body, OK, 300, 1))
             return false;
 
-        wifiWrite(close, OK);
+        wifiWrite(close, OK, 300, 3);
 
         return true;
     } else {

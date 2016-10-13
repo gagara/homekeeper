@@ -182,7 +182,7 @@ uint8_t rawSbHeaterIdx = 0;
 //// Nodes
 
 // Nodes actual state
-uint8_t NODE_STATE_FLAGS = 255;
+uint8_t NODE_STATE_FLAGS = 0;
 // Nodes forced mode
 uint8_t NODE_FORCED_MODE_FLAGS = 0;
 uint8_t FORCED_MODE_OVERFLOW_TS_FLAGS = 0;
@@ -306,7 +306,7 @@ void setup() {
     syncClocks();
 
     // read forced node state flags from EEPROM
-    // default node state -- ON
+    // default node state -- OFF
     restoreNodesState();
 
     // init nodes
@@ -319,13 +319,13 @@ void setup() {
     pinMode(NODE_SB_HEATER, OUTPUT);
 
     // restore nodes state
-    digitalWrite(NODE_SUPPLY, NODE_STATE_FLAGS & NODE_SUPPLY_BIT);
-    digitalWrite(NODE_HEATING, NODE_STATE_FLAGS & NODE_HEATING_BIT);
-    digitalWrite(NODE_FLOOR, NODE_STATE_FLAGS & NODE_FLOOR_BIT);
-    digitalWrite(NODE_HOTWATER, NODE_STATE_FLAGS & NODE_HOTWATER_BIT);
-    digitalWrite(NODE_CIRCULATION, NODE_STATE_FLAGS & NODE_CIRCULATION_BIT);
-    digitalWrite(NODE_BOILER, NODE_STATE_FLAGS & NODE_BOILER_BIT);
-    digitalWrite(NODE_SB_HEATER, NODE_STATE_FLAGS & NODE_SB_HEATER_BIT);
+    digitalWrite(NODE_SUPPLY, ~NODE_STATE_FLAGS & NODE_SUPPLY_BIT);
+    digitalWrite(NODE_HEATING, ~NODE_STATE_FLAGS & NODE_HEATING_BIT);
+    digitalWrite(NODE_FLOOR, ~NODE_STATE_FLAGS & NODE_FLOOR_BIT);
+    digitalWrite(NODE_HOTWATER, ~NODE_STATE_FLAGS & NODE_HOTWATER_BIT);
+    digitalWrite(NODE_CIRCULATION, ~NODE_STATE_FLAGS & NODE_CIRCULATION_BIT);
+    digitalWrite(NODE_BOILER, ~NODE_STATE_FLAGS & NODE_BOILER_BIT);
+    digitalWrite(NODE_SB_HEATER, ~NODE_STATE_FLAGS & NODE_SB_HEATER_BIT);
 
     // init sensors raw values arrays
     for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
@@ -940,10 +940,10 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sen
     if (ts != NULL) {
         if (NODE_STATE_FLAGS & bit) {
             // switch OFF
-            digitalWrite(id, LOW);
+            digitalWrite(id, HIGH);
         } else {
             // switch ON
-            digitalWrite(id, HIGH);
+            digitalWrite(id, LOW);
         }
         NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
 
