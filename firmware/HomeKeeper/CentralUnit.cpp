@@ -84,7 +84,7 @@ static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
 static const uint8_t HEATING_TEMP_THRESHOLD = 40;
 static const uint8_t HEATING_PRIMARY_HIST = 3;
 static const uint8_t HEATING_STANDBY_HIST = 22;
-static const uint8_t HEATING_ROOM_1_THRESHOLD = 22;
+static const uint8_t HEATING_ROOM_1_THRESHOLD = 23;
 static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 300000; // 5m
 
 // Boiler heating
@@ -1262,16 +1262,16 @@ bool wifiSend(const char* msg) {
 
         char close[16];
         sprintf(close, "AT+CIPCLOSE=3");
-        if (!wifiWrite(connect, "CONNECT", 200, 2))
+        if (!wifiWrite(connect, "CONNECT", 100, 3))
             return false;
 
-        if (!wifiWrite(send, ">"))
+        if (!wifiWrite(send, ">", 100, 3))
             return false;
 
-        if (!wifiWrite(body, OK, 300, 1))
+        if (!wifiWrite(body, OK, 100, 1))
             return false;
 
-        wifiWrite(close, OK);
+        wifiWrite(close, OK, 100, 3);
 
         return true;
     } else {
