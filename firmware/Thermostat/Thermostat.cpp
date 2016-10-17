@@ -332,7 +332,7 @@ void wifiSetup() {
 #endif
     wifi.println(msg);
     delay(100);
-    delay(10000);
+    delay(20000);
 }
 
 void wifiCheckConnection() {
