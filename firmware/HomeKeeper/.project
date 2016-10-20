@@ -6,6 +6,11 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
+			<name>it.baeyens.arduino.core.inoToCpp</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
 			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
 			<triggers>clean,full,incremental,</triggers>
 			<arguments>
@@ -27,63 +32,49 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Libraries/DallasTemperature</name>
+			<name>core/core</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/DallasTemperature</locationURI>
+			<location>/home/vgagara/opt/eclipse-luna/arduinoPlugin/packages/arduino/hardware/avr/1.6.12/cores/arduino</location>
 		</link>
 		<link>
-			<name>Libraries/EEPROMEx</name>
+			<name>core/variant</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/EEPROMEx</locationURI>
+			<location>/home/vgagara/opt/eclipse-luna/arduinoPlugin/packages/arduino/hardware/avr/1.6.12/variants/mega</location>
 		</link>
 		<link>
-			<name>Libraries/JSON</name>
+			<name>libraries/DallasTemperature</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/JSON</locationURI>
+			<location>/home/vgagara/slg/homekeeper/repo/firmware/libs/DallasTemperature</location>
 		</link>
 		<link>
-			<name>Libraries/MemoryFree</name>
+			<name>libraries/EEPROMEx</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/MemoryFree</locationURI>
+			<location>/home/vgagara/slg/homekeeper/repo/firmware/libs/EEPROMEx</location>
 		</link>
 		<link>
-			<name>Libraries/OneWire</name>
+			<name>libraries/JSON</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/OneWire</locationURI>
+			<location>/home/vgagara/slg/homekeeper/repo/firmware/libs/JSON</location>
 		</link>
 		<link>
-			<name>Libraries/RF24</name>
+			<name>libraries/MemoryFree</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/RF24</locationURI>
+			<location>/home/vgagara/slg/homekeeper/repo/firmware/libs/MemoryFree</location>
 		</link>
 		<link>
-			<name>Libraries/SPI</name>
+			<name>libraries/OneWire</name>
 			<type>2</type>
-			<locationURI>ArduinoHardwareLibPath/SPI</locationURI>
+			<location>/home/vgagara/slg/homekeeper/repo/firmware/libs/OneWire</location>
 		</link>
 		<link>
-			<name>arduino/core</name>
+			<name>libraries/RF24</name>
 			<type>2</type>
-			<locationURI>ArduinoPlatformPath/cores/arduino</locationURI>
+			<location>/home/vgagara/slg/homekeeper/repo/firmware/libs/RF24</location>
 		</link>
 		<link>
-			<name>arduino/variant</name>
+			<name>libraries/SPI</name>
 			<type>2</type>
-			<locationURI>ArduinoPinPath/mega</locationURI>
+			<location>/home/vgagara/opt/eclipse-luna/arduinoPlugin/packages/arduino/hardware/avr/1.6.12/libraries/SPI</location>
 		</link>
 	</linkedResources>
-	<variableList>
-		<variable>
-			<name>ArduinoHardwareLibPath</name>
-			<value>file:/usr/share/arduino/hardware/arduino/avr/libraries</value>
-		</variable>
-		<variable>
-			<name>ArduinoPinPath</name>
-			<value>file:/usr/share/arduino/hardware/arduino/avr/variants</value>
-		</variable>
-		<variable>
-			<name>ArduinoPlatformPath</name>
-			<value>file:/usr/share/arduino/hardware/arduino/avr</value>
-		</variable>
-	</variableList>
 </projectDescription>
