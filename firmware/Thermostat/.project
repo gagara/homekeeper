@@ -6,6 +6,11 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
+			<name>it.baeyens.arduino.core.inoToCpp</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
 			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
 			<triggers>clean,full,incremental,</triggers>
 			<arguments>
@@ -27,58 +32,39 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Libraries/DHT</name>
+			<name>core/core</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/DHT</locationURI>
+			<location>/home/slg/opt/eclipse-luna/arduinoPlugin/packages/arduino/hardware/avr/1.6.14/cores/arduino</location>
 		</link>
 		<link>
-			<name>Libraries/EEPROMEx</name>
+			<name>core/variant</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/EEPROMEx</locationURI>
+			<location>/home/slg/opt/eclipse-luna/arduinoPlugin/packages/arduino/hardware/avr/1.6.14/variants/eightanaloginputs</location>
 		</link>
 		<link>
-			<name>Libraries/JSON</name>
+			<name>libraries/DHT</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/JSON</locationURI>
+			<location>/home/slg/projects/homekeeper/repo/firmware/libs/DHT</location>
 		</link>
 		<link>
-			<name>Libraries/LowPower</name>
+			<name>libraries/EEPROMEx</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/LowPower</locationURI>
+			<location>/home/slg/projects/homekeeper/repo/firmware/libs/EEPROMEx</location>
 		</link>
 		<link>
-			<name>Libraries/MemoryFree</name>
+			<name>libraries/JSON</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/MemoryFree</locationURI>
+			<location>/home/slg/projects/homekeeper/repo/firmware/libs/JSON</location>
 		</link>
 		<link>
-			<name>Libraries/SoftwareSerial</name>
+			<name>libraries/MemoryFree</name>
 			<type>2</type>
-			<locationURI>ArduinoHardwareLibPath/SoftwareSerial</locationURI>
+			<location>/home/slg/projects/homekeeper/repo/firmware/libs/MemoryFree</location>
 		</link>
 		<link>
-			<name>arduino/core</name>
+			<name>libraries/SoftwareSerial</name>
 			<type>2</type>
-			<locationURI>ArduinoPlatformPath/cores/arduino</locationURI>
-		</link>
-		<link>
-			<name>arduino/variant</name>
-			<type>2</type>
-			<locationURI>ArduinoPinPath/eightanaloginputs</locationURI>
+			<location>/home/slg/opt/eclipse-luna/arduinoPlugin/packages/arduino/hardware/avr/1.6.14/libraries/SoftwareSerial</location>
 		</link>
 	</linkedResources>
-	<variableList>
-		<variable>
-			<name>ArduinoHardwareLibPath</name>
-			<value>file:/usr/share/arduino/hardware/arduino/avr/libraries</value>
-		</variable>
-		<variable>
-			<name>ArduinoPinPath</name>
-			<value>file:/usr/share/arduino/hardware/arduino/avr/variants</value>
-		</variable>
-		<variable>
-			<name>ArduinoPlatformPath</name>
-			<value>file:/usr/share/arduino/hardware/arduino/avr</value>
-		</variable>
-	</variableList>
 </projectDescription>
