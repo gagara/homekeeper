@@ -265,7 +265,7 @@ void setup() {
     // Setup serial ports
     Serial.begin(9600);     // usb
 #ifdef __DEBUG__
-            Serial.println("STARTING");
+    Serial.println("STARTING");
 #endif
     bt->begin(9600);         // BT
     loadWifiConfig();
@@ -295,7 +295,7 @@ void setup() {
         for (uint8_t i = 0; i < 8; i++) {
             // zero pad the address if necessary
             if (sensAddr[i] < 16)
-            Serial.print("0");
+                Serial.print("0");
             Serial.print(sensAddr[i], HEX);
         }
         Serial.println("");
