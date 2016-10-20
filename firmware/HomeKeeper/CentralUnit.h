@@ -71,7 +71,7 @@ void processRfMsg();
 void processSerialMsg();
 void processBtMsg();
 void processWifiReq();
-void parseCommand(char* command);
+bool parseCommand(char* command);
 
 //Do not add code below this line
 #endif /* _CentralUnit_H_ */

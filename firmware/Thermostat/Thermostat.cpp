@@ -9,7 +9,7 @@
 
 /* ========= Configuration ========= */
 
-#undef __DEBUG__
+#define __DEBUG__
 
 // Sensor pin
 static const uint8_t DHT_PIN = 5;
@@ -332,7 +332,7 @@ void wifiSetup() {
 #endif
     wifi.println(msg);
     delay(100);
-    delay(20000);
+    delay(10000);
 }
 
 void wifiCheckConnection() {

@@ -10,7 +10,7 @@
 
 /* ========= Configuration ========= */
 
-#undef __DEBUG__
+#define __DEBUG__
 
 // Sensors IDs
 static const uint8_t SENSOR_SUPPLY = 54;
@@ -1528,20 +1528,14 @@ void processBtMsg() {
 void processWifiReq() {
     char buff[JSON_MAX_READ_SIZE + 1];
     wifiRead(buff);
-    // check if JSON valid
-    char buff1[JSON_MAX_READ_SIZE + 1];
-    strcpy(buff1, buff);
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.parseObject(buff1);
-    if (root.success()) {
+    if (parseCommand(buff)) {
         wifiRsp200();
-        parseCommand(buff);
     } else {
         wifiRsp400();
     }
 }
 
-void parseCommand(char* command) {
+bool parseCommand(char* command) {
 #ifdef __DEBUG__
     Serial.print("parsing cmd: ");
     Serial.println(command);
@@ -1550,7 +1544,7 @@ void parseCommand(char* command) {
         Serial.print("sending to wifi: ");
         Serial.println(command);
         wifi->println(command);
-        return;
+        return true;
     }
 #endif
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
@@ -1659,9 +1653,12 @@ void parseCommand(char* command) {
                 reportConfiguration();
             }
         }
+    } else {
+        return false;
     }
 #ifdef __DEBUG__
     Serial.print("free memory: ");
     Serial.println(freeMemory());
 #endif
+    return true;
 }
