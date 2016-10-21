@@ -297,8 +297,10 @@ void wifiInit() {
     digitalWrite(WIFI_RST_PIN, HIGH);
     delay(1000);
 
+    wifi.end();
     wifi.begin(115200);
     wifi.println(F("AT+CIOBAUD=9600"));
+    wifi.end();
     wifi.begin(9600);
     IP[0] = 0;
     IP[1] = 0;
@@ -572,8 +574,6 @@ void parseCommand(char* command) {
         const char* msgType = root[MSG_TYPE_KEY];
         if (strcmp(msgType, MSG_CURRENT_STATUS_REPORT) == 0) {
             // CSR
-            // workaround to prevent OOM
-            //reportStatus();
             tsLastStatusReport = tsCurr - STATUS_REPORTING_PERIOD_MSEC;
         } else if (strcmp(msgType, MSG_CONFIGURATION) == 0) {
             // CFG

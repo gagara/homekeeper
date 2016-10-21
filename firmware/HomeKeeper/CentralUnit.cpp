@@ -103,8 +103,8 @@ static const uint8_t STANDBY_HEATER_ROOM_MAX_TEMP_THRESHOLD = 16;
 
 // reporting
 static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 60000;
-static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 9000;
-static const unsigned long SENSORS_READ_INTERVAL_MSEC = 3000;
+static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 5000;
+static const unsigned long SENSORS_READ_INTERVAL_MSEC = 5000;
 
 // WiFi
 static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 300000; // 5m
@@ -114,7 +114,7 @@ static const uint64_t RF_PIPE_BASE = 0xE8E8F0F0A2LL;
 static const uint8_t RF_PACKET_LENGTH = 32;
 
 // sensors stats
-static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 3;
+static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 1; // disable
 static const uint8_t SENSOR_NOISE_THRESHOLD = 255; // disable
 
 // JSON
@@ -206,6 +206,9 @@ unsigned long tsForcedNodeHotwater = 0;
 unsigned long tsForcedNodeCirculation = 0;
 unsigned long tsForcedNodeBoiler = 0;
 unsigned long tsForcedNodeSbHeater = 0;
+
+// reporting
+uint16_t nextEntryReport = 0;
 
 // Timestamps
 unsigned long tsLastStatusReport = 0;
@@ -349,9 +352,6 @@ void setup() {
     }
     radio.startListening();
     radio.powerUp();
-
-    // report current state
-    reportStatus();
 }
 
 void loop() {
@@ -391,10 +391,6 @@ void loop() {
         // standby heater
         processStandbyHeater();
 
-        if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_MSEC) {
-            reportStatus();
-        }
-        //delay(100);
         digitalWrite(HEARTBEAT_LED, LOW);
         tsLastSensorsRefresh = tsCurr;
     }
@@ -407,6 +403,9 @@ void loop() {
     if (wifi->available() > 0) {
         processWifiReq();
     }
+
+    reportStatus();
+
     tsPrev = tsCurr;
 }
 
@@ -1108,8 +1107,10 @@ void wifiInit() {
     digitalWrite(WIFI_RST_PIN, HIGH);
     delay(1000);
 
+    wifi->end();
     wifi->begin(115200);
     wifi->println(F("AT+CIOBAUD=9600"));
+    wifi->end();
     wifi->begin(9600);
     IP[0] = 0;
     IP[1] = 0;
@@ -1332,27 +1333,82 @@ void wifiRead(char* req) {
 }
 
 void reportStatus() {
-    // check WiFi connectivity
-    wifiCheckConnection();
+    if (nextEntryReport == 0) {
+        if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_MSEC) {
+            // check WiFi connectivity
+            wifiCheckConnection();
+            // start reporting
+            nextEntryReport = SENSOR_SUPPLY;
+            tsLastStatusReport = tsCurr;
+        } else {
+            return;
+        }
+    }
 
-    reportSensorStatus(SENSOR_SUPPLY, tempSupply);
-    reportSensorStatus(SENSOR_REVERSE, tempReverse);
-    reportSensorStatus(SENSOR_TANK, tempTank);
-    reportSensorStatus(SENSOR_MIX, tempMix);
-    reportSensorStatus(SENSOR_SB_HEATER, tempSbHeater);
-    reportSensorStatus(SENSOR_BOILER, tempBoiler);
-    reportSensorStatus(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1);
-    reportSensorStatus(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1);
-
-    reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
-    reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
-    reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
-    reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
-    reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
-    reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
-    reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
-
-    tsLastStatusReport = tsCurr;
+    switch (nextEntryReport) {
+    case SENSOR_SUPPLY:
+        reportSensorStatus(SENSOR_SUPPLY, tempSupply);
+        nextEntryReport = SENSOR_REVERSE;
+        break;
+    case SENSOR_REVERSE:
+        reportSensorStatus(SENSOR_REVERSE, tempReverse);
+        nextEntryReport = SENSOR_TANK;
+        break;
+    case SENSOR_TANK:
+        reportSensorStatus(SENSOR_TANK, tempTank);
+        nextEntryReport = SENSOR_MIX;
+        break;
+    case SENSOR_MIX:
+        reportSensorStatus(SENSOR_MIX, tempMix);
+        nextEntryReport = SENSOR_SB_HEATER;
+        break;
+    case SENSOR_SB_HEATER:
+        reportSensorStatus(SENSOR_SB_HEATER, tempSbHeater);
+        nextEntryReport = SENSOR_BOILER;
+        break;
+    case SENSOR_BOILER:
+        reportSensorStatus(SENSOR_BOILER, tempBoiler);
+        nextEntryReport = SENSOR_TEMP_ROOM_1;
+        break;
+    case SENSOR_TEMP_ROOM_1:
+        reportSensorStatus(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1);
+        nextEntryReport = SENSOR_HUM_ROOM_1;
+        break;
+    case SENSOR_HUM_ROOM_1:
+        reportSensorStatus(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1);
+        nextEntryReport = NODE_SUPPLY;
+        break;
+    case NODE_SUPPLY:
+        reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
+        nextEntryReport = NODE_HEATING;
+        break;
+    case NODE_HEATING:
+        reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
+        nextEntryReport = NODE_FLOOR;
+        break;
+    case NODE_FLOOR:
+        reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
+        nextEntryReport = NODE_SB_HEATER;
+        break;
+    case NODE_SB_HEATER:
+        reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
+        nextEntryReport = NODE_HOTWATER;
+        break;
+    case NODE_HOTWATER:
+        reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
+        nextEntryReport = NODE_CIRCULATION;
+        break;
+    case NODE_CIRCULATION:
+        reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
+        nextEntryReport = NODE_BOILER;
+        break;
+    case NODE_BOILER:
+        reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
+        nextEntryReport = 0;
+        break;
+    default:
+        break;
+    }
 }
 
 void reportNodeStatus(uint8_t id, uint8_t bit, unsigned long ts, unsigned long tsf) {
@@ -1574,7 +1630,7 @@ bool parseCommand(char* command) {
                     tsLastSensorHumRoom1 = tsCurr;
                 } // else if(...)
             } else {
-                reportStatus();
+                tsLastStatusReport = tsCurr - STATUS_REPORTING_PERIOD_MSEC;
             }
         } else if (strcmp(msgType, MSG_NODE_STATE_CHANGED) == 0) {
             // NSC
