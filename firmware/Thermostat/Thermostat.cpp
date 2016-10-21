@@ -575,8 +575,6 @@ void parseCommand(char* command) {
         const char* msgType = root[MSG_TYPE_KEY];
         if (strcmp(msgType, MSG_CURRENT_STATUS_REPORT) == 0) {
             // CSR
-            // workaround to prevent OOM
-            //reportStatus();
             tsLastStatusReport = tsCurr - STATUS_REPORTING_PERIOD_MSEC;
         } else if (strcmp(msgType, MSG_CONFIGURATION) == 0) {
             // CFG
