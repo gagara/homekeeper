@@ -46,7 +46,7 @@ static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 15000; // 15s //disabl
 static const unsigned long SENSORS_READ_INTERVAL_MSEC = 15000; // 15s //disabled in LowPower mode
 
 // WiFi
-static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 300000; // 5m
+static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 180000; // 3m
 
 // JSON
 static const char MSG_TYPE_KEY[] = "m";
@@ -297,8 +297,10 @@ void wifiInit() {
     digitalWrite(WIFI_RST_PIN, HIGH);
     delay(1000);
 
+    wifi.end();
     wifi.begin(115200);
     wifi.println(F("AT+CIOBAUD=9600"));
+    wifi.end();
     wifi.begin(9600);
     IP[0] = 0;
     IP[1] = 0;
@@ -342,6 +344,7 @@ void wifiCheckConnection() {
         wifiInit();
         wifiSetup();
         wifiGetRemoteIP();
+        tsLastWifiSuccessTransmission = tsCurr;
     }
 }
 

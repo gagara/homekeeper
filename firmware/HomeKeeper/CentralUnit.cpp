@@ -107,7 +107,7 @@ static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 9000;
 static const unsigned long SENSORS_READ_INTERVAL_MSEC = 3000;
 
 // WiFi
-static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 300000; // 5m
+static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 180000; // 3m
 
 // RF
 static const uint64_t RF_PIPE_BASE = 0xE8E8F0F0A2LL;
@@ -1108,8 +1108,10 @@ void wifiInit() {
     digitalWrite(WIFI_RST_PIN, HIGH);
     delay(1000);
 
+    wifi->end();
     wifi->begin(115200);
     wifi->println(F("AT+CIOBAUD=9600"));
+    wifi->end();
     wifi->begin(9600);
     IP[0] = 0;
     IP[1] = 0;
@@ -1179,6 +1181,7 @@ void wifiCheckConnection() {
             wifiInit();
             wifiSetup();
             wifiGetRemoteIP();
+            tsLastWifiSuccessTransmission = tsCurr;
         }
     }
 }
