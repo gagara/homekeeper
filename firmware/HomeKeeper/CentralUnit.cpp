@@ -79,6 +79,8 @@ static const int WIFI_LOCAL_PW_EEPROM_ADDR = WIFI_LOCAL_AP_EEPROM_ADDR + 32; // 
 
 // Primary Heater
 static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
+static const uint8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 40;
+static const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_MSEC = 600000; // 10 minutes
 
 // heating
 static const uint8_t HEATING_TEMP_THRESHOLD = 40;
@@ -102,7 +104,7 @@ static const uint8_t STANDBY_HEATER_ROOM_MIN_TEMP_THRESHOLD = 12;
 static const uint8_t STANDBY_HEATER_ROOM_MAX_TEMP_THRESHOLD = 16;
 
 // reporting
-static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 60000;
+static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 3000;
 static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 5000;
 static const unsigned long SENSORS_READ_INTERVAL_MSEC = 5000;
 
@@ -424,8 +426,21 @@ void processSupplyCircuit() {
             // pump is ON
             if (tempSupply <= tempReverse) {
                 // temp is equal
-                // turn pump OFF
-                switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
+                if (tempSupply <= PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP) {
+                    // primary heater is on short circuit
+                    if (diffTimestamps(tsCurr, tsNodeSupply) < PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_MSEC) {
+                        // pump active period is too short. give it some time
+                        // do nothing
+                    } else {
+                        // pump active period is long enough
+                        // turn pump OFF
+                        switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
+                    }
+                } else {
+                    // primary heater is in production mode
+                    // turn pump OFF
+                    switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
+                }
             } else {
                 // delta is big enough
                 // do nothing
@@ -1148,6 +1163,8 @@ void wifiSetup() {
     delay(100);
     wifi->println(F("AT+CIPSERVER=1,80"));
     delay(100);
+    wifi->println(F("AT+CIPSTO=5"));
+    delay(100);
     if (wifiAPMode()) {
         // setup AP
         // note: only channel 5 supported. bug?
@@ -1334,81 +1351,78 @@ void wifiRead(char* req) {
 }
 
 void reportStatus() {
-    if (nextEntryReport == 0) {
-        if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_MSEC) {
+    if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_MSEC) {
+        if (nextEntryReport == 0) {
             // check WiFi connectivity
             wifiCheckConnection();
             // start reporting
             nextEntryReport = SENSOR_SUPPLY;
-            tsLastStatusReport = tsCurr;
-        } else {
-            return;
         }
-    }
-
-    switch (nextEntryReport) {
-    case SENSOR_SUPPLY:
-        reportSensorStatus(SENSOR_SUPPLY, tempSupply);
-        nextEntryReport = SENSOR_REVERSE;
-        break;
-    case SENSOR_REVERSE:
-        reportSensorStatus(SENSOR_REVERSE, tempReverse);
-        nextEntryReport = SENSOR_TANK;
-        break;
-    case SENSOR_TANK:
-        reportSensorStatus(SENSOR_TANK, tempTank);
-        nextEntryReport = SENSOR_MIX;
-        break;
-    case SENSOR_MIX:
-        reportSensorStatus(SENSOR_MIX, tempMix);
-        nextEntryReport = SENSOR_SB_HEATER;
-        break;
-    case SENSOR_SB_HEATER:
-        reportSensorStatus(SENSOR_SB_HEATER, tempSbHeater);
-        nextEntryReport = SENSOR_BOILER;
-        break;
-    case SENSOR_BOILER:
-        reportSensorStatus(SENSOR_BOILER, tempBoiler);
-        nextEntryReport = SENSOR_TEMP_ROOM_1;
-        break;
-    case SENSOR_TEMP_ROOM_1:
-        reportSensorStatus(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1);
-        nextEntryReport = SENSOR_HUM_ROOM_1;
-        break;
-    case SENSOR_HUM_ROOM_1:
-        reportSensorStatus(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1);
-        nextEntryReport = NODE_SUPPLY;
-        break;
-    case NODE_SUPPLY:
-        reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
-        nextEntryReport = NODE_HEATING;
-        break;
-    case NODE_HEATING:
-        reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
-        nextEntryReport = NODE_FLOOR;
-        break;
-    case NODE_FLOOR:
-        reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
-        nextEntryReport = NODE_SB_HEATER;
-        break;
-    case NODE_SB_HEATER:
-        reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
-        nextEntryReport = NODE_HOTWATER;
-        break;
-    case NODE_HOTWATER:
-        reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
-        nextEntryReport = NODE_CIRCULATION;
-        break;
-    case NODE_CIRCULATION:
-        reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
-        nextEntryReport = NODE_BOILER;
-        break;
-    case NODE_BOILER:
-        reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
-        nextEntryReport = 0;
-        break;
-    default:
-        break;
+        switch (nextEntryReport) {
+        case SENSOR_SUPPLY:
+            reportSensorStatus(SENSOR_SUPPLY, tempSupply);
+            nextEntryReport = SENSOR_REVERSE;
+            break;
+        case SENSOR_REVERSE:
+            reportSensorStatus(SENSOR_REVERSE, tempReverse);
+            nextEntryReport = SENSOR_TANK;
+            break;
+        case SENSOR_TANK:
+            reportSensorStatus(SENSOR_TANK, tempTank);
+            nextEntryReport = SENSOR_MIX;
+            break;
+        case SENSOR_MIX:
+            reportSensorStatus(SENSOR_MIX, tempMix);
+            nextEntryReport = SENSOR_SB_HEATER;
+            break;
+        case SENSOR_SB_HEATER:
+            reportSensorStatus(SENSOR_SB_HEATER, tempSbHeater);
+            nextEntryReport = SENSOR_BOILER;
+            break;
+        case SENSOR_BOILER:
+            reportSensorStatus(SENSOR_BOILER, tempBoiler);
+            nextEntryReport = SENSOR_TEMP_ROOM_1;
+            break;
+        case SENSOR_TEMP_ROOM_1:
+            reportSensorStatus(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1);
+            nextEntryReport = SENSOR_HUM_ROOM_1;
+            break;
+        case SENSOR_HUM_ROOM_1:
+            reportSensorStatus(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1);
+            nextEntryReport = NODE_SUPPLY;
+            break;
+        case NODE_SUPPLY:
+            reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
+            nextEntryReport = NODE_HEATING;
+            break;
+        case NODE_HEATING:
+            reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
+            nextEntryReport = NODE_FLOOR;
+            break;
+        case NODE_FLOOR:
+            reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
+            nextEntryReport = NODE_SB_HEATER;
+            break;
+        case NODE_SB_HEATER:
+            reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
+            nextEntryReport = NODE_HOTWATER;
+            break;
+        case NODE_HOTWATER:
+            reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
+            nextEntryReport = NODE_CIRCULATION;
+            break;
+        case NODE_CIRCULATION:
+            reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
+            nextEntryReport = NODE_BOILER;
+            break;
+        case NODE_BOILER:
+            reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
+            nextEntryReport = 0;
+            break;
+        default:
+            break;
+        }
+        tsLastStatusReport = getTimestamp();
     }
 }
 

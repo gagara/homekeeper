@@ -57,7 +57,7 @@ public class ProxyNbiService extends AbstractNbiService {
 
     private static final String TAG = ProxyNbiService.class.getName();
 
-    private static final int HTTP_CONNECTION_TIMEOUT = 5000;
+    private static final int HTTP_CONNECTION_TIMEOUT = 30000; // 30 seconds
 
     private static final String PROXY_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     private static final DateFormat df = new SimpleDateFormat(PROXY_DATE_FORMAT, Locale.getDefault());
@@ -139,7 +139,7 @@ public class ProxyNbiService extends AbstractNbiService {
                         if (clocksDelta == null && clockSyncExecutor == null) {
                             clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
                             clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L,
-                                    proxy.getPullPeriod() * 3, TimeUnit.SECONDS);
+                                    proxy.getPullPeriod() * 5, TimeUnit.SECONDS);
                         }
                         notifyStatusChange(getText(R.string.service_sync_clocks_status));
                     }

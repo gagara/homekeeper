@@ -293,6 +293,11 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                     if (ViewUtils.validNode(node)) {
                         modelView.getNode(node.getId()).setModel(node);
                         modelView.getNode(node.getId()).render();
+                        for (int i = 0; i < node.getSensors().size(); i++) {
+                            SensorModel sensor = node.getSensors().valueAt(i);
+                            modelView.getSensor(sensor.getId()).setModel(sensor);
+                            modelView.getSensor(sensor.getId()).render();
+                        }
                         latestTimestamp = stats.getTimestamp();
 
                         String msg = null;

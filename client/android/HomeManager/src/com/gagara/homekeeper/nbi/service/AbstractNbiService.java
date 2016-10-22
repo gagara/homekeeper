@@ -38,7 +38,6 @@ import com.gagara.homekeeper.activity.MainActivity;
 import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.nbi.request.ClockSyncRequest;
-import com.gagara.homekeeper.nbi.request.CurrentStatusRequest;
 import com.gagara.homekeeper.nbi.request.Request;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
 import com.gagara.homekeeper.nbi.response.NodeStateChangeResponse;
@@ -155,8 +154,9 @@ public abstract class AbstractNbiService extends Service {
                         - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
                 if (clocksDelta == null) {
                     // initial sync: request for status
-                    CurrentStatusRequest csr = new CurrentStatusRequest();
-                    send(csr);
+                    // not required with current reporting model
+                    // CurrentStatusRequest csr = new CurrentStatusRequest();
+                    // send(csr);
                 }
                 clocksDelta = delta;
                 state = ACTIVE;
