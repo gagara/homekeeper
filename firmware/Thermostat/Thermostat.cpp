@@ -80,8 +80,8 @@ uint8_t tempRoom = 0;
 uint8_t humRoom = 0;
 
 // stats
-uint8_t rawTempValues[SENSORS_RAW_VALUES_MAX_COUNT];
-uint8_t rawHumValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int8_t rawTempValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int8_t rawHumValues[SENSORS_RAW_VALUES_MAX_COUNT];
 uint8_t rawTempIdx = 0;
 uint8_t rawHumIdx = 0;
 
@@ -116,19 +116,15 @@ DHT dht(DHT_PIN, DHT11);
 void setup() {
     Serial.begin(9600);
 #ifdef __DEBUG__
-    Serial.println("STARTING");
+    Serial.println(F("STARTING"));
 #endif
+    // WiFi
     loadWifiConfig();
     pinMode(WIFI_RST_PIN, OUTPUT);
-    wifiInit();             // WiFi
+    wifiInit();
     wifiSetup();
-    wifiGetRemoteIP();
 #ifdef __DEBUG__
-    Serial.print("Remote IP: ");
-    char ipStr[16];
-    sprintf(ipStr, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
-    Serial.println(ipStr);
-    Serial.print("free memory: ");
+    Serial.print(F("free memory: "));
     Serial.println(freeMemory());
 #endif
     pinMode(HEARTBEAT_LED, OUTPUT);
@@ -161,7 +157,7 @@ void loop() {
 
         digitalWrite(HEARTBEAT_LED, LOW);
 #ifdef __DEBUG__
-        Serial.print("free memory: ");
+        Serial.print(F("free memory: "));
         Serial.println(freeMemory());
 #endif
     }
@@ -170,7 +166,7 @@ void loop() {
     }
 #ifdef __DEBUG__
     if (wifi.available() > 0) {
-        Serial.print("wifi msg: ");
+        Serial.print(F("wifi msg: "));
         Serial.println(wifi.readStringUntil('\0'));
     }
 #endif
@@ -180,6 +176,16 @@ void loop() {
     //delay(SENSORS_READ_INTERVAL_MSEC);
 }
 
+void validateStringParam(char* str, int maxSize) {
+    char* ptr = str;
+    while (*ptr && (ptr - str) < maxSize) {
+        ptr++;
+    }
+    if (*ptr) {
+        str[0] = '\0';
+    }
+}
+
 void loadSensorsCalibrationFactors() {
     SENSOR_TEMP_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0);
     SENSOR_HUM_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
@@ -187,14 +193,23 @@ void loadSensorsCalibrationFactors() {
 
 double readSensorCalibrationFactor(int offset) {
     double f = EEPROM.readDouble(offset);
-    if (isnan(f) || f < 0.01 || f > 3) {
+    if (isnan(f) || f <= 0) {
         f = 1;
     }
     return f;
 }
 
-void writeSensorCalibrationFactor(double value, int addr) {
-    EEPROM.writeDouble(addr, value);
+void writeSensorCalibrationFactor(int offset, double value) {
+    EEPROM.writeDouble(offset, value);
+}
+
+void loadWifiConfig() {
+    EEPROM.readBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
+    validateStringParam(WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP) - 1);
+    EEPROM.readBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
+    validateStringParam(WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW) - 1);
+    EEPROM.readBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
+    SERVER_PORT = EEPROM.readInt(SERVER_PORT_EEPROM_ADDR);
 }
 
 unsigned long getTimestamp() {
@@ -215,9 +230,9 @@ void readSensors() {
     readSensor(SENSOR_HUM, rawHumValues, rawHumIdx);
 }
 
-void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx) {
+void readSensor(uint8_t id, int8_t* const &values, uint8_t &idx) {
     uint8_t prevIdx;
-    uint8_t val;
+    int8_t val;
     if (idx == SENSORS_RAW_VALUES_MAX_COUNT) {
         idx = 0;
     }
@@ -233,7 +248,7 @@ void readSensor(uint8_t id, uint8_t* const &values, uint8_t &idx) {
     idx++;
 }
 
-uint8_t getSensorValue(uint8_t sensor) {
+int8_t getSensorValue(uint8_t sensor) {
     float value = 0;
     if (SENSOR_TEMP == sensor) {
         value = dht.readTemperature();
@@ -242,19 +257,8 @@ uint8_t getSensorValue(uint8_t sensor) {
         value = dht.readHumidity();
         value = value * SENSOR_HUM_FACTOR;
     }
-    return byte(value + 0.5);
-}
-
-uint8_t getAnalogSensorValue(uint8_t sensor) {
-    int rawVal = analogRead(sensor);
-    double voltage = (5000 / 1024) * rawVal;
-    double tempC = voltage * 0.1;
-    if (SENSOR_TEMP == sensor) {
-        tempC = tempC * SENSOR_TEMP_FACTOR;
-    } else if (SENSOR_HUM == sensor) {
-        tempC = tempC * SENSOR_HUM_FACTOR;
-    }
-    return byte(tempC + 0.5);
+    value = (value > 0) ? value + 0.5 : value - 0.5;
+    return int8_t(value);
 }
 
 void refreshSensorValues() {
@@ -273,24 +277,17 @@ void refreshSensorValues() {
         }
     }
     if (j1 > 0) {
-        tempRoom = byte(val1 / j1 + 0.5);
+        tempRoom = int8_t(val1 / j1 + 0.5);
     }
     if (j2 > 0) {
-        humRoom = byte(val2 / j2 + 0.5);
+        humRoom = int8_t(val2 / j2 + 0.5);
     }
-}
-
-void loadWifiConfig() {
-    EEPROM.readBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
-    EEPROM.readBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
-    EEPROM.readBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
-    SERVER_PORT = EEPROM.readInt(SERVER_PORT_EEPROM_ADDR);
 }
 
 void wifiInit() {
     // hardware reset
 #ifdef __DEBUG__
-    Serial.println("reboot wifi");
+    Serial.println(F("wifi init"));
 #endif
     digitalWrite(WIFI_RST_PIN, LOW);
     delay(500);
@@ -309,6 +306,9 @@ void wifiInit() {
 }
 
 void wifiSetup() {
+#ifdef __DEBUG__
+    Serial.println(F("wifi setup"));
+#endif
     char msg[128];
     wifi.println(F("AT+RST"));
     delay(500);
@@ -316,25 +316,37 @@ void wifiSetup() {
     delay(100);
     wifi.println(F("AT+CWMODE_CUR=1"));
 #ifdef __DEBUG__
-    Serial.println("runing in STATION mode");
+    Serial.println(F("runing in STATION mode"));
 #endif
     delay(100);
 #ifdef __DEBUG__
-    Serial.println("starting TCP server");
+    Serial.println(F("starting TCP server"));
 #endif
     wifi.println(F("AT+CIPMUX=1"));
     delay(100);
     wifi.println(F("AT+CIPSERVER=1,80"));
     delay(100);
-    // join AP
-    sprintf(msg, "AT+CWJAP_CUR=\"%s\",\"%s\"", WIFI_REMOTE_AP, WIFI_REMOTE_PW);
+    if (strlen(WIFI_REMOTE_AP) + strlen(WIFI_REMOTE_PW) > 0) {
+        // join AP
+        sprintf(msg, "AT+CWJAP_CUR=\"%s\",\"%s\"", WIFI_REMOTE_AP, WIFI_REMOTE_PW);
 #ifdef __DEBUG__
-    Serial.print("wifi join AP: ");
-    Serial.println(msg);
+        Serial.print(F("wifi join AP: "));
+        Serial.println(msg);
 #endif
-    wifi.println(msg);
-    delay(100);
-    delay(10000);
+        wifi.println(msg);
+        delay(10000);
+    } else {
+#ifdef __DEBUG__
+        Serial.println(F("no AP configured"));
+#endif
+    }
+    char s[WIFI_MAX_READ_SIZE + 1];
+    uint16_t l = wifi.readBytesUntil('\0', s, WIFI_MAX_READ_SIZE);
+    s[l] = '\0';
+#ifdef __DEBUG__
+    Serial.print(F("wifi setup rsp: "));
+    Serial.println(s);
+#endif
 }
 
 void wifiCheckConnection() {
@@ -354,7 +366,9 @@ bool wifiGetRemoteIP() {
     uint16_t l = wifi.readBytesUntil('\0', s, WIFI_MAX_READ_SIZE);
     s[l] = '\0';
 #ifdef __DEBUG__
-    Serial.print("wifi: ");
+    Serial.print(F("free memory: "));
+    Serial.println(freeMemory());
+    Serial.print(F("wifi rq ip: "));
     Serial.println(s);
 #endif
     int n = 0;
@@ -372,7 +386,7 @@ bool wifiGetRemoteIP() {
 #ifdef __DEBUG__
         char ip[16];
         sprintf(ip, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
-        Serial.print("wifi got ip: ");
+        Serial.print(F("wifi got ip: "));
         Serial.println(ip);
 #endif
         return validIP(IP);
@@ -463,8 +477,8 @@ void reportSensorStatus(const uint8_t id, const uint8_t value) {
 
 #ifdef __DEBUG__
     Serial.print(getTimestamp());
-    Serial.print(": ");
-    Serial.print("free memory: ");
+    Serial.print(F(": "));
+    Serial.print(F("free memory: "));
     Serial.println(freeMemory());
 #endif
     broadcastMsg(json);
@@ -483,7 +497,7 @@ void reportConfiguration() {
     sprintf(lIP, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
     reportStringConfig(LOCAL_IP_KEY, lIP);
 #ifdef __DEBUG__
-    Serial.print("reportConfiguration: free memory: ");
+    Serial.print(F("free memory: "));
     Serial.println(freeMemory());
 #endif
 }
@@ -497,8 +511,7 @@ void reportSensorConfig(const uint8_t id, const double value) {
     sens[ID_KEY] = id;
     sens[CALIBRATION_FACTOR_KEY] = value;
 
-    JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
-    sensors.add(sens);
+    root[SENSORS_KEY] = sens;
 
     char json[JSON_MAX_WRITE_SIZE];
     root.printTo(json, JSON_MAX_WRITE_SIZE);
@@ -536,11 +549,11 @@ void broadcastMsg(const char* msg) {
     if (r) {
         tsLastWifiSuccessTransmission = tsCurr;
 #ifdef __DEBUG__
-        Serial.println("wifi send: OK");
+        Serial.println(F("wifi send: OK"));
 #endif
     } else {
 #ifdef __DEBUG__
-        Serial.println("wifi send: FAILED");
+        Serial.println(F("wifi send: FAILED"));
 #endif
     }
 }
@@ -554,11 +567,11 @@ void processSerialMsg() {
 
 void parseCommand(char* command) {
 #ifdef __DEBUG__
-    Serial.print("parsing cmd: ");
+    Serial.print(F("parsing cmd: "));
     Serial.println(command);
     if (strstr(command, "AT") == command) {
         // this is AT command for ESP8266
-        Serial.print("sending to wifi: ");
+        Serial.print(F("sending to wifi: "));
         Serial.println(command);
         wifi.println(command);
         return;
@@ -567,8 +580,8 @@ void parseCommand(char* command) {
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.parseObject(command);
 #ifdef __DEBUG__
-    Serial.println("parsed");
-    Serial.print("free memory: ");
+    Serial.println(F("parsed"));
+    Serial.print(F("free memory: "));
     Serial.println(freeMemory());
 #endif
     if (root.success()) {
@@ -587,7 +600,7 @@ void parseCommand(char* command) {
                     SENSOR_TEMP_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0);
                 } else if (id == SENSOR_HUM) {
                     writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4, cf);
-                    SENSOR_TEMP_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
+                    SENSOR_HUM_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
                 }
             } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {
                 sprintf(WIFI_REMOTE_AP, "%s", root[WIFI_REMOTE_AP_KEY].asString());
@@ -612,7 +625,7 @@ void parseCommand(char* command) {
         }
     }
 #ifdef __DEBUG__
-    Serial.print("processSerialMsg: free memory: ");
+    Serial.print(F("free memory: "));
     Serial.println(freeMemory());
 #endif
 }

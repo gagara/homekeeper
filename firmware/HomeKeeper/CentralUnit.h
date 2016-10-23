@@ -28,6 +28,7 @@ void processHotWaterCircuit();
 void processCirculationCircuit();
 void processBoilerHeater();
 void processStandbyHeater();
+void validateStringParam(char* str, int maxSize);
 void loadSensorsCalibrationFactors();
 double readSensorCalibrationFactor(int offset);
 void writeSensorCalibrationFactor(int offset, double value);

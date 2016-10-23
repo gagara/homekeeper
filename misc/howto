@@ -41,7 +41,12 @@ openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mykey.key -out mycer
         SSLCertificateFile "/etc/ssl/certs/homekeeper.cert"
         SSLCertificateKeyFile "/etc/ssl/private/homekeeper.key"
 
-
+ADT for eclipse plugin
+https://stuff.mit.edu/afs/sipb/project/android/docs/sdk/installing/installing-adt.html
+PyDev plugin
+http://www.pydev.org/manual_101_install.html
+arduino plugin
+http://eclipse.baeyens.it/
 
 
 

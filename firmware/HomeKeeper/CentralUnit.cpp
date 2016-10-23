@@ -268,22 +268,20 @@ RF24 radio(RF_CE_PIN, RF_CSN_PIN);
 
 void setup() {
     // Setup serial ports
-    Serial.begin(9600);     // usb
+    // usb
+    Serial.begin(9600);
 #ifdef __DEBUG__
-    Serial.println("STARTING");
+    Serial.println(F("STARTING"));
 #endif
-    bt->begin(9600);         // BT
+    // BT
+    bt->begin(9600);
+    // WiFi
     loadWifiConfig();
     pinMode(WIFI_RST_PIN, OUTPUT);
-    wifiInit();             // WiFi
+    wifiInit();
     wifiSetup();
-    wifiGetRemoteIP();
 #ifdef __DEBUG__
-    Serial.print("Remote IP: ");
-    char ipStr[16];
-    sprintf(ipStr, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
-    Serial.println(ipStr);
-    Serial.print("free memory: ");
+    Serial.print(F("free memory: "));
     Serial.println(freeMemory());
 #endif
     pinMode(HEARTBEAT_LED, OUTPUT);
@@ -294,13 +292,13 @@ void setup() {
     sensors.setResolution(SENSORS_PRECISION);
 #ifdef __DEBUG__
     DeviceAddress sensAddr;
-    Serial.println("found sensors:");
+    Serial.println(F("found sensors:"));
     oneWire.reset_search();
     while (oneWire.search(sensAddr)) {
         for (uint8_t i = 0; i < 8; i++) {
             // zero pad the address if necessary
             if (sensAddr[i] < 16)
-                Serial.print("0");
+                Serial.print(F("0"));
             Serial.print(sensAddr[i], HEX);
         }
         Serial.println("");
@@ -370,7 +368,7 @@ void loop() {
     }
     if (diffTimestamps(tsCurr, tsLastSensorsRefresh) >= SENSORS_REFRESH_INTERVAL_MSEC) {
 #ifdef __DEBUG__
-        Serial.print("free memory: ");
+        Serial.print(F("free memory: "));
         Serial.println(freeMemory());
 #endif
         digitalWrite(HEARTBEAT_LED, HIGH);
@@ -716,6 +714,16 @@ void processStandbyHeater() {
 
 /* ============ Helper methods ============ */
 
+void validateStringParam(char* str, int maxSize) {
+    char* ptr = str;
+    while (*ptr && (ptr - str) < maxSize) {
+        ptr++;
+    }
+    if (*ptr) {
+        str[0] = '\0';
+    }
+}
+
 void loadSensorsCalibrationFactors() {
     SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0);
     SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
@@ -727,15 +735,33 @@ void loadSensorsCalibrationFactors() {
 
 double readSensorCalibrationFactor(int offset) {
     double f = EEPROM.readDouble(offset);
-    if (f > 0) {
-        return f;
-    } else {
-        return 1;
+    if (isnan(f) || f <= 0) {
+        f = 1;
     }
+    return f;
 }
 
 void writeSensorCalibrationFactor(int offset, double value) {
     EEPROM.writeDouble(offset, value);
+}
+
+void restoreNodesState() {
+    NODE_PERMANENTLY_FORCED_MODE_FLAGS = EEPROM.read(NODE_FORCED_MODE_EEPROM_ADDR);
+    NODE_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS;
+    NODE_STATE_FLAGS = EEPROM.read(NODE_STATE_EEPROM_ADDR);
+}
+
+void loadWifiConfig() {
+    EEPROM.readBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
+    validateStringParam(WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP) - 1);
+    EEPROM.readBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
+    validateStringParam(WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW) - 1);
+    EEPROM.readBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
+    SERVER_PORT = EEPROM.readInt(SERVER_PORT_EEPROM_ADDR);
+    EEPROM.readBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
+    validateStringParam(WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP) - 1);
+    EEPROM.readBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
+    validateStringParam(WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW) - 1);
 }
 
 void rfRead(char* msg) {
@@ -767,7 +793,7 @@ void readSensors() {
     // read remote sensors
     if (radio.available()) {
 #ifdef __DEBUG__
-        Serial.println("got RF message");
+        Serial.println(F("got RF message"));
 #endif
         processRfMsg();
     }
@@ -1000,12 +1026,6 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sen
     }
 }
 
-void restoreNodesState() {
-    NODE_PERMANENTLY_FORCED_MODE_FLAGS = EEPROM.read(NODE_FORCED_MODE_EEPROM_ADDR);
-    NODE_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS;
-    NODE_STATE_FLAGS = EEPROM.read(NODE_STATE_EEPROM_ADDR);
-}
-
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
     if (NODE_SUPPLY == id) {
         forceNodeState(NODE_SUPPLY, NODE_SUPPLY_BIT, state, tsForcedNodeSupply, ts);
@@ -1098,15 +1118,6 @@ void unForceNodeState(uint8_t id) {
     EEPROM.write(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
 }
 
-void loadWifiConfig() {
-    EEPROM.readBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
-    EEPROM.readBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
-    EEPROM.readBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
-    SERVER_PORT = EEPROM.readInt(SERVER_PORT_EEPROM_ADDR);
-    EEPROM.readBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
-    EEPROM.readBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
-}
-
 bool wifiStationMode() {
     return strlen(WIFI_REMOTE_AP) + strlen(WIFI_REMOTE_PW) > 0;
 }
@@ -1142,22 +1153,22 @@ void wifiSetup() {
     if (wifiAPMode() && wifiStationMode()) {
         wifi->println(F("AT+CWMODE_CUR=3"));
 #ifdef __DEBUG__
-        Serial.println("runing in STATION & SoftAP mode");
+        Serial.println(F("runing in STATION & SoftAP mode"));
 #endif
     } else if (wifiAPMode()) {
         wifi->println(F("AT+CWMODE_CUR=2"));
 #ifdef __DEBUG__
-        Serial.println("runing in SoftAP mode");
+        Serial.println(F("runing in SoftAP mode"));
 #endif
     } else {
         wifi->println(F("AT+CWMODE_CUR=1"));
 #ifdef __DEBUG__
-        Serial.println("runing in STATION mode");
+        Serial.println(F("runing in STATION mode"));
 #endif
     }
     delay(100);
 #ifdef __DEBUG__
-    Serial.println("starting TCP server");
+    Serial.println(F("starting TCP server"));
 #endif
     wifi->println(F("AT+CIPMUX=1"));
     delay(100);
@@ -1170,7 +1181,7 @@ void wifiSetup() {
         // note: only channel 5 supported. bug?
         sprintf(msg, "AT+CWSAP_CUR=\"%s\",\"%s\",%d,%d", WIFI_LOCAL_AP, WIFI_LOCAL_PW, 5, 3);
 #ifdef __DEBUG__
-        Serial.print("wifi setup AP: ");
+        Serial.print(F("wifi setup AP: "));
         Serial.println(msg);
 #endif
         wifi->println(msg);
@@ -1180,13 +1191,19 @@ void wifiSetup() {
         // join AP
         sprintf(msg, "AT+CWJAP_CUR=\"%s\",\"%s\"", WIFI_REMOTE_AP, WIFI_REMOTE_PW);
 #ifdef __DEBUG__
-        Serial.print("wifi join AP: ");
+        Serial.print(F("wifi join AP: "));
         Serial.println(msg);
 #endif
         wifi->println(msg);
-        delay(100);
     }
     delay(10000);
+    char s[WIFI_MAX_READ_SIZE + 1];
+    uint16_t l = wifi->readBytesUntil('\0', s, WIFI_MAX_READ_SIZE);
+    s[l] = '\0';
+#ifdef __DEBUG__
+    Serial.print(F("wifi setup rsp: "));
+    Serial.println(s);
+#endif
 }
 
 void wifiCheckConnection() {
@@ -1208,7 +1225,9 @@ bool wifiGetRemoteIP() {
     uint16_t l = wifi->readBytesUntil('\0', s, WIFI_MAX_READ_SIZE);
     s[l] = '\0';
 #ifdef __DEBUG__
-    Serial.print("wifi: ");
+    Serial.print(F("free memory: "));
+    Serial.println(freeMemory());
+    Serial.print(F("wifi rq ip: "));
     Serial.println(s);
 #endif
     int n = 0;
@@ -1226,7 +1245,7 @@ bool wifiGetRemoteIP() {
 #ifdef __DEBUG__
         char ip[16];
         sprintf(ip, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
-        Serial.print("wifi got ip: ");
+        Serial.print(F("wifi got ip: "));
         Serial.println(ip);
 #endif
         return validIP(IP);
@@ -1319,9 +1338,9 @@ void wifiRead(char* req) {
     uint16_t l = wifi->readBytesUntil('\0', s, WIFI_MAX_READ_SIZE);
     s[l] = '\0';
 #ifdef __DEBUG__
-    Serial.print("wifi req len: ");
+    Serial.print(F("wifi req len: "));
     Serial.println(l);
-    Serial.print("wifi req: ");
+    Serial.print(F("wifi req: "));
     Serial.println(s);
 #endif
     char *substr;
@@ -1343,9 +1362,9 @@ void wifiRead(char* req) {
         req[0] = '\0';
     }
 #ifdef __DEBUG__
-    Serial.print("wifi client: ");
+    Serial.print(F("wifi client: "));
     Serial.println(clientId);
-    Serial.print("wifi body: ");
+    Serial.print(F("wifi body: "));
     Serial.println(req);
 #endif
 }
@@ -1447,8 +1466,8 @@ void reportNodeStatus(uint8_t id, uint8_t bit, unsigned long ts, unsigned long t
 
 #ifdef __DEBUG__
     Serial.print(getTimestamp());
-    Serial.print(": ");
-    Serial.print("free memory: ");
+    Serial.print(F(": "));
+    Serial.print(F("free memory: "));
     Serial.println(freeMemory());
 #endif
     broadcastMsg(json);
@@ -1473,8 +1492,8 @@ void reportSensorStatus(const uint8_t id, const int8_t value, const unsigned lon
 
 #ifdef __DEBUG__
     Serial.print(getTimestamp());
-    Serial.print(": ");
-    Serial.print("free memory: ");
+    Serial.print(F(": "));
+    Serial.print(F("free memory: "));
     Serial.println(freeMemory());
 #endif
     broadcastMsg(json);
@@ -1567,11 +1586,11 @@ void broadcastMsg(const char* msg) {
     if (r) {
         tsLastWifiSuccessTransmission = tsCurr;
 #ifdef __DEBUG__
-        Serial.println("wifi send: OK");
+        Serial.println(F("wifi send: OK"));
 #endif
     } else {
 #ifdef __DEBUG__
-        Serial.println("wifi send: FAILED");
+        Serial.println(F("wifi send: FAILED"));
 #endif
     }
 }
@@ -1608,11 +1627,11 @@ void processWifiReq() {
 
 bool parseCommand(char* command) {
 #ifdef __DEBUG__
-    Serial.print("parsing cmd: ");
+    Serial.print(F("parsing cmd: "));
     Serial.println(command);
     if (strstr(command, "AT") == command) {
         // this is AT command for ESP8266
-        Serial.print("sending to wifi: ");
+        Serial.print(F("sending to wifi: "));
         Serial.println(command);
         wifi->println(command);
         return true;
@@ -1621,8 +1640,8 @@ bool parseCommand(char* command) {
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.parseObject(command);
 #ifdef __DEBUG__
-    Serial.println("parsed");
-    Serial.print("free memory: ");
+    Serial.println(F("parsed"));
+    Serial.print(F("free memory: "));
     Serial.println(freeMemory());
 #endif
     if (root.success()) {
@@ -1728,7 +1747,7 @@ bool parseCommand(char* command) {
         return false;
     }
 #ifdef __DEBUG__
-    Serial.print("free memory: ");
+    Serial.print(F("free memory: "));
     Serial.println(freeMemory());
 #endif
     return true;
