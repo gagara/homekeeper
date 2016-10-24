@@ -145,12 +145,13 @@ static const char SERVER_IP_KEY[] = "sip";
 static const char SERVER_PORT_KEY[] = "sp";
 static const char LOCAL_IP_KEY[] = "lip";
 
-static const uint8_t JSON_MAX_WRITE_SIZE = 128;
-static const uint8_t JSON_MAX_READ_SIZE = 128;
+static const uint8_t JSON_MAX_SIZE = 128;
 static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
+
+static const uint8_t WIFI_MAX_AT_CMD_SIZE = 128;
+static const uint16_t WIFI_MAX_BUFFER_SIZE = 512;
+
 static const uint8_t RF_MAX_BODY_SIZE = 65;
-static const uint16_t WIFI_MAX_READ_SIZE = 512;
-static const uint16_t WIFI_MAX_WRITE_SIZE = 512;
 
 /* ===== End of Configuration ====== */
 
@@ -280,6 +281,7 @@ void setup() {
     pinMode(WIFI_RST_PIN, OUTPUT);
     wifiInit();
     wifiSetup();
+    wifiGetRemoteIP();
 #ifdef __DEBUG__
     Serial.print(F("free memory: "));
     Serial.println(freeMemory());
@@ -1019,8 +1021,8 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sen
             sensors.add(sens);
         }
 
-        char json[JSON_MAX_WRITE_SIZE];
-        root.printTo(json, JSON_MAX_WRITE_SIZE);
+        char json[JSON_MAX_SIZE];
+        root.printTo(json, JSON_MAX_SIZE);
 
         broadcastMsg(json);
     }
@@ -1145,7 +1147,10 @@ void wifiInit() {
 }
 
 void wifiSetup() {
-    char msg[128];
+#ifdef __DEBUG__
+    Serial.println(F("wifi setup"));
+#endif
+    char buff[WIFI_MAX_BUFFER_SIZE + 1];
     wifi->println(F("AT+RST"));
     delay(500);
     wifi->println(F("AT+CIPMODE=0"));
@@ -1179,30 +1184,29 @@ void wifiSetup() {
     if (wifiAPMode()) {
         // setup AP
         // note: only channel 5 supported. bug?
-        sprintf(msg, "AT+CWSAP_CUR=\"%s\",\"%s\",%d,%d", WIFI_LOCAL_AP, WIFI_LOCAL_PW, 5, 3);
+        sprintf(buff, "AT+CWSAP_CUR=\"%s\",\"%s\",%d,%d", WIFI_LOCAL_AP, WIFI_LOCAL_PW, 5, 3);
 #ifdef __DEBUG__
         Serial.print(F("wifi setup AP: "));
-        Serial.println(msg);
+        Serial.println(buff);
 #endif
-        wifi->println(msg);
+        wifi->println(buff);
         delay(100);
     }
     if (wifiStationMode()) {
         // join AP
-        sprintf(msg, "AT+CWJAP_CUR=\"%s\",\"%s\"", WIFI_REMOTE_AP, WIFI_REMOTE_PW);
+        sprintf(buff, "AT+CWJAP_CUR=\"%s\",\"%s\"", WIFI_REMOTE_AP, WIFI_REMOTE_PW);
 #ifdef __DEBUG__
         Serial.print(F("wifi join AP: "));
-        Serial.println(msg);
+        Serial.println(buff);
 #endif
-        wifi->println(msg);
+        wifi->println(buff);
     }
     delay(10000);
-    char s[WIFI_MAX_READ_SIZE + 1];
-    uint16_t l = wifi->readBytesUntil('\0', s, WIFI_MAX_READ_SIZE);
-    s[l] = '\0';
+    uint16_t l = wifi->readBytesUntil('\0', buff, WIFI_MAX_BUFFER_SIZE);
+    buff[l] = '\0';
 #ifdef __DEBUG__
     Serial.print(F("wifi setup rsp: "));
-    Serial.println(s);
+    Serial.println(buff);
 #endif
 }
 
@@ -1221,19 +1225,19 @@ void wifiCheckConnection() {
 
 bool wifiGetRemoteIP() {
     wifi->println(F("AT+CIFSR"));
-    char s[WIFI_MAX_READ_SIZE + 1];
-    uint16_t l = wifi->readBytesUntil('\0', s, WIFI_MAX_READ_SIZE);
-    s[l] = '\0';
+    char buff[WIFI_MAX_AT_CMD_SIZE + 1];
+    uint16_t l = wifi->readBytesUntil('\0', buff, WIFI_MAX_AT_CMD_SIZE);
+    buff[l] = '\0';
 #ifdef __DEBUG__
     Serial.print(F("free memory: "));
     Serial.println(freeMemory());
     Serial.print(F("wifi rq ip: "));
-    Serial.println(s);
+    Serial.println(buff);
 #endif
     int n = 0;
     int tmp[4];
     char *substr;
-    substr = strstr(s, ":STAIP,");
+    substr = strstr(buff, ":STAIP,");
     if (substr != NULL) {
         n += sscanf(substr, ":STAIP,\"%d.%d.%d.%d", &tmp[0], &tmp[1], &tmp[2], &tmp[3]);
     }
@@ -1259,59 +1263,55 @@ bool validIP(uint8_t ip[4]) {
 }
 
 bool wifiRsp(const char* body) {
-    char send[32];
-    sprintf(send, "AT+CIPSEND=%d,%d", CLIENT_ID, strlen(body));
+    char atcmd[WIFI_MAX_AT_CMD_SIZE + 1];
 
-    char close[16];
-    sprintf(close, "AT+CIPCLOSE=%d", CLIENT_ID);
-
-    if (!wifiWrite(send, ">"))
+    sprintf(atcmd, "AT+CIPSEND=%d,%d", CLIENT_ID, strlen(body));
+    if (!wifiWrite(atcmd, ">", 100, 3))
         return false;
 
     if (!wifiWrite(body, OK, 300, 1))
         return false;
 
-    if (!wifiWrite(close, OK))
+    sprintf(atcmd, "AT+CIPCLOSE=%d", CLIENT_ID);
+    if (!wifiWrite(atcmd, OK))
         return false;
+
     return true;
 }
 
 bool wifiRsp200() {
-    return wifiRsp("HTTP/1.0 200 OK\r\n\r\n");
+    return wifiRsp("HTTP/1.0 200 OK\r\n");
 }
 
 bool wifiRsp400() {
-    return wifiRsp("HTTP/1.0 400 Bad Request\r\n\r\n");
+    return wifiRsp("HTTP/1.0 400 Bad Request\r\n");
 }
 
 bool wifiSend(const char* msg) {
     if (validIP(IP) && validIP(SERVER_IP)) {
-        char body[WIFI_MAX_WRITE_SIZE];
-        sprintf(body,
+        char buff[WIFI_MAX_BUFFER_SIZE + 1];
+        char atcmd[WIFI_MAX_AT_CMD_SIZE];
+
+        sprintf(buff,
                 "POST / HTTP/1.1\r\nUser-Agent: ESP8266\r\nAccept: */*\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s\r\n",
                 strlen(msg), msg);
 
-        char connect[64];
-        sprintf(connect, "AT+CIPSTART=3,\"TCP\",\"%d.%d.%d.%d\",%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2],
+        sprintf(atcmd, "AT+CIPSTART=3,\"TCP\",\"%d.%d.%d.%d\",%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2],
                 SERVER_IP[3], SERVER_PORT);
-
-        char send[32];
-        sprintf(send, "AT+CIPSEND=3,%d", strlen(body));
-
-        char close[16];
-        sprintf(close, "AT+CIPCLOSE=3");
-        if (!wifiWrite(connect, "CONNECT", 300, 3))
+        if (!wifiWrite(atcmd, "CONNECT", 300, 3))
             return false;
 
-        if (!wifiWrite(send, ">", 300, 3))
+        sprintf(atcmd, "AT+CIPSEND=3,%d", strlen(buff));
+        if (!wifiWrite(atcmd, ">", 300, 3))
             return false;
 
-        if (!wifiWrite(body, OK, 300, 1))
+        if (!wifiWrite(buff, OK, 300, 1))
             return false;
 
-        wifiWrite(close, OK, 100, 3);
+        // do not wait for server response
+        sprintf(atcmd, "AT+CIPCLOSE=3");
+        return wifiWrite(atcmd, OK, 100, 3);
 
-        return true;
     } else {
         return false;
     }
@@ -1334,25 +1334,25 @@ bool wifiWrite(const char* msg, const char* rsp, const int wait, const uint8_t m
 }
 
 void wifiRead(char* req) {
-    char s[WIFI_MAX_READ_SIZE + 1];
-    uint16_t l = wifi->readBytesUntil('\0', s, WIFI_MAX_READ_SIZE);
-    s[l] = '\0';
+    char buff[WIFI_MAX_BUFFER_SIZE + 1];
+    uint16_t l = wifi->readBytesUntil('\0', buff, WIFI_MAX_BUFFER_SIZE);
+    buff[l] = '\0';
 #ifdef __DEBUG__
     Serial.print(F("wifi req len: "));
     Serial.println(l);
     Serial.print(F("wifi req: "));
-    Serial.println(s);
+    Serial.println(buff);
 #endif
     char *substr;
     int n = 0;
     int clientId;
-    substr = strstr(s, "+IPD");
+    substr = strstr(buff, "+IPD");
     if (substr != NULL) {
         n += sscanf(substr, "+IPD,%d", &clientId);
     }
     substr = strstr(substr, "\r\n\r\n");
-    char subbuf[JSON_MAX_READ_SIZE + 1];
-    strncpy(subbuf, substr, JSON_MAX_READ_SIZE);
+    char subbuf[JSON_MAX_SIZE + 1];
+    strncpy(subbuf, substr, JSON_MAX_SIZE);
     if (substr != NULL) {
         n += sscanf(subbuf, "\r\n\r\n%[^\n]", req);
     }
@@ -1461,8 +1461,8 @@ void reportNodeStatus(uint8_t id, uint8_t bit, unsigned long ts, unsigned long t
 
     root[NODES_KEY] = node;
 
-    char json[JSON_MAX_WRITE_SIZE];
-    root.printTo(json, JSON_MAX_WRITE_SIZE);
+    char json[JSON_MAX_SIZE];
+    root.printTo(json, JSON_MAX_SIZE);
 
 #ifdef __DEBUG__
     Serial.print(getTimestamp());
@@ -1487,8 +1487,8 @@ void reportSensorStatus(const uint8_t id, const int8_t value, const unsigned lon
 
     root[SENSORS_KEY] = sens;
 
-    char json[JSON_MAX_WRITE_SIZE];
-    root.printTo(json, JSON_MAX_WRITE_SIZE);
+    char json[JSON_MAX_SIZE];
+    root.printTo(json, JSON_MAX_SIZE);
 
 #ifdef __DEBUG__
     Serial.print(getTimestamp());
@@ -1502,6 +1502,7 @@ void reportSensorStatus(const uint8_t id, const int8_t value, const unsigned lon
 void reportConfiguration() {
     // check WiFi connectivity
     wifiCheckConnection();
+    char ip[16];
 
     reportSensorConfig(SENSOR_SUPPLY, SENSOR_SUPPLY_FACTOR);
     reportSensorConfig(SENSOR_REVERSE, SENSOR_REVERSE_FACTOR);
@@ -1513,13 +1514,11 @@ void reportConfiguration() {
     reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
     reportStringConfig(WIFI_LOCAL_AP_KEY, WIFI_LOCAL_AP);
     reportStringConfig(WIFI_LOCAL_PASSWORD_KEY, WIFI_LOCAL_PW);
-    char sIP[16];
-    sprintf(sIP, "%d.%d.%d.%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2], SERVER_IP[3]);
-    reportStringConfig(SERVER_IP_KEY, sIP);
+    sprintf(ip, "%d.%d.%d.%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2], SERVER_IP[3]);
+    reportStringConfig(SERVER_IP_KEY, ip);
     reportNumberConfig(SERVER_PORT_KEY, SERVER_PORT);
-    char lIP[16];
-    sprintf(lIP, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
-    reportStringConfig(LOCAL_IP_KEY, lIP);
+    sprintf(ip, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
+    reportStringConfig(LOCAL_IP_KEY, ip);
 }
 
 void reportSensorConfig(const uint8_t id, const double value) {
@@ -1533,8 +1532,8 @@ void reportSensorConfig(const uint8_t id, const double value) {
 
     root[SENSORS_KEY] = sens;
 
-    char json[JSON_MAX_WRITE_SIZE];
-    root.printTo(json, JSON_MAX_WRITE_SIZE);
+    char json[JSON_MAX_SIZE];
+    root.printTo(json, JSON_MAX_SIZE);
 
     broadcastMsg(json);
 }
@@ -1545,8 +1544,8 @@ void reportStringConfig(const char* key, const char* value) {
     root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
     root[key] = value;
 
-    char json[JSON_MAX_WRITE_SIZE];
-    root.printTo(json, JSON_MAX_WRITE_SIZE);
+    char json[JSON_MAX_SIZE];
+    root.printTo(json, JSON_MAX_SIZE);
 
     broadcastMsg(json);
 }
@@ -1557,8 +1556,8 @@ void reportNumberConfig(const char* key, const int value) {
     root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
     root[key] = value;
 
-    char json[JSON_MAX_WRITE_SIZE];
-    root.printTo(json, JSON_MAX_WRITE_SIZE);
+    char json[JSON_MAX_SIZE];
+    root.printTo(json, JSON_MAX_SIZE);
 
     broadcastMsg(json);
 }
@@ -1573,8 +1572,8 @@ void syncClocks() {
     root[TIMESTAMP_KEY] = tsStr;
     root[OVERFLOW_COUNT_KEY] = overflowCount;
 
-    char json[JSON_MAX_WRITE_SIZE];
-    root.printTo(json, JSON_MAX_WRITE_SIZE);
+    char json[JSON_MAX_SIZE];
+    root.printTo(json, JSON_MAX_SIZE);
 
     broadcastMsg(json);
 }
@@ -1596,27 +1595,27 @@ void broadcastMsg(const char* msg) {
 }
 
 void processRfMsg() {
-    char buff[JSON_MAX_READ_SIZE + 1];
+    char buff[JSON_MAX_SIZE + 1];
     rfRead(buff);
     parseCommand(buff);
 }
 
 void processSerialMsg() {
-    char buff[JSON_MAX_READ_SIZE + 1];
-    uint16_t l = Serial.readBytesUntil('\0', buff, JSON_MAX_READ_SIZE);
+    char buff[JSON_MAX_SIZE + 1];
+    uint16_t l = Serial.readBytesUntil('\0', buff, JSON_MAX_SIZE);
     buff[l] = '\0';
     parseCommand(buff);
 }
 
 void processBtMsg() {
-    char buff[JSON_MAX_READ_SIZE + 1];
-    uint16_t l = bt->readBytesUntil('\0', buff, JSON_MAX_READ_SIZE);
+    char buff[JSON_MAX_SIZE + 1];
+    uint16_t l = bt->readBytesUntil('\0', buff, JSON_MAX_SIZE);
     buff[l] = '\0';
     parseCommand(buff);
 }
 
 void processWifiReq() {
-    char buff[JSON_MAX_READ_SIZE + 1];
+    char buff[JSON_MAX_SIZE + 1];
     wifiRead(buff);
     if (parseCommand(buff)) {
         wifiRsp200();
