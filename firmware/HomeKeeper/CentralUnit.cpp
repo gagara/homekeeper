@@ -104,7 +104,7 @@ static const uint8_t STANDBY_HEATER_ROOM_MIN_TEMP_THRESHOLD = 12;
 static const uint8_t STANDBY_HEATER_ROOM_MAX_TEMP_THRESHOLD = 16;
 
 // reporting
-static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 3000;
+static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 5000;
 static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 5000;
 static const unsigned long SENSORS_READ_INTERVAL_MSEC = 5000;
 
@@ -1300,13 +1300,13 @@ bool wifiSend(const char* msg) {
 
         char close[16];
         sprintf(close, "AT+CIPCLOSE=3");
-        if (!wifiWrite(connect, "CONNECT", 100, 3))
+        if (!wifiWrite(connect, "CONNECT", 300, 3))
             return false;
 
-        if (!wifiWrite(send, ">", 100, 3))
+        if (!wifiWrite(send, ">", 300, 3))
             return false;
 
-        if (!wifiWrite(body, OK, 100, 1))
+        if (!wifiWrite(body, OK, 300, 1))
             return false;
 
         wifiWrite(close, OK, 100, 3);
@@ -1441,7 +1441,7 @@ void reportStatus() {
         default:
             break;
         }
-        tsLastStatusReport = getTimestamp();
+        tsLastStatusReport = tsCurr;
     }
 }
 
@@ -1582,17 +1582,17 @@ void syncClocks() {
 void broadcastMsg(const char* msg) {
     Serial.println(msg);
     bt->println(msg);
-    bool r = wifiSend(msg);
-    if (r) {
+    bool ok = wifiSend(msg);
+    if (ok) {
         tsLastWifiSuccessTransmission = tsCurr;
-#ifdef __DEBUG__
-        Serial.println(F("wifi send: OK"));
-#endif
-    } else {
-#ifdef __DEBUG__
-        Serial.println(F("wifi send: FAILED"));
-#endif
     }
+#ifdef __DEBUG__
+    if (ok) {
+        Serial.println(F("wifi send: OK"));
+    } else {
+        Serial.println(F("wifi send: FAILED"));
+    }
+#endif
 }
 
 void processRfMsg() {

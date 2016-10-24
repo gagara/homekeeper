@@ -326,6 +326,8 @@ void wifiSetup() {
     delay(100);
     wifi.println(F("AT+CIPSERVER=1,80"));
     delay(100);
+    wifi.println(F("AT+CIPSTO=5"));
+    delay(100);
     if (strlen(WIFI_REMOTE_AP) + strlen(WIFI_REMOTE_PW) > 0) {
         // join AP
         sprintf(msg, "AT+CWJAP_CUR=\"%s\",\"%s\"", WIFI_REMOTE_AP, WIFI_REMOTE_PW);
@@ -401,27 +403,42 @@ bool validIP(uint8_t ip[4]) {
 
 bool wifiSend(const char* msg) {
     if (validIP(IP) && validIP(SERVER_IP)) {
-        char body[WIFI_MAX_WRITE_SIZE];
-        sprintf(body,
-                "POST / HTTP/1.1\r\nUser-Agent: ESP8266\r\nAccept: */*\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s\r\n",
-                strlen(msg), msg);
+        char buff[WIFI_MAX_WRITE_SIZE];
 
         char connect[64];
         sprintf(connect, "AT+CIPSTART=3,\"TCP\",\"%d.%d.%d.%d\",%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2],
                 SERVER_IP[3], SERVER_PORT);
 
         char send[32];
-        sprintf(send, "AT+CIPSEND=3,%d", strlen(body));
+        sprintf(send, "AT+CIPSEND=3,%d", strlen(buff));
         char close[16];
         sprintf(close, "AT+CIPCLOSE=3");
+
         if (!wifiWrite(connect, "CONNECT", 300, 3))
             return false;
 
         if (!wifiWrite(send, ">", 300, 3))
             return false;
 
-        if (!wifiWrite(body, OK, 300, 1))
+        sprintf(buff,
+                "POST / HTTP/1.1\r\nUser-Agent: ESP8266\r\nAccept: */*\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s\r\n",
+                strlen(msg), msg);
+
+        if (!wifiWrite(buff, OK, 300, 1))
             return false;
+
+        delay(1000);
+        if (wifi.available()) {
+            char s[32 + 1];
+            uint16_t l = wifi.readBytesUntil('\0', s, 32);
+            s[l] = '\0';
+#ifdef __DEBUG__
+            Serial.print(F("wifi req len: "));
+            Serial.println(l);
+            Serial.print(F("wifi req: "));
+            Serial.println(s);
+#endif
+        }
 
         wifiWrite(close, OK, 300, 3);
 
@@ -545,17 +562,18 @@ void reportStringConfig(const char* key, const char* value) {
 
 void broadcastMsg(const char* msg) {
     Serial.println(msg);
-    bool r = wifiSend(msg);
-    if (r) {
+    bool ok = wifiSend(msg);
+    if (ok) {
+        //TODO: check response
         tsLastWifiSuccessTransmission = tsCurr;
-#ifdef __DEBUG__
-        Serial.println(F("wifi send: OK"));
-#endif
-    } else {
-#ifdef __DEBUG__
-        Serial.println(F("wifi send: FAILED"));
-#endif
     }
+#ifdef __DEBUG__
+    if (ok) {
+        Serial.println(F("wifi send: OK"));
+    } else {
+        Serial.println(F("wifi send: FAILED"));
+    }
+#endif
 }
 
 void processSerialMsg() {
