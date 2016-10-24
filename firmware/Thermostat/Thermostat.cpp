@@ -437,7 +437,8 @@ bool wifiSend(const char* msg) {
             }
         }
         sprintf(atcmd, "AT+CIPCLOSE=3");
-        return wifiWrite(atcmd, OK, 300, 3) && rsp;
+        wifiWrite(atcmd, OK, 100, 1);
+        return rsp;
     } else {
         return false;
     }
