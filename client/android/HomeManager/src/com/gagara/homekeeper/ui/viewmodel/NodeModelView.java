@@ -121,7 +121,6 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
         if (model.isInitialized()) {
             StringBuilder configStr = new StringBuilder();
             if (model.getSensorsThresholds().size() > 0) {
-                configStr.append(resources.getString(R.string.node_config_sensors_template));
                 for (int i = 0; i < model.getSensorsThresholds().size(); i++) {
                     SensorModel s = model.getSensorsThresholds().valueAt(i);
                     String value = "?";
@@ -132,8 +131,9 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
                     if (ViewUtils.validSensor(s)) {
                         sensorName = resources.getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId()));
                     }
-                    configStr.append(String.format(resources.getString(R.string.node_config_sensor_template),
-                            sensorName, value, resources.getString(getSensorSignResourceByType(s.getType()))));
+                    configStr.append(String.format(resources.getString(R.string.node_config_sensors_template), String
+                            .format(resources.getString(R.string.node_config_sensor_template), sensorName, value,
+                                    resources.getString(getSensorSignResourceByType(s.getType())))));
                 }
             }
             configView.setText(configStr.toString());

@@ -730,20 +730,28 @@
                     android:paddingLeft="@dimen/element_name_padding"
                     android:paddingRight="@dimen/element_name_padding" >
 
-                    <TextView
-                        android:id="@+id/nodeSbHeaterName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="@string/node_sb_heater_name"
-                        android:textSize="@dimen/element_name_textSize" />
+	                <LinearLayout
+	                    android:id="@+id/nodeSbHeaterInfoTop"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="0dp"
+	                    android:layout_weight="1"
+	                    android:orientation="horizontal" >
 
-                    <TextView
-                        android:id="@+id/nodeSbHeaterConfig"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:textSize="@dimen/element_config_textSize" />
+	                    <TextView
+	                        android:id="@+id/nodeSbHeaterName"
+	                        android:layout_width="fill_parent"
+	                        android:layout_height="wrap_content"
+	                        android:gravity="start"
+	                        android:text="@string/node_sb_heater_name"
+	                        android:textSize="@dimen/element_name_textSize" />
+
+	                    <TextView
+	                        android:id="@+id/nodeSbHeaterConfig"
+	                        android:layout_width="match_parent"
+	                        android:layout_height="wrap_content"
+	                        android:gravity="start"
+	                        android:textSize="@dimen/element_config_textSize" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/nodeSbHeaterDetails"

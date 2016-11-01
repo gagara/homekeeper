@@ -57,9 +57,9 @@
     <string name="sensor_tank_name">Tank</string>
     <string name="sensor_boiler_name">Boiler</string>
     <string name="sensor_mix_name">Mix</string>
-    <string name="sensor_sb_heater_name">Standby Heater</string>
-    <string name="sensor_room1_temp_name">Room1 Temp</string>
-    <string name="sensor_room1_hum_name">Room1 Hum</string>
+    <string name="sensor_sb_heater_name">SB Heater</string>
+    <string name="sensor_room1_temp_name">R1 Temp</string>
+    <string name="sensor_room1_hum_name">R1 Hum</string>
 
     <string name="sensor_value_template">%1$s%2$s</string>
     
@@ -81,7 +81,7 @@
     <string name="node_circulation_name">Circulation</string>
     <string name="node_boilder_name">Boiler</string>
     <string name="node_mix_name">Mix</string>
-    <string name="node_sb_heater_name">Standby Heater</string>
+    <string name="node_sb_heater_name">SB Heater</string>
 
     <string name="node_details_unknown"></string>
     <string name="node_details_switch_on">ON:</string>
@@ -96,7 +96,7 @@
     <string name="node_details_sensors_template">\nSensors: </string>
     <string name="node_details_sensor_template">%1$s:%2$s%3$s;</string>
 
-    <string name="node_config_sensors_template">\nSensors: </string>
+    <string name="node_config_sensors_template">[%1$s]</string>
     <string name="node_config_sensor_template">%1$s:%2$s%3$s;</string>
 
     <string name="service_state_init">Connecting</string>
