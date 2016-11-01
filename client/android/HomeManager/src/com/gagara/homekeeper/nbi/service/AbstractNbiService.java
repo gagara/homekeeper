@@ -39,8 +39,10 @@ import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.nbi.request.ClockSyncRequest;
 import com.gagara.homekeeper.nbi.request.Request;
+import com.gagara.homekeeper.nbi.response.ConfigurationResponse;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
 import com.gagara.homekeeper.nbi.response.NodeStateChangeResponse;
+import com.gagara.homekeeper.nbi.response.SensorThresholdConfigurationResponse;
 import com.gagara.homekeeper.ui.view.ViewUtils;
 import com.gagara.homekeeper.ui.viewmodel.TopModelView;
 
@@ -213,6 +215,27 @@ public abstract class AbstractNbiService extends Service {
 
                         notifyStatusChange(String.format(getResources().getString(R.string.service_nsc_message_status),
                                 title, name));
+                    }
+                } else if (msgType == ControllerConfig.MessageType.CONFIGURATION) {
+                    ConfigurationResponse conf = new ConfigurationResponse(clocksDelta).fromJson(message);
+                    if (conf != null) {
+                        if (conf instanceof SensorThresholdConfigurationResponse) {
+                            SensorThresholdConfigurationResponse sensorConf = (SensorThresholdConfigurationResponse) conf;
+                            intent.putExtra(Constants.DATA_KEY, sensorConf);
+                            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+                            String title = null;
+                            String name = null;
+                            title = getResources().getString(R.string.sensor_title);
+                            if (ViewUtils.validSensor(sensorConf.getData())) {
+                                name = getResources().getString(
+                                        TopModelView.SENSORS_NAME_VIEW_MAP.get(sensorConf.getData().getId()));
+                            } else {
+                                name = sensorConf.getData().getId() + "";
+                            }
+                            notifyStatusChange(String.format(
+                                    getResources().getString(R.string.service_cfg_message_status), title, name));
+                        }
                     }
                 } else {
                     // unknown message

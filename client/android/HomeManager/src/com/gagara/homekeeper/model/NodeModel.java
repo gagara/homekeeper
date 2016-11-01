@@ -15,6 +15,7 @@ public class NodeModel implements Model {
     private Boolean forcedMode = null;
     private Date forcedModeTimestamp = UNDEFINED_DATE;
     private SparseArray<SensorModel> sensors = new SparseArray<SensorModel>();
+    private SparseArray<SensorModel> sensorsThresholds = new SparseArray<SensorModel>();
 
     public NodeModel(int id) {
         this.id = id;
@@ -43,6 +44,14 @@ public class NodeModel implements Model {
             }
             bundle.putIntArray(prefix + "node_" + id + "_sensors_ids", ids);
         }
+        if (sensorsThresholds.size() > 0) {
+            int[] ids = new int[sensorsThresholds.size()];
+            for (int i = 0; i < sensorsThresholds.size(); i++) {
+                sensorsThresholds.valueAt(i).saveState(bundle, prefix + "node_" + id + "_sensors_thresholds_");
+                ids[i] = sensorsThresholds.keyAt(i);
+            }
+            bundle.putIntArray(prefix + "node_" + id + "_sensors_thresholds_ids", ids);
+        }
     }
 
     @Override
@@ -69,6 +78,15 @@ public class NodeModel implements Model {
                 sensors.put(ids[i], sm);
             }
         }
+        int[] thIds = bundle.getIntArray(prefix + "node_" + id + "_sensors_thresholds_ids");
+        if (thIds != null) {
+            sensorsThresholds.clear();
+            for (int i = 0; i < thIds.length; i++) {
+                SensorModel sm = new SensorModel(thIds[i]);
+                sm.restoreState(bundle, prefix + "node_" + id + "_sensors_thresholds_");
+                sensorsThresholds.put(thIds[i], sm);
+            }
+        }
     }
 
     public void update(NodeModel newModel) {
@@ -81,6 +99,9 @@ public class NodeModel implements Model {
         forcedModeTimestamp = newModel.getForcedModeTimestamp();
         for (int i = 0; i < newModel.getSensors().size(); i++) {
             sensors.put(newModel.getSensors().keyAt(i), newModel.getSensors().valueAt(i));
+        }
+        for (int i = 0; i < newModel.getSensorsThresholds().size(); i++) {
+            sensorsThresholds.put(newModel.getSensorsThresholds().keyAt(i), newModel.getSensorsThresholds().valueAt(i));
         }
     }
 
@@ -139,5 +160,17 @@ public class NodeModel implements Model {
 
     public void addSensor(SensorModel sensor) {
         this.sensors.put(sensor.getId(), sensor);
+    }
+
+    public SparseArray<SensorModel> getSensorsThresholds() {
+        return sensorsThresholds;
+    }
+
+    public void setSensorsThresholds(SparseArray<SensorModel> sensorsThresholds) {
+        this.sensorsThresholds = sensorsThresholds;
+    }
+
+    public void addSensorThreshold(SensorModel sensor) {
+        this.sensorsThresholds.put(sensor.getId(), sensor);
     }
 }

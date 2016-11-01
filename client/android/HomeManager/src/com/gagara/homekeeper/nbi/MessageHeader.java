@@ -6,35 +6,23 @@ import android.os.Parcel;
 
 public abstract class MessageHeader {
 
-//    protected String srcAddress;
     protected Date timestamp;
     protected long clocksDelta;
 
     public void writeToParcel(Parcel out, int flags) {
-//        out.writeString(srcAddress);
         out.writeLong(timestamp.getTime());
         out.writeLong(clocksDelta);
     }
 
     public MessageHeader() {
-//        this.srcAddress = null;
         this.timestamp = new Date();
         this.clocksDelta = Long.MIN_VALUE;
     }
 
     public MessageHeader(Parcel in) {
-//        srcAddress = in.readString();
         timestamp = new Date(in.readLong());
         clocksDelta = in.readLong();
     }
-
-//    public String getSrcAddress() {
-//        return srcAddress;
-//    }
-//
-//    public void setSrcAddress(String srcAddress) {
-//        this.srcAddress = srcAddress;
-//    }
 
     public Date getTimestamp() {
         return timestamp;

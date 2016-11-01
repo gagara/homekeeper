@@ -12,6 +12,7 @@ import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_SB_HEATER_ID;
 
 import java.util.Date;
 import java.util.Map.Entry;
@@ -45,6 +46,7 @@ import com.gagara.homekeeper.nbi.request.CurrentStatusRequest;
 import com.gagara.homekeeper.nbi.request.NodeStateChangeRequest;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
 import com.gagara.homekeeper.nbi.response.NodeStateChangeResponse;
+import com.gagara.homekeeper.nbi.response.SensorThresholdConfigurationResponse;
 import com.gagara.homekeeper.nbi.service.BluetoothNbiService;
 import com.gagara.homekeeper.nbi.service.ProxyNbiService;
 import com.gagara.homekeeper.nbi.service.ServiceState;
@@ -311,6 +313,18 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                                     getResources().getString(TopModelView.NODES_NAME_VIEW_MAP.get(node.getId()))));
                         }
                         Toast.makeText(MainActivity.this, msg, LENGTH_LONG).show();
+                    }
+                } else if (data instanceof SensorThresholdConfigurationResponse) {
+                    SensorThresholdConfigurationResponse cfg = (SensorThresholdConfigurationResponse) data;
+                    if (cfg.getData() != null) {
+                        SensorModel sensor = cfg.getData();
+                        // hardcoded for now
+                        int nodeId = NODE_SB_HEATER_ID;
+                        if (ViewUtils.validSensor(sensor)) {
+                            modelView.getNode(nodeId).getModel().addSensorThreshold(sensor);
+                            modelView.getNode(nodeId).render();
+                            latestTimestamp = cfg.getTimestamp();
+                        }
                     }
                 } else {
                     // unknown data. ignoring

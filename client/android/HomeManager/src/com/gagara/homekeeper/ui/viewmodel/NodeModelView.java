@@ -10,6 +10,7 @@ import java.text.NumberFormat;
 import java.util.Date;
 
 import android.text.format.DateFormat;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -22,19 +23,31 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
 
     private static final String DATE_FORMAT = "HH:mm dd/MM";
 
+    protected View configView;
+
     public NodeModelView(int id) {
         model = new NodeModel(id);
+    }
+
+    public View getConfigView() {
+        return configView;
+    }
+
+    public void setConfigView(View configView) {
+        this.configView = configView;
     }
 
     @Override
     public void render() {
         ToggleButton valueView = (ToggleButton) this.valueView;
         TextView detailsView = (TextView) this.detailsView;
+        TextView configView = (TextView) this.configView;
         NumberFormat f = new DecimalFormat("#0");
         Date currDate = new Date();
         String elapsedMinsStr = "0";
         String remainingMinsStr = "0";
 
+        // details
         if (model.isInitialized()) {
             valueView.setChecked(model.getState());
             valueView.setEnabled(true);
@@ -102,6 +115,30 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
             valueView.setChecked(true);
             valueView.setEnabled(false);
             detailsView.setText(R.string.node_details_unknown);
+        }
+
+        // config
+        if (model.isInitialized()) {
+            StringBuilder configStr = new StringBuilder();
+            if (model.getSensorsThresholds().size() > 0) {
+                configStr.append(resources.getString(R.string.node_config_sensors_template));
+                for (int i = 0; i < model.getSensorsThresholds().size(); i++) {
+                    SensorModel s = model.getSensorsThresholds().valueAt(i);
+                    String value = "?";
+                    if (s.getValue() != UNDEFINED_SENSOR_VALUE && s.getValue() != UNKNOWN_SENSOR_VALUE) {
+                        value = f.format(s.getValue());
+                    }
+                    String sensorName = "id_" + s.getId();
+                    if (ViewUtils.validSensor(s)) {
+                        sensorName = resources.getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId()));
+                    }
+                    configStr.append(String.format(resources.getString(R.string.node_config_sensor_template),
+                            sensorName, value, resources.getString(getSensorSignResourceByType(s.getType()))));
+                }
+            }
+            configView.setText(configStr.toString());
+        } else {
+            configView.setText("");
         }
     }
 }

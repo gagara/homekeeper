@@ -76,6 +76,7 @@ static const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + 32; // 4 b
 static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + 4; // 2 bytes
 static const int WIFI_LOCAL_AP_EEPROM_ADDR = SERVER_PORT_EEPROM_ADDR + 2; // 32 bytes
 static const int WIFI_LOCAL_PW_EEPROM_ADDR = WIFI_LOCAL_AP_EEPROM_ADDR + 32; // 32 bytes
+static const int STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR = WIFI_LOCAL_PW_EEPROM_ADDR + 32; // 1 byte
 
 // Primary Heater
 static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
@@ -98,10 +99,8 @@ static const unsigned long CIRCULATION_ACTIVE_PERIOD_MSEC = 300000; // 5m
 static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 1800000; // 30m
 
 // Standby Heater
-static const uint8_t STANDBY_HEATER_WATER_MIN_TEMP_THRESHOLD = 12;
-static const uint8_t STANDBY_HEATER_WATER_MAX_TEMP_THRESHOLD = 16;
-static const uint8_t STANDBY_HEATER_ROOM_MIN_TEMP_THRESHOLD = 12;
-static const uint8_t STANDBY_HEATER_ROOM_MAX_TEMP_THRESHOLD = 16;
+static const uint8_t STANDBY_HEATER_WATER_TEMP_THRESHOLD = 10;
+static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 
 // reporting
 static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 5000;
@@ -167,6 +166,7 @@ int8_t tempMix = UNKNOWN_SENSOR_VALUE;
 int8_t tempSbHeater = UNKNOWN_SENSOR_VALUE;
 int8_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
 int8_t humRoom1 = UNKNOWN_SENSOR_VALUE;
+int8_t STANDBY_HEATER_ROOM_TEMP_THRESHOLD = STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
 
 // stats
 int8_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
@@ -344,6 +344,9 @@ void setup() {
 
     // read sensors calibration factors from EEPROM
     loadSensorsCalibrationFactors();
+
+    // restore sensor settings
+    STANDBY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
 
     // init RF24 radio
     radio.begin();
@@ -686,23 +689,24 @@ void processStandbyHeater() {
         int8_t sensVals[] = { tempTank, tempRoom1 };
         if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
             // heater is ON
-            if (tempTank >= STANDBY_HEATER_WATER_MAX_TEMP_THRESHOLD
-                    || (tsLastSensorTempRoom1 != 0
-                            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-                            && tempRoom1 >= STANDBY_HEATER_ROOM_MAX_TEMP_THRESHOLD)) {
-                // temp in (tank || room1) is high enough
-                // turn heater OFF
+            if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
+                // primary heater is on
+                // turn standby heater OFF
                 switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
             } else {
-                // temp in (tank && room1) is too low
-                // do nothing
+                // primary heater is off
+                if (tempTank > STANDBY_HEATER_WATER_TEMP_THRESHOLD && room1TempReachedThreshold()) {
+                    // temp in (tank && room1) is high enough
+                    // turn heater OFF
+                    switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
+                } else {
+                    // temp in (tank || room1) is too low
+                    // do nothing
+                }
             }
         } else {
             // heater is OFF
-            if (tempTank <= STANDBY_HEATER_WATER_MIN_TEMP_THRESHOLD
-                    || (tsLastSensorTempRoom1 != 0
-                            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-                            && tempRoom1 <= STANDBY_HEATER_ROOM_MIN_TEMP_THRESHOLD)) {
+            if (tempTank < STANDBY_HEATER_WATER_TEMP_THRESHOLD || room1TempFailedThreshold()) {
                 // temp in (tank || room1) is too low
                 // turn heater ON
                 switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
@@ -715,6 +719,21 @@ void processStandbyHeater() {
 }
 
 /* ============ Helper methods ============ */
+
+bool room1TempReachedThreshold() {
+    return (tsLastSensorTempRoom1 != 0
+            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+            && tempRoom1 > STANDBY_HEATER_ROOM_TEMP_THRESHOLD)
+            || (tsLastSensorTempRoom1 != 0
+                    && diffTimestamps(tsCurr, tsLastSensorTempRoom1) >= HEATING_ROOM_1_MAX_VALIDITY_PERIOD)
+            || (tsLastSensorTempRoom1 == 0);
+}
+
+bool room1TempFailedThreshold() {
+    return (tsLastSensorTempRoom1 != 0
+            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+            && tempRoom1 < STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+}
 
 void validateStringParam(char* str, int maxSize) {
     char* ptr = str;
@@ -1424,6 +1443,7 @@ void reportStatus() {
             break;
         case NODE_SB_HEATER:
             reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
+            reportSensorConfig(SENSOR_TEMP_ROOM_1, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
             nextEntryReport = NODE_HOTWATER;
             break;
         case NODE_HOTWATER:
@@ -1510,6 +1530,7 @@ void reportConfiguration() {
     reportSensorConfig(SENSOR_BOILER, SENSOR_BOILER_FACTOR);
     reportSensorConfig(SENSOR_MIX, SENSOR_MIX_FACTOR);
     reportSensorConfig(SENSOR_SB_HEATER, SENSOR_SB_HEATER_FACTOR);
+    reportSensorConfig(SENSOR_TEMP_ROOM_1, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
     reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
     reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
     reportStringConfig(WIFI_LOCAL_AP_KEY, WIFI_LOCAL_AP);
@@ -1713,6 +1734,14 @@ bool parseCommand(char* command) {
                     } else if (id == SENSOR_SB_HEATER) {
                         writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 20, cf);
                         SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 20);
+                    }
+                } else if (sensor.containsKey(ID_KEY) && sensor.containsKey(VALUE_KEY)) {
+                    uint8_t id = sensor[ID_KEY].as<uint8_t>();
+                    uint8_t val = sensor[VALUE_KEY].as<uint8_t>();
+                    if (id == SENSOR_TEMP_ROOM_1) {
+                        EEPROM.writeByte(STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR, val);
+                        STANDBY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(
+                                STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
                     }
                 }
             } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {

@@ -9,13 +9,13 @@ from flask import request, Response
 
 
 app = Flask(__name__)
+app.config.from_pyfile('proxy.conf')
 
-es = Elasticsearch()
 ####
 #app.debug = True
 ####
 
-app.config.from_pyfile('proxy.conf')
+es = Elasticsearch(hosts=[app.config['ELASTICSEARCH_HOST']], port=app.config['ELASTICSEARCH_PORT'])
 
 ####### Auth decorator #########
 def check_auth(username, password):
@@ -81,6 +81,7 @@ def client_request():
             try:
                 return jsonify(query_logs(timestamp)), 200
             except Exception as e:
+                if app.debug : print(e)
                 return (str(e), 504)
         else:
             try:
@@ -88,8 +89,10 @@ def client_request():
                 logserver_send(req)
                 return jsonify({'result': 'OK'}), 200
             except Exception as e:
+                if app.debug : print(e)
                 return (str(e), 504)
     except Exception as e:
+        if app.debug : print(e)
         return (str(e), 400)
 
 

@@ -6,7 +6,7 @@ public class ControllerConfig {
     }
 
     public enum MessageType {
-        CURRENT_STATUS_REPORT("csr"), NODE_STATE_CHANGED("nsc"), CLOCK_SYNC("cls"), LOG("log");
+        CURRENT_STATUS_REPORT("csr"), NODE_STATE_CHANGED("nsc"), CLOCK_SYNC("cls"), LOG("log"), CONFIGURATION("cfg");
 
         private String code;
 

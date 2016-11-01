@@ -544,6 +544,13 @@
                         android:textSize="@dimen/element_name_textSize" />
 
                     <TextView
+                        android:id="@+id/nodeSupplyConfig"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_config_textSize" />
+
+                    <TextView
                         android:id="@+id/nodeSupplyDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -600,6 +607,13 @@
                         android:gravity="start"
                         android:text="@string/node_heating_name"
                         android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/nodeHeatingConfig"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_config_textSize" />
 
                     <TextView
                         android:id="@+id/nodeHeatingDetails"
@@ -660,6 +674,13 @@
                         android:textSize="@dimen/element_name_textSize" />
 
                     <TextView
+                        android:id="@+id/nodeFloorConfig"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_config_textSize" />
+
+                    <TextView
                         android:id="@+id/nodeFloorDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -716,6 +737,13 @@
                         android:gravity="start"
                         android:text="@string/node_sb_heater_name"
                         android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/nodeSbHeaterConfig"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_config_textSize" />
 
                     <TextView
                         android:id="@+id/nodeSbHeaterDetails"
@@ -776,6 +804,13 @@
                         android:textSize="@dimen/element_name_textSize" />
 
                     <TextView
+                        android:id="@+id/nodeHotwaterConfig"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_config_textSize" />
+
+                    <TextView
                         android:id="@+id/nodeHotwaterDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -834,6 +869,13 @@
                         android:textSize="@dimen/element_name_textSize" />
 
                     <TextView
+                        android:id="@+id/nodeCirculationConfig"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_config_textSize" />
+
+                    <TextView
                         android:id="@+id/nodeCirculationDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -890,6 +932,13 @@
                         android:gravity="start"
                         android:text="@string/node_boilder_name"
                         android:textSize="@dimen/element_name_textSize" />
+
+                    <TextView
+                        android:id="@+id/nodeBoilerConfig"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="@dimen/element_config_textSize" />
 
                     <TextView
                         android:id="@+id/nodeBoilerDetails"

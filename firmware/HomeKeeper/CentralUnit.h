@@ -28,6 +28,8 @@ void processHotWaterCircuit();
 void processCirculationCircuit();
 void processBoilerHeater();
 void processStandbyHeater();
+bool room1TempReachedThreshold();
+bool room1TempFailedThreshold();
 void validateStringParam(char* str, int maxSize);
 void loadSensorsCalibrationFactors();
 double readSensorCalibrationFactor(int offset);
