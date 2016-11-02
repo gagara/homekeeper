@@ -25,6 +25,14 @@ import com.gagara.homekeeper.model.SensorModel.SensorType;
 
 public class ViewUtils {
 
+    private static final int SENSOR_DETAILS_VIEW_MOD = 100;
+    private static final int SENSOR_VALUE_VIEW_MOD = 1000;
+
+    private static final int NODE_DETAILS_VIEW_MOD = 100;
+    private static final int NODE_VALUE_VIEW_MOD = 1000;
+    private static final int NODE_CONFIG_VIEW_MOD = 10000;
+    private static final int NODE_INFO_VIEW_MOD = 100000;
+
     public static String buildElapseTimeString(Date hi, Date lo) {
         String result;
         double delta = hi.getTime() - lo.getTime();
@@ -62,5 +70,37 @@ public class ViewUtils {
         int id = node != null ? node.getId() : -1;
         return id == NODE_SUPPLY_ID || id == NODE_HEATING_ID || id == NODE_FLOOR_ID || id == NODE_HOTWATER_ID
                 || id == NODE_CIRCULATION_ID || id == NODE_BOILER_ID || id == NODE_SB_HEATER_ID;
+    }
+
+    public static int getSensorDetailsViewId(int id) {
+        return id * SENSOR_DETAILS_VIEW_MOD;
+    }
+
+    public static int getSensorValueViewId(int id) {
+        return id * SENSOR_VALUE_VIEW_MOD;
+    }
+
+    public static int getNodeDetailsViewId(int id) {
+        return id * NODE_DETAILS_VIEW_MOD;
+    }
+
+    public static int getNodeValueViewId(int id) {
+        return id * NODE_VALUE_VIEW_MOD;
+    }
+
+    public static int getNodeConfigViewId(int id) {
+        return id * NODE_CONFIG_VIEW_MOD;
+    }
+
+    public static int getNodeInfoViewId(int id) {
+        return id * NODE_INFO_VIEW_MOD;
+    }
+
+    public static int getNodeIdByValueViewId(int viewId) {
+        return viewId / NODE_VALUE_VIEW_MOD;
+    }
+
+    public static int getNodeIdByInfoViewId(int viewId) {
+        return viewId / NODE_INFO_VIEW_MOD;
     }
 }

@@ -18,22 +18,31 @@ import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_TEMP_ID
 import java.util.Date;
 import java.util.Map.Entry;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseIntArray;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.activity.ConfigureNodeDialog.ConfigureNodeListener;
@@ -62,6 +71,8 @@ import com.gagara.homekeeper.utils.NetworkUtils;
 
 public class MainActivity extends ActionBarActivity implements SwitchNodeStateListener, ConfigureNodeListener {
 
+    private View view;
+
     private BroadcastReceiver btStateChangedReceiver;
     private BroadcastReceiver proxyStateChangedReceiver;
     private BroadcastReceiver dataReceiver;
@@ -70,11 +81,202 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
 
     private TopModelView modelView;
 
+    @SuppressLint({ "InlinedApi", "InflateParams" })
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        LayoutInflater inflater = getLayoutInflater();
+//        view = inflater.inflate(R.layout.activity_main, null, false);
+//
+        ViewGroup contentRoot = (ViewGroup) this.findViewById(R.id.contentRootNode);
+
+        int pos = 0;
+        // sensors
+        for (Entry<Integer, Integer> e : TopModelView.SENSORS_NAME_VIEW_MAP.entrySet()) {
+            // outer
+            LinearLayout outer = new LinearLayout(this);
+            outer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            if (pos % 2 == 0) {
+                outer.setBackgroundColor(getResources().getColor(R.color.row_background_1));
+            } else {
+                outer.setBackgroundColor(getResources().getColor(R.color.row_background_2));
+            }
+            outer.setGravity(Gravity.CENTER);
+            outer.setOrientation(LinearLayout.HORIZONTAL);
+            outer.setPadding(getResources().getDimension(R.dimen.row_padding), getResources()
+                    .getDimension(R.dimen.row_padding),
+                    getResources().getDimension(R.dimen.row_padding),
+                    getResources().getDimension(R.dimen.row_padding));
+
+            // icon
+            ImageView icon = new ImageView(this);
+            icon.setLayoutParams(new TableLayout.LayoutParams(R.dimen.row_icon_width, R.dimen.row_icon_height, 0f));
+            icon.setContentDescription(getResources().getString(R.string.sensor_icon_descr));
+            icon.setImageResource(R.drawable.ic_info_outline_black_24dp);
+
+            // info
+            LinearLayout info = new LinearLayout(this);
+            info.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            info.setOrientation(LinearLayout.VERTICAL);
+            info.setPadding(R.dimen.element_name_padding, 0, R.dimen.element_name_padding, 0);
+
+            // name
+            TextView name = new TextView(this);
+            name.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            name.setGravity(Gravity.START);
+            name.setTextSize(R.dimen.element_name_textSize);
+            name.setText(e.getValue());
+
+            // details
+            TextView details = new TextView(this);
+            details.setId(ViewUtils.getSensorDetailsViewId(e.getKey()));
+            details.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            details.setGravity(Gravity.START);
+            details.setTextSize(R.dimen.element_details_textSize);
+            details.setTypeface(details.getTypeface(), Typeface.ITALIC);
+
+            // value
+            TextView value = new TextView(this);
+            value.setId(ViewUtils.getSensorValueViewId(e.getKey()));
+            value.setLayoutParams(new TableLayout.LayoutParams(R.dimen.element_value_width,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, 0f));
+            value.setTextSize(R.dimen.element_value_textSize);
+
+            info.addView(name);
+            info.addView(details);
+
+            outer.addView(icon);
+            outer.addView(info);
+            outer.addView(value);
+
+            contentRoot.addView(outer);
+            pos++;
+        }
+
+        // nodes
+        for (Entry<Integer, Integer> e : TopModelView.NODES_NAME_VIEW_MAP.entrySet()) {
+            // outer
+            LinearLayout outer = new LinearLayout(this);
+            outer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            if (pos % 2 == 0) {
+                outer.setBackgroundColor(getResources().getColor(R.color.row_background_1));
+            } else {
+                outer.setBackgroundColor(getResources().getColor(R.color.row_background_2));
+            }
+            outer.setGravity(Gravity.CENTER);
+            outer.setOrientation(LinearLayout.HORIZONTAL);
+            outer.setPadding(R.dimen.row_padding, R.dimen.row_padding, R.dimen.row_padding, R.dimen.row_padding);
+
+            // icon
+            ImageView icon = new ImageView(this);
+            icon.setLayoutParams(new TableLayout.LayoutParams(R.dimen.row_icon_width, R.dimen.row_icon_height, 0f));
+            icon.setContentDescription(getResources().getString(R.string.node_icon_descr));
+            icon.setImageResource(R.drawable.ic_settings_applications_black_24dp);
+
+            // info
+            LinearLayout info = new LinearLayout(this);
+            info.setId(ViewUtils.getNodeInfoViewId(e.getKey()));
+            info.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            info.setOrientation(LinearLayout.VERTICAL);
+            info.setPadding(R.dimen.element_name_padding, 0, R.dimen.element_name_padding, 0);
+            info.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    onConfigNode(v);
+                    return false;
+                }
+            });
+
+            // infoTop
+            LinearLayout infoTop = new LinearLayout(this);
+            infoTop.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            infoTop.setOrientation(LinearLayout.HORIZONTAL);
+
+            // name
+            TextView name = new TextView(this);
+            name.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            name.setGravity(Gravity.START);
+            name.setTextSize(R.dimen.element_name_textSize);
+            name.setText(e.getValue());
+
+            // config
+            TextView config = new TextView(this);
+            config.setId(ViewUtils.getNodeConfigViewId(e.getKey()));
+            config.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            config.setGravity(Gravity.END);
+            config.setTextSize(R.dimen.element_name_textSize);
+
+            // details
+            TextView details = new TextView(this);
+            details.setId(ViewUtils.getNodeDetailsViewId(e.getKey()));
+            details.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            details.setGravity(Gravity.START);
+            details.setTextSize(R.dimen.element_details_textSize);
+            details.setTypeface(details.getTypeface(), Typeface.ITALIC);
+
+            // value
+            ToggleButton value = new ToggleButton(this);
+            value.setId(ViewUtils.getSensorValueViewId(e.getKey()));
+            value.setLayoutParams(new TableLayout.LayoutParams(R.dimen.element_value_width,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, 0f));
+            value.setChecked(false);
+            value.setEnabled(false);
+            value.setTextSize(R.dimen.element_value_textSize);
+            value.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onManageNode(v);
+                }
+            });
+
+            infoTop.addView(name);
+            infoTop.addView(config);
+
+            info.addView(infoTop);
+            info.addView(details);
+
+            outer.addView(icon);
+            outer.addView(info);
+            outer.addView(value);
+
+            contentRoot.addView(outer);
+            pos++;
+        }
+
+//////////////////////////////////////////////////       
+        // outer
+        LinearLayout outer = new LinearLayout(this);
+        outer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        outer.setGravity(Gravity.CENTER);
+        outer.setOrientation(LinearLayout.HORIZONTAL);
+        outer.setPadding(getResources().getDimensionPixelSize(R.dimen.row_padding), getResources().getDimensionPixelSize(R.dimen.row_padding), getResources().getDimensionPixelSize(R.dimen.row_padding), getResources().getDimensionPixelSize(R.dimen.row_padding));
+
+        
+        ToggleButton test = new ToggleButton(this);
+        test.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT, 0f));
+        test.setChecked(false);
+        test.setEnabled(true);
+
+        outer.addView(test);
+        contentRoot.addView(outer);
+
+/////////////////////////////////////////////////////////        
+        
+        
         modelView = new TopModelView(this);
         modelView.render();
 
@@ -156,13 +358,7 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
     }
 
     public void onManageNode(View nodeToggle) {
-        NodeModelView nodeView = null;
-        for (Entry<Integer, Integer> e : TopModelView.NODES_VALUE_VIEW_MAP.entrySet()) {
-            if (e.getValue() == nodeToggle.getId()) {
-                nodeView = modelView.getNode(e.getKey());
-                break;
-            }
-        }
+        NodeModelView nodeView = modelView.getNodes().get(ViewUtils.getNodeIdByValueViewId(nodeToggle.getId()));
         if (nodeView != null) {
             ManageNodeStateDialog dialog = new ManageNodeStateDialog();
             dialog.setNodeId(nodeView.getModel().getId());
@@ -178,16 +374,7 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
     }
 
     public void onConfigNode(View view) {
-        NodeModelView nodeView = null;
-        // for (Entry<Integer, Integer> e :
-        // TopModelView.NODES_CONFIG_VIEW_MAP.entrySet()) {
-        // if (e.getValue() == view.getId()) {
-        // nodeView = modelView.getNode(e.getKey());
-        // break;
-        // }
-        // }
-        // FIXME
-        nodeView = modelView.getNodeSbHeater();
+        NodeModelView nodeView = modelView.getNodes().get(ViewUtils.getNodeIdByInfoViewId(view.getId()));
         if (nodeView != null) {
             ConfigureNodeDialog dialog = new ConfigureNodeDialog();
             dialog.setNodeId(nodeView.getModel().getId());
