@@ -10,6 +10,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.model.SensorModel;
 
 public class SensorThresholdConfigurationResponse extends ConfigurationResponse implements Response, Parcelable {
@@ -60,8 +61,9 @@ public class SensorThresholdConfigurationResponse extends ConfigurationResponse 
     @Override
     public SensorThresholdConfigurationResponse fromJson(JSONObject json) {
         try {
-            int id = json.getInt(ID_KEY);
-            int value = json.getInt(VALUE_KEY);
+            JSONObject sensor = json.getJSONObject(ControllerConfig.SENSOR_KEY);
+            int id = sensor.getInt(ID_KEY);
+            int value = sensor.getInt(VALUE_KEY);
             data = new SensorModel(id);
             data.setValue(value);
         } catch (JSONException e) {

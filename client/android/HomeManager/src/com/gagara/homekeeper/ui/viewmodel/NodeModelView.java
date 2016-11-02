@@ -118,27 +118,23 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
         }
 
         // config
-        if (model.isInitialized()) {
-            StringBuilder configStr = new StringBuilder();
-            if (model.getSensorsThresholds().size() > 0) {
-                for (int i = 0; i < model.getSensorsThresholds().size(); i++) {
-                    SensorModel s = model.getSensorsThresholds().valueAt(i);
-                    String value = "?";
-                    if (s.getValue() != UNDEFINED_SENSOR_VALUE && s.getValue() != UNKNOWN_SENSOR_VALUE) {
-                        value = f.format(s.getValue());
-                    }
-                    String sensorName = "id_" + s.getId();
-                    if (ViewUtils.validSensor(s)) {
-                        sensorName = resources.getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId()));
-                    }
-                    configStr.append(String.format(resources.getString(R.string.node_config_sensors_template), String
-                            .format(resources.getString(R.string.node_config_sensor_template), sensorName, value,
-                                    resources.getString(getSensorSignResourceByType(s.getType())))));
+        StringBuilder configStr = new StringBuilder();
+        if (model.getSensorsThresholds().size() > 0) {
+            for (int i = 0; i < model.getSensorsThresholds().size(); i++) {
+                SensorModel s = model.getSensorsThresholds().valueAt(i);
+                String value = "?";
+                if (s.getValue() != UNDEFINED_SENSOR_VALUE && s.getValue() != UNKNOWN_SENSOR_VALUE) {
+                    value = f.format(s.getValue());
                 }
+                String sensorName = "id_" + s.getId();
+                if (ViewUtils.validSensor(s)) {
+                    sensorName = resources.getString(TopModelView.SENSORS_NAME_VIEW_MAP.get(s.getId()));
+                }
+                configStr.append(String.format(resources.getString(R.string.node_config_sensors_template), String
+                        .format(resources.getString(R.string.node_config_sensor_template), sensorName, value,
+                                resources.getString(getSensorSignResourceByType(s.getType())))));
             }
-            configView.setText(configStr.toString());
-        } else {
-            configView.setText("");
         }
+        configView.setText(configStr.toString());
     }
 }

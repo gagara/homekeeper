@@ -109,14 +109,18 @@
     <string name="service_nsc_message_status">switch: %1$s %2$s</string>
     <string name="service_cfg_message_status">config: %1$s %2$s</string>
     <string name="service_bt_init_status">initializing&#8230;</string>
-    
+
     <string name="manage_node_dialog_title">Manage node: %1$s</string>
     <string name="manage_node_mode_text">Manual mode:</string>
     <string name="manage_node_state_text">Node state:</string>
     <string name="manage_node_period_text">Period:</string>
     <string name="manage_node_button_ok">OK</string>
     <string name="manage_node_button_cancel">Cancel</string>
-    
+
+    <string name="configure_node_dialog_title">Configure node: %1$s</string>
+    <string name="configure_node_button_ok">OK</string>
+    <string name="configure_node_button_cancel">Cancel</string>
+
     <string name="service_title">%1$s</string>
     <string name="service_last_update">Last update %1$s</string>
     <string name="service_status_timestamp">[%1$s]&#160;</string>

@@ -90,13 +90,19 @@ public class NodeModel implements Model {
     }
 
     public void update(NodeModel newModel) {
-        state = newModel.getState();
-        if (!switchTimestamp.equals(newModel.getSwitchTimestamp())) {
+        if (newModel.getState() != null) {
+            state = newModel.getState();
+        }
+        if (newModel.getSwitchTimestamp() != UNDEFINED_DATE && !switchTimestamp.equals(newModel.getSwitchTimestamp())) {
+            switchTimestamp = newModel.getSwitchTimestamp();
             sensors.clear();
         }
-        switchTimestamp = newModel.getSwitchTimestamp();
-        forcedMode = newModel.isForcedMode();
-        forcedModeTimestamp = newModel.getForcedModeTimestamp();
+        if (newModel.isForcedMode() != null) {
+            forcedMode = newModel.isForcedMode();
+        }
+        if (newModel.getForcedModeTimestamp() != UNDEFINED_DATE) {
+            forcedModeTimestamp = newModel.getForcedModeTimestamp();
+        }
         for (int i = 0; i < newModel.getSensors().size(); i++) {
             sensors.put(newModel.getSensors().keyAt(i), newModel.getSensors().valueAt(i));
         }
@@ -118,7 +124,7 @@ public class NodeModel implements Model {
         this.id = id;
     }
 
-    public boolean getState() {
+    public Boolean getState() {
         return state;
     }
 
@@ -134,7 +140,7 @@ public class NodeModel implements Model {
         this.switchTimestamp = switchTimestamp;
     }
 
-    public boolean isForcedMode() {
+    public Boolean isForcedMode() {
         return forcedMode;
     }
 

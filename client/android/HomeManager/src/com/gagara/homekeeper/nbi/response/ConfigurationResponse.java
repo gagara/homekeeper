@@ -1,6 +1,6 @@
 package com.gagara.homekeeper.nbi.response;
 
-import static com.gagara.homekeeper.common.ControllerConfig.ID_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_KEY;
 import static com.gagara.homekeeper.common.ControllerConfig.VALUE_KEY;
 
 import org.json.JSONException;
@@ -51,7 +51,7 @@ public class ConfigurationResponse extends MessageHeader implements Response, Pa
         try {
             if (ControllerConfig.MessageType.CONFIGURATION == ControllerConfig.MessageType.forCode(json.get(
                     ControllerConfig.MSG_TYPE_KEY).toString())) {
-                if (json.has(ID_KEY) && json.has(VALUE_KEY)) {
+                if (json.has(SENSOR_KEY) && json.getJSONObject(SENSOR_KEY).has(VALUE_KEY)) {
                     ConfigurationResponse response = new SensorThresholdConfigurationResponse(clocksDelta);
                     return response.fromJson(json);
                 }

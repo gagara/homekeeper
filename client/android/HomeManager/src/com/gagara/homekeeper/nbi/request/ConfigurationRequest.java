@@ -1,5 +1,10 @@
 package com.gagara.homekeeper.nbi.request;
 
+import static com.gagara.homekeeper.common.ControllerConfig.ID_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.MSG_TYPE_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.VALUE_KEY;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +18,9 @@ import com.gagara.homekeeper.nbi.MessageHeader;
 public class ConfigurationRequest extends MessageHeader implements Request, Parcelable {
 
     private static final String TAG = ConfigurationRequest.class.getName();
+
+    private Integer sensorId = null;
+    private Integer sensorThreshold = null;
 
     @Override
     public int describeContents() {
@@ -46,12 +54,36 @@ public class ConfigurationRequest extends MessageHeader implements Request, Parc
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         try {
-            json.put(ControllerConfig.MSG_TYPE_KEY,
-                    ControllerConfig.MessageType.CONFIGURATION.code());
+            json.put(MSG_TYPE_KEY, ControllerConfig.MessageType.CONFIGURATION.code());
+
+            if (sensorId != null && sensorThreshold != null) {
+                JSONObject sensor = new JSONObject();
+                sensor.put(ID_KEY, sensorId);
+                sensor.put(VALUE_KEY, sensorThreshold);
+                json.put(SENSOR_KEY, sensor);
+            }
+            if (sensorThreshold != null) {
+            }
         } catch (JSONException e) {
             Log.e(TAG, "failed to serialize to JSON: " + this.toString() + ": " + e.getMessage(), e);
             return null;
         }
         return json;
+    }
+
+    public Integer getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(Integer sensorId) {
+        this.sensorId = sensorId;
+    }
+
+    public Integer getSensorThreshold() {
+        return sensorThreshold;
+    }
+
+    public void setSensorThreshold(Integer sensorThreshold) {
+        this.sensorThreshold = sensorThreshold;
     }
 }

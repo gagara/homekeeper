@@ -26,9 +26,9 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,14 +36,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.gagara.homekeeper.R;
+import com.gagara.homekeeper.activity.ConfigureNodeDialog.ConfigureNodeListener;
 import com.gagara.homekeeper.activity.ManageNodeStateDialog.SwitchNodeStateListener;
 import com.gagara.homekeeper.common.Constants;
-import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.common.Mode;
 import com.gagara.homekeeper.common.Proxy;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.SensorModel;
 import com.gagara.homekeeper.model.ServiceStatusModel;
+import com.gagara.homekeeper.nbi.request.ConfigurationRequest;
 import com.gagara.homekeeper.nbi.request.CurrentStatusRequest;
 import com.gagara.homekeeper.nbi.request.NodeStateChangeRequest;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
@@ -59,7 +60,7 @@ import com.gagara.homekeeper.utils.BluetoothUtils;
 import com.gagara.homekeeper.utils.HomeKeeperConfig;
 import com.gagara.homekeeper.utils.NetworkUtils;
 
-public class MainActivity extends ActionBarActivity implements SwitchNodeStateListener {
+public class MainActivity extends ActionBarActivity implements SwitchNodeStateListener, ConfigureNodeListener {
 
     private BroadcastReceiver btStateChangedReceiver;
     private BroadcastReceiver proxyStateChangedReceiver;
@@ -176,16 +177,39 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         nodeView.render();
     }
 
+    public void onConfigNode(View view) {
+        NodeModelView nodeView = null;
+        // for (Entry<Integer, Integer> e :
+        // TopModelView.NODES_CONFIG_VIEW_MAP.entrySet()) {
+        // if (e.getValue() == view.getId()) {
+        // nodeView = modelView.getNode(e.getKey());
+        // break;
+        // }
+        // }
+        // FIXME
+        nodeView = modelView.getNodeSbHeater();
+        if (nodeView != null) {
+            ConfigureNodeDialog dialog = new ConfigureNodeDialog();
+            dialog.setNodeId(nodeView.getModel().getId());
+            dialog.setNodeName(getResources().getString(
+                    TopModelView.NODES_NAME_VIEW_MAP.get(nodeView.getModel().getId())));
+            if (nodeView.getModel().getSensorsThresholds().size() > 0) {
+                dialog.setSensorsThresholds(nodeView.getModel().getSensorsThresholds());
+                dialog.show(getSupportFragmentManager(), Constants.SWITCH_NODE_DIALOG_TAG);
+                nodeView.render();
+            }
+        }
+    }
+
     @Override
-    public void doSwitchNodeState(DialogFragment dialog) {
-        ManageNodeStateDialog manageDialog = (ManageNodeStateDialog) dialog;
+    public void doSwitchNodeState(ManageNodeStateDialog dialog) {
         NodeStateChangeRequest request = new NodeStateChangeRequest();
 
-        request.setId(manageDialog.getNodeId());
-        if (manageDialog.isManualMode()) {
-            request.setState(manageDialog.getState());
-            if (manageDialog.getPeriod() != 0) {
-                request.setPeriod(manageDialog.getPeriod() * 1000L);
+        request.setId(dialog.getNodeId());
+        if (dialog.isManualMode()) {
+            request.setState(dialog.getState());
+            if (dialog.getPeriod() != 0) {
+                request.setPeriod(dialog.getPeriod() * 1000L);
             }
         }
 
@@ -196,7 +220,28 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
     }
 
     @Override
-    public void doNotSwitchNodeState(DialogFragment dialog) {
+    public void doNotSwitchNodeState(ManageNodeStateDialog dialog) {
+        // do nothing
+    }
+
+    @Override
+    public void doConfigure(ConfigureNodeDialog dialog) {
+        SparseIntArray values = dialog.getResult();
+        for (int i = 0; i < values.size(); i++) {
+            ConfigurationRequest request = new ConfigurationRequest();
+
+            request.setSensorId(values.keyAt(i));
+            request.setSensorThreshold(values.valueAt(i));
+
+            Intent intent = new Intent();
+            intent.setAction(CONTROLLER_CONTROL_COMMAND_ACTION);
+            intent.putExtra(COMMAND_KEY, request);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }
+    }
+
+    @Override
+    public void doNotConfigure(ConfigureNodeDialog dialog) {
         // do nothing
     }
 
@@ -295,7 +340,7 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                     NodeStateChangeResponse stats = (NodeStateChangeResponse) data;
                     NodeModel node = stats.getData();
                     if (ViewUtils.validNode(node)) {
-                        modelView.getNode(node.getId()).setModel(node);
+                        modelView.getNode(node.getId()).getModel().update(node);
                         modelView.getNode(node.getId()).render();
                         for (int i = 0; i < node.getSensors().size(); i++) {
                             SensorModel sensor = node.getSensors().valueAt(i);

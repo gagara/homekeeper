@@ -167,9 +167,9 @@ public class ManageNodeStateDialog extends DialogFragment {
 
     public interface SwitchNodeStateListener {
 
-        public void doSwitchNodeState(DialogFragment dialog);
+        public void doSwitchNodeState(ManageNodeStateDialog dialog);
 
-        public void doNotSwitchNodeState(DialogFragment dialog);
+        public void doNotSwitchNodeState(ManageNodeStateDialog dialog);
 
     }
 
