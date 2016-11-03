@@ -180,7 +180,7 @@ public abstract class AbstractNbiService extends Service {
                             title = getResources().getString(R.string.node_title);
                             if (ViewUtils.validNode(stats.getNode().getData())) {
                                 name = getResources().getString(
-                                        TopModelView.NODES_NAME_VIEW_MAP.get(stats.getNode().getData().getId()));
+                                        TopModelView.NODES.get(stats.getNode().getData().getId()));
                             } else {
                                 name = stats.getNode().getData().getId() + "";
                             }
@@ -188,7 +188,7 @@ public abstract class AbstractNbiService extends Service {
                             title = getResources().getString(R.string.sensor_title);
                             if (ViewUtils.validSensor(stats.getSensor().getData())) {
                                 name = getResources().getString(
-                                        TopModelView.SENSORS_NAME_VIEW_MAP.get(stats.getSensor().getData().getId()));
+                                        TopModelView.SENSORS.get(stats.getSensor().getData().getId()));
                             } else {
                                 name = stats.getSensor().getData().getId() + "";
                             }
@@ -208,7 +208,7 @@ public abstract class AbstractNbiService extends Service {
                         title = getResources().getString(R.string.node_title);
                         if (ViewUtils.validNode(nodeState.getData())) {
                             name = getResources().getString(
-                                    TopModelView.NODES_NAME_VIEW_MAP.get(nodeState.getData().getId()));
+                                    TopModelView.NODES.get(nodeState.getData().getId()));
                         } else {
                             name = nodeState.getData().getId() + "";
                         }
@@ -229,7 +229,7 @@ public abstract class AbstractNbiService extends Service {
                             title = getResources().getString(R.string.sensor_title);
                             if (ViewUtils.validSensor(sensorConf.getData())) {
                                 name = getResources().getString(
-                                        TopModelView.SENSORS_NAME_VIEW_MAP.get(sensorConf.getData().getId()));
+                                        TopModelView.SENSORS.get(sensorConf.getData().getId()));
                             } else {
                                 name = sensorConf.getData().getId() + "";
                             }

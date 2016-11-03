@@ -1,13 +1,24 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_BOILER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_CIRCULATION_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_FLOOR_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_HEATING_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_HOTWATER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_SB_HEATER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_SUPPLY_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_BOILER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_MIX_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_REVERSE_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_HUM_ID;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import android.annotation.SuppressLint;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_TEMP_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SB_HEATER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SUPPLY_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TANK_ID;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -17,38 +28,60 @@ import com.gagara.homekeeper.model.Model;
 import com.gagara.homekeeper.model.SensorModel.SensorType;
 import com.gagara.homekeeper.ui.view.ViewUtils;
 
-@SuppressLint("UseSparseArrays")
 public class TopModelView implements ModelView<Model> {
 
-    public static final Map<Integer, Integer> SENSORS_NAME_VIEW_MAP;
-    public static final Map<Integer, Integer> NODES_NAME_VIEW_MAP;
+    public static final SparseIntArray SENSORS;
+    public static final SparseIntArray NODES;
+
+    public static final SparseIntArray SENSORS_VIEW_LIST;
+    public static final SparseIntArray NODES_VIEW_LIST;
 
     private ServiceTitleModelView title;
     private ServiceInfoModelView info;
     private ServiceLogModelView log;
 
-    private Map<Integer, SensorModelView> sensors;
-    private Map<Integer, NodeModelView> nodes;
+    private SparseArray<SensorModelView> sensors;
+    private SparseArray<NodeModelView> nodes;
 
     static {
-        SENSORS_NAME_VIEW_MAP = new HashMap<Integer, Integer>();
-        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_SUPPLY_ID, R.string.sensor_supply_name);
-        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_REVERSE_ID, R.string.sensor_reverse_name);
-        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_TANK_ID, R.string.sensor_tank_name);
-        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_BOILER_ID, R.string.sensor_boiler_name);
-        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_MIX_ID, R.string.sensor_mix_name);
-        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_SB_HEATER_ID, R.string.sensor_sb_heater_name);
-        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_ROOM1_TEMP_ID, R.string.sensor_room1_temp_name);
-        SENSORS_NAME_VIEW_MAP.put(ControllerConfig.SENSOR_ROOM1_HUM_ID, R.string.sensor_room1_hum_name);
+        SENSORS = new SparseIntArray();
+        SENSORS.put(SENSOR_SUPPLY_ID, R.string.sensor_supply_name);
+        SENSORS.put(SENSOR_REVERSE_ID, R.string.sensor_reverse_name);
+        SENSORS.put(SENSOR_TANK_ID, R.string.sensor_tank_name);
+        SENSORS.put(SENSOR_MIX_ID, R.string.sensor_mix_name);
+        SENSORS.put(SENSOR_SB_HEATER_ID, R.string.sensor_sb_heater_name);
+        SENSORS.put(SENSOR_BOILER_ID, R.string.sensor_boiler_name);
+        SENSORS.put(SENSOR_ROOM1_TEMP_ID, R.string.sensor_room1_temp_name);
+        SENSORS.put(SENSOR_ROOM1_HUM_ID, R.string.sensor_room1_hum_name);
 
-        NODES_NAME_VIEW_MAP = new HashMap<Integer, Integer>();
-        NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_SUPPLY_ID, R.string.node_supply_name);
-        NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_HEATING_ID, R.string.node_heating_name);
-        NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_FLOOR_ID, R.string.node_floor_name);
-        NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_HOTWATER_ID, R.string.node_hotwater_name);
-        NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_CIRCULATION_ID, R.string.node_circulation_name);
-        NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_BOILER_ID, R.string.node_boilder_name);
-        NODES_NAME_VIEW_MAP.put(ControllerConfig.NODE_SB_HEATER_ID, R.string.node_sb_heater_name);
+        NODES = new SparseIntArray();
+        NODES.put(NODE_SUPPLY_ID, R.string.node_supply_name);
+        NODES.put(NODE_HEATING_ID, R.string.node_heating_name);
+        NODES.put(NODE_FLOOR_ID, R.string.node_floor_name);
+        NODES.put(NODE_SB_HEATER_ID, R.string.node_sb_heater_name);
+        NODES.put(NODE_HOTWATER_ID, R.string.node_hotwater_name);
+        NODES.put(NODE_CIRCULATION_ID, R.string.node_circulation_name);
+        NODES.put(NODE_BOILER_ID, R.string.node_boilder_name);
+        
+        int idx = 0;
+        SENSORS_VIEW_LIST = new SparseIntArray();
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_SUPPLY_ID);
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_REVERSE_ID);
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_TANK_ID);
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_MIX_ID);
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_SB_HEATER_ID);
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_BOILER_ID);
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_ROOM1_TEMP_ID);
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_ROOM1_HUM_ID);
+        idx = 0;
+        NODES_VIEW_LIST = new SparseIntArray();
+        NODES_VIEW_LIST.put(idx++, NODE_SUPPLY_ID);
+        NODES_VIEW_LIST.put(idx++, NODE_HEATING_ID);
+        NODES_VIEW_LIST.put(idx++, NODE_FLOOR_ID);
+        NODES_VIEW_LIST.put(idx++, NODE_SB_HEATER_ID);
+        NODES_VIEW_LIST.put(idx++, NODE_HOTWATER_ID);
+        NODES_VIEW_LIST.put(idx++, NODE_CIRCULATION_ID);
+        NODES_VIEW_LIST.put(idx++, NODE_BOILER_ID);
     }
 
     public TopModelView(Activity ctx) {
@@ -56,8 +89,9 @@ public class TopModelView implements ModelView<Model> {
         info = new ServiceInfoModelView((TextView) ctx.findViewById(R.id.headerRight), ctx.getResources());
         log = new ServiceLogModelView((TextView) ctx.findViewById(R.id.footerLeft), ctx.getResources());
 
-        sensors = new HashMap<Integer, SensorModelView>();
-        for (Integer id : SENSORS_NAME_VIEW_MAP.keySet()) {
+        sensors = new SparseArray<SensorModelView>();
+        for (int i = 0; i < SENSORS.size(); i++) {
+            int id = SENSORS.keyAt(i);
             SensorModelView s = new SensorModelView(id);
             s.setValueView((TextView) ctx.findViewById(ViewUtils.getSensorValueViewId(id)));
             s.setDetailsView((TextView) ctx.findViewById(ViewUtils.getSensorDetailsViewId(id)));
@@ -68,8 +102,9 @@ public class TopModelView implements ModelView<Model> {
             sensors.put(id, s);
         }
 
-        nodes = new HashMap<Integer, NodeModelView>();
-        for (Integer id : NODES_NAME_VIEW_MAP.keySet()) {
+        nodes = new SparseArray<NodeModelView>();
+        for (int i = 0; i < NODES.size(); i++) {
+            int id = NODES.keyAt(i);
             NodeModelView n = new NodeModelView(id);
             n.setValueView((ToggleButton) ctx.findViewById(ViewUtils.getNodeValueViewId(id)));
             n.setDetailsView((TextView) ctx.findViewById(ViewUtils.getNodeDetailsViewId(id)));
@@ -89,11 +124,11 @@ public class TopModelView implements ModelView<Model> {
         title.saveState(bundle, prefix);
         info.saveState(bundle, prefix);
         log.saveState(bundle, prefix);
-        for (SensorModelView s : sensors.values()) {
-            s.saveState(bundle, prefix);
+        for (int i = 0; i < sensors.size(); i++) {
+            sensors.valueAt(i).saveState(bundle, prefix);
         }
-        for (NodeModelView n : nodes.values()) {
-            n.saveState(bundle, prefix);
+        for (int i = 0; i < nodes.size(); i++) {
+            nodes.valueAt(i).saveState(bundle, prefix);
         }
     }
 
@@ -107,11 +142,11 @@ public class TopModelView implements ModelView<Model> {
         title.restoreState(bundle, prefix);
         info.restoreState(bundle, prefix);
         log.restoreState(bundle, prefix);
-        for (SensorModelView s : sensors.values()) {
-            s.restoreState(bundle, prefix);
+        for (int i = 0; i < sensors.size(); i++) {
+            sensors.valueAt(i).restoreState(bundle, prefix);
         }
-        for (NodeModelView n : nodes.values()) {
-            n.restoreState(bundle, prefix);
+        for (int i = 0; i < nodes.size(); i++) {
+            nodes.valueAt(i).restoreState(bundle, prefix);
         }
     }
 
@@ -120,11 +155,11 @@ public class TopModelView implements ModelView<Model> {
         title.render();
         info.render();
         log.render();
-        for (SensorModelView s : sensors.values()) {
-            s.render();
+        for (int i = 0; i < sensors.size(); i++) {
+            sensors.valueAt(i).render();
         }
-        for (NodeModelView n : nodes.values()) {
-            n.render();
+        for (int i = 0; i < nodes.size(); i++) {
+            nodes.valueAt(i).render();
         }
     }
 
@@ -133,11 +168,11 @@ public class TopModelView implements ModelView<Model> {
         return true;
     }
 
-    public Map<Integer, SensorModelView> getSensors() {
+    public SparseArray<SensorModelView> getSensors() {
         return sensors;
     }
 
-    public Map<Integer, NodeModelView> getNodes() {
+    public SparseArray<NodeModelView> getNodes() {
         return nodes;
     }
 
