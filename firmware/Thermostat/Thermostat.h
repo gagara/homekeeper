@@ -44,7 +44,7 @@ bool wifiWrite(const char* msg, const char* rsp, const int wait = 0, const uint8
 void reportStatus();
 void reportSensorStatus(const uint8_t id, const uint8_t value);
 void reportConfiguration();
-void reportSensorConfig(const uint8_t id, const double value);
+void reportSensorCalibrationFactor(const uint8_t id, const double value);
 void reportNumberConfig(const char* key, const int value);
 void reportStringConfig(const char* key, const char* value);
 void broadcastMsg(const char* msg);

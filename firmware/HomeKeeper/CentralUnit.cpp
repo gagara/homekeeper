@@ -723,7 +723,7 @@ void processStandbyHeater() {
 bool room1TempReachedThreshold() {
     return (tsLastSensorTempRoom1 != 0
             && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 > STANDBY_HEATER_ROOM_TEMP_THRESHOLD)
+            && tempRoom1 >= STANDBY_HEATER_ROOM_TEMP_THRESHOLD)
             || (tsLastSensorTempRoom1 != 0
                     && diffTimestamps(tsCurr, tsLastSensorTempRoom1) >= HEATING_ROOM_1_MAX_VALIDITY_PERIOD)
             || (tsLastSensorTempRoom1 == 0);
@@ -1443,7 +1443,7 @@ void reportStatus() {
             break;
         case NODE_SB_HEATER:
             reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
-            reportSensorConfig(SENSOR_TEMP_ROOM_1, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+            reportSensorConfigValue(SENSOR_TEMP_ROOM_1, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
             nextEntryReport = NODE_HOTWATER;
             break;
         case NODE_HOTWATER:
@@ -1524,13 +1524,13 @@ void reportConfiguration() {
     wifiCheckConnection();
     char ip[16];
 
-    reportSensorConfig(SENSOR_SUPPLY, SENSOR_SUPPLY_FACTOR);
-    reportSensorConfig(SENSOR_REVERSE, SENSOR_REVERSE_FACTOR);
-    reportSensorConfig(SENSOR_TANK, SENSOR_TANK_FACTOR);
-    reportSensorConfig(SENSOR_BOILER, SENSOR_BOILER_FACTOR);
-    reportSensorConfig(SENSOR_MIX, SENSOR_MIX_FACTOR);
-    reportSensorConfig(SENSOR_SB_HEATER, SENSOR_SB_HEATER_FACTOR);
-    reportSensorConfig(SENSOR_TEMP_ROOM_1, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+    reportSensorCalibrationFactor(SENSOR_SUPPLY, SENSOR_SUPPLY_FACTOR);
+    reportSensorCalibrationFactor(SENSOR_REVERSE, SENSOR_REVERSE_FACTOR);
+    reportSensorCalibrationFactor(SENSOR_TANK, SENSOR_TANK_FACTOR);
+    reportSensorCalibrationFactor(SENSOR_BOILER, SENSOR_BOILER_FACTOR);
+    reportSensorCalibrationFactor(SENSOR_MIX, SENSOR_MIX_FACTOR);
+    reportSensorCalibrationFactor(SENSOR_SB_HEATER, SENSOR_SB_HEATER_FACTOR);
+    reportSensorConfigValue(SENSOR_TEMP_ROOM_1, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
     reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
     reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
     reportStringConfig(WIFI_LOCAL_AP_KEY, WIFI_LOCAL_AP);
@@ -1542,7 +1542,7 @@ void reportConfiguration() {
     reportStringConfig(LOCAL_IP_KEY, ip);
 }
 
-void reportSensorConfig(const uint8_t id, const double value) {
+void reportSensorCalibrationFactor(const uint8_t id, const double value) {
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.createObject();
     root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
@@ -1550,6 +1550,23 @@ void reportSensorConfig(const uint8_t id, const double value) {
     JsonObject& sens = jsonBuffer.createObject();
     sens[ID_KEY] = id;
     sens[CALIBRATION_FACTOR_KEY] = value;
+
+    root[SENSORS_KEY] = sens;
+
+    char json[JSON_MAX_SIZE];
+    root.printTo(json, JSON_MAX_SIZE);
+
+    broadcastMsg(json);
+}
+
+void reportSensorConfigValue(const uint8_t id, const int8_t value) {
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+
+    JsonObject& sens = jsonBuffer.createObject();
+    sens[ID_KEY] = id;
+    sens[VALUE_KEY] = value;
 
     root[SENSORS_KEY] = sens;
 
@@ -1742,6 +1759,7 @@ bool parseCommand(char* command) {
                         EEPROM.writeByte(STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR, val);
                         STANDBY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(
                                 STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
+                        reportSensorConfigValue(SENSOR_TEMP_ROOM_1, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
                     }
                 }
             } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {

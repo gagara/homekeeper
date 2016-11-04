@@ -499,8 +499,8 @@ void reportSensorStatus(const uint8_t id, const uint8_t value) {
 
 void reportConfiguration() {
     char ip[16];
-    reportSensorConfig(SENSOR_TEMP, SENSOR_TEMP_FACTOR);
-    reportSensorConfig(SENSOR_HUM, SENSOR_HUM_FACTOR);
+    reportSensorCalibrationFactor(SENSOR_TEMP, SENSOR_TEMP_FACTOR);
+    reportSensorCalibrationFactor(SENSOR_HUM, SENSOR_HUM_FACTOR);
     reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
     reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
     sprintf(ip, "%d.%d.%d.%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2], SERVER_IP[3]);
@@ -514,7 +514,7 @@ void reportConfiguration() {
 #endif
 }
 
-void reportSensorConfig(const uint8_t id, const double value) {
+void reportSensorCalibrationFactor(const uint8_t id, const double value) {
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.createObject();
     root[MSG_TYPE_KEY] = MSG_CONFIGURATION;

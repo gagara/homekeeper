@@ -104,17 +104,25 @@ public class ConfigureNodeDialog extends DialogFragment {
 
         builder.setPositiveButton(R.string.configure_node_button_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                readValues();
-                if (listener != null) {
-                    listener.doConfigure(ConfigureNodeDialog.this);
+                try {
+                    readValues();
+                    if (listener != null) {
+                        listener.doConfigure(ConfigureNodeDialog.this);
+                    }
+                } catch (NumberFormatException e) {
+                    // invalid value. just ignore it
                 }
             }
         });
         builder.setNegativeButton(R.string.configure_node_button_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                readValues();
-                if (listener != null) {
-                    listener.doNotConfigure(ConfigureNodeDialog.this);
+                try {
+                    readValues();
+                    if (listener != null) {
+                        listener.doNotConfigure(ConfigureNodeDialog.this);
+                    }
+                } catch (NumberFormatException e) {
+                    // invalid value. just ignore it
                 }
             }
         });
