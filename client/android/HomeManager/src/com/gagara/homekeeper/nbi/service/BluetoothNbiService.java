@@ -28,6 +28,7 @@ import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.nbi.request.ClockSyncRequest;
+import com.gagara.homekeeper.nbi.request.ConfigurationRequest;
 import com.gagara.homekeeper.nbi.request.CurrentStatusRequest;
 import com.gagara.homekeeper.nbi.request.NodeStateChangeRequest;
 import com.gagara.homekeeper.nbi.request.Request;
@@ -90,6 +91,8 @@ public class BluetoothNbiService extends AbstractNbiService {
                 } else if (request instanceof CurrentStatusRequest) {
                     out.write(request.toJson().toString().getBytes());
                 } else if (request instanceof NodeStateChangeRequest) {
+                    out.write(request.toJson().toString().getBytes());
+                } else if (request instanceof ConfigurationRequest) {
                     out.write(request.toJson().toString().getBytes());
                 } else {
                     Log.w(TAG, "command was ignored: " + request.toString());
