@@ -84,7 +84,7 @@ static const uint8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
 static const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_MSEC = 600000; // 10 minutes
 
 // heating
-static const uint8_t HEATING_TEMP_THRESHOLD = 40;
+static const uint8_t HEATING_TEMP_THRESHOLD = 35;
 static const uint8_t HEATING_PRIMARY_HIST = 3;
 static const uint8_t HEATING_STANDBY_HIST = 22;
 static const uint8_t HEATING_ROOM_1_THRESHOLD = 23;
