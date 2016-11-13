@@ -730,7 +730,7 @@ void processStandbyHeater() {
 bool room1TempReachedThreshold() {
     return (tsLastSensorTempRoom1 != 0
             && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 >= STANDBY_HEATER_ROOM_TEMP_THRESHOLD)
+            && tempRoom1 > STANDBY_HEATER_ROOM_TEMP_THRESHOLD)
             || (tsLastSensorTempRoom1 != 0
                     && diffTimestamps(tsCurr, tsLastSensorTempRoom1) >= HEATING_ROOM_1_MAX_VALIDITY_PERIOD)
             || (tsLastSensorTempRoom1 == 0);
