@@ -15,6 +15,8 @@ import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_TEMP_ID
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SB_HEATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SUPPLY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TANK_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_PRIMARY_HEATER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_SB_HEATER_ID;
 
 import java.util.Date;
 
@@ -63,7 +65,8 @@ public class ViewUtils {
         int id = sensor != null ? sensor.getId() : -1;
         return id == SENSOR_SUPPLY_ID || id == SENSOR_REVERSE_ID || id == SENSOR_TANK_ID || id == SENSOR_BOILER_ID
                 || id == SENSOR_MIX_ID || id == SENSOR_SB_HEATER_ID || id == SENSOR_ROOM1_TEMP_ID
-                || id == SENSOR_ROOM1_HUM_ID;
+                || id == SENSOR_ROOM1_HUM_ID || id == SENSOR_TH_ROOM1_SB_HEATER_ID
+                || id == SENSOR_TH_ROOM1_PRIMARY_HEATER_ID;
     }
 
     public static boolean validNode(NodeModel node) {

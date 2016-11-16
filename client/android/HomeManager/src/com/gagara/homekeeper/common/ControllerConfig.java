@@ -37,6 +37,9 @@ public class ControllerConfig {
     public static final int SENSOR_ROOM1_TEMP_ID = 74;
     public static final int SENSOR_ROOM1_HUM_ID = 75;
 
+    public static final int SENSOR_TH_ROOM1_SB_HEATER_ID = 201;
+    public static final int SENSOR_TH_ROOM1_PRIMARY_HEATER_ID = 202;
+
     public static final int NODE_SUPPLY_ID = 22;
     public static final int NODE_HEATING_ID = 24;
     public static final int NODE_FLOOR_ID = 26;

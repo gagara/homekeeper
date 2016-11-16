@@ -60,7 +60,9 @@
     <string name="sensor_sb_heater_name">SB Heater</string>
     <string name="sensor_room1_temp_name">R1 Temp</string>
     <string name="sensor_room1_hum_name">R1 Hum</string>
-
+    <string name="sensor_th_room1_sb_heater">R1 Min</string>
+    <string name="sensor_th_room1_primary_heater">R1 Max</string>
+    
     <string name="sensor_value_template">%1$s%2$s</string>
     
     <string name="sensor_details_inc_template">&#8593;%1$s</string>

@@ -15,6 +15,8 @@ import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_TEMP_ID
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SB_HEATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SUPPLY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TANK_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_PRIMARY_HEATER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_SB_HEATER_ID;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -31,6 +33,7 @@ import com.gagara.homekeeper.ui.view.ViewUtils;
 public class TopModelView implements ModelView<Model> {
 
     public static final SparseIntArray SENSORS;
+    public static final SparseIntArray SENSORS_THRESHOLDS;
     public static final SparseIntArray NODES;
 
     public static final SparseIntArray SENSORS_VIEW_LIST;
@@ -53,6 +56,10 @@ public class TopModelView implements ModelView<Model> {
         SENSORS.put(SENSOR_BOILER_ID, R.string.sensor_boiler_name);
         SENSORS.put(SENSOR_ROOM1_TEMP_ID, R.string.sensor_room1_temp_name);
         SENSORS.put(SENSOR_ROOM1_HUM_ID, R.string.sensor_room1_hum_name);
+
+        SENSORS_THRESHOLDS = new SparseIntArray();
+        SENSORS_THRESHOLDS.put(SENSOR_TH_ROOM1_SB_HEATER_ID, R.string.sensor_th_room1_sb_heater);
+        SENSORS_THRESHOLDS.put(SENSOR_TH_ROOM1_PRIMARY_HEATER_ID, R.string.sensor_th_room1_primary_heater);
 
         NODES = new SparseIntArray();
         NODES.put(NODE_SUPPLY_ID, R.string.node_supply_name);

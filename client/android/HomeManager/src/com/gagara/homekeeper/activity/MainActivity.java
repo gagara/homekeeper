@@ -12,8 +12,10 @@ import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_HEATING_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_SB_HEATER_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_TEMP_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_PRIMARY_HEATER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_SB_HEATER_ID;
 import static com.gagara.homekeeper.ui.viewmodel.TopModelView.NODES;
 import static com.gagara.homekeeper.ui.viewmodel.TopModelView.NODES_VIEW_LIST;
 import static com.gagara.homekeeper.ui.viewmodel.TopModelView.SENSORS;
@@ -51,6 +53,7 @@ import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.activity.ConfigureNodeDialog.ConfigureNodeListener;
 import com.gagara.homekeeper.activity.ManageNodeStateDialog.SwitchNodeStateListener;
 import com.gagara.homekeeper.common.Constants;
+import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.common.Mode;
 import com.gagara.homekeeper.common.Proxy;
 import com.gagara.homekeeper.model.NodeModel;
@@ -523,8 +526,13 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                     if (cfg.getData() != null) {
                         SensorModel sensor = cfg.getData();
                         // hardcoded for now
-                        int nodeId = NODE_SB_HEATER_ID;
-                        if (ViewUtils.validSensor(sensor) && sensor.getId() == SENSOR_ROOM1_TEMP_ID) {
+                        if (ViewUtils.validSensor(sensor) && sensor.getId() == SENSOR_TH_ROOM1_SB_HEATER_ID) {
+                            int nodeId = NODE_SB_HEATER_ID;
+                            modelView.getNode(nodeId).getModel().addSensorThreshold(sensor);
+                            modelView.getNode(nodeId).render();
+                            latestTimestamp = cfg.getTimestamp();
+                        } else if (ViewUtils.validSensor(sensor) && sensor.getId() == SENSOR_TH_ROOM1_PRIMARY_HEATER_ID) {
+                            int nodeId = NODE_HEATING_ID;
                             modelView.getNode(nodeId).getModel().addSensorThreshold(sensor);
                             modelView.getNode(nodeId).render();
                             latestTimestamp = cfg.getTimestamp();

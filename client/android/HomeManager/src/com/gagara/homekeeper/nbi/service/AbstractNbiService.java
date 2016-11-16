@@ -229,7 +229,7 @@ public abstract class AbstractNbiService extends Service {
                             title = getResources().getString(R.string.sensor_title);
                             if (ViewUtils.validSensor(sensorConf.getData())) {
                                 name = getResources().getString(
-                                        TopModelView.SENSORS.get(sensorConf.getData().getId()));
+                                        TopModelView.SENSORS_THRESHOLDS.get(sensorConf.getData().getId()));
                             } else {
                                 name = sensorConf.getData().getId() + "";
                             }

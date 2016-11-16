@@ -21,6 +21,9 @@ static const uint8_t SENSOR_MIX = 58;
 static const uint8_t SENSOR_SB_HEATER = 59;
 static const uint8_t SENSOR_TEMP_ROOM_1 = (54 + 16) + (4 * 1) + 0;
 static const uint8_t SENSOR_HUM_ROOM_1 = (54 + 16) + (4 * 1) + 1;
+// Sensor thresholds
+static const uint8_t SENSOR_TH_ROOM1_SB_HEATER = 200 + 1;
+static const uint8_t SENSOR_TH_ROOM1_PRIMARY_HEATER = 200 + 2;
 
 // Sensors Addresses
 static const DeviceAddress SENSOR_SUPPLY_ADDR = { 0x28, 0xFF, 0x70, 0x84, 0x23, 0x16, 0x04, 0xA5 };
@@ -77,6 +80,7 @@ static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + 4; // 2 bytes
 static const int WIFI_LOCAL_AP_EEPROM_ADDR = SERVER_PORT_EEPROM_ADDR + 2; // 32 bytes
 static const int WIFI_LOCAL_PW_EEPROM_ADDR = WIFI_LOCAL_AP_EEPROM_ADDR + 32; // 32 bytes
 static const int STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR = WIFI_LOCAL_PW_EEPROM_ADDR + 32; // 1 byte
+static const int PRIMARY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR = STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR + 1; // 1 byte
 
 // Primary Heater
 static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
@@ -84,11 +88,12 @@ static const uint8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
 static const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_MSEC = 600000; // 10 minutes
 
 // heating
-static const uint8_t HEATING_TEMP_THRESHOLD = 35;
-static const uint8_t HEATING_PRIMARY_HIST = 3;
-static const uint8_t HEATING_STANDBY_HIST = 22;
-static const uint8_t HEATING_ROOM_1_THRESHOLD = 23;
-static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 300000; // 5m
+static const uint8_t HEATING_ON_TEMP_THRESHOLD = 35;
+static const uint8_t HEATING_OFF_TEMP_THRESHOLD = 30;
+static const uint8_t FLOOR_ON_TEMP_THRESHOLD = 35;
+static const uint8_t FLOOR_OFF_TEMP_THRESHOLD = 25;
+static const uint8_t PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 20;
+static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 600000; // 10m
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
@@ -99,7 +104,6 @@ static const unsigned long CIRCULATION_ACTIVE_PERIOD_MSEC = 300000; // 5m
 static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 1800000; // 30m
 
 // Standby Heater
-static const uint8_t STANDBY_HEATER_WATER_TEMP_THRESHOLD = 10;
 static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 
 // reporting
@@ -167,6 +171,7 @@ int8_t tempSbHeater = UNKNOWN_SENSOR_VALUE;
 int8_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
 int8_t humRoom1 = UNKNOWN_SENSOR_VALUE;
 int8_t STANDBY_HEATER_ROOM_TEMP_THRESHOLD = STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
+int8_t PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
 
 // stats
 int8_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
@@ -345,8 +350,9 @@ void setup() {
     // read sensors calibration factors from EEPROM
     loadSensorsCalibrationFactors();
 
-    // restore sensor settings
+    // restore sensor thresholds
     STANDBY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
+    PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(PRIMARY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
 
     // init RF24 radio
     radio.begin();
@@ -475,46 +481,41 @@ void processHeatingCircuit() {
         int8_t sensVals[] = { tempTank, tempMix, tempSbHeater };
         if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
             // pump is ON
-            if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
-                // standby heater is on
-                if (tempSbHeater < (HEATING_TEMP_THRESHOLD - HEATING_STANDBY_HIST)) {
-                    // temp in standby heater is too low
-                    // turn pump OFF
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
-                } else {
-                    // temp in standby heater is high enough
-                    // do nothing
-                }
-            } else {
-                // standby heater is off
-                if (tempTank < (HEATING_TEMP_THRESHOLD - HEATING_PRIMARY_HIST)
-                        && tempMix < (HEATING_TEMP_THRESHOLD - HEATING_PRIMARY_HIST)
-                        && tempSbHeater < (HEATING_TEMP_THRESHOLD - HEATING_PRIMARY_HIST)) {
-                    // temp in (tank && mix && sb_heater) is too low
-                    // turn pump OFF
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
-                } else {
-                    // temp is high enough at least in one source
-                    if (tsLastSensorTempRoom1 != 0
-                            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-                            && tempRoom1 >= HEATING_ROOM_1_THRESHOLD) {
-                        // temp in Room1 is high enough
+            if (tempTank < HEATING_OFF_TEMP_THRESHOLD && tempMix < HEATING_OFF_TEMP_THRESHOLD
+                    && tempSbHeater < HEATING_OFF_TEMP_THRESHOLD) {
+                // temp in (tank && mix && sb_heater) is too low
+                if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
+                    // standby heater is on
+                    if (tempSbHeater <= tempMix && tempSbHeater <= tempTank) {
+                        // temp in standby heater <= (temp in Mix && Tank)
                         // turn pump OFF
                         switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
                     } else {
-                        // temp in Room1 is too low
+                        // temp in standby heater > (temp in Mix || Tank)
                         // do nothing
                     }
+                } else {
+                    // standby heater is off
+                    // turn pump OFF
+                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
+                }
+            } else {
+                // temp is high enough at least in one source
+                if (room1TempSatisfyMaxThreshold()) {
+                    // temp in Room1 is high enough
+                    // turn pump OFF
+                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
+                } else {
+                    // temp in Room1 is too low
+                    // do nothing
                 }
             }
         } else {
             // pump is OFF
-            if (tempTank >= HEATING_TEMP_THRESHOLD || tempMix >= HEATING_TEMP_THRESHOLD
-                    || tempSbHeater >= HEATING_TEMP_THRESHOLD) {
+            if (tempTank >= HEATING_ON_TEMP_THRESHOLD || tempMix >= HEATING_ON_TEMP_THRESHOLD
+                    || tempSbHeater >= HEATING_ON_TEMP_THRESHOLD) {
                 // temp in (tank || mix || sb_heater) is high enough
-                if (tsLastSensorTempRoom1 != 0
-                        && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-                        && tempRoom1 >= HEATING_ROOM_1_THRESHOLD && !(NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                if (room1TempSatisfyMaxThreshold() && !(NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
                     // temp in Room1 is high enough and standby heater is off
                     // do nothing
                 } else {
@@ -530,7 +531,7 @@ void processHeatingCircuit() {
     }
 }
 
-void processFloorCircuit() { // replicate Heating node
+void processFloorCircuit() {
     uint8_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT;
     if (isInForcedMode(NODE_FLOOR_BIT, tsForcedNodeFloor)) {
         return;
@@ -543,22 +544,37 @@ void processFloorCircuit() { // replicate Heating node
         int8_t sensVals[] = { tempTank, tempMix, tempSbHeater };
         if (NODE_STATE_FLAGS & NODE_FLOOR_BIT) {
             // pump is ON
-            if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
-                // heating pump is on
-                // do nothing
+            if (tempTank < FLOOR_OFF_TEMP_THRESHOLD && tempMix < FLOOR_OFF_TEMP_THRESHOLD
+                    && tempSbHeater < FLOOR_OFF_TEMP_THRESHOLD) {
+                // temp in (tank && mix && sb_heater) is too low
+                if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
+                    // standby heater is on
+                    if (tempSbHeater <= tempMix && tempSbHeater <= tempTank) {
+                        // temp in standby heater <= (temp in Mix && Tank)
+                        // turn pump OFF
+                        switchNodeState(NODE_FLOOR, sensIds, sensVals, 3);
+                    } else {
+                        // temp in standby heater > (temp in Mix || Tank)
+                        // do nothing
+                    }
+                } else {
+                    // standby heater is off
+                    // turn pump OFF
+                    switchNodeState(NODE_FLOOR, sensIds, sensVals, 3);
+                }
             } else {
-                // heating pump is off
-                // turn pump OFF
-                switchNodeState(NODE_FLOOR, sensIds, sensVals, 3);
+                // temp is high enough at least in one source
+                // do nothing
             }
         } else {
             // pump is OFF
-            if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
-                // heating pump is on
+            if (tempTank >= FLOOR_ON_TEMP_THRESHOLD || tempMix >= FLOOR_ON_TEMP_THRESHOLD
+                    || tempSbHeater >= FLOOR_ON_TEMP_THRESHOLD) {
+                // temp in (tank || mix || sb_heater) is high enough
                 // turn pump ON
                 switchNodeState(NODE_FLOOR, sensIds, sensVals, 3);
             } else {
-                // heating pump is off
+                // temp in (tank && mix && sb_heater) is too low
                 // do nothing
             }
         }
@@ -695,7 +711,7 @@ void processStandbyHeater() {
                 switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
             } else {
                 // primary heater is off
-                if (tempTank > STANDBY_HEATER_WATER_TEMP_THRESHOLD && room1TempReachedThreshold()) {
+                if (tempTank > STANDBY_HEATER_ROOM_TEMP_THRESHOLD && room1TempReachedMinThreshold()) {
                     // temp in (tank && room1) is high enough
                     // turn heater OFF
                     switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
@@ -711,7 +727,7 @@ void processStandbyHeater() {
                 // do nothing
             } else {
                 // primary heater is off
-                if (tempTank < STANDBY_HEATER_WATER_TEMP_THRESHOLD || room1TempFailedThreshold()) {
+                if (tempTank < STANDBY_HEATER_ROOM_TEMP_THRESHOLD || room1TempFailedMinThreshold()) {
                     // temp in (tank || room1) is too low
                     // turn heater ON
                     switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
@@ -727,7 +743,7 @@ void processStandbyHeater() {
 
 /* ============ Helper methods ============ */
 
-bool room1TempReachedThreshold() {
+bool room1TempReachedMinThreshold() {
     return (tsLastSensorTempRoom1 != 0
             && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
             && tempRoom1 > STANDBY_HEATER_ROOM_TEMP_THRESHOLD)
@@ -736,10 +752,16 @@ bool room1TempReachedThreshold() {
             || (tsLastSensorTempRoom1 == 0);
 }
 
-bool room1TempFailedThreshold() {
+bool room1TempFailedMinThreshold() {
     return (tsLastSensorTempRoom1 != 0
             && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
             && tempRoom1 < STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+}
+
+bool room1TempSatisfyMaxThreshold() {
+    return tsLastSensorTempRoom1 != 0
+            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+            && tempRoom1 >= PRIMARY_HEATER_ROOM_TEMP_THRESHOLD;
 }
 
 void validateStringParam(char* str, int maxSize) {
@@ -1437,6 +1459,7 @@ void reportStatus() {
             break;
         case NODE_HEATING:
             reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
+            reportSensorConfigValue(SENSOR_TH_ROOM1_PRIMARY_HEATER, PRIMARY_HEATER_ROOM_TEMP_THRESHOLD);
             nextEntryReport = NODE_FLOOR;
             break;
         case NODE_FLOOR:
@@ -1445,7 +1468,7 @@ void reportStatus() {
             break;
         case NODE_SB_HEATER:
             reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
-            reportSensorConfigValue(SENSOR_TEMP_ROOM_1, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+            reportSensorConfigValue(SENSOR_TH_ROOM1_SB_HEATER, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
             nextEntryReport = NODE_HOTWATER;
             break;
         case NODE_HOTWATER:
@@ -1532,7 +1555,8 @@ void reportConfiguration() {
     reportSensorCalibrationFactor(SENSOR_BOILER, SENSOR_BOILER_FACTOR);
     reportSensorCalibrationFactor(SENSOR_MIX, SENSOR_MIX_FACTOR);
     reportSensorCalibrationFactor(SENSOR_SB_HEATER, SENSOR_SB_HEATER_FACTOR);
-    reportSensorConfigValue(SENSOR_TEMP_ROOM_1, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+    reportSensorConfigValue(SENSOR_TH_ROOM1_SB_HEATER, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+    reportSensorConfigValue(SENSOR_TH_ROOM1_PRIMARY_HEATER, PRIMARY_HEATER_ROOM_TEMP_THRESHOLD);
     reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
     reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
     reportStringConfig(WIFI_LOCAL_AP_KEY, WIFI_LOCAL_AP);
@@ -1757,10 +1781,14 @@ bool parseCommand(char* command) {
                 } else if (sensor.containsKey(ID_KEY) && sensor.containsKey(VALUE_KEY)) {
                     uint8_t id = sensor[ID_KEY].as<uint8_t>();
                     uint8_t val = sensor[VALUE_KEY].as<uint8_t>();
-                    if (id == SENSOR_TEMP_ROOM_1) {
+                    if (id == SENSOR_TH_ROOM1_SB_HEATER) {
                         EEPROM.writeByte(STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR, val);
                         STANDBY_HEATER_ROOM_TEMP_THRESHOLD = val;
-                        reportSensorConfigValue(SENSOR_TEMP_ROOM_1, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+                        reportSensorConfigValue(SENSOR_TH_ROOM1_SB_HEATER, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+                    } else if (id == SENSOR_TH_ROOM1_PRIMARY_HEATER) {
+                        EEPROM.writeByte(PRIMARY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR, val);
+                        PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = val;
+                        reportSensorConfigValue(SENSOR_TH_ROOM1_PRIMARY_HEATER, PRIMARY_HEATER_ROOM_TEMP_THRESHOLD);
                     }
                 }
             } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {
