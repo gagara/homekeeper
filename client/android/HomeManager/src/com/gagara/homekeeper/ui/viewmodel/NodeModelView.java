@@ -128,7 +128,7 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
                 }
                 String sensorName = "id_" + s.getId();
                 if (ViewUtils.validSensor(s)) {
-                    sensorName = resources.getString(TopModelView.SENSORS.get(s.getId()));
+                    sensorName = resources.getString(TopModelView.SENSORS_THRESHOLDS.get(s.getId()));
                 }
                 configStr.append(String.format(resources.getString(R.string.node_config_sensors_template), String
                         .format(resources.getString(R.string.node_config_sensor_template), sensorName, value,

@@ -53,7 +53,6 @@ import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.activity.ConfigureNodeDialog.ConfigureNodeListener;
 import com.gagara.homekeeper.activity.ManageNodeStateDialog.SwitchNodeStateListener;
 import com.gagara.homekeeper.common.Constants;
-import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.common.Mode;
 import com.gagara.homekeeper.common.Proxy;
 import com.gagara.homekeeper.model.NodeModel;

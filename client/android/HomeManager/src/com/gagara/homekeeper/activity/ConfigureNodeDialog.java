@@ -1,6 +1,6 @@
 package com.gagara.homekeeper.activity;
 
-import static com.gagara.homekeeper.ui.viewmodel.TopModelView.SENSORS;
+import static com.gagara.homekeeper.ui.viewmodel.TopModelView.SENSORS_THRESHOLDS;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -84,7 +84,7 @@ public class ConfigureNodeDialog extends DialogFragment {
             title.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
             title.setGravity(Gravity.START);
-            title.setText(SENSORS.get(sensorsThresholds.valueAt(i).getId()));
+            title.setText(SENSORS_THRESHOLDS.get(sensorsThresholds.valueAt(i).getId()));
 
             // control
             EditText control = new EditText(this.getActivity());
