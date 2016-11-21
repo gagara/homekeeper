@@ -88,10 +88,10 @@ static const uint8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
 static const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_MSEC = 600000; // 10 minutes
 
 // heating
-static const uint8_t HEATING_ON_TEMP_THRESHOLD = 35;
-static const uint8_t HEATING_OFF_TEMP_THRESHOLD = 30;
+static const uint8_t HEATING_ON_TEMP_THRESHOLD = 40;
+static const uint8_t HEATING_OFF_TEMP_THRESHOLD = 36;
 static const uint8_t FLOOR_ON_TEMP_THRESHOLD = 35;
-static const uint8_t FLOOR_OFF_TEMP_THRESHOLD = 25;
+static const uint8_t FLOOR_OFF_TEMP_THRESHOLD = 26;
 static const uint8_t PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 20;
 static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 600000; // 10m
 
