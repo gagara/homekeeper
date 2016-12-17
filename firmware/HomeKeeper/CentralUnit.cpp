@@ -484,29 +484,16 @@ void processHeatingCircuit() {
             if (tempTank < HEATING_OFF_TEMP_THRESHOLD && tempMix < HEATING_OFF_TEMP_THRESHOLD
                     && tempSbHeater < HEATING_OFF_TEMP_THRESHOLD) {
                 // temp in (tank && mix && sb_heater) is too low
-                if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
-                    // standby heater is on
-                    if (tempSbHeater <= tempMix && tempSbHeater <= tempTank) {
-                        // temp in standby heater <= (temp in Mix && Tank)
-                        // turn pump OFF
-                        switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
-                    } else {
-                        // temp in standby heater > (temp in Mix || Tank)
-                        // do nothing
-                    }
-                } else {
-                    // standby heater is off
-                    // turn pump OFF
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
-                }
+                // turn pump OFF
+                switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
             } else {
                 // temp is high enough at least in one source
-                if (room1TempSatisfyMaxThreshold()) {
-                    // temp in Room1 is high enough
+                if (room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                    // temp in Room1 is high enough OR standby heater is on
                     // turn pump OFF
                     switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
                 } else {
-                    // temp in Room1 is too low
+                    // temp in Room1 is too low AND standby heater is off
                     // do nothing
                 }
             }
@@ -515,11 +502,11 @@ void processHeatingCircuit() {
             if (tempTank >= HEATING_ON_TEMP_THRESHOLD || tempMix >= HEATING_ON_TEMP_THRESHOLD
                     || tempSbHeater >= HEATING_ON_TEMP_THRESHOLD) {
                 // temp in (tank || mix || sb_heater) is high enough
-                if (room1TempSatisfyMaxThreshold() && !(NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
-                    // temp in Room1 is high enough and standby heater is off
+                if (room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                    // temp in Room1 is high enough OR standby heater is on
                     // do nothing
                 } else {
-                    // temp in Room1 is low or standby heater is on
+                    // temp in Room1 is low AND standby heater is off
                     // turn pump ON
                     switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
                 }
