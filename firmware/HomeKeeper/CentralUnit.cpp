@@ -85,7 +85,7 @@ static const int PRIMARY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR = STANDBY_HEATER
 // Primary Heater
 static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
 static const uint8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
-static const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_MSEC = 600000; // 10 minutes
+static const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_MSEC = 1200000; // 20 minutes
 
 // heating
 static const uint8_t HEATING_ON_TEMP_THRESHOLD = 40;
