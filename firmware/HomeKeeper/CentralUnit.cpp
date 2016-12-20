@@ -93,7 +93,7 @@ static const uint8_t HEATING_OFF_TEMP_THRESHOLD = 36;
 static const uint8_t FLOOR_ON_TEMP_THRESHOLD = 35;
 static const uint8_t FLOOR_OFF_TEMP_THRESHOLD = 26;
 static const uint8_t PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 20;
-static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 600000; // 10m
+static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800000; // 30m
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
