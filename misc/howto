@@ -49,4 +49,12 @@ arduino plugin
 http://eclipse.baeyens.it/
 
 
+================
+Use external toolchain:
+				<macros>
+					<stringMacro name="A.RUNTIME.TOOLS.AVR-GCC.PATH" type="VALUE_TEXT" value="/usr"/>
+					<stringMacro name="A.RUNTIME.TOOLS.AVRDUDE.PATH" type="VALUE_TEXT" value="/usr"/>
+					<stringMacro name="A.TOOLS.AVRDUDE.CONFIG.PATH" type="VALUE_TEXT" value="/etc/avrdude.conf"/>
+				</macros>
 
+=================
