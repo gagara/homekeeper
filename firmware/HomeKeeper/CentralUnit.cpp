@@ -1614,13 +1614,10 @@ void reportNumberConfig(const char* key, const int value) {
 }
 
 void syncClocks() {
-    char tsStr[12];
-    sprintf(tsStr, "%lu", getTimestamp());
-
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.createObject();
     root[MSG_TYPE_KEY] = MSG_CLOCK_SYNC;
-    root[TIMESTAMP_KEY] = tsStr;
+    root[TIMESTAMP_KEY] = getTimestamp();
     root[OVERFLOW_COUNT_KEY] = overflowCount;
 
     char json[JSON_MAX_SIZE];
