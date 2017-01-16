@@ -1028,10 +1028,6 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sen
         if (*ts == 0) {
             *ts += 1;
         }
-        char tsStr[12];
-        char tsfStr[12];
-        sprintf(tsStr, "%lu", *ts);
-        sprintf(tsfStr, "%lu", *tsf);
 
         // report state change
         StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
@@ -1039,10 +1035,10 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sen
         root[MSG_TYPE_KEY] = MSG_NODE_STATE_CHANGED;
         root[ID_KEY] = id;
         root[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
-        root[TIMESTAMP_KEY] = tsStr;
+        root[TIMESTAMP_KEY] = *ts;
         root[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
         if (NODE_FORCED_MODE_FLAGS & bit) {
-            root[FORCE_TIMESTAMP_KEY] = tsfStr;
+            root[FORCE_TIMESTAMP_KEY] = *tsf;
         }
 
         JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
