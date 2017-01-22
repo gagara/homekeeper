@@ -7,6 +7,7 @@ firmware/*/Release
 firmware/*/arduino
 firmware/*/.project
 firmware/*/.cproject
+proxy/.pyenv
 **/*.pyc
 *.d
 *.o
