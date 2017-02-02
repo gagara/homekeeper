@@ -1,0 +1,1 @@
+0  0  * * *    curator --config /etc/elasticsearch/curator/config.yml /etc/elasticsearch/curator/actions.yml 2>&1 | logger -t curator
