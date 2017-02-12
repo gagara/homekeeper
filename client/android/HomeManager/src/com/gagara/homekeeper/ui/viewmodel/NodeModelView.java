@@ -44,7 +44,7 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
         TextView configView = (TextView) this.configView;
         NumberFormat f = new DecimalFormat("#0");
         Date currDate = new Date();
-        String elapsedMinsStr = "0";
+        String elapsedTimeStr = "0";
         String remainingMinsStr = "0";
 
         // details
@@ -52,7 +52,7 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
             valueView.setChecked(model.getState());
             valueView.setEnabled(true);
             if (!UNDEFINED_DATE.equals(model.getSwitchTimestamp())) {
-                elapsedMinsStr = ViewUtils.buildElapseTimeString(currDate, model.getSwitchTimestamp());
+                elapsedTimeStr = ViewUtils.buildElapseTimeString(currDate, model.getSwitchTimestamp());
             }
 
             if (!UNDEFINED_DATE.equals(model.getForcedModeTimestamp())) {
@@ -68,7 +68,7 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
                 detailsStr.append(resources.getString(R.string.node_details_elapsed_time_flag));
                 if (!UNDEFINED_DATE.equals(model.getSwitchTimestamp())) {
                     detailsStr.append(String.format(resources.getString(R.string.node_details_time_template),
-                            DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()), elapsedMinsStr));
+                            DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()), elapsedTimeStr));
                 } else {
                     detailsStr.append(resources.getString(R.string.node_details_unknown_time));
                 }
@@ -87,7 +87,7 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
                 detailsStr.append(resources.getString(R.string.node_details_elapsed_time_flag));
                 if (!UNDEFINED_DATE.equals(model.getSwitchTimestamp())) {
                     detailsStr.append(String.format(resources.getString(R.string.node_details_time_template),
-                            DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()), elapsedMinsStr));
+                            DateFormat.format(DATE_FORMAT, model.getSwitchTimestamp()), elapsedTimeStr));
                 } else {
                     detailsStr.append(resources.getString(R.string.node_details_unknown_time));
                 }

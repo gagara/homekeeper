@@ -36,17 +36,28 @@ public class ViewUtils {
     private static final int NODE_INFO_VIEW_MOD = 100000;
 
     public static String buildElapseTimeString(Date hi, Date lo) {
-        String result;
-        double delta = hi.getTime() - lo.getTime();
-        if (delta > 0) {
-            delta = Math.round(delta / (1000 * 60));
-            if (delta == 0) {
-                result = "<1";
+        String result = "";
+        double msec = hi.getTime() - lo.getTime();
+        if (msec > 0) {
+            double s = 0;
+            double days = Math.floor(msec / (1000 * 60 * 60 * 24));
+            s += days * (1000 * 60 * 60 * 24);
+            double hrs = Math.floor((msec - s) / (1000 * 60 * 60));
+            s += hrs * (1000 * 60 * 60);
+            double mins = Math.floor((msec - s) / (1000 * 60));
+            if (days > 0) {
+                result += Double.valueOf(days).intValue() + "d";
+            }
+            if (hrs > 0 || days > 0) {
+                result += Double.valueOf(hrs).intValue() + "h";
+            }
+            if (mins > 0 || (days + hrs) > 0) {
+                result += Double.valueOf(mins).intValue() + "m";
             } else {
-                result = "" + Double.valueOf(delta).intValue();
+                result = "<1m";
             }
         } else {
-            result = "0";
+            result = "0m";
         }
         return result;
     }
