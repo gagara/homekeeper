@@ -58,6 +58,7 @@ public abstract class AbstractNbiService extends Service {
 
     protected volatile Date lastMessageTimestamp = new Date(0);
     protected Long clocksDelta = null;
+    protected Long estimatedClocksDelta = null;
 
     private NotificationCompat.Builder serviceNotification;
 
@@ -141,7 +142,6 @@ public abstract class AbstractNbiService extends Service {
     }
 
     protected void processMessage(JSONObject message, Date timestamp) throws JSONException, IOException {
-        lastMessageTimestamp = timestamp;
         ControllerConfig.MessageType msgType = ControllerConfig.MessageType.forCode(message
                 .getString(ControllerConfig.MSG_TYPE_KEY));
         if (msgType == ControllerConfig.MessageType.CLOCK_SYNC) {
@@ -152,8 +152,7 @@ public abstract class AbstractNbiService extends Service {
                 clockSyncExecutor = null;
                 long controllerTimestamp = message.getLong(ControllerConfig.TIMESTAMP_KEY);
                 int overflowCount = message.getInt(ControllerConfig.OVERFLOW_COUNT_KEY);
-                long delta = lastMessageTimestamp.getTime()
-                        - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
+                long delta = timestamp.getTime() - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
                 if (clocksDelta == null) {
                     // initial sync: request for status
                     // not required with current reporting model
@@ -164,12 +163,18 @@ public abstract class AbstractNbiService extends Service {
                 state = ACTIVE;
                 notifyStatusChange(getText(R.string.service_listening_status));
             }
+        } else if (msgType == ControllerConfig.MessageType.FAST_CLOCK_SYNC) {
+            long controllerTimestamp = message.getLong(ControllerConfig.TIMESTAMP_KEY);
+            int overflowCount = message.getInt(ControllerConfig.OVERFLOW_COUNT_KEY);
+            long delta = timestamp.getTime() - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
+            estimatedClocksDelta = delta;
         } else {
-            if (clocksDelta != null) {
+            if (clocksDelta != null || estimatedClocksDelta != null) {
                 Intent intent = new Intent();
                 intent.setAction(Constants.CONTROLLER_DATA_TRANSFER_ACTION);
                 if (msgType == ControllerConfig.MessageType.CURRENT_STATUS_REPORT) {
-                    CurrentStatusResponse stats = new CurrentStatusResponse(clocksDelta).fromJson(message);
+                    CurrentStatusResponse stats = new CurrentStatusResponse(clocksDelta != null ? clocksDelta
+                            : estimatedClocksDelta).fromJson(message);
                     if (stats != null) {
                         intent.putExtra(Constants.DATA_KEY, stats);
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
@@ -198,7 +203,8 @@ public abstract class AbstractNbiService extends Service {
                                 title, name));
                     }
                 } else if (msgType == ControllerConfig.MessageType.NODE_STATE_CHANGED) {
-                    NodeStateChangeResponse nodeState = new NodeStateChangeResponse(clocksDelta).fromJson(message);
+                    NodeStateChangeResponse nodeState = new NodeStateChangeResponse(clocksDelta != null ? clocksDelta
+                            : estimatedClocksDelta).fromJson(message);
                     if (nodeState != null) {
                         intent.putExtra(Constants.DATA_KEY, nodeState);
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
@@ -207,8 +213,7 @@ public abstract class AbstractNbiService extends Service {
                         String name = null;
                         title = getResources().getString(R.string.node_title);
                         if (ViewUtils.validNode(nodeState.getData())) {
-                            name = getResources().getString(
-                                    TopModelView.NODES.get(nodeState.getData().getId()));
+                            name = getResources().getString(TopModelView.NODES.get(nodeState.getData().getId()));
                         } else {
                             name = nodeState.getData().getId() + "";
                         }
@@ -217,7 +222,8 @@ public abstract class AbstractNbiService extends Service {
                                 title, name));
                     }
                 } else if (msgType == ControllerConfig.MessageType.CONFIGURATION) {
-                    ConfigurationResponse conf = new ConfigurationResponse(clocksDelta).fromJson(message);
+                    ConfigurationResponse conf = new ConfigurationResponse(clocksDelta != null ? clocksDelta
+                            : estimatedClocksDelta).fromJson(message);
                     if (conf != null) {
                         if (conf instanceof SensorThresholdConfigurationResponse) {
                             SensorThresholdConfigurationResponse sensorConf = (SensorThresholdConfigurationResponse) conf;

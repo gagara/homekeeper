@@ -194,7 +194,8 @@ public class BluetoothNbiService extends AbstractNbiService {
                         String msg = waitForMessage();
                         try {
                             JSONObject json = (JSONObject) new JSONTokener(msg).nextValue();
-                            processMessage(json, new Date());
+                            lastMessageTimestamp = new Date();
+                            processMessage(json, lastMessageTimestamp);
                         } catch (Exception e) {
                             Log.e(TAG, "failed to process [" + msg + "]: " + e.getMessage(), e);
                         }

@@ -7,6 +7,8 @@ from flask import Flask
 from flask import jsonify
 from flask import request, Response
 
+from time import time
+
 
 app = Flask(__name__)
 app.config.from_pyfile('proxy.conf')
@@ -58,8 +60,7 @@ def logserver_send(req):
     if app.debug : print('>>>LOGSERVER: %s; %s' % (host, req))
     requests.post(host, json=req, headers=headers, timeout=app.config['LOGSERVER_CONN_TIMEOUT_SEC'])
 
-def query_logs(timestamp):
-    query = {"query": {"bool": {"filter": [{"term": {"headers.http_user_agent": "ESP8266"}}, {"range": {"@timestamp": {"gt": timestamp}}}]}}, "sort": {"@timestamp": "asc"}}
+def query_es(query):
     logs = []
     if app.debug : print('>>>ELASTICSEARCH: %s' % query)
     res = es.search(index=app.config['ELASTICSEARCH_INDEX'], body=query)
@@ -68,6 +69,20 @@ def query_logs(timestamp):
         if '@timestamp' in hit['_source'] and 'message' in hit['_source']:
             logs.append({'@timestamp': hit['_source']['@timestamp'], 'message': hit['_source']['message']})
     return logs
+
+def query_logs(timestamp):
+    query = {"query": {"bool": {"filter": [{"term": {"headers.http_user_agent": "ESP8266"}}, {"range": {"@timestamp": {"gt": timestamp}}}]}}, "sort": {"@timestamp": "asc"}}
+    return query_es(query)
+
+def fast_synch():
+    result = []
+    query_cls = {"query": {"bool": {"filter": [{"term": {"headers.http_user_agent": "ESP8266"}}, {"term": {"m": "cls"}}]}}, "sort": {"@timestamp": "desc"}, "size": 1}
+    cls = query_es(query_cls)
+    if len(cls) > 0:
+        result.append(cls[0])
+        logs = query_logs(int(time() - app.config['FAST_SYNC_PERIOD_SEC']) * 1000)
+        result.extend(logs)
+    return result
 
 
 @app.route("/", methods=['POST'])
@@ -79,7 +94,13 @@ def client_request():
         if req['m'] == 'log':
             timestamp = req['ts']
             try:
-                return jsonify(query_logs(timestamp)), 200
+                return (jsonify(query_logs(timestamp)), 200)
+            except Exception as e:
+                if app.debug : print(e)
+                return (str(e), 504)
+        elif req['m'] == 'fcs':
+            try:
+                return (jsonify(fast_synch()), 200)
             except Exception as e:
                 if app.debug : print(e)
                 return (str(e), 504)
@@ -87,7 +108,7 @@ def client_request():
             try:
                 controller_send(req)
                 logserver_send(req)
-                return jsonify({'result': 'OK'}), 200
+                return (jsonify([]), 200)
             except Exception as e:
                 if app.debug : print(e)
                 return (str(e), 504)
@@ -97,4 +118,4 @@ def client_request():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=8088)

@@ -42,13 +42,14 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.common.Constants;
+import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.common.Proxy;
 import com.gagara.homekeeper.nbi.https.HttpsTrustManager;
+import com.gagara.homekeeper.nbi.request.FastClockSyncRequest;
 import com.gagara.homekeeper.nbi.request.LogRequest;
 import com.gagara.homekeeper.nbi.request.Request;
 import com.gagara.homekeeper.utils.HomeKeeperConfig;
@@ -116,7 +117,7 @@ public class ProxyNbiService extends AbstractNbiService {
     @Override
     public void send(Request request) {
         if (state != SHUTDOWN) {
-            JsonObjectRequest req = new ProxySendRequest(request);
+            JsonRequest<JSONArray> req = new ProxyRequest(request);
             req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             httpRequestQueue.add(req);
@@ -137,6 +138,9 @@ public class ProxyNbiService extends AbstractNbiService {
                     if (state != ACTIVE) {
                         state = INIT;
                         if (clocksDelta == null && clockSyncExecutor == null) {
+                            // try fast synchronization
+                            send(new FastClockSyncRequest());
+                            // schedule normal synchronization
                             clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
                             clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L,
                                     proxy.getPullPeriod() * 5, TimeUnit.SECONDS);
@@ -158,7 +162,7 @@ public class ProxyNbiService extends AbstractNbiService {
                 public void run() {
                     if (state != SHUTDOWN) {
                         try {
-                            JsonRequest<JSONArray> req = new ProxyLogRequest();
+                            JsonRequest<JSONArray> req = new ProxyRequest(new LogRequest(lastMessageTimestamp));
                             req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT,
                                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                             httpRequestQueue.add(req);
@@ -184,14 +188,35 @@ public class ProxyNbiService extends AbstractNbiService {
         return headers;
     }
 
-    private class ProxySendRequest extends JsonObjectRequest {
+    private class ProxyRequest extends JsonRequest<JSONArray> {
 
-        public ProxySendRequest(Request request) {
-            super(POST, proxy.asUrl(), request.toJson(), new Response.Listener<JSONObject>() {
+        public ProxyRequest(final Request request) {
+            super(POST, proxy.asUrl(), request.toJson().toString(), new Response.Listener<JSONArray>() {
 
                 @Override
-                public void onResponse(JSONObject response) {
-                    // do nothing
+                public void onResponse(JSONArray response) {
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject log = response.getJSONObject(i);
+                            Date timestamp = df.parse(log.getString(TIMESTAMP_KEY));
+                            JSONObject message = (JSONObject) new JSONTokener(log.getString(MESSAGE_KEY)).nextValue();
+                            if (request instanceof FastClockSyncRequest) {
+                                ControllerConfig.MessageType msgType = ControllerConfig.MessageType.forCode(message
+                                        .getString(ControllerConfig.MSG_TYPE_KEY));
+                                if (msgType == ControllerConfig.MessageType.CLOCK_SYNC) {
+                                    message.put(ControllerConfig.MSG_TYPE_KEY,
+                                            ControllerConfig.MessageType.FAST_CLOCK_SYNC.code());
+                                } else {
+                                    lastMessageTimestamp = timestamp;
+                                }
+                            } else {
+                                lastMessageTimestamp = timestamp;
+                            }
+                            processMessage(message, timestamp);
+                        } catch (Exception e) {
+                            Log.e(TAG, "failed to process [" + response + "]: " + e.getMessage(), e);
+                        }
+                    }
                 }
             }, new Response.ErrorListener() {
 
@@ -212,59 +237,7 @@ public class ProxyNbiService extends AbstractNbiService {
             });
         }
 
-        public ProxySendRequest(int method, String url, JSONObject jsonRequest, Listener<JSONObject> listener,
-                ErrorListener errorListener) {
-            super(method, url, jsonRequest, listener, errorListener);
-        }
-
-        @Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
-            Map<String, String> headers = new HashMap<String, String>(super.getHeaders());
-            return addAuthHeaders(headers);
-        }
-    }
-
-    private class ProxyLogRequest extends JsonRequest<JSONArray> {
-
-        public ProxyLogRequest() {
-            super(POST, proxy.asUrl(), new LogRequest(lastMessageTimestamp).toJson().toString(),
-                    new Response.Listener<JSONArray>() {
-
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            for (int i = 0; i < response.length(); i++) {
-                                try {
-                                    JSONObject log = response.getJSONObject(i);
-                                    Date timestamp = df.parse(log.getString(TIMESTAMP_KEY));
-                                    lastMessageTimestamp = timestamp;
-                                    JSONObject message = (JSONObject) new JSONTokener(log.getString(MESSAGE_KEY))
-                                            .nextValue();
-                                    processMessage(message, timestamp);
-                                } catch (Exception e) {
-                                    Log.e(TAG, "failed to process [" + response + "]: " + e.getMessage(), e);
-                                }
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError e) {
-                            Log.e(TAG, e.getMessage(), e);
-                            state = ERROR;
-                            String msg = e.getMessage();
-                            if (msg == null && e.networkResponse != null) {
-                                msg = new String(e.networkResponse.data);
-                            }
-                            notifyStatusChange(e.getClass().getSimpleName() + ": " + msg);
-                            synchronized (serviceExecutor) {
-                                clocksDelta = null;
-                                serviceExecutor.notifyAll();
-                            }
-                        }
-                    });
-        }
-
-        public ProxyLogRequest(int method, String url, String requestBody, Listener<JSONArray> listener,
+        public ProxyRequest(int method, String url, String requestBody, Listener<JSONArray> listener,
                 ErrorListener errorListener) {
             super(method, url, requestBody, listener, errorListener);
         }
