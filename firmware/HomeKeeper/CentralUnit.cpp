@@ -484,8 +484,14 @@ void processHeatingCircuit() {
             if (tempTank < HEATING_OFF_TEMP_THRESHOLD && tempMix < HEATING_OFF_TEMP_THRESHOLD
                     && tempSbHeater < HEATING_OFF_TEMP_THRESHOLD) {
                 // temp in (tank && mix && sb_heater) is too low
-                // turn pump OFF
-                switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
+                if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
+                    // supply is on
+                    // do nothing
+                } else {
+                    // supply is off
+                    // turn pump OFF
+                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
+                }
             } else {
                 // temp is high enough at least in one source
                 if (room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
