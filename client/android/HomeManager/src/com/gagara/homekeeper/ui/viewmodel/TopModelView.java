@@ -8,6 +8,7 @@ import static com.gagara.homekeeper.common.ControllerConfig.NODE_HOTWATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_SB_HEATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_SUPPLY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_BOILER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_BOILER_POWER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_MIX_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_REVERSE_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_HUM_ID;
@@ -25,9 +26,9 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.gagara.homekeeper.R;
-import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.model.Model;
-import com.gagara.homekeeper.model.SensorModel.SensorType;
+import com.gagara.homekeeper.model.ValueSensorModel;
+import com.gagara.homekeeper.model.ValueSensorModel.SensorType;
 import com.gagara.homekeeper.ui.view.ViewUtils;
 
 public class TopModelView implements ModelView<Model> {
@@ -43,7 +44,7 @@ public class TopModelView implements ModelView<Model> {
     private ServiceInfoModelView info;
     private ServiceLogModelView log;
 
-    private SparseArray<SensorModelView> sensors;
+    private SparseArray<SensorModelView<?>> sensors;
     private SparseArray<NodeModelView> nodes;
 
     static {
@@ -56,6 +57,7 @@ public class TopModelView implements ModelView<Model> {
         SENSORS.put(SENSOR_BOILER_ID, R.string.sensor_boiler_name);
         SENSORS.put(SENSOR_ROOM1_TEMP_ID, R.string.sensor_room1_temp_name);
         SENSORS.put(SENSOR_ROOM1_HUM_ID, R.string.sensor_room1_hum_name);
+        SENSORS.put(SENSOR_BOILER_POWER_ID, R.string.sensor_boiler_power_name);
 
         SENSORS_THRESHOLDS = new SparseIntArray();
         SENSORS_THRESHOLDS.put(SENSOR_TH_ROOM1_SB_HEATER_ID, R.string.sensor_th_room1_sb_heater);
@@ -69,7 +71,7 @@ public class TopModelView implements ModelView<Model> {
         NODES.put(NODE_HOTWATER_ID, R.string.node_hotwater_name);
         NODES.put(NODE_CIRCULATION_ID, R.string.node_circulation_name);
         NODES.put(NODE_BOILER_ID, R.string.node_boilder_name);
-        
+
         int idx = 0;
         SENSORS_VIEW_LIST = new SparseIntArray();
         SENSORS_VIEW_LIST.put(idx++, SENSOR_SUPPLY_ID);
@@ -80,6 +82,7 @@ public class TopModelView implements ModelView<Model> {
         SENSORS_VIEW_LIST.put(idx++, SENSOR_BOILER_ID);
         SENSORS_VIEW_LIST.put(idx++, SENSOR_ROOM1_TEMP_ID);
         SENSORS_VIEW_LIST.put(idx++, SENSOR_ROOM1_HUM_ID);
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_BOILER_POWER_ID);
         idx = 0;
         NODES_VIEW_LIST = new SparseIntArray();
         NODES_VIEW_LIST.put(idx++, NODE_SUPPLY_ID);
@@ -96,17 +99,24 @@ public class TopModelView implements ModelView<Model> {
         info = new ServiceInfoModelView((TextView) ctx.findViewById(R.id.headerRight), ctx.getResources());
         log = new ServiceLogModelView((TextView) ctx.findViewById(R.id.footerLeft), ctx.getResources());
 
-        sensors = new SparseArray<SensorModelView>();
+        sensors = new SparseArray<SensorModelView<?>>();
         for (int i = 0; i < SENSORS.size(); i++) {
             int id = SENSORS.keyAt(i);
-            SensorModelView s = new SensorModelView(id);
-            s.setValueView((TextView) ctx.findViewById(ViewUtils.getSensorValueViewId(id)));
-            s.setDetailsView((TextView) ctx.findViewById(ViewUtils.getSensorDetailsViewId(id)));
-            s.setResources(ctx.getResources());
-            if (SENSOR_ROOM1_HUM_ID == id) {
-                s.getModel().setType(SensorType.HUMIDITY);
+            SensorModelView<?> s = null;
+            if (ViewUtils.validValueSensorId(id)) {
+                s = new ValueSensorModelView(id);
+            } else if (ViewUtils.validStateSensorId(id)) {
+                s = new StateSensorModelView(id);
             }
-            sensors.put(id, s);
+            if (s != null) {
+                s.setValueView((TextView) ctx.findViewById(ViewUtils.getSensorValueViewId(id)));
+                s.setDetailsView((TextView) ctx.findViewById(ViewUtils.getSensorDetailsViewId(id)));
+                s.setResources(ctx.getResources());
+                if (SENSOR_ROOM1_HUM_ID == id) {
+                    ((ValueSensorModel) s.getModel()).setType(SensorType.HUMIDITY);
+                }
+                sensors.put(id, s);
+            }
         }
 
         nodes = new SparseArray<NodeModelView>();
@@ -175,10 +185,6 @@ public class TopModelView implements ModelView<Model> {
         return true;
     }
 
-    public SparseArray<SensorModelView> getSensors() {
-        return sensors;
-    }
-
     public SparseArray<NodeModelView> getNodes() {
         return nodes;
     }
@@ -195,7 +201,7 @@ public class TopModelView implements ModelView<Model> {
         return log;
     }
 
-    public SensorModelView getSensor(int id) {
+    public SensorModelView<?> getSensor(int id) {
         return sensors.get(id);
     }
 
@@ -203,51 +209,55 @@ public class TopModelView implements ModelView<Model> {
         return nodes.get(id);
     }
 
-    public SensorModelView getSensorSupply() {
-        return sensors.get(ControllerConfig.SENSOR_SUPPLY_ID);
+    public ValueSensorModelView getSensorSupply() {
+        return (ValueSensorModelView) sensors.get(SENSOR_SUPPLY_ID);
     }
 
-    public SensorModelView getSensorReverse() {
-        return sensors.get(ControllerConfig.SENSOR_REVERSE_ID);
+    public ValueSensorModelView getSensorReverse() {
+        return (ValueSensorModelView) sensors.get(SENSOR_REVERSE_ID);
     }
 
-    public SensorModelView getSensorTank() {
-        return sensors.get(ControllerConfig.SENSOR_TANK_ID);
+    public ValueSensorModelView getSensorTank() {
+        return (ValueSensorModelView) sensors.get(SENSOR_TANK_ID);
     }
 
-    public SensorModelView getSensorBoiler() {
-        return sensors.get(ControllerConfig.SENSOR_BOILER_ID);
+    public ValueSensorModelView getSensorBoiler() {
+        return (ValueSensorModelView) sensors.get(SENSOR_BOILER_ID);
     }
 
-    public SensorModelView getSensorMix() {
-        return sensors.get(ControllerConfig.SENSOR_MIX_ID);
+    public ValueSensorModelView getSensorMix() {
+        return (ValueSensorModelView) sensors.get(SENSOR_MIX_ID);
     }
 
-    public SensorModelView getSensorSbHeater() {
-        return sensors.get(ControllerConfig.SENSOR_SB_HEATER_ID);
+    public ValueSensorModelView getSensorSbHeater() {
+        return (ValueSensorModelView) sensors.get(SENSOR_SB_HEATER_ID);
+    }
+
+    public StateSensorModelView getSensorBoilerPower() {
+        return (StateSensorModelView) sensors.get(SENSOR_BOILER_POWER_ID);
     }
 
     public NodeModelView getNodeHeaterToTank() {
-        return nodes.get(ControllerConfig.NODE_SUPPLY_ID);
+        return nodes.get(NODE_SUPPLY_ID);
     }
 
     public NodeModelView getNodeTankToSystem() {
-        return nodes.get(ControllerConfig.NODE_HEATING_ID);
+        return nodes.get(NODE_HEATING_ID);
     }
 
     public NodeModelView getNodeTankToBoiler() {
-        return nodes.get(ControllerConfig.NODE_HOTWATER_ID);
+        return nodes.get(NODE_HOTWATER_ID);
     }
 
     public NodeModelView getNodeCirculation() {
-        return nodes.get(ControllerConfig.NODE_CIRCULATION_ID);
+        return nodes.get(NODE_CIRCULATION_ID);
     }
 
     public NodeModelView getNodeBoiler() {
-        return nodes.get(ControllerConfig.NODE_BOILER_ID);
+        return nodes.get(NODE_BOILER_ID);
     }
 
     public NodeModelView getNodeSbHeater() {
-        return nodes.get(ControllerConfig.NODE_SB_HEATER_ID);
+        return nodes.get(NODE_SB_HEATER_ID);
     }
 }

@@ -19,7 +19,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.gagara.homekeeper.model.NodeModel;
-import com.gagara.homekeeper.model.SensorModel;
+import com.gagara.homekeeper.model.ValueSensorModel;
 import com.gagara.homekeeper.nbi.MessageHeader;
 
 public class NodeStatusResponse extends MessageHeader implements Response, Parcelable {
@@ -43,7 +43,7 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
                     data.getForcedModeTimestamp().getTime() });
             out.writeInt(data.getSensors().size());
             for (int i = 0; i < data.getSensors().size(); i++) {
-                SensorModel s = data.getSensors().valueAt(i);
+                ValueSensorModel s = data.getSensors().valueAt(i);
                 out.writeIntArray(new int[] { s.getId(), s.getValue(), s.getPrevValue() });
             }
         } else {
@@ -83,7 +83,7 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
             for (int i = 0; i < sCnt; i++) {
                 int[] sv = new int[3];
                 in.readIntArray(sv);
-                SensorModel s = new SensorModel(sv[0]);
+                ValueSensorModel s = new ValueSensorModel(sv[0]);
                 s.setValue(sv[1]);
                 s.setPrevValue(sv[2]);
                 data.addSensor(s);
@@ -113,7 +113,7 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
                     JSONObject sensorJson = sensorsJson.getJSONObject(i);
                     int id = sensorJson.getInt(ID_KEY);
                     int value = sensorJson.getInt(VALUE_KEY);
-                    SensorModel sensor = new SensorModel(id);
+                    ValueSensorModel sensor = new ValueSensorModel(id);
                     sensor.setValue(value);
                     data.addSensor(sensor);
                 }

@@ -56,8 +56,9 @@ import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.common.Mode;
 import com.gagara.homekeeper.common.Proxy;
 import com.gagara.homekeeper.model.NodeModel;
-import com.gagara.homekeeper.model.SensorModel;
 import com.gagara.homekeeper.model.ServiceStatusModel;
+import com.gagara.homekeeper.model.StateSensorModel;
+import com.gagara.homekeeper.model.ValueSensorModel;
 import com.gagara.homekeeper.nbi.request.ConfigurationRequest;
 import com.gagara.homekeeper.nbi.request.CurrentStatusRequest;
 import com.gagara.homekeeper.nbi.request.NodeStateChangeRequest;
@@ -69,7 +70,9 @@ import com.gagara.homekeeper.nbi.service.ProxyNbiService;
 import com.gagara.homekeeper.nbi.service.ServiceState;
 import com.gagara.homekeeper.ui.view.ViewUtils;
 import com.gagara.homekeeper.ui.viewmodel.NodeModelView;
+import com.gagara.homekeeper.ui.viewmodel.StateSensorModelView;
 import com.gagara.homekeeper.ui.viewmodel.TopModelView;
+import com.gagara.homekeeper.ui.viewmodel.ValueSensorModelView;
 import com.gagara.homekeeper.utils.BluetoothUtils;
 import com.gagara.homekeeper.utils.HomeKeeperConfig;
 import com.gagara.homekeeper.utils.NetworkUtils;
@@ -475,11 +478,20 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                 if (data instanceof CurrentStatusResponse) {
                     CurrentStatusResponse stats = (CurrentStatusResponse) data;
 
-                    // sensor
-                    if (stats.getSensor() != null) {
-                        SensorModel sensor = stats.getSensor().getData();
+                    // value sensor
+                    if (stats.getValueSensor() != null) {
+                        ValueSensorModel sensor = stats.getValueSensor().getData();
                         if (ViewUtils.validSensor(sensor)) {
-                            modelView.getSensor(sensor.getId()).getModel().update(sensor);
+                            ((ValueSensorModelView) modelView.getSensor(sensor.getId())).getModel().update(sensor);
+                            modelView.getSensor(sensor.getId()).render();
+                            latestTimestamp = stats.getTimestamp();
+                        }
+                    }
+                    // state sensor
+                    if (stats.getStateSensor() != null) {
+                        StateSensorModel sensor = stats.getStateSensor().getData();
+                        if (ViewUtils.validSensor(sensor)) {
+                            ((StateSensorModelView) modelView.getSensor(sensor.getId())).getModel().update(sensor);
                             modelView.getSensor(sensor.getId()).render();
                             latestTimestamp = stats.getTimestamp();
                         }
@@ -502,9 +514,9 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                         modelView.getNode(node.getId()).getModel().update(node);
                         modelView.getNode(node.getId()).render();
                         for (int i = 0; i < node.getSensors().size(); i++) {
-                            SensorModel sensor = node.getSensors().valueAt(i);
+                            ValueSensorModel sensor = node.getSensors().valueAt(i);
                             if (ViewUtils.validSensor(sensor)) {
-                                modelView.getSensor(sensor.getId()).getModel().update(sensor);
+                                ((ValueSensorModelView) modelView.getSensor(sensor.getId())).getModel().update(sensor);
                                 modelView.getSensor(sensor.getId()).render();
                             }
                         }
@@ -523,7 +535,7 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                 } else if (data instanceof SensorThresholdConfigurationResponse) {
                     SensorThresholdConfigurationResponse cfg = (SensorThresholdConfigurationResponse) data;
                     if (cfg.getData() != null) {
-                        SensorModel sensor = cfg.getData();
+                        ValueSensorModel sensor = cfg.getData();
                         // hardcoded for now
                         if (ViewUtils.validSensor(sensor) && sensor.getId() == SENSOR_TH_ROOM1_SB_HEATER_ID) {
                             int nodeId = NODE_SB_HEATER_ID;

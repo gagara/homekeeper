@@ -40,6 +40,7 @@ void readSensors();
 void readSensor(const uint8_t id, int8_t* const &values, uint8_t &idx);
 void refreshSensorValues();
 int8_t getSensorValue(const uint8_t sensor);
+int8_t getSensorBoilerPowerState();
 unsigned long getTimestamp();
 unsigned long diffTimestamps(unsigned long hi, unsigned long lo);
 bool isInForcedMode(uint8_t bit, unsigned long ts);

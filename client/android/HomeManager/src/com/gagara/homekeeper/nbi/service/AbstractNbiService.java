@@ -189,13 +189,21 @@ public abstract class AbstractNbiService extends Service {
                             } else {
                                 name = stats.getNode().getData().getId() + "";
                             }
-                        } else if (stats.getSensor() != null) {
+                        } else if (stats.getValueSensor() != null) {
                             title = getResources().getString(R.string.sensor_title);
-                            if (ViewUtils.validSensor(stats.getSensor().getData())) {
+                            if (ViewUtils.validSensor(stats.getValueSensor().getData())) {
                                 name = getResources().getString(
-                                        TopModelView.SENSORS.get(stats.getSensor().getData().getId()));
+                                        TopModelView.SENSORS.get(stats.getValueSensor().getData().getId()));
                             } else {
-                                name = stats.getSensor().getData().getId() + "";
+                                name = stats.getValueSensor().getData().getId() + "";
+                            }
+                        } else if (stats.getStateSensor() != null) {
+                            title = getResources().getString(R.string.sensor_title);
+                            if (ViewUtils.validSensor(stats.getStateSensor().getData())) {
+                                name = getResources().getString(
+                                        TopModelView.SENSORS.get(stats.getStateSensor().getData().getId()));
+                            } else {
+                                name = stats.getStateSensor().getData().getId() + "";
                             }
                         }
 

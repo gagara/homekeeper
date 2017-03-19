@@ -35,6 +35,7 @@ public class ControllerConfig {
     public static final int SENSOR_BOILER_ID = 57;
     public static final int SENSOR_MIX_ID = 58;
     public static final int SENSOR_SB_HEATER_ID = 59;
+    public static final int SENSOR_BOILER_POWER_ID = 60;
     public static final int SENSOR_ROOM1_TEMP_ID = 74;
     public static final int SENSOR_ROOM1_HUM_ID = 75;
 

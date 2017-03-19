@@ -14,8 +14,8 @@ public class NodeModel implements Model {
     private Date switchTimestamp = UNDEFINED_DATE;
     private Boolean forcedMode = null;
     private Date forcedModeTimestamp = UNDEFINED_DATE;
-    private SparseArray<SensorModel> sensors = new SparseArray<SensorModel>();
-    private SparseArray<SensorModel> sensorsThresholds = new SparseArray<SensorModel>();
+    private SparseArray<ValueSensorModel> sensors = new SparseArray<ValueSensorModel>();
+    private SparseArray<ValueSensorModel> sensorsThresholds = new SparseArray<ValueSensorModel>();
 
     public NodeModel(int id) {
         this.id = id;
@@ -73,7 +73,7 @@ public class NodeModel implements Model {
         if (ids != null) {
             sensors.clear();
             for (int i = 0; i < ids.length; i++) {
-                SensorModel sm = new SensorModel(ids[i]);
+                ValueSensorModel sm = new ValueSensorModel(ids[i]);
                 sm.restoreState(bundle, prefix + "node_" + id + "_sensors_");
                 sensors.put(ids[i], sm);
             }
@@ -82,7 +82,7 @@ public class NodeModel implements Model {
         if (thIds != null) {
             sensorsThresholds.clear();
             for (int i = 0; i < thIds.length; i++) {
-                SensorModel sm = new SensorModel(thIds[i]);
+                ValueSensorModel sm = new ValueSensorModel(thIds[i]);
                 sm.restoreState(bundle, prefix + "node_" + id + "_sensors_thresholds_");
                 sensorsThresholds.put(thIds[i], sm);
             }
@@ -156,27 +156,27 @@ public class NodeModel implements Model {
         this.forcedModeTimestamp = forcedModeTimestamp;
     }
 
-    public SparseArray<SensorModel> getSensors() {
+    public SparseArray<ValueSensorModel> getSensors() {
         return sensors;
     }
 
-    public void setSensors(SparseArray<SensorModel> sensors) {
+    public void setSensors(SparseArray<ValueSensorModel> sensors) {
         this.sensors = sensors;
     }
 
-    public void addSensor(SensorModel sensor) {
+    public void addSensor(ValueSensorModel sensor) {
         this.sensors.put(sensor.getId(), sensor);
     }
 
-    public SparseArray<SensorModel> getSensorsThresholds() {
+    public SparseArray<ValueSensorModel> getSensorsThresholds() {
         return sensorsThresholds;
     }
 
-    public void setSensorsThresholds(SparseArray<SensorModel> sensorsThresholds) {
+    public void setSensorsThresholds(SparseArray<ValueSensorModel> sensorsThresholds) {
         this.sensorsThresholds = sensorsThresholds;
     }
 
-    public void addSensorThreshold(SensorModel sensor) {
+    public void addSensorThreshold(ValueSensorModel sensor) {
         this.sensorsThresholds.put(sensor.getId(), sensor);
     }
 }

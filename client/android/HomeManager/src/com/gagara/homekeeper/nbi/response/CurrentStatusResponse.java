@@ -1,5 +1,10 @@
 package com.gagara.homekeeper.nbi.response;
 
+import static com.gagara.homekeeper.common.ControllerConfig.ID_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.MSG_TYPE_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_KEY;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_KEY;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +17,15 @@ import android.util.Log;
 
 import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.nbi.MessageHeader;
+import com.gagara.homekeeper.ui.view.ViewUtils;
 
 public class CurrentStatusResponse extends MessageHeader implements Response, Parcelable {
 
     private static final String TAG = CurrentStatusResponse.class.getName();
 
     private NodeStatusResponse node = null;
-    private SensorStatusResponse sensor = null;
+    private ValueSensorStatusResponse valueSensor = null;
+    private StateSensorStatusResponse stateSensor = null;
 
     @Override
     public int describeContents() {
@@ -32,15 +39,21 @@ public class CurrentStatusResponse extends MessageHeader implements Response, Pa
         if (node != null) {
             content.add("node");
         }
-        if (sensor != null) {
-            content.add("sensor");
+        if (valueSensor != null) {
+            content.add("valueSensor");
+        }
+        if (stateSensor != null) {
+            content.add("stateSensor");
         }
         out.writeStringList(content);
         if (node != null) {
             node.writeToParcel(out, flags);
         }
-        if (sensor != null) {
-            node.writeToParcel(out, flags);
+        if (valueSensor != null) {
+            valueSensor.writeToParcel(out, flags);
+        }
+        if (stateSensor != null) {
+            stateSensor.writeToParcel(out, flags);
         }
     }
 
@@ -66,8 +79,11 @@ public class CurrentStatusResponse extends MessageHeader implements Response, Pa
         if (content.contains("node")) {
             node = new NodeStatusResponse(in);
         }
-        if (content.contains("sensor")) {
-            sensor = new SensorStatusResponse(in);
+        if (content.contains("valueSensor")) {
+            valueSensor = new ValueSensorStatusResponse(in);
+        }
+        if (content.contains("stateSensor")) {
+            stateSensor = new StateSensorStatusResponse(in);
         }
     }
 
@@ -78,16 +94,22 @@ public class CurrentStatusResponse extends MessageHeader implements Response, Pa
         }
         try {
             if (ControllerConfig.MessageType.CURRENT_STATUS_REPORT == ControllerConfig.MessageType.forCode(json.get(
-                    ControllerConfig.MSG_TYPE_KEY).toString())) {
-                if (json.has(ControllerConfig.NODE_KEY)) {
-                    JSONObject nodeJson = json.getJSONObject(ControllerConfig.NODE_KEY);
+                    MSG_TYPE_KEY).toString())) {
+                if (json.has(NODE_KEY)) {
+                    JSONObject nodeJson = json.getJSONObject(NODE_KEY);
                     node = new NodeStatusResponse(clocksDelta);
                     node.fromJson(nodeJson);
                 }
-                if (json.has(ControllerConfig.SENSOR_KEY)) {
-                    JSONObject sensorJson = json.getJSONObject(ControllerConfig.SENSOR_KEY);
-                    sensor = new SensorStatusResponse(clocksDelta);
-                    sensor.fromJson(sensorJson);
+                if (json.has(SENSOR_KEY)) {
+                    JSONObject sensorJson = json.getJSONObject(SENSOR_KEY);
+                    int id = sensorJson.getInt(ID_KEY);
+                    if (ViewUtils.validValueSensorId(id)) {
+                        valueSensor = new ValueSensorStatusResponse(clocksDelta);
+                        valueSensor.fromJson(sensorJson);
+                    } else {
+                        stateSensor = new StateSensorStatusResponse(clocksDelta);
+                        stateSensor.fromJson(sensorJson);
+                    }
                 }
                 return this;
             } else {
@@ -107,11 +129,19 @@ public class CurrentStatusResponse extends MessageHeader implements Response, Pa
         this.node = node;
     }
 
-    public SensorStatusResponse getSensor() {
-        return sensor;
+    public ValueSensorStatusResponse getValueSensor() {
+        return valueSensor;
     }
 
-    public void setSensor(SensorStatusResponse sensor) {
-        this.sensor = sensor;
+    public void setValueSensor(ValueSensorStatusResponse sensor) {
+        this.valueSensor = sensor;
+    }
+
+    public StateSensorStatusResponse getStateSensor() {
+        return stateSensor;
+    }
+
+    public void setStateSensor(StateSensorStatusResponse sensor) {
+        this.stateSensor = sensor;
     }
 }

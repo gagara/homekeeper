@@ -8,6 +8,7 @@ import static com.gagara.homekeeper.common.ControllerConfig.NODE_HOTWATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_SB_HEATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_SUPPLY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_BOILER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_BOILER_POWER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_MIX_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_REVERSE_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_HUM_ID;
@@ -22,8 +23,9 @@ import java.util.Date;
 
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.NodeModel;
-import com.gagara.homekeeper.model.SensorModel;
-import com.gagara.homekeeper.model.SensorModel.SensorType;
+import com.gagara.homekeeper.model.StateSensorModel;
+import com.gagara.homekeeper.model.ValueSensorModel;
+import com.gagara.homekeeper.model.ValueSensorModel.SensorType;
 
 public class ViewUtils {
 
@@ -72,12 +74,25 @@ public class ViewUtils {
         }
     }
 
-    public static boolean validSensor(SensorModel sensor) {
-        int id = sensor != null ? sensor.getId() : -1;
+    public static boolean validValueSensorId(int id) {
         return id == SENSOR_SUPPLY_ID || id == SENSOR_REVERSE_ID || id == SENSOR_TANK_ID || id == SENSOR_BOILER_ID
                 || id == SENSOR_MIX_ID || id == SENSOR_SB_HEATER_ID || id == SENSOR_ROOM1_TEMP_ID
                 || id == SENSOR_ROOM1_HUM_ID || id == SENSOR_TH_ROOM1_SB_HEATER_ID
                 || id == SENSOR_TH_ROOM1_PRIMARY_HEATER_ID;
+    }
+
+    public static boolean validSensor(ValueSensorModel sensor) {
+        int id = sensor != null ? sensor.getId() : -1;
+        return validValueSensorId(id);
+    }
+
+    public static boolean validStateSensorId(int id) {
+        return id == SENSOR_BOILER_POWER_ID;
+    }
+
+    public static boolean validSensor(StateSensorModel sensor) {
+        int id = sensor != null ? sensor.getId() : -1;
+        return validStateSensorId(id);
     }
 
     public static boolean validNode(NodeModel node) {

@@ -11,13 +11,13 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.gagara.homekeeper.common.ControllerConfig;
-import com.gagara.homekeeper.model.SensorModel;
+import com.gagara.homekeeper.model.ValueSensorModel;
 
 public class SensorThresholdConfigurationResponse extends ConfigurationResponse implements Response, Parcelable {
 
     private static final String TAG = SensorThresholdConfigurationResponse.class.getName();
 
-    private SensorModel data = null;
+    private ValueSensorModel data = null;
 
     @Override
     public int describeContents() {
@@ -53,7 +53,7 @@ public class SensorThresholdConfigurationResponse extends ConfigurationResponse 
         super(in);
         int id = in.readInt();
         if (id > 0) {
-            data = new SensorModel(id);
+            data = new ValueSensorModel(id);
             data.setValue(in.readInt());
         }
     }
@@ -64,7 +64,7 @@ public class SensorThresholdConfigurationResponse extends ConfigurationResponse 
             JSONObject sensor = json.getJSONObject(ControllerConfig.SENSOR_KEY);
             int id = sensor.getInt(ID_KEY);
             int value = sensor.getInt(VALUE_KEY);
-            data = new SensorModel(id);
+            data = new ValueSensorModel(id);
             data.setValue(value);
         } catch (JSONException e) {
             Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
@@ -73,11 +73,11 @@ public class SensorThresholdConfigurationResponse extends ConfigurationResponse 
         return this;
     }
 
-    public SensorModel getData() {
+    public ValueSensorModel getData() {
         return data;
     }
 
-    public void setData(SensorModel data) {
+    public void setData(ValueSensorModel data) {
         this.data = data;
     }
 }

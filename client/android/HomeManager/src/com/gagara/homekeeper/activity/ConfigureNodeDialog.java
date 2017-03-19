@@ -21,7 +21,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.gagara.homekeeper.R;
-import com.gagara.homekeeper.model.SensorModel;
+import com.gagara.homekeeper.model.ValueSensorModel;
 
 public class ConfigureNodeDialog extends DialogFragment {
 
@@ -32,7 +32,7 @@ public class ConfigureNodeDialog extends DialogFragment {
     private String nodeName = "";
     private SparseIntArray result = new SparseIntArray();
 
-    private SparseArray<SensorModel> sensorsThresholds;
+    private SparseArray<ValueSensorModel> sensorsThresholds;
 
     public int getNodeId() {
         return nodeId;
@@ -46,7 +46,7 @@ public class ConfigureNodeDialog extends DialogFragment {
         this.nodeName = nodeName;
     }
 
-    public void setSensorsThresholds(SparseArray<SensorModel> sensorsThresholds) {
+    public void setSensorsThresholds(SparseArray<ValueSensorModel> sensorsThresholds) {
         this.sensorsThresholds = sensorsThresholds;
     }
 
@@ -152,7 +152,7 @@ public class ConfigureNodeDialog extends DialogFragment {
     private void readValues() {
         if (view != null) {
             for (int i = 0; i < sensorsThresholds.size(); i++) {
-                SensorModel sensor = sensorsThresholds.valueAt(i);
+                ValueSensorModel sensor = sensorsThresholds.valueAt(i);
                 result.put(sensor.getId(),
                         Integer.parseInt(((EditText) view.findViewById(sensor.getId())).getText().toString()));
             }

@@ -16,7 +16,7 @@ import android.widget.ToggleButton;
 
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.model.NodeModel;
-import com.gagara.homekeeper.model.SensorModel;
+import com.gagara.homekeeper.model.ValueSensorModel;
 import com.gagara.homekeeper.ui.view.ViewUtils;
 
 public class NodeModelView extends AbstractEntryModelView<NodeModel> implements ModelView<NodeModel> {
@@ -95,7 +95,7 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
                 if (model.getSensors().size() > 0) {
                     detailsStr.append(resources.getString(R.string.node_details_sensors_template));
                     for (int i = 0; i < model.getSensors().size(); i++) {
-                        SensorModel s = model.getSensors().valueAt(i);
+                        ValueSensorModel s = model.getSensors().valueAt(i);
                         String value = "?";
                         if (s.getValue() != UNDEFINED_SENSOR_VALUE && s.getValue() != UNKNOWN_SENSOR_VALUE) {
                             value = f.format(s.getValue());
@@ -121,7 +121,7 @@ public class NodeModelView extends AbstractEntryModelView<NodeModel> implements 
         StringBuilder configStr = new StringBuilder();
         if (model.getSensorsThresholds().size() > 0) {
             for (int i = 0; i < model.getSensorsThresholds().size(); i++) {
-                SensorModel s = model.getSensorsThresholds().valueAt(i);
+                ValueSensorModel s = model.getSensorsThresholds().valueAt(i);
                 String value = "?";
                 if (s.getValue() != UNDEFINED_SENSOR_VALUE && s.getValue() != UNKNOWN_SENSOR_VALUE) {
                     value = f.format(s.getValue());

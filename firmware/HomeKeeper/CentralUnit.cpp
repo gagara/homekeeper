@@ -21,6 +21,7 @@ static const uint8_t SENSOR_MIX = 58;
 static const uint8_t SENSOR_SB_HEATER = 59;
 static const uint8_t SENSOR_TEMP_ROOM_1 = (54 + 16) + (4 * 1) + 0;
 static const uint8_t SENSOR_HUM_ROOM_1 = (54 + 16) + (4 * 1) + 1;
+static const uint8_t SENSOR_BOILER_POWER = 60;
 // Sensor thresholds
 static const uint8_t SENSOR_TH_ROOM1_SB_HEATER = 200 + 1;
 static const uint8_t SENSOR_TH_ROOM1_PRIMARY_HEATER = 200 + 2;
@@ -106,6 +107,9 @@ static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 1800000; // 30m
 // Standby Heater
 static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 
+// sensor BoilerPower
+static const uint8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
+
 // reporting
 static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 5000;
 static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 5000;
@@ -172,6 +176,7 @@ int8_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
 int8_t humRoom1 = UNKNOWN_SENSOR_VALUE;
 int8_t STANDBY_HEATER_ROOM_TEMP_THRESHOLD = STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
 int8_t PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
+int8_t sensorBoilerPowerState = 0;
 
 // stats
 int8_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
@@ -214,6 +219,9 @@ unsigned long tsForcedNodeHotwater = 0;
 unsigned long tsForcedNodeCirculation = 0;
 unsigned long tsForcedNodeBoiler = 0;
 unsigned long tsForcedNodeSbHeater = 0;
+
+// Sensors switch timestamps
+unsigned long tsSensorBoilerPower = 0;
 
 // reporting
 uint16_t nextEntryReport = 0;
@@ -311,6 +319,8 @@ void setup() {
         Serial.println("");
     }
 #endif
+    // init boilerPower sensor
+    pinMode(SENSOR_BOILER_POWER, INPUT);
 
     // sync clock
     syncClocks();
@@ -917,6 +927,14 @@ void refreshSensorValues() {
     if (j6 > 0) {
         tempSbHeater = int8_t(temp6 / j6 + 0.5);
     }
+
+    // read sensorBoilerPower value
+    int8_t state = getSensorBoilerPowerState();
+    if (state != sensorBoilerPowerState) {
+        // state changed
+        sensorBoilerPowerState = state;
+        tsSensorBoilerPower = tsCurr;
+    }
 }
 
 int8_t getSensorValue(const uint8_t sensor) {
@@ -948,6 +966,22 @@ int8_t getSensorValue(const uint8_t sensor) {
     }
     result = (result > 0) ? result + 0.5 : result - 0.5;
     return int8_t(result);
+}
+
+int8_t getSensorBoilerPowerState() {
+    uint16_t max = 0;
+    for (uint8_t i = 0; i < 100; i++) {
+        uint16_t v = abs(analogRead(SENSOR_BOILER_POWER) - 512);
+        if (v > max && v < 1000) { // filter out error values. correct value should be <1000
+            max = v;
+        }
+        delay(10);
+    }
+#ifdef __DEBUG__
+    Serial.print(F("sensor BoilerPower raw value: "));
+    Serial.println(max);
+#endif
+    return (max > SENSOR_BOILER_POWER_THERSHOLD) ? 1 : 0;
 }
 
 unsigned long getTimestamp() {
@@ -1440,6 +1474,10 @@ void reportStatus() {
             break;
         case SENSOR_HUM_ROOM_1:
             reportSensorStatus(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1);
+            nextEntryReport = SENSOR_BOILER_POWER;
+            break;
+        case SENSOR_BOILER_POWER:
+            reportSensorStatus(SENSOR_BOILER_POWER, sensorBoilerPowerState, tsSensorBoilerPower);
             nextEntryReport = NODE_SUPPLY;
             break;
         case NODE_SUPPLY:

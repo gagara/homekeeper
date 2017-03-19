@@ -14,14 +14,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.gagara.homekeeper.model.SensorModel;
+import com.gagara.homekeeper.model.ValueSensorModel;
 import com.gagara.homekeeper.nbi.MessageHeader;
 
-public class SensorStatusResponse extends MessageHeader implements Response, Parcelable {
+public class ValueSensorStatusResponse extends MessageHeader implements Response, Parcelable {
 
-    private static final String TAG = SensorStatusResponse.class.getName();
+    private static final String TAG = ValueSensorStatusResponse.class.getName();
 
-    private SensorModel data = null;
+    private ValueSensorModel data = null;
 
     @Override
     public int describeContents() {
@@ -40,33 +40,33 @@ public class SensorStatusResponse extends MessageHeader implements Response, Par
         }
     }
 
-    public static final Parcelable.Creator<SensorStatusResponse> CREATOR = new Parcelable.Creator<SensorStatusResponse>() {
-        public SensorStatusResponse createFromParcel(Parcel in) {
-            return new SensorStatusResponse(in);
+    public static final Parcelable.Creator<ValueSensorStatusResponse> CREATOR = new Parcelable.Creator<ValueSensorStatusResponse>() {
+        public ValueSensorStatusResponse createFromParcel(Parcel in) {
+            return new ValueSensorStatusResponse(in);
         }
 
-        public SensorStatusResponse[] newArray(int size) {
-            return new SensorStatusResponse[size];
+        public ValueSensorStatusResponse[] newArray(int size) {
+            return new ValueSensorStatusResponse[size];
         }
     };
 
-    public SensorStatusResponse(long clocksDelta) {
+    public ValueSensorStatusResponse(long clocksDelta) {
         super();
         this.clocksDelta = clocksDelta;
     }
 
-    public SensorStatusResponse(Parcel in) {
+    public ValueSensorStatusResponse(Parcel in) {
         super(in);
         int id = in.readInt();
         if (id > 0) {
-            data = new SensorModel(id);
+            data = new ValueSensorModel(id);
             data.setValue(in.readInt());
             data.setPrevValue(in.readInt());
         }
     }
 
     @Override
-    public SensorStatusResponse fromJson(JSONObject json) {
+    public ValueSensorStatusResponse fromJson(JSONObject json) {
         try {
             int id = json.getInt(ID_KEY);
             int value = json.getInt(VALUE_KEY);
@@ -74,7 +74,7 @@ public class SensorStatusResponse extends MessageHeader implements Response, Par
             if (json.has(TIMESTAMP_KEY) && json.getLong(TIMESTAMP_KEY) != 0) {
                 ts = new Date(json.getLong(TIMESTAMP_KEY) + clocksDelta);
             }
-            data = new SensorModel(id);
+            data = new ValueSensorModel(id);
             data.setValue(value);
             data.setTimestamp(ts);
         } catch (JSONException e) {
@@ -84,11 +84,11 @@ public class SensorStatusResponse extends MessageHeader implements Response, Par
         return this;
     }
 
-    public SensorModel getData() {
+    public ValueSensorModel getData() {
         return data;
     }
 
-    public void setData(SensorModel data) {
+    public void setData(ValueSensorModel data) {
         this.data = data;
     }
 }
