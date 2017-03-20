@@ -1,14 +1,14 @@
 [
   {
-    "_id": "V.Current-(HomeKeeper)",
+    "_id": "H.Current-(HomeKeeper)",
     "_type": "dashboard",
     "_source": {
-      "title": "V.Current (HomeKeeper)",
+      "title": "H.Current (HomeKeeper)",
       "hits": 0,
       "description": "",
-      "panelsJSON": "[{\"col\":1,\"id\":\"Temperature\",\"panelIndex\":1,\"row\":1,\"size_x\":12,\"size_y\":5,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Room\",\"panelIndex\":3,\"row\":13,\"size_x\":12,\"size_y\":5,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Average-Room-Temperature\",\"panelIndex\":4,\"row\":18,\"size_x\":12,\"size_y\":3,\"type\":\"visualization\"},{\"id\":\"NodesState\",\"type\":\"visualization\",\"panelIndex\":5,\"size_x\":12,\"size_y\":5,\"col\":1,\"row\":6},{\"id\":\"SensorsState\",\"type\":\"visualization\",\"panelIndex\":6,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":11}]",
+      "panelsJSON": "[{\"col\":1,\"id\":\"Temperature\",\"panelIndex\":1,\"row\":1,\"size_x\":6,\"size_y\":6,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Room\",\"panelIndex\":3,\"row\":7,\"size_x\":6,\"size_y\":4,\"type\":\"visualization\"},{\"id\":\"Average-Room-Temperature\",\"type\":\"visualization\",\"panelIndex\":4,\"size_x\":6,\"size_y\":4,\"col\":7,\"row\":7},{\"id\":\"NodesState\",\"type\":\"visualization\",\"panelIndex\":5,\"size_x\":6,\"size_y\":4,\"col\":7,\"row\":1},{\"id\":\"SensorsState\",\"type\":\"visualization\",\"panelIndex\":6,\"size_x\":6,\"size_y\":2,\"col\":7,\"row\":5}]",
       "optionsJSON": "{\"darkTheme\":false}",
-      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-6\":{\"vis\":{\"legendOpen\":false}}}",
+      "uiStateJSON": "{\"P-1\":{\"spy\":{\"mode\":{\"fill\":false,\"name\":null}},\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-5\":{\"vis\":{\"legendOpen\":false}},\"P-6\":{\"vis\":{\"legendOpen\":false}}}",
       "version": 1,
       "timeRestore": true,
       "timeTo": "now",
@@ -19,15 +19,34 @@
     }
   },
   {
-    "_id": "H.Current-(HomeKeeper)",
+    "_id": "V.Summary-(HomeKeeper)",
     "_type": "dashboard",
     "_source": {
-      "title": "H.Current (HomeKeeper)",
+      "title": "V.Summary (HomeKeeper)",
       "hits": 0,
       "description": "",
-      "panelsJSON": "[{\"col\":1,\"id\":\"Temperature\",\"panelIndex\":1,\"row\":1,\"size_x\":6,\"size_y\":6,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Room\",\"panelIndex\":3,\"row\":7,\"size_x\":6,\"size_y\":4,\"type\":\"visualization\"},{\"id\":\"Average-Room-Temperature\",\"type\":\"visualization\",\"panelIndex\":4,\"size_x\":6,\"size_y\":4,\"col\":7,\"row\":7},{\"id\":\"NodesState\",\"type\":\"visualization\",\"panelIndex\":5,\"size_x\":6,\"size_y\":4,\"col\":7,\"row\":1},{\"id\":\"SensorsState\",\"type\":\"visualization\",\"panelIndex\":6,\"size_x\":6,\"size_y\":2,\"col\":7,\"row\":5}]",
+      "panelsJSON": "[{\"id\":\"Temperature.-Summary\",\"type\":\"visualization\",\"panelIndex\":1,\"size_x\":12,\"size_y\":4,\"col\":1,\"row\":1},{\"id\":\"Room.-Summary\",\"type\":\"visualization\",\"panelIndex\":3,\"size_x\":12,\"size_y\":4,\"col\":1,\"row\":12},{\"id\":\"Average-Room-Temperature\",\"type\":\"visualization\",\"panelIndex\":4,\"size_x\":12,\"size_y\":3,\"col\":1,\"row\":16},{\"id\":\"NodesState.-Summary\",\"type\":\"visualization\",\"panelIndex\":5,\"size_x\":12,\"size_y\":5,\"col\":1,\"row\":5},{\"id\":\"SensorsState.-Summary\",\"type\":\"visualization\",\"panelIndex\":6,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":10}]",
       "optionsJSON": "{\"darkTheme\":false}",
-      "uiStateJSON": "{\"P-1\":{\"spy\":{\"mode\":{\"fill\":false,\"name\":null}},\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-5\":{\"vis\":{\"legendOpen\":false}},\"P-6\":{\"vis\":{\"legendOpen\":false}}}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-5\":{\"vis\":{\"legendOpen\":false}},\"P-6\":{\"vis\":{\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": true,
+      "timeTo": "now",
+      "timeFrom": "now-24h",
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "V.Current-(HomeKeeper)",
+    "_type": "dashboard",
+    "_source": {
+      "title": "V.Current (HomeKeeper)",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"Temperature\",\"panelIndex\":1,\"row\":1,\"size_x\":12,\"size_y\":5,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Room\",\"panelIndex\":3,\"row\":13,\"size_x\":12,\"size_y\":5,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Average-Room-Temperature\",\"panelIndex\":4,\"row\":18,\"size_x\":12,\"size_y\":3,\"type\":\"visualization\"},{\"id\":\"NodesState\",\"type\":\"visualization\",\"panelIndex\":5,\"size_x\":12,\"size_y\":5,\"col\":1,\"row\":6},{\"id\":\"SensorsState\",\"type\":\"visualization\",\"panelIndex\":6,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":11}]",
+      "optionsJSON": "{\"darkTheme\":false}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-6\":{\"vis\":{\"legendOpen\":false}}}",
       "version": 1,
       "timeRestore": true,
       "timeTo": "now",
@@ -53,39 +72,6 @@
       "timeFrom": "now-24h",
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}]}"
-      }
-    }
-  },
-  {
-    "_id": "V.Summary-(HomeKeeper)",
-    "_type": "dashboard",
-    "_source": {
-      "title": "V.Summary (HomeKeeper)",
-      "hits": 0,
-      "description": "",
-      "panelsJSON": "[{\"id\":\"Temperature.-Summary\",\"type\":\"visualization\",\"panelIndex\":1,\"size_x\":12,\"size_y\":4,\"col\":1,\"row\":1},{\"id\":\"Room.-Summary\",\"type\":\"visualization\",\"panelIndex\":3,\"size_x\":12,\"size_y\":4,\"col\":1,\"row\":12},{\"id\":\"Average-Room-Temperature\",\"type\":\"visualization\",\"panelIndex\":4,\"size_x\":12,\"size_y\":3,\"col\":1,\"row\":16},{\"id\":\"NodesState.-Summary\",\"type\":\"visualization\",\"panelIndex\":5,\"size_x\":12,\"size_y\":5,\"col\":1,\"row\":5},{\"id\":\"SensorsState.-Summary\",\"type\":\"visualization\",\"panelIndex\":6,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":10}]",
-      "optionsJSON": "{\"darkTheme\":false}",
-      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-5\":{\"vis\":{\"legendOpen\":false}},\"P-6\":{\"vis\":{\"legendOpen\":false}}}",
-      "version": 1,
-      "timeRestore": true,
-      "timeTo": "now",
-      "timeFrom": "now-24h",
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}]}"
-      }
-    }
-  },
-  {
-    "_id": "NodesState",
-    "_type": "visualization",
-    "_source": {
-      "title": "NodesState",
-      "visState": "{\"title\":\"NodesState\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":true,\"setYExtents\":false,\"yAxis\":{\"min\":0,\"max\":1}},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"ns\",\"customLabel\":\"ON/OFF\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"m\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"type\":\"max\",\"schema\":{\"group\":\"none\",\"name\":\"orderAgg\",\"title\":\"Order Agg\",\"aggFilter\":[\"!percentiles\",\"!median\",\"!std_dev\"],\"min\":0,\"max\":null,\"editor\":false,\"params\":[]},\"params\":{\"field\":\"id\",\"customLabel\":\"\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\",\"row\":true}}],\"listeners\":{}}",
-      "uiStateJSON": "{}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"!csr_type:sensor\",\"analyze_wildcard\":true}},\"filter\":[]}"
       }
     }
   },
@@ -146,20 +132,6 @@
     }
   },
   {
-    "_id": "NodesState.-Summary",
-    "_type": "visualization",
-    "_source": {
-      "title": "NodesState. Summary",
-      "visState": "{\"title\":\"NodesState\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":true,\"setYExtents\":false,\"yAxis\":{\"min\":0,\"max\":1}},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"ns\",\"customLabel\":\"ON/OFF\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"custom\",\"customInterval\":\"20m\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\",\"customLabel\":\"\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\",\"row\":true}}],\"listeners\":{}}",
-      "uiStateJSON": "{}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"!csr_type:sensor\",\"analyze_wildcard\":true}},\"filter\":[]}"
-      }
-    }
-  },
-  {
     "_id": "Average-Room-Temperature",
     "_type": "visualization",
     "_source": {
@@ -178,8 +150,8 @@
     "_type": "visualization",
     "_source": {
       "title": "SensorsState",
-      "visState": "{\"title\":\"NodesState\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":true,\"setYExtents\":false,\"yAxis\":{\"min\":0,\"max\":1}},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"s.v\",\"customLabel\":\"ON/OFF\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"m\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\",\"customLabel\":\"\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\",\"row\":true}}],\"listeners\":{}}",
-      "uiStateJSON": "{}",
+      "visState": "{\"title\":\"SensorsState\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":true,\"yAxis\":{\"min\":0,\"max\":1}},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"s.v\",\"customLabel\":\"ON/OFF\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"m\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\",\"customLabel\":\"\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\",\"row\":true}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"legendOpen\":false}}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
@@ -192,12 +164,54 @@
     "_type": "visualization",
     "_source": {
       "title": "SensorsState. Summary",
-      "visState": "{\"title\":\"NodesState. Summary\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":true,\"setYExtents\":false,\"yAxis\":{\"min\":0,\"max\":1}},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"s.v\",\"customLabel\":\"ON/OFF\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"custom\",\"customInterval\":\"20m\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\",\"customLabel\":\"\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\",\"row\":true}}],\"listeners\":{}}",
+      "visState": "{\"title\":\"SensorsState. Summary\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":true,\"yAxis\":{\"min\":0,\"max\":1}},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"s.v\",\"customLabel\":\"ON/OFF\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"custom\",\"customInterval\":\"20m\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\",\"customLabel\":\"\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\",\"row\":true}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"(csr_type:sensor) && (s.id:60)\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "NodesState.-Summary",
+    "_type": "visualization",
+    "_source": {
+      "title": "NodesState. Summary",
+      "visState": "{\"title\":\"NodesState. Summary\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":true,\"yAxis\":{\"min\":0,\"max\":1}},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"ns\",\"customLabel\":\"ON/OFF\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"custom\",\"customInterval\":\"20m\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\",\"customLabel\":\"\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\",\"row\":true}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"!csr_type:sensor\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "NodesState",
+    "_type": "visualization",
+    "_source": {
+      "title": "NodesState",
+      "visState": "{\"title\":\"NodesState\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":true,\"yAxis\":{\"min\":0,\"max\":1}},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"ns\",\"customLabel\":\"ON/OFF\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"m\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\",\"customLabel\":\"\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\",\"row\":true}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"!csr_type:sensor\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "StandbyHeater.Uptime",
+    "_type": "visualization",
+    "_source": {
+      "title": "StandbyHeater.Uptime",
+      "visState": "{\"title\":\"StandbyHeater.Uptime\",\"type\":\"histogram\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"scale\":\"linear\",\"mode\":\"stacked\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"period\",\"customLabel\":\"Uptime\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"m:nsc AND id:34 AND state:false\",\"analyze_wildcard\":true}},\"filter\":[]}"
       }
     }
   }
