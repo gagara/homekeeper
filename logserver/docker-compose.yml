@@ -1,8 +1,8 @@
-version: '3'
+version: '2'
 services:
 
   elasticsearch:
-    image: elasticsearch:5.2-alpine
+    image: elasticsearch:2.4-alpine
     ports:
       - "9200:9200"
 
@@ -15,7 +15,7 @@ services:
       - elasticsearch
 
   kibana:
-    image: kibana:5.2
+    image: kibana:4.6
     ports:
       - "5601:5601"
     depends_on:
