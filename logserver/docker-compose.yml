@@ -2,22 +2,36 @@ version: '2'
 services:
 
   elasticsearch:
-    image: elasticsearch:2.4-alpine
+    image: elasticsearch:5.2-alpine
+    restart: unless-stopped
     ports:
       - "9200:9200"
 
   logstash:
     build:
       context: ./logstash
+    restart: unless-stopped
     ports:
       - "8085:8085"
     depends_on:
       - elasticsearch
 
   kibana:
-    image: kibana:4.6
+    image: kibana:5.2
+    restart: unless-stopped
     ports:
       - "5601:5601"
     depends_on:
       - elasticsearch
+
+  proxy:
+    build:
+      context: ./proxy/builtin
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "8088:8088"
+    depends_on:
+      - elasticsearch
+      - logstash
 
