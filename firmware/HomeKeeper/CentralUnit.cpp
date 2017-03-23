@@ -975,7 +975,7 @@ int8_t getSensorBoilerPowerState() {
         if (v > max && v < 1000) { // filter out error values. correct value should be <1000
             max = v;
         }
-        delay(10);
+        delay(1);
     }
 #ifdef __DEBUG__
     Serial.print(F("sensor BoilerPower raw value: "));
@@ -1417,10 +1417,16 @@ void wifiRead(char* req) {
         n += sscanf(substr, "+IPD,%d", &clientId);
     }
     substr = strstr(substr, "\r\n\r\n");
-    char subbuf[JSON_MAX_SIZE + 1];
-    strncpy(subbuf, substr, JSON_MAX_SIZE);
-    if (substr != NULL) {
-        n += sscanf(subbuf, "\r\n\r\n%[^\n]", req);
+    if (substr) {
+        substr = strstr(substr, "{");
+        if (substr) {
+            char* end = strrchr(substr, '}');
+            if (end && (end - substr) < JSON_MAX_SIZE) {
+                strncpy(req, substr, (end - substr + 1));
+                req[(end - substr + 1)] = '\0';
+                n++;
+            }
+        }
     }
     if (n == 2) {
         CLIENT_ID = clientId;
