@@ -1,0 +1,678 @@
+Currently there are no serial ports registered - please use the + button to add a port to the monitor.
+Connected to /dev/ttyACM0 at 9600
+STARTING
+wifi setup
+runing in STATION & SoftAP mode
+starting TCP server 
+wifi setup AP: AT+CWSAP_CUR="11DA81","CentralUnit",5,3
+wifi join AP: AT+CWJAP_CUR="point39","87654321" 
+wifi setup rsp: �*Q�RST
+
+ERROR
+AT+CIPMODE=0
+ 
+
+OK
+AT+CWMODE_CUR=3 
+
+OK
+A
+free memory: 6475 
+wifi rq ip: AT+CIFSR
+ 
++CIFSR:APIP,"192.168.4.1"
++CIFSR:APMAC,"5e:cf:7f:11:da:81"
++CIFSR:STAIP,"192.168.0.183" 
++CIFSR:STAMAC,"5c:cf:7f:11 
+wifi got ip: 192.168.0.183
+free memory: 6635 
+found sensors:
+28FF7084231604A5 
+28FF285B23160495
+28FF628223160453 
+28FFD1842316045B
+28FF4590231604C5
+28FFB77C231604BB
+{"m":"cls","ts":14912,"oc":0}
+wifi send: OK 
+free memory: 5821
+sensor BoilerPower raw value: 9 
+wifi req len: 12
+wifi req: 
+0,CLOSED 
+
+wifi client: 8463
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+free memory: 5658
+wifi rq ip: AT+CIFSR 
++CIFSR:APIP,"192.168.4.1"
++CIFSR:APMAC,"5e:cf:7f:11:da:81"
++CIFSR:STAIP,"192.168.0.183"
++CIFSR:STAMAC,"5c:cf:7f:11
+wifi got ip: 192.168.0.183
+23230: free memory: 5415
+{"m":"csr","s":{"id":54,"v":18}} 
+wifi send: OK
+free memory: 5821
+sensor BoilerPower raw value: 12 
+wifi req len: 13
+wifi req: 
+0,CONNECT
+
+wifi client: 8463
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+28846: free memory: 5415
+{"m":"csr","s":{"id":55,"v":17}} 
+wifi send: OK
+wifi req len: 181
+wifi req: 
+0,CONNECT
+
++IPD,0,156:POST / HTTP/1.1
+User-Agent: ESP8266 
+Accept: */*
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 32
+
+{"m":"csr","s":{"id":74,"v":22}} 
+
+wifi client: 0
+wifi body: {"m":"csr","s":{"id":74,"v":22}} 
+parsing cmd: {"m":"csr","s":{"id":74,"v":22}} 
+parsed
+free memory: 5136
+free memory: 5136 
+free memory: 5821
+sensor BoilerPower raw value: 2
+wifi req len: 2
+wifi req: 
+ 
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136 
+36883: free memory: 5415
+{"m":"csr","s":{"id":56,"v":23}} 
+wifi send: FAILED
+free memory: 5821
+sensor BoilerPower raw value: 8 
+wifi req len: 63
+wifi req: 0,CLOSED
+0,CONNECT
+ 
++IPD,0,197:POST / HTTP/1.1 
+Host: 192.16
+wifi client: 0
+wifi body:  
+parsing cmd: 
+parsed
+free memory: 5136
+48799: free memory: 5415 
+{"m":"csr","s":{"id":58,"v":22}}
+wifi send: OK 
+free memory: 5821
+sensor BoilerPower raw value: 2
+wifi req len: 2
+wifi req: 
+
+wifi client: 0
+wifi body:  
+parsing cmd:  
+parsed 
+free memory: 5136
+55361: free memory: 5415
+{"m":"csr","s":{"id":59,"v":21}}
+wifi send: OK
+wifi req len: 2
+wifi req: 
+
+wifi client: 0 
+wifi body: 
+parsing cmd:  
+parsed 
+free memory: 5136 
+free memory: 5821
+sensor BoilerPower raw value: 2
+wifi req len: 2 
+wifi req:  
+
+wifi client: 0
+wifi body:  
+parsing cmd: 
+parsed
+free memory: 5136
+65920: free memory: 5415
+{"m":"csr","s":{"id":57,"v":31}}
+wifi send: OK
+free memory: 5821
+sensor BoilerPower raw value: 2
+{"m":"nsc","id":32,"ns":1,"ts":68307,"ff":0,"s":[{"id":57,"v":31}]}
+wifi send: OK
+wifi req len: 257
+wifi req: 
+0,CLOSED 
+0,CONNECT
+
++IPD,0,197:POST / HTTP/1.1
+Host: 192.168.0.183
+Connection: keep-alive
+User-Agent: python-requests/2.12.5 
+Accept-Encoding: gzip, deflate 
+Accept: */*
+Content-Length: 12
+Content-Type: application/json
+ 
+
++IPD,0,12:{"m": "cls"}
+wifi client: 0
+wifi body: +IPD,0,12:{"m": "cls"}
+parsing cmd: +IPD,0,12:{"m": "cls"} 
+parsed 
+free memory: 5136
+71716: free memory: 5415
+{"m":"csr","s":{"id":74,"v":22,"ts":29946}}
+wifi send: FAILED
+free memory: 5821
+sensor BoilerPower raw value: 174
+80078: free memory: 5415
+{"m":"csr","s":{"id":75,"v":-127}}
+wifi send: FAILED 
+free memory: 5821 
+sensor BoilerPower raw value: 173 
+wifi req len: 124
+wifi req: 1,CONNECT
+0,CLOSED
+0,CONNECT 
+
++IPD,0,197:POST / HTTP/1.1
+H2
+Content-Type: application/json
+
+
++IPD,0,12:{"m": "cls"} 
+wifi client: 0 
+wifi body: +IPD,0,12:{"m": "cls"}
+parsing cmd: +IPD,0,12:{"m": "cls"}
+parsed
+free memory: 5136 
+89676: free memory: 5415
+{"m":"csr","s":{"id":60,"v":1,"ts":78791}}
+wifi send: FAILED 
+free memory: 5821 
+sensor BoilerPower raw value: 173 
+wifi req len: 63
+wifi req: 0,CLOSED
+0,CONNECT
+ 
++IPD,0,197:POST / HTTP/1.1
+Host: 192.16
+wifi client: 0
+wifi body:  
+parsing cmd:  
+parsed 
+free memory: 5136
+99573: free memory: 5411
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}
+wifi send: FAILED
+free memory: 5821
+sensor BoilerPower raw value: 175
+107057: free memory: 5411
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}
+wifi send: OK
+{"m":"cfg","s":{"id":202,"v":23}}
+wifi send: OK
+wifi req len: 2
+wifi req: 
+
+wifi client: 0
+wifi body:  
+parsing cmd:  
+parsed 
+free memory: 5136
+free memory: 5821
+sensor BoilerPower raw value: 175
+114946: free memory: 5411
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}
+wifi send: OK 
+wifi req len: 2
+wifi req: 
+ 
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+free memory: 5821
+sensor BoilerPower raw value: 175
+wifi req len: 182
+wifi req: 
+0,CONNECT
+
++IPD,0,156:POST / HTTP/1.1
+User-Agent: ESP8266 
+Accept: */*
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 32 
+
+{"m":"csr","s":{"id":74,"v":22}} 
+
+wifi client: 0
+wifi body: {"m":"csr","s":{"id":74,"v":22}} 
+parsing cmd: {"m":"csr","s":{"id":74,"v":22}}
+
+parsed
+free memory: 5136
+free memory: 5136
+122598: free memory: 5411
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}
+wifi send: OK
+{"m":"cfg","s":{"id":201,"v":20}}
+wifi send: OK
+free memory: 5821
+sensor BoilerPower raw value: 175
+wifi req len: 2
+wifi req: 
+
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+130453: free memory: 5411 
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}} 
+wifi send: OK
+free memory: 5821
+sensor BoilerPower raw value: 175
+wifi req len: 13
+wifi req: 
+0,CONNECT
+
+wifi client: 0
+wifi body:  
+parsing cmd:  
+parsed 
+free memory: 5136
+134366: free memory: 5411 
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}
+wifi send: OK
+wifi req len: 2 
+wifi req:  
+
+wifi client: 0
+wifi body:  
+parsing cmd: 
+parsed
+free memory: 5136
+free memory: 5821
+sensor BoilerPower raw value: 178
+141117: free memory: 5411
+{"m":"csr","n":{"id":32,"ns":1,"ts":68307,"ff":0}}
+wifi send: OK 
+wifi req len: 2
+wifi req: 
+ 
+wifi client: 0 
+wifi body: 
+parsing cmd:  
+parsed
+free memory: 5136 
+free memory: 5821 
+sensor BoilerPower raw value: 175 
+wifi req len: 11
+wifi req: 0,CONNECT 
+
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+free memory: 5658
+wifi rq ip: 
+AT+CIFSR
+
++CIFSR:APIP,"192.168.4.1"
++CIFSR:APMAC,"5e:cf:7f:11:da:81" 
++CIFSR:STAIP,"192.168.0.183"
++CIFSR:STAMAC,"5c:cf:7f:
+wifi got ip: 192.168.0.183
+149681: free memory: 5415
+{"m":"csr","s":{"id":54,"v":18}} 
+wifi send: OK
+free memory: 5821
+sensor BoilerPower raw value: 175
+wifi req len: 2
+wifi req: 
+
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+157770: free memory: 5415
+{"m":"csr","s":{"id":55,"v":17}}
+wifi send: OK
+free memory: 5821
+sensor BoilerPower raw value: 174
+wifi req len: 2
+wifi req: 
+
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+163859: free memory: 5415
+{"m":"csr","s":{"id":56,"v":23}}
+wifi send: OK
+free memory: 5821
+sensor BoilerPower raw value: 174
+wifi req len: 63
+wifi req: 
+0,CONNECT
+
++IPD,0,156:POST / HTTP/1.1
+User-Agent: ESP8266
+
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+167800: free memory: 5415
+{"m":"csr","s":{"id":58,"v":22}}
+wifi send: OK
+wifi req len: 2 
+wifi req:  
+
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+free memory: 5821
+sensor BoilerPower raw value: 174
+174527: free memory: 5415
+{"m":"csr","s":{"id":59,"v":21}}
+wifi send: OK
+wifi req len: 2
+wifi req: 
+ 
+wifi client: 0 
+wifi body: 
+parsing cmd:  
+parsed 
+free memory: 5136 
+free memory: 5821 
+sensor BoilerPower raw value: 174 
+wifi req len: 182
+wifi req: 
+0,CONNECT
+ 
++IPD,0,156:POST / HTTP/1.1 
+User-Agent: ESP8266
+Accept: */*
+Content-Type: application/x-www-form-urlencoded 
+Content-Length: 32
+
+{"m":"csr","s":{"id":74,"v":22}}
+
+wifi client: 0
+wifi body: {"m":"csr","s":{"id":74,"v":22}}
+
+parsing cmd: {"m":"csr","s":{"id":74,"v":22}}
+
+parsed
+free memory: 5136
+free memory: 5136
+182602: free memory: 5415
+{"m":"csr","s":{"id":57,"v":31}}
+wifi send: OK
+wifi req len: 2 
+wifi req:  
+
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+free memory: 5821
+sensor BoilerPower raw value: 173
+189329: free memory: 5415 
+{"m":"csr","s":{"id":74,"v":22,"ts":178827}}
+wifi send: OK
+wifi req len: 2
+wifi req: 
+ 
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136 
+free memory: 5821 
+sensor BoilerPower raw value: 174 
+wifi req len: 182
+wifi req: 
+0,CONNECT
+
++IPD,0,156:POST / HTTP/1.1 
+User-Agent: ESP8266
+Accept: */*
+Content-Type: application/x-www-form-urlencoded 
+Content-Length: 32 
+
+{"m":"csr","s":{"id":75,"v":40}}
+
+wifi client: 0
+wifi body: {"m":"csr","s":{"id":75,"v":40}}
+
+parsing cmd: {"m":"csr","s":{"id":75,"v":40}}
+
+parsed
+free memory: 5136
+free memory: 5136
+197654: free memory: 5415
+{"m":"csr","s":{"id":75,"v":40,"ts":193829}}
+wifi send: OK
+wifi req len: 2
+wifi req: 
+
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+free memory: 5821
+sensor BoilerPower raw value: 174
+204402: free memory: 5415
+{"m":"csr","s":{"id":60,"v":1,"ts":78791}}
+wifi send: OK 
+wifi req len: 2
+wifi req: 
+ 
+wifi client: 0 
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136 
+free memory: 5821
+sensor BoilerPower raw value: 174
+wifi req len: 182
+wifi req: 
+0,CONNECT 
+
++IPD,0,156:POST / HTTP/1.1
+User-Agent: ESP8266 
+Accept: */*
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 32
+
+{"m":"csr","s":{"id":74,"v":22}} 
+
+wifi client: 0
+wifi body: {"m":"csr","s":{"id":74,"v":22}} 
+parsing cmd: {"m":"csr","s":{"id":74,"v":22}} 
+parsed
+free memory: 5136
+free memory: 5136 
+212606: free memory: 5411
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}
+wifi send: OK
+wifi req len: 2
+wifi req: 
+
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+free memory: 5821 
+sensor BoilerPower raw value: 175 
+wifi req len: 63 
+wifi req:  
+0,CONNECT
+
++IPD,0,197:POST / HTTP/1.1
+Host: 192.168.0.183
+ 
+wifi client: 0 
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136 
+219891: free memory: 5411
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}
+wifi send: FAILED
+{"m":"cfg","s":{"id":202,"v":23}}
+wifi send: FAILED
+free memory: 5821
+sensor BoilerPower raw value: 174
+wifi req len: 10
+wifi req: 0,CLOSED
+ 
+wifi client: 0 
+wifi body: 
+parsing cmd:  
+parsed 
+free memory: 5136 
+238881: free memory: 5411
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}
+wifi send: OK
+free memory: 5821
+sensor BoilerPower raw value: 174
+wifi req len: 63
+wifi req: 
+1,CONNECT 
+
++IPD,1,197:POST / HTTP/1.1
+Host: 192.168.0.183 
+
+wifi client: 1
+wifi body:  
+parsing cmd: 
+parsed
+free memory: 5136
+242847: free memory: 5411
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}} 
+wifi send: OK
+{"m":"cfg","s":{"id":201,"v":20}}
+wifi send: OK
+free memory: 5821 
+sensor BoilerPower raw value: 174 
+wifi req len: 63 
+wifi req:  
+1,CLOSED
++IPD,0,197:POST / HTTP/1.1
+Host: 192.168.0.183 
+Co 
+wifi client: 0 
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136 
+247917: free memory: 5411
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}
+wifi send: FAILED
+free memory: 5821
+sensor BoilerPower raw value: 174
+wifi req len: 87
+wifi req: 1,CONNECT
+0,CLOSED
+0,CONNECT
+ 
++IPD,0,197:POST / HTTP/1.1 
+H
++IPD,0,12:{"m": "cls"} 
+wifi client: 0 
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136 
+259376: free memory: 5411 
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}
+wifi send: OK
+free memory: 5821
+sensor BoilerPower raw value: 174
+wifi req len: 257 
+wifi req:  
+0,CLOSED
+0,CONNECT
+
++IPD,0,197:POST / HTTP/1.1 
+Host: 192.168.0.183
+Connection: keep-alive
+User-Agent: python-requests/2.12.5
+Accept-Encoding: gzip, deflate
+Accept: */* 
+Content-Length: 12 
+Content-Type: application/json 
+
+
++IPD,0,12:{"m": "cls"}
+wifi client: 0
+wifi body: +IPD,0,12:{"m": "cls"}
+parsing cmd: +IPD,0,12:{"m": "cls"}
+parsed
+free memory: 5136
+267121: free memory: 5411
+{"m":"csr","n":{"id":32,"ns":1,"ts":68307,"ff":0}}
+wifi send: FAILED
+free memory: 5821
+sensor BoilerPower raw value: 174
+wifi req len: 63
+wifi req: 0,CLOSED
+0,CONNECT 
+
++IPD,0,197:POST / HTTP/1.1
+Host: 192.16
+wifi client: 0
+wifi body: 
+parsing cmd: 
+parsed
+free memory: 5136
+free memory: 5658
+wifi rq ip:  
+wifi setup
+runing in STATION & SoftAP mode
+starting TCP server
+wifi setup AP: AT+CWSAP_CUR="11DA81","CentralUnit",5,3 
+wifi join AP: AT+CWJAP_CUR="point39","87654321"
+wifi setup rsp: �*Q�RST
+ 
+ERROR
+AT+CIPMODE=0
+
+ 
+OK 
+AT+CWMODE_CUR=3
+
+
+OK
+A 
+
