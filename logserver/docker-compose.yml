@@ -26,7 +26,7 @@ services:
 
   proxy:
     build:
-      context: ./proxy/builtin
+      context: ./proxy
     tty: true
     restart: unless-stopped
     ports:
