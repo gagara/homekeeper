@@ -48,6 +48,44 @@
     }
   },
   {
+    "_id": "8378c520-108e-11e7-bdef-5dd53778f8f7",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Stats",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"size_x\":12,\"size_y\":4,\"panelIndex\":1,\"type\":\"visualization\",\"id\":\"b493f570-0fcc-11e7-9d51-398f58efdcd3\",\"col\":1,\"row\":1}]",
+      "optionsJSON": "{\"darkTheme\":false}",
+      "uiStateJSON": "{}",
+      "version": 1,
+      "timeRestore": true,
+      "timeTo": "now",
+      "timeFrom": "now-7d",
+      "refreshInterval": {
+        "display": "Off",
+        "pause": false,
+        "value": 0
+      },
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "b493f570-0fcc-11e7-9d51-398f58efdcd3",
+    "_type": "visualization",
+    "_source": {
+      "title": "Nodes Uptime",
+      "visState": "{\"title\":\"Nodes Uptime\",\"type\":\"histogram\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"scale\":\"linear\",\"mode\":\"grouped\",\"times\":[],\"addTimeMarker\":true,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"period\",\"customLabel\":\"active time\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"date\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"name\",\"size\":5,\"orderAgg\":{\"id\":\"3-orderAgg\",\"enabled\":true,\"type\":\"max\",\"schema\":{\"group\":\"none\",\"name\":\"orderAgg\",\"title\":\"Order Agg\",\"aggFilter\":[\"!percentiles\",\"!median\",\"!std_dev\"],\"min\":0,\"max\":null,\"editor\":false,\"params\":[],\"deprecate\":false},\"params\":{\"field\":\"id\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"legendOpen\":true}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"(m:nsc AND state:false) OR (m:csr AND csr_type:sensor AND sensor_type:state AND csr_state:actual AND state:false)\"}},\"filter\":[]}"
+      }
+    }
+  },
+  {
     "_id": "900f2950-0ebd-11e7-91d8-c97263d3d6b8",
     "_type": "visualization",
     "_source": {
@@ -156,20 +194,6 @@
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"csr_type:sensor AND csr_state:actual AND (s.id:74 OR s.id:75) AND NOT s.v:\\\"-127\\\"\",\"analyze_wildcard\":true}},\"filter\":[]}"
-      }
-    }
-  },
-  {
-    "_id": "b493f570-0fcc-11e7-9d51-398f58efdcd3",
-    "_type": "visualization",
-    "_source": {
-      "title": "Nodes Uptime",
-      "visState": "{\"title\":\"Nodes Uptime\",\"type\":\"histogram\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"scale\":\"linear\",\"mode\":\"grouped\",\"times\":[],\"addTimeMarker\":true,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"period\",\"customLabel\":\"active time\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"date\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"name\",\"size\":5,\"orderAgg\":{\"id\":\"3-orderAgg\",\"enabled\":true,\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\"}}],\"listeners\":{}}",
-      "uiStateJSON": "{\"vis\":{\"legendOpen\":true}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"(m:nsc AND state:false) OR (m:csr AND csr_type:sensor AND sensor_type:state AND csr_state:actual AND state:false)\"}},\"filter\":[]}"
       }
     }
   }
