@@ -138,8 +138,10 @@ public class ProxyNbiService extends AbstractNbiService {
                     if (state != ACTIVE) {
                         state = INIT;
                         if (clocksDelta == null && clockSyncExecutor == null) {
-                            // try fast synchronization
-                            send(new FastClockSyncRequest());
+                            if (estimatedClocksDelta == null) {
+                                // try fast synchronization
+                                send(new FastClockSyncRequest());
+                            }
                             // schedule normal synchronization
                             clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
                             clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L,
