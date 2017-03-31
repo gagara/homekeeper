@@ -71,7 +71,7 @@ static const uint8_t SENSORS_PRECISION = 9;
 static const unsigned long NODE_SWITCH_SAFE_TIME_MSEC = 60000;
 
 // EEPROM
-//static const int NODE_STATE_EEPROM_ADDR = 0; // 1 byte. not used
+static const int NODE_STATE_EEPROM_ADDR = 0; // 1 byte
 static const int NODE_FORCED_MODE_EEPROM_ADDR = 1; // 1 byte
 static const int SENSORS_FACTORS_EEPROM_ADDR = 2; // 6 x 4 bytes
 static const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR + (6 * 4); // 32 bytes
@@ -101,8 +101,8 @@ static const uint8_t TANK_BOILER_HIST = 3;
 
 // Circulation
 static const uint8_t CIRCULATION_TEMP_THRESHOLD = 37;
-static const unsigned long CIRCULATION_ACTIVE_PERIOD_MSEC = 300000; // 5m
-static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 1800000; // 30m
+static const unsigned long CIRCULATION_ACTIVE_PERIOD_MSEC = 180000; // 3m
+static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 3420000; // 57m
 
 // Standby Heater
 static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
@@ -799,9 +799,10 @@ void writeSensorCalibrationFactor(int offset, double value) {
 }
 
 void restoreNodesState() {
+    NODE_STATE_FLAGS = EEPROM.read(NODE_STATE_EEPROM_ADDR);
     NODE_FORCED_MODE_FLAGS = EEPROM.read(NODE_FORCED_MODE_EEPROM_ADDR);
     NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS;
-    NODE_STATE_FLAGS = NODE_FORCED_MODE_FLAGS;
+    NODE_STATE_FLAGS = NODE_STATE_FLAGS & NODE_PERMANENTLY_FORCED_MODE_FLAGS;
 }
 
 void loadWifiConfig() {
@@ -1120,6 +1121,7 @@ void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
         reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
     }
     // update node modes in EEPROM
+    EEPROM.write(NODE_STATE_EEPROM_ADDR, NODE_STATE_FLAGS);
     EEPROM.write(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
 }
 
