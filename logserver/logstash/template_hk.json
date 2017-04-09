@@ -27,6 +27,7 @@
         "ts": { "type": "long" },
         "ff": { "type": "byte" },
         "ft": { "type": "long" },
+        "n_ns": { "type": "byte" },
         "n" : {
           "properties" : {
             "id": { "type": "byte" },
