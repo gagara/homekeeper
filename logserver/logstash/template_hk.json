@@ -22,25 +22,25 @@
         "state": { "type": "boolean" },
         "state_str": { "type": "string", "index": "not_analyzed" },
         "m": { "type": "string", "index": "not_analyzed" },
-        "id": { "type": "byte" },
+        "id": { "type": "integer" },
         "ns": { "type": "byte" },
         "ts": { "type": "long" },
         "ff": { "type": "byte" },
         "ft": { "type": "long" },
         "n" : {
           "properties" : {
-            "id": { "type": "byte" },
+            "id": { "type": "integer" },
             "ns": { "type": "byte" },
             "ts": { "type": "long" },
             "ff": { "type": "byte" },
             "ft": { "type": "long" }
           }
         },
-        "n_id": { "type": "byte" },
+        "n_id": { "type": "integer" },
         "n_ns": { "type": "byte" },
         "s" : {
           "properties" : {
-            "id": { "type": "byte" },
+            "id": { "type": "integer" },
             "v": { "type": "integer" },
             "ts": { "type": "long" },
             "cf": { "type": "float" }
