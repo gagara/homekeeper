@@ -46,6 +46,7 @@
             "cf": { "type": "float" }
           }
         },
+        "s_id": { "type": "integer" },
         "s_v": { "type": "integer" },
         "ap": { "type": "string", "index": "not_analyzed" },
         "pw": { "type": "string", "index": "not_analyzed" },
