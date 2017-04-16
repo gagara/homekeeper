@@ -52,6 +52,8 @@
     <string name="sensor_mix_name">Mix</string>
     <string name="sensor_sb_heater_name">SB Heater</string>
     <string name="sensor_boiler_power_name">Boiler Power</string>
+    <string name="sensor_solar_primary_name">Solar Prim</string>
+    <string name="sensor_solar_secondary_name">Solar Sec</string>
     <string name="sensor_room1_temp_name">R1 Temp</string>
     <string name="sensor_room1_hum_name">R1 Hum</string>
     <string name="sensor_th_room1_sb_heater">R1 Min</string>
@@ -75,6 +77,8 @@
     <string name="node_hotwater_name">Hot water</string>
     <string name="node_circulation_name">Circulation</string>
     <string name="node_boilder_name">Boiler</string>
+    <string name="node_solar_primary_name">Solar Prim</string>
+    <string name="node_solar_secondary_name">Solar Sec</string>
     <string name="node_mix_name">Mix</string>
     <string name="node_sb_heater_name">SB Heater</string>
     <string name="node_details_unknown"></string>

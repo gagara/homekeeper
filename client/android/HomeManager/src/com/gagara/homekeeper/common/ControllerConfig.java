@@ -36,6 +36,8 @@ public class ControllerConfig {
     public static final int SENSOR_MIX_ID = 58;
     public static final int SENSOR_SB_HEATER_ID = 59;
     public static final int SENSOR_BOILER_POWER_ID = 60;
+    public static final int SENSOR_SOLAR_PRIMAY_ID = 61;
+    public static final int SENSOR_SOLAR_SECONDARY_ID = 62;
     public static final int SENSOR_ROOM1_TEMP_ID = 74;
     public static final int SENSOR_ROOM1_HUM_ID = 75;
 
@@ -49,6 +51,8 @@ public class ControllerConfig {
     public static final int NODE_CIRCULATION_ID = 30;
     public static final int NODE_BOILER_ID = 32;
     public static final int NODE_SB_HEATER_ID = 34;
+    public static final int NODE_SOLAR_PRIMARY_ID = 36;
+    public static final int NODE_SOLAR_SECONDARY_ID = 38;
 
     public static final String MSG_TYPE_KEY = "m";
     public static final String ID_KEY = "id";

@@ -1,23 +1,9 @@
 package com.gagara.homekeeper.ui.view;
 
-import static com.gagara.homekeeper.common.ControllerConfig.NODE_BOILER_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.NODE_CIRCULATION_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.NODE_FLOOR_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.NODE_HEATING_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.NODE_HOTWATER_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.NODE_SB_HEATER_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.NODE_SUPPLY_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_BOILER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_BOILER_POWER_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_MIX_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_REVERSE_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_HUM_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_TEMP_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SB_HEATER_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SUPPLY_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TANK_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_PRIMARY_HEATER_ID;
-import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_SB_HEATER_ID;
+import static com.gagara.homekeeper.ui.viewmodel.TopModelView.NODES;
+import static com.gagara.homekeeper.ui.viewmodel.TopModelView.SENSORS;
+import static com.gagara.homekeeper.ui.viewmodel.TopModelView.SENSORS_THRESHOLDS;
 
 import java.util.Date;
 
@@ -75,10 +61,19 @@ public class ViewUtils {
     }
 
     public static boolean validValueSensorId(int id) {
-        return id == SENSOR_SUPPLY_ID || id == SENSOR_REVERSE_ID || id == SENSOR_TANK_ID || id == SENSOR_BOILER_ID
-                || id == SENSOR_MIX_ID || id == SENSOR_SB_HEATER_ID || id == SENSOR_ROOM1_TEMP_ID
-                || id == SENSOR_ROOM1_HUM_ID || id == SENSOR_TH_ROOM1_SB_HEATER_ID
-                || id == SENSOR_TH_ROOM1_PRIMARY_HEATER_ID;
+        for (int i = 0; i < SENSORS.size(); i++) {
+            if (SENSORS.keyAt(i) == id) {
+                if (id != SENSOR_BOILER_POWER_ID) {
+                    return true;
+                }
+            }
+        }
+        for (int i = 0; i < SENSORS_THRESHOLDS.size(); i++) {
+            if (SENSORS_THRESHOLDS.keyAt(i) == id) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean validSensor(ValueSensorModel sensor) {
@@ -97,8 +92,12 @@ public class ViewUtils {
 
     public static boolean validNode(NodeModel node) {
         int id = node != null ? node.getId() : -1;
-        return id == NODE_SUPPLY_ID || id == NODE_HEATING_ID || id == NODE_FLOOR_ID || id == NODE_HOTWATER_ID
-                || id == NODE_CIRCULATION_ID || id == NODE_BOILER_ID || id == NODE_SB_HEATER_ID;
+        for (int i = 0; i < NODES.size(); i++) {
+            if (NODES.keyAt(i) == id) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static int getSensorDetailsViewId(int id) {

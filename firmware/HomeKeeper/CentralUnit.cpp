@@ -19,9 +19,11 @@ static const uint8_t SENSOR_TANK = 56;
 static const uint8_t SENSOR_BOILER = 57;
 static const uint8_t SENSOR_MIX = 58;
 static const uint8_t SENSOR_SB_HEATER = 59;
+static const uint8_t SENSOR_BOILER_POWER = 60;
+static const uint8_t SENSOR_SOLAR_PRIMARY = 61;
+static const uint8_t SENSOR_SOLAR_SECONDARY = 62;
 static const uint8_t SENSOR_TEMP_ROOM_1 = (54 + 16) + (4 * 1) + 0;
 static const uint8_t SENSOR_HUM_ROOM_1 = (54 + 16) + (4 * 1) + 1;
-static const uint8_t SENSOR_BOILER_POWER = 60;
 // Sensor thresholds
 static const uint8_t SENSOR_TH_ROOM1_SB_HEATER = 200 + 1;
 static const uint8_t SENSOR_TH_ROOM1_PRIMARY_HEATER = 200 + 2;
@@ -33,6 +35,8 @@ static const DeviceAddress SENSOR_TANK_ADDR = { 0x28, 0xFF, 0x62, 0x82, 0x23, 0x
 static const DeviceAddress SENSOR_BOILER_ADDR = { 0x28, 0xFF, 0xD1, 0x84, 0x23, 0x16, 0x04, 0x5B };
 static const DeviceAddress SENSOR_MIX_ADDR = { 0x28, 0xFF, 0x45, 0x90, 0x23, 0x16, 0x04, 0xC5 };
 static const DeviceAddress SENSOR_SB_HEATER_ADDR = { 0x28, 0xFF, 0x28, 0x5B, 0x23, 0x16, 0x04, 0x95 };
+static const DeviceAddress SENSOR_SOLAR_PRIMAY_ADDR = { 0x28, 0xFF, 0x61, 0x61, 0x61, 0x61, 0x61, 0x61 };
+static const DeviceAddress SENSOR_SOLAR_SECONDARY_ADDR = { 0x28, 0xFF, 0x62, 0x62, 0x62, 0x62, 0x62, 0x62 };
 
 // Sensors Bus pin
 static const uint8_t SENSORS_BUS = 49;
@@ -45,6 +49,8 @@ static const uint8_t NODE_HOTWATER = 28; //10
 static const uint8_t NODE_CIRCULATION = 30; //11
 static const uint8_t NODE_BOILER = 32; //12
 static const uint8_t NODE_SB_HEATER = 34;
+static const uint8_t NODE_SOLAR_PRIMARY = 36;
+static const uint8_t NODE_SOLAR_SECONDARY = 38;
 
 // RF pins
 static const uint8_t RF_CE_PIN = 9; //5
@@ -56,13 +62,15 @@ static const uint8_t WIFI_RST_PIN = 12;
 static const uint8_t HEARTBEAT_LED = 13;
 
 // Nodes State
-static const uint8_t NODE_SUPPLY_BIT = 1;
-static const uint8_t NODE_HEATING_BIT = 2;
-static const uint8_t NODE_FLOOR_BIT = 4;
-static const uint8_t NODE_HOTWATER_BIT = 8;
-static const uint8_t NODE_CIRCULATION_BIT = 16;
-static const uint8_t NODE_BOILER_BIT = 32;
-static const uint8_t NODE_SB_HEATER_BIT = 64;
+static const uint16_t NODE_SUPPLY_BIT = 1;
+static const uint16_t NODE_HEATING_BIT = 2;
+static const uint16_t NODE_FLOOR_BIT = 4;
+static const uint16_t NODE_HOTWATER_BIT = 8;
+static const uint16_t NODE_CIRCULATION_BIT = 16;
+static const uint16_t NODE_BOILER_BIT = 32;
+static const uint16_t NODE_SB_HEATER_BIT = 64;
+static const uint16_t NODE_SOLAR_PRIMARY_BIT = 128;
+static const uint16_t NODE_SOLAR_SECONDARY_BIT = 256;
 
 // etc
 static const unsigned long MAX_TIMESTAMP = -1;
@@ -71,10 +79,10 @@ static const uint8_t SENSORS_PRECISION = 9;
 static const unsigned long NODE_SWITCH_SAFE_TIME_MSEC = 60000;
 
 // EEPROM
-static const int NODE_STATE_EEPROM_ADDR = 0; // 1 byte
-static const int NODE_FORCED_MODE_EEPROM_ADDR = 1; // 1 byte
-static const int SENSORS_FACTORS_EEPROM_ADDR = 2; // 6 x 4 bytes
-static const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR + (6 * 4); // 32 bytes
+static const int NODE_STATE_EEPROM_ADDR = 0; // 2 bytes
+static const int NODE_FORCED_MODE_EEPROM_ADDR = NODE_STATE_EEPROM_ADDR + 2; // 2 bytes
+static const int SENSORS_FACTORS_EEPROM_ADDR = NODE_FORCED_MODE_EEPROM_ADDR + 2; // 8 x 4 bytes
+static const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR + (8 * 4); // 32 bytes
 static const int WIFI_REMOTE_PW_EEPROM_ADDR = WIFI_REMOTE_AP_EEPROM_ADDR + 32; // 32 bytes
 static const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + 32; // 4 bytes
 static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + 4; // 2 bytes
@@ -98,6 +106,10 @@ static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800000; // 30m
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
+static const uint8_t BOILER_MIN_TEMP_THRESHOLD = 40;
+static const uint8_t BOILER_MIN_TEMP_HIST = 3;
+static const uint8_t BOILER_CRITICAL_MAX_TEMP_THRESHOLD = 80;
+static const uint8_t BOILER_CRITICAL_MAX_TEMP_HIST = 5;
 
 // Circulation
 static const uint8_t CIRCULATION_TEMP_THRESHOLD = 37;
@@ -106,6 +118,13 @@ static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 3420000; // 57m
 
 // Standby Heater
 static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
+
+// Solar
+static const uint8_t SOLAR_PRIMARY_MIN_TEMP_THRESHOLD = 30;
+static const uint8_t SOLAR_PRIMARY_MIN_TEMP_HIST = 5;
+static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 100; // stagnation
+static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
+static const uint8_t SOLAR_SECONDARY_BOILER_HIST = 5;
 
 // sensor BoilerPower
 static const uint8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
@@ -174,6 +193,8 @@ int8_t tempMix = UNKNOWN_SENSOR_VALUE;
 int8_t tempSbHeater = UNKNOWN_SENSOR_VALUE;
 int8_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
 int8_t humRoom1 = UNKNOWN_SENSOR_VALUE;
+int8_t tempSolarPrimary = UNKNOWN_SENSOR_VALUE;
+int8_t tempSolarSecondary = UNKNOWN_SENSOR_VALUE;
 int8_t STANDBY_HEATER_ROOM_TEMP_THRESHOLD = STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
 int8_t PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
 int8_t sensorBoilerPowerState = 0;
@@ -185,22 +206,26 @@ int8_t rawTankValues[SENSORS_RAW_VALUES_MAX_COUNT];
 int8_t rawBoilerValues[SENSORS_RAW_VALUES_MAX_COUNT];
 int8_t rawMixValues[SENSORS_RAW_VALUES_MAX_COUNT];
 int8_t rawSbHeaterValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int8_t rawSolarPrimaryValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int8_t rawSolarSecondaryValues[SENSORS_RAW_VALUES_MAX_COUNT];
 uint8_t rawSupplyIdx = 0;
 uint8_t rawReverseIdx = 0;
 uint8_t rawTankIdx = 0;
 uint8_t rawBoilerIdx = 0;
 uint8_t rawMixIdx = 0;
 uint8_t rawSbHeaterIdx = 0;
+uint8_t rawSolarPrimaryIdx = 0;
+uint8_t rawSolarSecondaryIdx = 0;
 
 //// Nodes
 
 // Nodes actual state
-uint8_t NODE_STATE_FLAGS = 0;
+uint16_t NODE_STATE_FLAGS = 0;
 // Nodes forced mode
-uint8_t NODE_FORCED_MODE_FLAGS = 0;
-uint8_t FORCED_MODE_OVERFLOW_TS_FLAGS = 0;
+uint16_t NODE_FORCED_MODE_FLAGS = 0;
+uint16_t FORCED_MODE_OVERFLOW_TS_FLAGS = 0;
 // will be stored in EEPROM
-uint8_t NODE_PERMANENTLY_FORCED_MODE_FLAGS = 0;
+uint16_t NODE_PERMANENTLY_FORCED_MODE_FLAGS = 0;
 
 // Nodes switch timestamps
 unsigned long tsNodeSupply = 0;
@@ -210,6 +235,8 @@ unsigned long tsNodeHotwater = 0;
 unsigned long tsNodeCirculation = 0;
 unsigned long tsNodeBoiler = 0;
 unsigned long tsNodeSbHeater = 0;
+unsigned long tsNodeSolarPrimary = 0;
+unsigned long tsNodeSolarSecondary = 0;
 
 // Nodes forced mode timestamps
 unsigned long tsForcedNodeSupply = 0;
@@ -219,12 +246,14 @@ unsigned long tsForcedNodeHotwater = 0;
 unsigned long tsForcedNodeCirculation = 0;
 unsigned long tsForcedNodeBoiler = 0;
 unsigned long tsForcedNodeSbHeater = 0;
+unsigned long tsForcedNodeSolarPrimary = 0;
+unsigned long tsForcedNodeSolarSecondary = 0;
 
 // Sensors switch timestamps
 unsigned long tsSensorBoilerPower = 0;
 
 // reporting
-uint16_t nextEntryReport = 0;
+uint8_t nextEntryReport = 0;
 
 // Timestamps
 unsigned long tsLastStatusReport = 0;
@@ -248,6 +277,8 @@ double SENSOR_TANK_FACTOR = 1;
 double SENSOR_BOILER_FACTOR = 1;
 double SENSOR_MIX_FACTOR = 1;
 double SENSOR_SB_HEATER_FACTOR = 1;
+double SENSOR_SOLAR_PRIMARY_FACTOR = 1;
+double SENSOR_SOLAR_SECONDARY_FACTOR = 1;
 
 unsigned long boilerPowersaveCurrentPassivePeriod = 0;
 
@@ -337,6 +368,8 @@ void setup() {
     pinMode(NODE_CIRCULATION, OUTPUT);
     pinMode(NODE_BOILER, OUTPUT);
     pinMode(NODE_SB_HEATER, OUTPUT);
+    pinMode(NODE_SOLAR_PRIMARY, OUTPUT);
+    pinMode(NODE_SOLAR_SECONDARY, OUTPUT);
 
     // restore nodes state
     digitalWrite(NODE_SUPPLY, ~NODE_STATE_FLAGS & NODE_SUPPLY_BIT);
@@ -346,6 +379,8 @@ void setup() {
     digitalWrite(NODE_CIRCULATION, ~NODE_STATE_FLAGS & NODE_CIRCULATION_BIT);
     digitalWrite(NODE_BOILER, ~NODE_STATE_FLAGS & NODE_BOILER_BIT);
     digitalWrite(NODE_SB_HEATER, ~NODE_STATE_FLAGS & NODE_SB_HEATER_BIT);
+    digitalWrite(NODE_SOLAR_PRIMARY, ~NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT);
+    digitalWrite(NODE_SOLAR_SECONDARY, ~NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT);
 
     // init sensors raw values arrays
     for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
@@ -355,6 +390,8 @@ void setup() {
         rawBoilerValues[i] = UNKNOWN_SENSOR_VALUE;
         rawMixValues[i] = UNKNOWN_SENSOR_VALUE;
         rawSbHeaterValues[i] = UNKNOWN_SENSOR_VALUE;
+        rawSolarPrimaryValues[i] = UNKNOWN_SENSOR_VALUE;
+        rawSolarSecondaryValues[i] = UNKNOWN_SENSOR_VALUE;
     }
 
     // read sensors calibration factors from EEPROM
@@ -364,7 +401,7 @@ void setup() {
     STANDBY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
     PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(PRIMARY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
 
-    // init RF24 radio
+    // init RF24 radio. not used for now
     radio.begin();
     radio.enableDynamicPayloads();
     // listen on 2 channels
@@ -407,6 +444,10 @@ void loop() {
         processHotWaterCircuit();
         // circulation
         processCirculationCircuit();
+        // solar primary
+        processSolarPrimary();
+        // solar secondary
+        processSolarSecondary();
         // boiler heater
         processBoilerHeater();
         // standby heater
@@ -431,7 +472,7 @@ void loop() {
 }
 
 void processSupplyCircuit() {
-    uint8_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT;
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT;
     if (isInForcedMode(NODE_SUPPLY_BIT, tsForcedNodeSupply)) {
         return;
     }
@@ -479,7 +520,7 @@ void processSupplyCircuit() {
 }
 
 void processHeatingCircuit() {
-    uint8_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_HEATING_BIT;
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_HEATING_BIT;
     if (isInForcedMode(NODE_HEATING_BIT, tsForcedNodeHeating)) {
         return;
     }
@@ -535,7 +576,7 @@ void processHeatingCircuit() {
 }
 
 void processFloorCircuit() {
-    uint8_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT;
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT;
     if (isInForcedMode(NODE_FLOOR_BIT, tsForcedNodeFloor)) {
         return;
     }
@@ -585,7 +626,7 @@ void processFloorCircuit() {
 }
 
 void processHotWaterCircuit() {
-    uint8_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_HOTWATER_BIT;
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_HOTWATER_BIT;
     if (isInForcedMode(NODE_HOTWATER_BIT, tsForcedNodeHotwater)) {
         return;
     }
@@ -597,30 +638,56 @@ void processHotWaterCircuit() {
         int8_t sensVals[] = { tempTank, tempBoiler };
         if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
             // pump is ON
-            if (tempTank <= tempBoiler) {
-                // temp is equal
-                // turn pump OFF
-                switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
+            if (tempBoiler < (BOILER_CRITICAL_MAX_TEMP_THRESHOLD - BOILER_CRITICAL_MAX_TEMP_HIST)) {
+                // temp in boiler is normal
+                if (tempTank <= tempBoiler) {
+                    // temp in tank is low
+                    // turn pump OFF
+                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
+                } else {
+                    // temp in tank is high enough
+                    // do nothing
+                }
             } else {
-                // temp in tank is high enough
-                // do nothing
+                // temp in Boiler critically high
+                if (tempTank < tempBoiler) {
+                    // tank has capacity
+                    // do nothing
+                } else {
+                    // tank has no capacity
+                    // turn pump ON
+                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
+                }
             }
         } else {
             // pump is OFF
-            if (tempTank > (tempBoiler + TANK_BOILER_HIST)) {
-                // temp in tank is high enough
-                // turn pump ON
-                switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
+            if (tempBoiler >= BOILER_CRITICAL_MAX_TEMP_THRESHOLD) {
+                // temp in boiler critically high
+                if (tempTank < tempBoiler) {
+                    // tank has capacity
+                    // turn pump ON
+                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
+                } else {
+                    // tank has no capacity
+                    // do nothing
+                }
             } else {
-                // temp in tank is too low
-                // do nothing
+                // temp in boiler is normal
+                if (tempTank > (tempBoiler + TANK_BOILER_HIST)) {
+                    // temp in tank is high enough
+                    // turn pump ON
+                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
+                } else {
+                    // temp in tank is too low
+                    // do nothing
+                }
             }
         }
     }
 }
 
 void processCirculationCircuit() {
-    uint8_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_CIRCULATION_BIT;
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_CIRCULATION_BIT;
     if (isInForcedMode(NODE_CIRCULATION_BIT, tsForcedNodeCirculation)) {
         return;
     }
@@ -660,8 +727,92 @@ void processCirculationCircuit() {
     }
 }
 
+void processSolarPrimary() {
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SOLAR_PRIMARY_BIT;
+    if (isInForcedMode(NODE_SOLAR_PRIMARY_BIT, tsForcedNodeSolarPrimary)) {
+        return;
+    }
+    if (wasForceMode) {
+        reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
+    }
+    if (diffTimestamps(tsCurr, tsNodeSolarPrimary) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+        uint8_t sensIds[] = { SENSOR_SOLAR_PRIMARY };
+        int8_t sensVals[] = { tempSolarPrimary };
+        if (NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) {
+            // solar primary is ON
+            if (tempSolarPrimary >= SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD) {
+                // temp in solar primary is critically high. stagnation
+                // turn solar primary OFF
+                switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 1);
+            } else {
+                // temp in solar primary is normal
+                if (tempSolarPrimary < (SOLAR_PRIMARY_MIN_TEMP_THRESHOLD - SOLAR_PRIMARY_MIN_TEMP_HIST)) {
+                    // temp in solar primary is too low
+                    // turn solar primary OFF
+                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 1);
+                } else {
+                    // temp in solar primary is high enough
+                    // do nothing
+                }
+            }
+        } else {
+            // solar primary is OFF
+            if (tempSolarPrimary < (SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD - SOLAR_PRIMARY_CRITICAL_TEMP_HIST)) {
+                // temp in solar primary is normal
+                if (tempSolarPrimary >= SOLAR_PRIMARY_MIN_TEMP_THRESHOLD) {
+                    // temp in solar primary is high enough
+                    // turn solar primary ON
+                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 1);
+                } else {
+                    // temp in solar primary is too low
+                    // do nothing
+                }
+            } else {
+                // temp in solar primary is critically high. stagnation
+                // do nothing
+            }
+        }
+    }
+}
+
+void processSolarSecondary() {
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SOLAR_SECONDARY_BIT;
+    if (isInForcedMode(NODE_SOLAR_SECONDARY_BIT, tsForcedNodeSolarSecondary)) {
+        return;
+    }
+    if (wasForceMode) {
+        reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
+                tsForcedNodeSolarSecondary);
+    }
+    if (diffTimestamps(tsCurr, tsNodeSolarSecondary) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+        uint8_t sensIds[] = { SENSOR_SOLAR_SECONDARY, SENSOR_BOILER };
+        int8_t sensVals[] = { tempSolarSecondary, tempBoiler };
+        if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
+            // solar secondary is ON
+            if (tempSolarSecondary <= tempBoiler) {
+                // temp in solar secondary is too low
+                // turn solar secondary OFF
+                switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, 2);
+            } else {
+                // temp in solar secondary is high enough
+                // do nothing
+            }
+        } else {
+            // solar secondary is OFF
+            if (tempSolarSecondary > (tempBoiler + SOLAR_SECONDARY_BOILER_HIST)) {
+                // temp in solar secondary is high enough
+                // turn solar secondary ON
+                switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, 2);
+            } else {
+                // temp in solar secondary is too low
+                // do nothing
+            }
+        }
+    }
+}
+
 void processBoilerHeater() {
-    uint8_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_BOILER_BIT;
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_BOILER_BIT;
     if (isInForcedMode(NODE_BOILER_BIT, tsForcedNodeBoiler)) {
         return;
     }
@@ -679,24 +830,50 @@ void processBoilerHeater() {
                 switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
             } else {
                 // hotwater circuit is OFF
-                // do nothing
+                if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
+                    // solar circuit ON
+                    if (tempBoiler >= (BOILER_MIN_TEMP_THRESHOLD + BOILER_MIN_TEMP_HIST)) {
+                        // temp in boiler high enough
+                        // turn boiler OFF
+                        switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
+                    } else {
+                        // temp in boiler is too low
+                        // do nothing
+                    }
+                } else {
+                    // solar circuit OFF
+                    // do nothing
+                }
             }
         } else {
             // boiler is OFF
             if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
-                // hotwater circuit is on
+                // hotwater circuit is ON
                 // do nothing
             } else {
-                // hotwater circuit is off
-                // turn boiler ON
-                switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
+                // hotwater circuit is OFF
+                if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
+                    // solar circuit ON
+                    if (tempBoiler < BOILER_MIN_TEMP_THRESHOLD) {
+                        // temp in boiler is too low
+                        // turn boiler ON
+                        switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
+                    } else {
+                        // temp in boiler is normal
+                        // do nothing
+                    }
+                } else {
+                    // solar circuit OFF
+                    // turn boiler ON
+                    switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
+                }
             }
         }
     }
 }
 
 void processStandbyHeater() {
-    uint8_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT;
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT;
     if (isInForcedMode(NODE_SB_HEATER_BIT, tsForcedNodeSbHeater)) {
         return;
     }
@@ -778,12 +955,14 @@ void validateStringParam(char* str, int maxSize) {
 }
 
 void loadSensorsCalibrationFactors() {
-    SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0);
-    SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
-    SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 8);
-    SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 12);
-    SENSOR_MIX_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 16);
-    SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 20);
+    SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 0);
+    SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 1);
+    SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 2);
+    SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 3);
+    SENSOR_MIX_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 4);
+    SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 5);
+    SENSOR_SOLAR_PRIMARY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 6);
+    SENSOR_SOLAR_SECONDARY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 7);
 }
 
 double readSensorCalibrationFactor(int offset) {
@@ -799,8 +978,8 @@ void writeSensorCalibrationFactor(int offset, double value) {
 }
 
 void restoreNodesState() {
-    NODE_STATE_FLAGS = EEPROM.read(NODE_STATE_EEPROM_ADDR);
-    NODE_FORCED_MODE_FLAGS = EEPROM.read(NODE_FORCED_MODE_EEPROM_ADDR);
+    NODE_STATE_FLAGS = EEPROM.readInt(NODE_STATE_EEPROM_ADDR);
+    NODE_FORCED_MODE_FLAGS = EEPROM.readInt(NODE_FORCED_MODE_EEPROM_ADDR);
     NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS;
     NODE_STATE_FLAGS = NODE_STATE_FLAGS & NODE_PERMANENTLY_FORCED_MODE_FLAGS;
 }
@@ -844,6 +1023,8 @@ void readSensors() {
     readSensor(SENSOR_BOILER, rawBoilerValues, rawBoilerIdx);
     readSensor(SENSOR_MIX, rawMixValues, rawMixIdx);
     readSensor(SENSOR_SB_HEATER, rawSbHeaterValues, rawSbHeaterIdx);
+    readSensor(SENSOR_SOLAR_PRIMARY, rawSolarPrimaryValues, rawSolarPrimaryIdx);
+    readSensor(SENSOR_SOLAR_SECONDARY, rawSolarSecondaryValues, rawSolarSecondaryIdx);
     // read remote sensors
     if (radio.available()) {
 #ifdef __DEBUG__
@@ -878,12 +1059,16 @@ void refreshSensorValues() {
     double temp4 = 0;
     double temp5 = 0;
     double temp6 = 0;
+    double temp7 = 0;
+    double temp8 = 0;
     int j1 = 0;
     int j2 = 0;
     int j3 = 0;
     int j4 = 0;
     int j5 = 0;
     int j6 = 0;
+    int j7 = 0;
+    int j8 = 0;
     for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
         if (rawSupplyValues[i] != UNKNOWN_SENSOR_VALUE) {
             temp1 += rawSupplyValues[i];
@@ -909,6 +1094,14 @@ void refreshSensorValues() {
             temp6 += rawSbHeaterValues[i];
             j6++;
         }
+        if (rawSolarPrimaryValues[i] != UNKNOWN_SENSOR_VALUE) {
+            temp7 += rawSolarPrimaryValues[i];
+            j7++;
+        }
+        if (rawSolarSecondaryValues[i] != UNKNOWN_SENSOR_VALUE) {
+            temp8 += rawSolarSecondaryValues[i];
+            j8++;
+        }
     }
     if (j1 > 0) {
         tempSupply = int8_t(temp1 / j1 + 0.5);
@@ -927,6 +1120,12 @@ void refreshSensorValues() {
     }
     if (j6 > 0) {
         tempSbHeater = int8_t(temp6 / j6 + 0.5);
+    }
+    if (j7 > 0) {
+        tempSolarPrimary = int8_t(temp7 / j7 + 0.5);
+    }
+    if (j8 > 0) {
+        tempSolarSecondary = int8_t(temp8 / j8 + 0.5);
     }
 
     // read sensorBoilerPower value
@@ -963,6 +1162,14 @@ int8_t getSensorValue(const uint8_t sensor) {
     } else if (SENSOR_SB_HEATER == sensor) {
         if (sensors.requestTemperaturesByAddress(SENSOR_SB_HEATER_ADDR)) {
             result = sensors.getTempC(SENSOR_SB_HEATER_ADDR) * SENSOR_SB_HEATER_FACTOR;
+        }
+    } else if (SENSOR_SOLAR_PRIMARY == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_SOLAR_PRIMAY_ADDR)) {
+            result = sensors.getTempC(SENSOR_SOLAR_PRIMAY_ADDR) * SENSOR_SOLAR_PRIMARY_FACTOR;
+        }
+    } else if (SENSOR_SOLAR_SECONDARY == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_SOLAR_SECONDARY_ADDR)) {
+            result = sensors.getTempC(SENSOR_SOLAR_SECONDARY_ADDR) * SENSOR_SOLAR_SECONDARY_FACTOR;
         }
     }
     result = (result > 0) ? result + 0.5 : result - 0.5;
@@ -1001,7 +1208,7 @@ unsigned long diffTimestamps(unsigned long hi, unsigned long lo) {
     }
 }
 
-bool isInForcedMode(uint8_t bit, unsigned long ts) {
+bool isInForcedMode(uint16_t bit, unsigned long ts) {
     if (NODE_FORCED_MODE_FLAGS & bit) { // forced mode
         if (ts == 0) {
             // permanent forced mode
@@ -1119,13 +1326,20 @@ void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
     } else if (NODE_SB_HEATER == id) {
         forceNodeState(NODE_SB_HEATER, NODE_SB_HEATER_BIT, state, tsForcedNodeSbHeater, ts);
         reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
+    } else if (NODE_SOLAR_PRIMARY == id) {
+        forceNodeState(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, state, tsForcedNodeSolarPrimary, ts);
+        reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
+    } else if (NODE_SOLAR_SECONDARY == id) {
+        forceNodeState(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, state, tsForcedNodeSolarSecondary, ts);
+        reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
+                tsForcedNodeSolarSecondary);
     }
     // update node modes in EEPROM
-    EEPROM.write(NODE_STATE_EEPROM_ADDR, NODE_STATE_FLAGS);
-    EEPROM.write(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
+    EEPROM.writeInt(NODE_STATE_EEPROM_ADDR, NODE_STATE_FLAGS);
+    EEPROM.writeInt(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
 }
 
-void forceNodeState(uint8_t id, uint8_t bit, uint8_t state, unsigned long &nodeTs, unsigned long ts) {
+void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &nodeTs, unsigned long ts) {
     NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS | bit;
     if (ts == 0) {
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS | bit;
@@ -1183,9 +1397,20 @@ void unForceNodeState(uint8_t id) {
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SB_HEATER_BIT;
         FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_SB_HEATER_BIT;
         reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
+    } else if (NODE_SOLAR_PRIMARY == id) {
+        NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SOLAR_PRIMARY_BIT;
+        NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SOLAR_PRIMARY_BIT;
+        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_SOLAR_PRIMARY_BIT;
+        reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
+    } else if (NODE_SOLAR_SECONDARY == id) {
+        NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SOLAR_SECONDARY_BIT;
+        NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SOLAR_SECONDARY_BIT;
+        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_SOLAR_SECONDARY_BIT;
+        reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
+                tsForcedNodeSolarSecondary);
     }
     // update node modes in EEPROM
-    EEPROM.write(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
+    EEPROM.writeInt(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
 }
 
 bool wifiStationMode() {
@@ -1486,6 +1711,14 @@ void reportStatus() {
             break;
         case SENSOR_BOILER_POWER:
             reportSensorStatus(SENSOR_BOILER_POWER, sensorBoilerPowerState, tsSensorBoilerPower);
+            nextEntryReport = SENSOR_SOLAR_PRIMARY;
+            break;
+        case SENSOR_SOLAR_PRIMARY:
+            reportSensorStatus(SENSOR_SOLAR_PRIMARY, tempSolarPrimary);
+            nextEntryReport = SENSOR_SOLAR_SECONDARY;
+            break;
+        case SENSOR_SOLAR_SECONDARY:
+            reportSensorStatus(SENSOR_SOLAR_SECONDARY, tempSolarSecondary);
             nextEntryReport = NODE_SUPPLY;
             break;
         case NODE_SUPPLY:
@@ -1516,6 +1749,15 @@ void reportStatus() {
             break;
         case NODE_BOILER:
             reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
+            nextEntryReport = NODE_SOLAR_PRIMARY;
+            break;
+        case NODE_SOLAR_PRIMARY:
+            reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
+            nextEntryReport = NODE_SOLAR_SECONDARY;
+            break;
+        case NODE_SOLAR_SECONDARY:
+            reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
+                    tsForcedNodeSolarSecondary);
             nextEntryReport = 0;
             break;
         default:
@@ -1525,7 +1767,7 @@ void reportStatus() {
     }
 }
 
-void reportNodeStatus(uint8_t id, uint8_t bit, unsigned long ts, unsigned long tsf) {
+void reportNodeStatus(uint8_t id, uint16_t bit, unsigned long ts, unsigned long tsf) {
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.createObject();
     root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
@@ -1590,6 +1832,8 @@ void reportConfiguration() {
     reportSensorCalibrationFactor(SENSOR_BOILER, SENSOR_BOILER_FACTOR);
     reportSensorCalibrationFactor(SENSOR_MIX, SENSOR_MIX_FACTOR);
     reportSensorCalibrationFactor(SENSOR_SB_HEATER, SENSOR_SB_HEATER_FACTOR);
+    reportSensorCalibrationFactor(SENSOR_SOLAR_PRIMARY, SENSOR_SOLAR_PRIMARY_FACTOR);
+    reportSensorCalibrationFactor(SENSOR_SOLAR_SECONDARY, SENSOR_SOLAR_SECONDARY_FACTOR);
     reportSensorConfigValue(SENSOR_TH_ROOM1_SB_HEATER, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
     reportSensorConfigValue(SENSOR_TH_ROOM1_PRIMARY_HEATER, PRIMARY_HEATER_ROOM_TEMP_THRESHOLD);
     reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
@@ -1792,23 +2036,30 @@ bool parseCommand(char* command) {
                     uint8_t id = sensor[ID_KEY].as<uint8_t>();
                     double cf = sensor[CALIBRATION_FACTOR_KEY].as<double>();
                     if (id == SENSOR_SUPPLY) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0, cf);
-                        SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0);
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 0, cf);
+                        SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 0);
                     } else if (id == SENSOR_REVERSE) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4, cf);
-                        SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 1, cf);
+                        SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 1);
                     } else if (id == SENSOR_TANK) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 8, cf);
-                        SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 8);
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 2, cf);
+                        SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 2);
                     } else if (id == SENSOR_BOILER) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 12, cf);
-                        SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 12);
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 3, cf);
+                        SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 3);
                     } else if (id == SENSOR_MIX) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 16, cf);
-                        SENSOR_MIX_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 16);
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 4, cf);
+                        SENSOR_MIX_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 4);
                     } else if (id == SENSOR_SB_HEATER) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 20, cf);
-                        SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 20);
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 5, cf);
+                        SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 5);
+                    } else if (id == SENSOR_SOLAR_PRIMARY) {
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 6, cf);
+                        SENSOR_SOLAR_PRIMARY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 6);
+                    } else if (id == SENSOR_SOLAR_SECONDARY) {
+                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 7, cf);
+                        SENSOR_SOLAR_SECONDARY_FACTOR = readSensorCalibrationFactor(
+                                SENSORS_FACTORS_EEPROM_ADDR + 4 * 7);
                     }
                 } else if (sensor.containsKey(ID_KEY) && sensor.containsKey(VALUE_KEY)) {
                     uint8_t id = sensor[ID_KEY].as<uint8_t>();

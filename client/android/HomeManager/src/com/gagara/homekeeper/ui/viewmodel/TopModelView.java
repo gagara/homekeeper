@@ -6,6 +6,8 @@ import static com.gagara.homekeeper.common.ControllerConfig.NODE_FLOOR_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_HEATING_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_HOTWATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_SB_HEATER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_SOLAR_PRIMARY_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_SOLAR_SECONDARY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_SUPPLY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_BOILER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_BOILER_POWER_ID;
@@ -14,6 +16,8 @@ import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_REVERSE_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_HUM_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_ROOM1_TEMP_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SB_HEATER_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SOLAR_PRIMAY_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SOLAR_SECONDARY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_SUPPLY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TANK_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_PRIMARY_HEATER_ID;
@@ -58,6 +62,8 @@ public class TopModelView implements ModelView<Model> {
         SENSORS.put(SENSOR_ROOM1_TEMP_ID, R.string.sensor_room1_temp_name);
         SENSORS.put(SENSOR_ROOM1_HUM_ID, R.string.sensor_room1_hum_name);
         SENSORS.put(SENSOR_BOILER_POWER_ID, R.string.sensor_boiler_power_name);
+        SENSORS.put(SENSOR_SOLAR_PRIMAY_ID, R.string.sensor_solar_primary_name);
+        SENSORS.put(SENSOR_SOLAR_SECONDARY_ID, R.string.sensor_solar_secondary_name);
 
         SENSORS_THRESHOLDS = new SparseIntArray();
         SENSORS_THRESHOLDS.put(SENSOR_TH_ROOM1_SB_HEATER_ID, R.string.sensor_th_room1_sb_heater);
@@ -71,6 +77,8 @@ public class TopModelView implements ModelView<Model> {
         NODES.put(NODE_HOTWATER_ID, R.string.node_hotwater_name);
         NODES.put(NODE_CIRCULATION_ID, R.string.node_circulation_name);
         NODES.put(NODE_BOILER_ID, R.string.node_boilder_name);
+        NODES.put(NODE_SOLAR_PRIMARY_ID, R.string.node_solar_primary_name);
+        NODES.put(NODE_SOLAR_SECONDARY_ID, R.string.node_solar_secondary_name);
 
         int idx = 0;
         SENSORS_VIEW_LIST = new SparseIntArray();
@@ -83,6 +91,8 @@ public class TopModelView implements ModelView<Model> {
         SENSORS_VIEW_LIST.put(idx++, SENSOR_ROOM1_TEMP_ID);
         SENSORS_VIEW_LIST.put(idx++, SENSOR_ROOM1_HUM_ID);
         SENSORS_VIEW_LIST.put(idx++, SENSOR_BOILER_POWER_ID);
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_SOLAR_PRIMAY_ID);
+        SENSORS_VIEW_LIST.put(idx++, SENSOR_SOLAR_SECONDARY_ID);
         idx = 0;
         NODES_VIEW_LIST = new SparseIntArray();
         NODES_VIEW_LIST.put(idx++, NODE_SUPPLY_ID);
@@ -92,6 +102,8 @@ public class TopModelView implements ModelView<Model> {
         NODES_VIEW_LIST.put(idx++, NODE_HOTWATER_ID);
         NODES_VIEW_LIST.put(idx++, NODE_CIRCULATION_ID);
         NODES_VIEW_LIST.put(idx++, NODE_BOILER_ID);
+        NODES_VIEW_LIST.put(idx++, NODE_SOLAR_PRIMARY_ID);
+        NODES_VIEW_LIST.put(idx++, NODE_SOLAR_SECONDARY_ID);
     }
 
     public TopModelView(Activity ctx) {
