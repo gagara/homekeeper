@@ -649,7 +649,7 @@ void processHotWaterCircuit() {
                     // do nothing
                 }
             } else {
-                // temp in Boiler critically high
+                // temp in boiler critically high
                 if (tempTank < tempBoiler) {
                     // tank has capacity
                     // do nothing
@@ -699,25 +699,51 @@ void processCirculationCircuit() {
         int8_t sensVals[] = { tempBoiler };
         if (NODE_STATE_FLAGS & NODE_CIRCULATION_BIT) {
             // pump is ON
-            if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_ACTIVE_PERIOD_MSEC) {
-                // active period is over
-                // turn pump OFF
-                switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
+            if (tempBoiler < (BOILER_CRITICAL_MAX_TEMP_THRESHOLD - BOILER_CRITICAL_MAX_TEMP_HIST)) {
+                // temp in boiler is normal
+                if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_ACTIVE_PERIOD_MSEC) {
+                    // active period is over
+                    // turn pump OFF
+                    switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
+                } else {
+                    // active period is going on
+                    // do nothing
+                }
             } else {
-                // active period is going on
-                // do nothing
+                // temp in boiler critically high
+                if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
+                    // hotwater node is on
+                    // turn pump OFF
+                    switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
+                } else {
+                    // hotwater node is off
+                    // do nothing
+                }
             }
         } else {
             // pump is OFF
             if (tempBoiler >= CIRCULATION_TEMP_THRESHOLD) {
                 // temp in boiler is high enough
-                if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_PASSIVE_PERIOD_MSEC) {
-                    // passive period is over
-                    // turn pump ON
-                    switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
+                if (tempBoiler >= BOILER_CRITICAL_MAX_TEMP_THRESHOLD) {
+                    // temp in boiler critically high
+                    if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
+                        // hotwater node is on
+                        // do nothing
+                    } else {
+                        // hotwater node is off
+                        // turn pump ON
+                        switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
+                    }
                 } else {
-                    // passive period is going on
-                    // do nothing
+                    // temp in boiler is normal
+                    if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_PASSIVE_PERIOD_MSEC) {
+                        // passive period is over
+                        // turn pump ON
+                        switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
+                    } else {
+                        // passive period is going on
+                        // do nothing
+                    }
                 }
             } else {
                 // temp in boiler is too low
