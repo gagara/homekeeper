@@ -76,7 +76,6 @@
     <string name="node_floor_name">Floor</string>
     <string name="node_hotwater_name">Hot water</string>
     <string name="node_circulation_name">Circulation</string>
-    <string name="node_boilder_name">Boiler</string>
     <string name="node_solar_primary_name">Solar Prim</string>
     <string name="node_solar_secondary_name">Solar Sec</string>
     <string name="node_mix_name">Mix</string>

@@ -1,6 +1,5 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
-import static com.gagara.homekeeper.common.ControllerConfig.NODE_BOILER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_CIRCULATION_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_FLOOR_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_HEATING_ID;
@@ -76,7 +75,6 @@ public class TopModelView implements ModelView<Model> {
         NODES.put(NODE_SB_HEATER_ID, R.string.node_sb_heater_name);
         NODES.put(NODE_HOTWATER_ID, R.string.node_hotwater_name);
         NODES.put(NODE_CIRCULATION_ID, R.string.node_circulation_name);
-        NODES.put(NODE_BOILER_ID, R.string.node_boilder_name);
         NODES.put(NODE_SOLAR_PRIMARY_ID, R.string.node_solar_primary_name);
         NODES.put(NODE_SOLAR_SECONDARY_ID, R.string.node_solar_secondary_name);
 
@@ -101,7 +99,6 @@ public class TopModelView implements ModelView<Model> {
         NODES_VIEW_LIST.put(idx++, NODE_SB_HEATER_ID);
         NODES_VIEW_LIST.put(idx++, NODE_HOTWATER_ID);
         NODES_VIEW_LIST.put(idx++, NODE_CIRCULATION_ID);
-        NODES_VIEW_LIST.put(idx++, NODE_BOILER_ID);
         NODES_VIEW_LIST.put(idx++, NODE_SOLAR_PRIMARY_ID);
         NODES_VIEW_LIST.put(idx++, NODE_SOLAR_SECONDARY_ID);
     }
@@ -263,10 +260,6 @@ public class TopModelView implements ModelView<Model> {
 
     public NodeModelView getNodeCirculation() {
         return nodes.get(NODE_CIRCULATION_ID);
-    }
-
-    public NodeModelView getNodeBoiler() {
-        return nodes.get(NODE_BOILER_ID);
     }
 
     public NodeModelView getNodeSbHeater() {

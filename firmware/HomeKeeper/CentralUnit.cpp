@@ -47,7 +47,6 @@ static const uint8_t NODE_HEATING = 24; //8
 static const uint8_t NODE_FLOOR = 26; //9
 static const uint8_t NODE_HOTWATER = 28; //10
 static const uint8_t NODE_CIRCULATION = 30; //11
-static const uint8_t NODE_BOILER = 32; //12
 static const uint8_t NODE_SB_HEATER = 34;
 static const uint8_t NODE_SOLAR_PRIMARY = 36;
 static const uint8_t NODE_SOLAR_SECONDARY = 38;
@@ -67,7 +66,6 @@ static const uint16_t NODE_HEATING_BIT = 2;
 static const uint16_t NODE_FLOOR_BIT = 4;
 static const uint16_t NODE_HOTWATER_BIT = 8;
 static const uint16_t NODE_CIRCULATION_BIT = 16;
-static const uint16_t NODE_BOILER_BIT = 32;
 static const uint16_t NODE_SB_HEATER_BIT = 64;
 static const uint16_t NODE_SOLAR_PRIMARY_BIT = 128;
 static const uint16_t NODE_SOLAR_SECONDARY_BIT = 256;
@@ -106,8 +104,6 @@ static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800000; // 30m
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
-static const uint8_t BOILER_MIN_TEMP_THRESHOLD = 40;
-static const uint8_t BOILER_MIN_TEMP_HIST = 3;
 static const uint8_t BOILER_CRITICAL_MAX_TEMP_THRESHOLD = 80;
 static const uint8_t BOILER_CRITICAL_MAX_TEMP_HIST = 5;
 
@@ -233,7 +229,6 @@ unsigned long tsNodeHeating = 0;
 unsigned long tsNodeFloor = 0;
 unsigned long tsNodeHotwater = 0;
 unsigned long tsNodeCirculation = 0;
-unsigned long tsNodeBoiler = 0;
 unsigned long tsNodeSbHeater = 0;
 unsigned long tsNodeSolarPrimary = 0;
 unsigned long tsNodeSolarSecondary = 0;
@@ -244,7 +239,6 @@ unsigned long tsForcedNodeHeating = 0;
 unsigned long tsForcedNodeFloor = 0;
 unsigned long tsForcedNodeHotwater = 0;
 unsigned long tsForcedNodeCirculation = 0;
-unsigned long tsForcedNodeBoiler = 0;
 unsigned long tsForcedNodeSbHeater = 0;
 unsigned long tsForcedNodeSolarPrimary = 0;
 unsigned long tsForcedNodeSolarSecondary = 0;
@@ -366,7 +360,6 @@ void setup() {
     pinMode(NODE_FLOOR, OUTPUT);
     pinMode(NODE_HOTWATER, OUTPUT);
     pinMode(NODE_CIRCULATION, OUTPUT);
-    pinMode(NODE_BOILER, OUTPUT);
     pinMode(NODE_SB_HEATER, OUTPUT);
     pinMode(NODE_SOLAR_PRIMARY, OUTPUT);
     pinMode(NODE_SOLAR_SECONDARY, OUTPUT);
@@ -377,7 +370,6 @@ void setup() {
     digitalWrite(NODE_FLOOR, ~NODE_STATE_FLAGS & NODE_FLOOR_BIT);
     digitalWrite(NODE_HOTWATER, ~NODE_STATE_FLAGS & NODE_HOTWATER_BIT);
     digitalWrite(NODE_CIRCULATION, ~NODE_STATE_FLAGS & NODE_CIRCULATION_BIT);
-    digitalWrite(NODE_BOILER, ~NODE_STATE_FLAGS & NODE_BOILER_BIT);
     digitalWrite(NODE_SB_HEATER, ~NODE_STATE_FLAGS & NODE_SB_HEATER_BIT);
     digitalWrite(NODE_SOLAR_PRIMARY, ~NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT);
     digitalWrite(NODE_SOLAR_SECONDARY, ~NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT);
@@ -448,8 +440,6 @@ void loop() {
         processSolarPrimary();
         // solar secondary
         processSolarSecondary();
-        // boiler heater
-        processBoilerHeater();
         // standby heater
         processStandbyHeater();
 
@@ -837,67 +827,6 @@ void processSolarSecondary() {
     }
 }
 
-void processBoilerHeater() {
-    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_BOILER_BIT;
-    if (isInForcedMode(NODE_BOILER_BIT, tsForcedNodeBoiler)) {
-        return;
-    }
-    if (wasForceMode) {
-        reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
-    }
-    if (diffTimestamps(tsCurr, tsNodeBoiler) >= NODE_SWITCH_SAFE_TIME_MSEC) {
-        uint8_t sensIds[] = { SENSOR_BOILER };
-        int8_t sensVals[] = { tempBoiler };
-        if (NODE_STATE_FLAGS & NODE_BOILER_BIT) {
-            // boiler is ON
-            if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
-                // hotwater circuit is ON
-                // turn boiler OFF
-                switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
-            } else {
-                // hotwater circuit is OFF
-                if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
-                    // solar circuit ON
-                    if (tempBoiler >= (BOILER_MIN_TEMP_THRESHOLD + BOILER_MIN_TEMP_HIST)) {
-                        // temp in boiler high enough
-                        // turn boiler OFF
-                        switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
-                    } else {
-                        // temp in boiler is too low
-                        // do nothing
-                    }
-                } else {
-                    // solar circuit OFF
-                    // do nothing
-                }
-            }
-        } else {
-            // boiler is OFF
-            if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
-                // hotwater circuit is ON
-                // do nothing
-            } else {
-                // hotwater circuit is OFF
-                if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
-                    // solar circuit ON
-                    if (tempBoiler < BOILER_MIN_TEMP_THRESHOLD) {
-                        // temp in boiler is too low
-                        // turn boiler ON
-                        switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
-                    } else {
-                        // temp in boiler is normal
-                        // do nothing
-                    }
-                } else {
-                    // solar circuit OFF
-                    // turn boiler ON
-                    switchNodeState(NODE_BOILER, sensIds, sensVals, 1);
-                }
-            }
-        }
-    }
-}
-
 void processStandbyHeater() {
     uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT;
     if (isInForcedMode(NODE_SB_HEATER_BIT, tsForcedNodeSbHeater)) {
@@ -1278,10 +1207,6 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sen
         bit = NODE_CIRCULATION_BIT;
         ts = &tsNodeCirculation;
         tsf = &tsForcedNodeCirculation;
-    } else if (NODE_BOILER == id) {
-        bit = NODE_BOILER_BIT;
-        ts = &tsNodeBoiler;
-        tsf = &tsForcedNodeBoiler;
     } else if (NODE_SB_HEATER == id) {
         bit = NODE_SB_HEATER_BIT;
         ts = &tsNodeSbHeater;
@@ -1346,9 +1271,6 @@ void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
     } else if (NODE_CIRCULATION == id) {
         forceNodeState(NODE_CIRCULATION, NODE_CIRCULATION_BIT, state, tsForcedNodeCirculation, ts);
         reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
-    } else if (NODE_BOILER == id) {
-        forceNodeState(NODE_BOILER, NODE_BOILER_BIT, state, tsForcedNodeBoiler, ts);
-        reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
     } else if (NODE_SB_HEATER == id) {
         forceNodeState(NODE_SB_HEATER, NODE_SB_HEATER_BIT, state, tsForcedNodeSbHeater, ts);
         reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
@@ -1413,11 +1335,6 @@ void unForceNodeState(uint8_t id) {
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_CIRCULATION_BIT;
         FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_CIRCULATION_BIT;
         reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
-    } else if (NODE_BOILER == id) {
-        NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_BOILER_BIT;
-        NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_BOILER_BIT;
-        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_BOILER_BIT;
-        reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
     } else if (NODE_SB_HEATER == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SB_HEATER_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SB_HEATER_BIT;
@@ -1771,10 +1688,6 @@ void reportStatus() {
             break;
         case NODE_CIRCULATION:
             reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
-            nextEntryReport = NODE_BOILER;
-            break;
-        case NODE_BOILER:
-            reportNodeStatus(NODE_BOILER, NODE_BOILER_BIT, tsNodeBoiler, tsForcedNodeBoiler);
             nextEntryReport = NODE_SOLAR_PRIMARY;
             break;
         case NODE_SOLAR_PRIMARY:

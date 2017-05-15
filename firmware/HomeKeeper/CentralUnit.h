@@ -26,7 +26,6 @@ void processHeatingCircuit();
 void processFloorCircuit();
 void processHotWaterCircuit();
 void processCirculationCircuit();
-void processBoilerHeater();
 void processStandbyHeater();
 void processSolarPrimary();
 void processSolarSecondary();

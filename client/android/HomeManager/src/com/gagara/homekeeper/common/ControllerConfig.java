@@ -49,7 +49,6 @@ public class ControllerConfig {
     public static final int NODE_FLOOR_ID = 26;
     public static final int NODE_HOTWATER_ID = 28;
     public static final int NODE_CIRCULATION_ID = 30;
-    public static final int NODE_BOILER_ID = 32;
     public static final int NODE_SB_HEATER_ID = 34;
     public static final int NODE_SOLAR_PRIMARY_ID = 36;
     public static final int NODE_SOLAR_SECONDARY_ID = 38;
