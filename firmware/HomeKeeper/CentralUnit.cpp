@@ -1184,7 +1184,7 @@ bool isInForcedMode(uint16_t bit, unsigned long ts) {
 }
 
 void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sensCnt) {
-    uint8_t bit;
+    uint16_t bit;
     unsigned long* ts = NULL;
     unsigned long* tsf = NULL;
     if (NODE_SUPPLY == id) {
@@ -1211,6 +1211,14 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sen
         bit = NODE_SB_HEATER_BIT;
         ts = &tsNodeSbHeater;
         tsf = &tsForcedNodeSbHeater;
+    } else if (NODE_SOLAR_PRIMARY == id) {
+        bit = NODE_SOLAR_PRIMARY_BIT;
+        ts = &tsNodeSolarPrimary;
+        tsf = &tsForcedNodeSolarPrimary;
+    } else if (NODE_SOLAR_SECONDARY == id) {
+        bit = NODE_SOLAR_SECONDARY_BIT;
+        ts = &tsNodeSolarSecondary;
+        tsf = &tsForcedNodeSolarSecondary;
     }
 
     if (ts != NULL) {
@@ -1282,9 +1290,11 @@ void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
         reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
                 tsForcedNodeSolarSecondary);
     }
-    // update node modes in EEPROM
-    EEPROM.writeInt(NODE_STATE_EEPROM_ADDR, NODE_STATE_FLAGS);
-    EEPROM.writeInt(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
+    // update node modes in EEPROM if forced permanently
+    if (ts == 0) {
+        EEPROM.writeInt(NODE_STATE_EEPROM_ADDR, NODE_STATE_FLAGS);
+        EEPROM.writeInt(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
+    }
 }
 
 void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &nodeTs, unsigned long ts) {
@@ -1310,6 +1320,7 @@ void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &node
 }
 
 void unForceNodeState(uint8_t id) {
+    uint16_t prevPermanentlyForcedModeFlags = NODE_PERMANENTLY_FORCED_MODE_FLAGS;
     if (NODE_SUPPLY == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SUPPLY_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SUPPLY_BIT;
@@ -1352,8 +1363,10 @@ void unForceNodeState(uint8_t id) {
         reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
                 tsForcedNodeSolarSecondary);
     }
-    // update node modes in EEPROM
-    EEPROM.writeInt(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
+    // update node modes in EEPROM if unforced from permanent
+    if (prevPermanentlyForcedModeFlags != NODE_PERMANENTLY_FORCED_MODE_FLAGS) {
+        EEPROM.writeInt(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
+    }
 }
 
 bool wifiStationMode() {
