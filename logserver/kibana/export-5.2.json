@@ -1,14 +1,38 @@
 [
   {
+    "_id": "8378c520-108e-11e7-bdef-5dd53778f8f7",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Stats",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"size_x\":12,\"size_y\":4,\"panelIndex\":1,\"type\":\"visualization\",\"id\":\"b493f570-0fcc-11e7-9d51-398f58efdcd3\",\"col\":1,\"row\":1}]",
+      "optionsJSON": "{\"darkTheme\":false}",
+      "uiStateJSON": "{}",
+      "version": 1,
+      "timeRestore": true,
+      "timeTo": "now",
+      "timeFrom": "now-7d",
+      "refreshInterval": {
+        "display": "Off",
+        "pause": false,
+        "value": 0
+      },
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}]}"
+      }
+    }
+  },
+  {
     "_id": "e8d93990-0f2b-11e7-bdef-5dd53778f8f7",
     "_type": "dashboard",
     "_source": {
       "title": "Latest",
       "hits": 0,
       "description": "",
-      "panelsJSON": "[{\"size_x\":12,\"size_y\":5,\"panelIndex\":1,\"type\":\"visualization\",\"id\":\"7c19af90-0ebf-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":1},{\"size_x\":12,\"size_y\":4,\"panelIndex\":2,\"type\":\"visualization\",\"id\":\"46f3f660-0e77-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":6},{\"size_x\":12,\"size_y\":5,\"panelIndex\":3,\"type\":\"visualization\",\"id\":\"314b55c0-0e76-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":10},{\"size_x\":12,\"size_y\":2,\"panelIndex\":4,\"type\":\"visualization\",\"id\":\"900f2950-0ebd-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":15}]",
+      "panelsJSON": "[{\"size_x\":12,\"size_y\":5,\"panelIndex\":1,\"type\":\"visualization\",\"id\":\"7c19af90-0ebf-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":1},{\"size_x\":12,\"size_y\":4,\"panelIndex\":2,\"type\":\"visualization\",\"id\":\"46f3f660-0e77-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":6},{\"size_x\":12,\"size_y\":6,\"panelIndex\":3,\"type\":\"visualization\",\"id\":\"314b55c0-0e76-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":10},{\"size_x\":12,\"size_y\":2,\"panelIndex\":4,\"type\":\"visualization\",\"id\":\"900f2950-0ebd-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":16}]",
       "optionsJSON": "{\"darkTheme\":false}",
-      "uiStateJSON": "{\"P-2\":{\"vis\":{\"legendOpen\":false}},\"P-1\":{\"vis\":{\"legendOpen\":false}}}",
+      "uiStateJSON": "{\"P-2\":{\"vis\":{\"legendOpen\":false}},\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-4\":{\"vis\":{\"legendOpen\":false}}}",
       "version": 1,
       "timeRestore": true,
       "timeTo": "now",
@@ -30,37 +54,13 @@
       "title": "Summary",
       "hits": 0,
       "description": "",
-      "panelsJSON": "[{\"size_x\":12,\"size_y\":5,\"panelIndex\":1,\"type\":\"visualization\",\"id\":\"942710a0-0ebf-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":1},{\"size_x\":12,\"size_y\":4,\"panelIndex\":2,\"type\":\"visualization\",\"id\":\"787af2b0-0e77-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":6},{\"size_x\":12,\"size_y\":5,\"panelIndex\":3,\"type\":\"visualization\",\"id\":\"71cba230-0e76-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":10},{\"size_x\":12,\"size_y\":2,\"panelIndex\":4,\"type\":\"visualization\",\"id\":\"b09daa20-0ebd-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":15}]",
+      "panelsJSON": "[{\"size_x\":12,\"size_y\":5,\"panelIndex\":1,\"type\":\"visualization\",\"id\":\"942710a0-0ebf-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":1},{\"size_x\":12,\"size_y\":4,\"panelIndex\":2,\"type\":\"visualization\",\"id\":\"787af2b0-0e77-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":6},{\"size_x\":12,\"size_y\":6,\"panelIndex\":3,\"type\":\"visualization\",\"id\":\"71cba230-0e76-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":10},{\"size_x\":12,\"size_y\":2,\"panelIndex\":4,\"type\":\"visualization\",\"id\":\"b09daa20-0ebd-11e7-91d8-c97263d3d6b8\",\"col\":1,\"row\":16}]",
       "optionsJSON": "{\"darkTheme\":false}",
-      "uiStateJSON": "{}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-2\":{\"vis\":{\"legendOpen\":false}},\"P-4\":{\"vis\":{\"legendOpen\":false}}}",
       "version": 1,
       "timeRestore": true,
       "timeTo": "now",
       "timeFrom": "now-24h",
-      "refreshInterval": {
-        "display": "Off",
-        "pause": false,
-        "value": 0
-      },
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}]}"
-      }
-    }
-  },
-  {
-    "_id": "8378c520-108e-11e7-bdef-5dd53778f8f7",
-    "_type": "dashboard",
-    "_source": {
-      "title": "Stats",
-      "hits": 0,
-      "description": "",
-      "panelsJSON": "[{\"size_x\":12,\"size_y\":4,\"panelIndex\":1,\"type\":\"visualization\",\"id\":\"b493f570-0fcc-11e7-9d51-398f58efdcd3\",\"col\":1,\"row\":1}]",
-      "optionsJSON": "{\"darkTheme\":false}",
-      "uiStateJSON": "{}",
-      "version": 1,
-      "timeRestore": true,
-      "timeTo": "now",
-      "timeFrom": "now-7d",
       "refreshInterval": {
         "display": "Off",
         "pause": false,
