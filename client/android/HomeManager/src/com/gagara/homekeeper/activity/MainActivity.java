@@ -142,7 +142,6 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                     ViewGroup.LayoutParams.WRAP_CONTENT));
             details.setGravity(Gravity.START);
             details.setTypeface(details.getTypeface(), Typeface.ITALIC);
-            details.setTextSize(Double.valueOf(name.getTextSize() * 0.5).floatValue());
 
             // value
             TextView value = new TextView(this);
@@ -224,7 +223,6 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                     ViewGroup.LayoutParams.WRAP_CONTENT));
             details.setGravity(Gravity.START);
             details.setTypeface(details.getTypeface(), Typeface.ITALIC);
-            details.setTextSize(Double.valueOf(name.getTextSize() * 0.5).floatValue());
 
             // value
             ToggleButton value = new ToggleButton(this);
