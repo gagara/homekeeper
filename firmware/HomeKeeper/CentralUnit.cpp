@@ -20,7 +20,7 @@ static const uint8_t SENSOR_BOILER = 57;
 static const uint8_t SENSOR_MIX = 58;
 static const uint8_t SENSOR_SB_HEATER = 59;
 static const uint8_t SENSOR_BOILER_POWER = 60;
-static const uint8_t SENSOR_SOLAR_PRIMARY = 61;
+static const uint8_t SENSOR_SOLAR_PRIMARY = 61; //A7
 static const uint8_t SENSOR_SOLAR_SECONDARY = 62;
 static const uint8_t SENSOR_TEMP_ROOM_1 = (54 + 16) + (4 * 1) + 0;
 static const uint8_t SENSOR_HUM_ROOM_1 = (54 + 16) + (4 * 1) + 1;
@@ -35,7 +35,7 @@ static const DeviceAddress SENSOR_TANK_ADDR = { 0x28, 0xFF, 0x62, 0x82, 0x23, 0x
 static const DeviceAddress SENSOR_BOILER_ADDR = { 0x28, 0xFF, 0xD1, 0x84, 0x23, 0x16, 0x04, 0x5B };
 static const DeviceAddress SENSOR_MIX_ADDR = { 0x28, 0xFF, 0x45, 0x90, 0x23, 0x16, 0x04, 0xC5 };
 static const DeviceAddress SENSOR_SB_HEATER_ADDR = { 0x28, 0xFF, 0x28, 0x5B, 0x23, 0x16, 0x04, 0x95 };
-static const DeviceAddress SENSOR_SOLAR_PRIMAY_ADDR = { 0x28, 0xFF, 0xC3, 0x66, 0x23, 0x16, 0x04, 0xEA };
+//static const DeviceAddress SENSOR_SOLAR_PRIMAY_ADDR = { 0x28, 0xFF, 0xC3, 0x66, 0x23, 0x16, 0x04, 0xEA }; // analog sensor
 static const DeviceAddress SENSOR_SOLAR_SECONDARY_ADDR = { 0x28, 0xFF, 0xCC, 0x84, 0x23, 0x16, 0x04, 0xCB };
 
 // Sensors Bus pin
@@ -72,7 +72,7 @@ static const uint16_t NODE_SOLAR_SECONDARY_BIT = 256;
 
 // etc
 static const unsigned long MAX_TIMESTAMP = -1;
-static const int8_t UNKNOWN_SENSOR_VALUE = -127;
+static const int16_t UNKNOWN_SENSOR_VALUE = -127;
 static const uint8_t SENSORS_PRECISION = 9;
 static const unsigned long NODE_SWITCH_SAFE_TIME_MSEC = 60000;
 
@@ -181,29 +181,29 @@ static const uint8_t RF_MAX_BODY_SIZE = 65;
 
 //// Sensors
 // Values
-int8_t tempSupply = UNKNOWN_SENSOR_VALUE;
-int8_t tempReverse = UNKNOWN_SENSOR_VALUE;
-int8_t tempTank = UNKNOWN_SENSOR_VALUE;
-int8_t tempBoiler = UNKNOWN_SENSOR_VALUE;
-int8_t tempMix = UNKNOWN_SENSOR_VALUE;
-int8_t tempSbHeater = UNKNOWN_SENSOR_VALUE;
-int8_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
-int8_t humRoom1 = UNKNOWN_SENSOR_VALUE;
-int8_t tempSolarPrimary = UNKNOWN_SENSOR_VALUE;
-int8_t tempSolarSecondary = UNKNOWN_SENSOR_VALUE;
-int8_t STANDBY_HEATER_ROOM_TEMP_THRESHOLD = STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
-int8_t PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
-int8_t sensorBoilerPowerState = 0;
+int16_t tempSupply = UNKNOWN_SENSOR_VALUE;
+int16_t tempReverse = UNKNOWN_SENSOR_VALUE;
+int16_t tempTank = UNKNOWN_SENSOR_VALUE;
+int16_t tempBoiler = UNKNOWN_SENSOR_VALUE;
+int16_t tempMix = UNKNOWN_SENSOR_VALUE;
+int16_t tempSbHeater = UNKNOWN_SENSOR_VALUE;
+int16_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
+int16_t humRoom1 = UNKNOWN_SENSOR_VALUE;
+int16_t tempSolarPrimary = UNKNOWN_SENSOR_VALUE;
+int16_t tempSolarSecondary = UNKNOWN_SENSOR_VALUE;
+int16_t STANDBY_HEATER_ROOM_TEMP_THRESHOLD = STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
+int16_t PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
+int16_t sensorBoilerPowerState = 0;
 
 // stats
-int8_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int8_t rawReverseValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int8_t rawTankValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int8_t rawBoilerValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int8_t rawMixValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int8_t rawSbHeaterValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int8_t rawSolarPrimaryValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int8_t rawSolarSecondaryValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int16_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int16_t rawReverseValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int16_t rawTankValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int16_t rawBoilerValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int16_t rawMixValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int16_t rawSbHeaterValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int16_t rawSolarPrimaryValues[SENSORS_RAW_VALUES_MAX_COUNT];
+int16_t rawSolarSecondaryValues[SENSORS_RAW_VALUES_MAX_COUNT];
 uint8_t rawSupplyIdx = 0;
 uint8_t rawReverseIdx = 0;
 uint8_t rawTankIdx = 0;
@@ -346,6 +346,8 @@ void setup() {
 #endif
     // init boilerPower sensor
     pinMode(SENSOR_BOILER_POWER, INPUT);
+    // init solar primary sensor
+    pinMode(SENSOR_SOLAR_PRIMARY, INPUT);
 
     // sync clock
     syncClocks();
@@ -471,7 +473,7 @@ void processSupplyCircuit() {
     }
     if (diffTimestamps(tsCurr, tsNodeSupply) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_REVERSE };
-        int8_t sensVals[] = { tempSupply, tempReverse };
+        int16_t sensVals[] = { tempSupply, tempReverse };
         if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
             // pump is ON
             if (tempSupply <= tempReverse) {
@@ -519,7 +521,7 @@ void processHeatingCircuit() {
     }
     if (diffTimestamps(tsCurr, tsNodeHeating) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
-        int8_t sensVals[] = { tempTank, tempMix, tempSbHeater };
+        int16_t sensVals[] = { tempTank, tempMix, tempSbHeater };
         if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
             // pump is ON
             if (tempTank < HEATING_OFF_TEMP_THRESHOLD && tempMix < HEATING_OFF_TEMP_THRESHOLD
@@ -575,7 +577,7 @@ void processFloorCircuit() {
     }
     if (diffTimestamps(tsCurr, tsNodeFloor) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
-        int8_t sensVals[] = { tempTank, tempMix, tempSbHeater };
+        int16_t sensVals[] = { tempTank, tempMix, tempSbHeater };
         if (NODE_STATE_FLAGS & NODE_FLOOR_BIT) {
             // pump is ON
             if (tempTank < FLOOR_OFF_TEMP_THRESHOLD && tempMix < FLOOR_OFF_TEMP_THRESHOLD
@@ -625,7 +627,7 @@ void processHotWaterCircuit() {
     }
     if (diffTimestamps(tsCurr, tsNodeHotwater) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_BOILER };
-        int8_t sensVals[] = { tempTank, tempBoiler };
+        int16_t sensVals[] = { tempTank, tempBoiler };
         if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
             // pump is ON
             if (tempBoiler < (BOILER_CRITICAL_MAX_TEMP_THRESHOLD - BOILER_CRITICAL_MAX_TEMP_HIST)) {
@@ -686,7 +688,7 @@ void processCirculationCircuit() {
     }
     if (diffTimestamps(tsCurr, tsNodeCirculation) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_BOILER };
-        int8_t sensVals[] = { tempBoiler };
+        int16_t sensVals[] = { tempBoiler };
         if (NODE_STATE_FLAGS & NODE_CIRCULATION_BIT) {
             // pump is ON
             if (tempBoiler < (BOILER_CRITICAL_MAX_TEMP_THRESHOLD - BOILER_CRITICAL_MAX_TEMP_HIST)) {
@@ -753,7 +755,7 @@ void processSolarPrimary() {
     }
     if (diffTimestamps(tsCurr, tsNodeSolarPrimary) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_SOLAR_PRIMARY };
-        int8_t sensVals[] = { tempSolarPrimary };
+        int16_t sensVals[] = { tempSolarPrimary };
         if (NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) {
             // solar primary is ON
             if (tempSolarPrimary >= SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD) {
@@ -802,7 +804,7 @@ void processSolarSecondary() {
     }
     if (diffTimestamps(tsCurr, tsNodeSolarSecondary) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_SOLAR_SECONDARY, SENSOR_BOILER };
-        int8_t sensVals[] = { tempSolarSecondary, tempBoiler };
+        int16_t sensVals[] = { tempSolarSecondary, tempBoiler };
         if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
             // solar secondary is ON
             if (tempSolarSecondary <= tempBoiler) {
@@ -837,7 +839,7 @@ void processStandbyHeater() {
     }
     if (diffTimestamps(tsCurr, tsNodeSbHeater) >= NODE_SWITCH_SAFE_TIME_MSEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_TEMP_ROOM_1 };
-        int8_t sensVals[] = { tempTank, tempRoom1 };
+        int16_t sensVals[] = { tempTank, tempRoom1 };
         if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
             // heater is ON
             if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
@@ -989,7 +991,7 @@ void readSensors() {
     }
 }
 
-void readSensor(const uint8_t id, int8_t* const &values, uint8_t &idx) {
+void readSensor(const uint8_t id, int16_t* const &values, uint8_t &idx) {
     uint8_t prevIdx;
     uint8_t val;
     if (idx == SENSORS_RAW_VALUES_MAX_COUNT) {
@@ -1092,7 +1094,7 @@ void refreshSensorValues() {
     }
 }
 
-int8_t getSensorValue(const uint8_t sensor) {
+int16_t getSensorValue(const uint8_t sensor) {
     float result = UNKNOWN_SENSOR_VALUE;
     if (SENSOR_SUPPLY == sensor) {
         if (sensors.requestTemperaturesByAddress(SENSOR_SUPPLY_ADDR)) {
@@ -1118,17 +1120,33 @@ int8_t getSensorValue(const uint8_t sensor) {
         if (sensors.requestTemperaturesByAddress(SENSOR_SB_HEATER_ADDR)) {
             result = sensors.getTempC(SENSOR_SB_HEATER_ADDR) * SENSOR_SB_HEATER_FACTOR;
         }
-    } else if (SENSOR_SOLAR_PRIMARY == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_SOLAR_PRIMAY_ADDR)) {
-            result = sensors.getTempC(SENSOR_SOLAR_PRIMAY_ADDR) * SENSOR_SOLAR_PRIMARY_FACTOR;
+    } else if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
+        float vin = 5; // 5V
+        float r2 = 100; // 100Ohm
+        int v = 0;
+        for (int i = 0; i < 10; i++) {
+            v += analogRead(SENSOR_SOLAR_PRIMARY);
+            delay(100);
         }
+        v = v / 10;
+        float vout = (vin / 1023.0) * v;
+        float r1 = (vin / vout - 1) * r2;
+#ifdef __DEBUG__
+        Serial.print(F("sensor SolarPrimary raw value: "));
+        Serial.print(v);
+        Serial.print("/");
+        Serial.print(r1);
+        Serial.print("/");
+        Serial.println((r1 - 100)/0.39);
+#endif
+        result = (r1 - 100) / 0.39;
     } else if (SENSOR_SOLAR_SECONDARY == sensor) {
         if (sensors.requestTemperaturesByAddress(SENSOR_SOLAR_SECONDARY_ADDR)) {
             result = sensors.getTempC(SENSOR_SOLAR_SECONDARY_ADDR) * SENSOR_SOLAR_SECONDARY_FACTOR;
         }
     }
     result = (result > 0) ? result + 0.5 : result - 0.5;
-    return int8_t(result);
+    return int16_t(result);
 }
 
 int8_t getSensorBoilerPowerState() {
@@ -1183,7 +1201,7 @@ bool isInForcedMode(uint16_t bit, unsigned long ts) {
     return false;
 }
 
-void switchNodeState(uint8_t id, uint8_t sensId[], int8_t sensVal[], uint8_t sensCnt) {
+void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t sensCnt) {
     uint16_t bit;
     unsigned long* ts = NULL;
     unsigned long* tsf = NULL;
@@ -1747,7 +1765,7 @@ void reportNodeStatus(uint8_t id, uint16_t bit, unsigned long ts, unsigned long 
     broadcastMsg(json);
 }
 
-void reportSensorStatus(const uint8_t id, const int8_t value, const unsigned long ts) {
+void reportSensorStatus(const uint8_t id, const int16_t value, const unsigned long ts) {
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.createObject();
     root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
