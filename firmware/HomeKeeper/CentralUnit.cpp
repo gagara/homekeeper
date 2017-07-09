@@ -104,7 +104,7 @@ static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800000; // 30m
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
-static const uint8_t BOILER_CRITICAL_MAX_TEMP_THRESHOLD = 80;
+static const uint8_t BOILER_CRITICAL_MAX_TEMP_THRESHOLD = 70;
 static const uint8_t BOILER_CRITICAL_MAX_TEMP_HIST = 5;
 
 // Circulation
@@ -116,10 +116,9 @@ static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 3420000; // 57m
 static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 
 // Solar
-static const uint8_t SOLAR_PRIMARY_MIN_TEMP_THRESHOLD = 30;
-static const uint8_t SOLAR_PRIMARY_MIN_TEMP_HIST = 5;
-static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 100; // stagnation
+static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 110; // stagnation
 static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
+static const uint8_t SOLAR_PRIMARY_BOILER_HIST = 7;
 static const uint8_t SOLAR_SECONDARY_BOILER_HIST = 5;
 
 // sensor BoilerPower
@@ -754,20 +753,20 @@ void processSolarPrimary() {
         reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
     }
     if (diffTimestamps(tsCurr, tsNodeSolarPrimary) >= NODE_SWITCH_SAFE_TIME_MSEC) {
-        uint8_t sensIds[] = { SENSOR_SOLAR_PRIMARY };
-        int16_t sensVals[] = { tempSolarPrimary };
+        uint8_t sensIds[] = { SENSOR_SOLAR_PRIMARY, SENSOR_BOILER };
+        int16_t sensVals[] = { tempSolarPrimary, tempBoiler };
         if (NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) {
             // solar primary is ON
             if (tempSolarPrimary >= SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD) {
                 // temp in solar primary is critically high. stagnation
                 // turn solar primary OFF
-                switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 1);
+                switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 2);
             } else {
                 // temp in solar primary is normal
-                if (tempSolarPrimary < (SOLAR_PRIMARY_MIN_TEMP_THRESHOLD - SOLAR_PRIMARY_MIN_TEMP_HIST)) {
+                if (tempSolarPrimary <= tempBoiler) {
                     // temp in solar primary is too low
                     // turn solar primary OFF
-                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 1);
+                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 2);
                 } else {
                     // temp in solar primary is high enough
                     // do nothing
@@ -777,10 +776,10 @@ void processSolarPrimary() {
             // solar primary is OFF
             if (tempSolarPrimary < (SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD - SOLAR_PRIMARY_CRITICAL_TEMP_HIST)) {
                 // temp in solar primary is normal
-                if (tempSolarPrimary >= SOLAR_PRIMARY_MIN_TEMP_THRESHOLD) {
+                if (tempSolarPrimary > (tempBoiler + SOLAR_PRIMARY_BOILER_HIST)) {
                     // temp in solar primary is high enough
                     // turn solar primary ON
-                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 1);
+                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 2);
                 } else {
                     // temp in solar primary is too low
                     // do nothing
@@ -1122,7 +1121,7 @@ int16_t getSensorValue(const uint8_t sensor) {
         }
     } else if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
         float vin = 5; // 5V
-        float r2 = 100; // 100Ohm
+        float r2 = 93.341; // 100Ohm + calibration
         int v = 0;
         for (int i = 0; i < 10; i++) {
             v += analogRead(SENSOR_SOLAR_PRIMARY);
@@ -1134,12 +1133,15 @@ int16_t getSensorValue(const uint8_t sensor) {
 #ifdef __DEBUG__
         Serial.print(F("sensor SolarPrimary raw value: "));
         Serial.print(v);
-        Serial.print("/");
+        Serial.print(F("/"));
         Serial.print(r1);
-        Serial.print("/");
-        Serial.println((r1 - 100)/0.39);
+        Serial.print(F("Ohm/"));
+        Serial.print((r1 - 100)/0.39);
+        Serial.println(F("C"));
 #endif
-        result = (r1 - 100) / 0.39;
+        if (v > 0) {
+            result = (r1 - 100) / 0.39;
+        }
     } else if (SENSOR_SOLAR_SECONDARY == sensor) {
         if (sensors.requestTemperaturesByAddress(SENSOR_SOLAR_SECONDARY_ADDR)) {
             result = sensors.getTempC(SENSOR_SOLAR_SECONDARY_ADDR) * SENSOR_SOLAR_SECONDARY_FACTOR;
