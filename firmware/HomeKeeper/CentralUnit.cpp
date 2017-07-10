@@ -147,7 +147,6 @@ static const char STATE_KEY[] = "ns";
 static const char FORCE_FLAG_KEY[] = "ff";
 static const char TIMESTAMP_KEY[] = "ts";
 static const char FORCE_TIMESTAMP_KEY[] = "ft";
-static const char OVERFLOW_COUNT_KEY[] = "oc";
 static const char CALIBRATION_FACTOR_KEY[] = "cf";
 static const char NODES_KEY[] = "n";
 static const char SENSORS_KEY[] = "s";
@@ -218,7 +217,6 @@ uint8_t rawSolarSecondaryIdx = 0;
 uint16_t NODE_STATE_FLAGS = 0;
 // Nodes forced mode
 uint16_t NODE_FORCED_MODE_FLAGS = 0;
-uint16_t FORCED_MODE_OVERFLOW_TS_FLAGS = 0;
 // will be stored in EEPROM
 uint16_t NODE_PERMANENTLY_FORCED_MODE_FLAGS = 0;
 
@@ -259,6 +257,7 @@ unsigned long tsLastSensorHumRoom1 = 0;
 unsigned long tsLastWifiSuccessTransmission = 0;
 
 unsigned long tsPrev = 0;
+unsigned long tsPrevRaw = 0;
 unsigned long tsCurr = 0;
 
 uint8_t overflowCount = 0;
@@ -407,12 +406,6 @@ void setup() {
 
 void loop() {
     tsCurr = getTimestamp();
-    if (tsCurr < tsPrev) {
-        // sync clocks on overflow
-        overflowCount++;
-        FORCED_MODE_OVERFLOW_TS_FLAGS = 0;
-        syncClocks();
-    }
     if (diffTimestamps(tsCurr, tsLastSensorsRead) >= SENSORS_READ_INTERVAL_MSEC) {
         readSensors();
         tsLastSensorsRead = tsCurr;
@@ -1168,16 +1161,17 @@ int8_t getSensorBoilerPowerState() {
 }
 
 unsigned long getTimestamp() {
-    // just for testing purpose. normally should be 0
-//    unsigned long TIMESHIFT = 4294900000L;
-    unsigned long TIMESHIFT = 0L;
-    return millis() + TIMESHIFT;
+    unsigned long ts = millis();
+    if (ts < tsPrevRaw) {
+        overflowCount++;
+    }
+    tsPrevRaw = ts;
+    return (MAX_TIMESTAMP / 1000) * overflowCount + (ts / 1000);
 }
 
 unsigned long diffTimestamps(unsigned long hi, unsigned long lo) {
     if (hi < lo) {
-        // overflow
-        return (MAX_TIMESTAMP - lo) + hi;
+        return lo - hi;
     } else {
         return hi - lo;
     }
@@ -1187,10 +1181,6 @@ bool isInForcedMode(uint16_t bit, unsigned long ts) {
     if (NODE_FORCED_MODE_FLAGS & bit) { // forced mode
         if (ts == 0) {
             // permanent forced mode
-            return true;
-        }
-        if (FORCED_MODE_OVERFLOW_TS_FLAGS & bit) {
-            // before overflow. continue in forced mode
             return true;
         }
         if (tsCurr < ts) {
@@ -1252,9 +1242,6 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
         NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
 
         *ts = getTimestamp();
-        if (*ts == 0) {
-            *ts += 1;
-        }
 
         // report state change
         StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
@@ -1324,9 +1311,6 @@ void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &node
     } else {
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~bit;
     }
-    if (tsCurr > ts) {
-        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS | bit;
-    }
     nodeTs = ts;
     if (NODE_STATE_FLAGS & bit) {
         if (state == 0) {
@@ -1344,42 +1328,34 @@ void unForceNodeState(uint8_t id) {
     if (NODE_SUPPLY == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SUPPLY_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SUPPLY_BIT;
-        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_SUPPLY_BIT;
         reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
     } else if (NODE_HEATING == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_HEATING_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_HEATING_BIT;
-        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_HEATING_BIT;
         reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
     } else if (NODE_FLOOR == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_FLOOR_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_FLOOR_BIT;
-        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_FLOOR_BIT;
         reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
     } else if (NODE_HOTWATER == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_HOTWATER_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_HOTWATER_BIT;
-        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_HOTWATER_BIT;
         reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
     } else if (NODE_CIRCULATION == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_CIRCULATION_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_CIRCULATION_BIT;
-        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_CIRCULATION_BIT;
         reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
     } else if (NODE_SB_HEATER == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SB_HEATER_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SB_HEATER_BIT;
-        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_SB_HEATER_BIT;
         reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
     } else if (NODE_SOLAR_PRIMARY == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SOLAR_PRIMARY_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SOLAR_PRIMARY_BIT;
-        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_SOLAR_PRIMARY_BIT;
         reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
     } else if (NODE_SOLAR_SECONDARY == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SOLAR_SECONDARY_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SOLAR_SECONDARY_BIT;
-        FORCED_MODE_OVERFLOW_TS_FLAGS = FORCED_MODE_OVERFLOW_TS_FLAGS & ~NODE_SOLAR_SECONDARY_BIT;
         reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
                 tsForcedNodeSolarSecondary);
     }
@@ -1882,7 +1858,6 @@ void syncClocks() {
     JsonObject& root = jsonBuffer.createObject();
     root[MSG_TYPE_KEY] = MSG_CLOCK_SYNC;
     root[TIMESTAMP_KEY] = getTimestamp();
-    root[OVERFLOW_COUNT_KEY] = overflowCount;
 
     char json[JSON_MAX_SIZE];
     root.printTo(json, JSON_MAX_SIZE);
@@ -1988,9 +1963,6 @@ bool parseCommand(char* command) {
                         if (root.containsKey(FORCE_TIMESTAMP_KEY)) {
                             ts = root[FORCE_TIMESTAMP_KEY].as<unsigned long>();
                             ts += tsCurr;
-                            if (ts == 0) {
-                                ts++;
-                            }
                         } else {
                             ts = 0;
                         }

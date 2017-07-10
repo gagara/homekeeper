@@ -151,8 +151,7 @@ public abstract class AbstractNbiService extends Service {
                 }
                 clockSyncExecutor = null;
                 long controllerTimestamp = message.getLong(ControllerConfig.TIMESTAMP_KEY);
-                int overflowCount = message.getInt(ControllerConfig.OVERFLOW_COUNT_KEY);
-                long delta = timestamp.getTime() - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
+                long delta = timestamp.getTime() - controllerTimestamp;
                 if (clocksDelta == null) {
                     // initial sync: request for status
                     // not required with current reporting model
@@ -165,8 +164,7 @@ public abstract class AbstractNbiService extends Service {
             }
         } else if (msgType == ControllerConfig.MessageType.FAST_CLOCK_SYNC) {
             long controllerTimestamp = message.getLong(ControllerConfig.TIMESTAMP_KEY);
-            int overflowCount = message.getInt(ControllerConfig.OVERFLOW_COUNT_KEY);
-            long delta = timestamp.getTime() - (controllerTimestamp + overflowCount * (long) Math.pow(2, 32));
+            long delta = timestamp.getTime() - controllerTimestamp;
             estimatedClocksDelta = delta;
         } else {
             if (clocksDelta != null || estimatedClocksDelta != null) {

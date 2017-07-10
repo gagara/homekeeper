@@ -369,7 +369,7 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         if (dialog.isManualMode()) {
             request.setState(dialog.getState());
             if (dialog.getPeriod() != 0) {
-                request.setPeriod(dialog.getPeriod() * 1000L);
+                request.setPeriod((long) dialog.getPeriod());
             }
         }
 

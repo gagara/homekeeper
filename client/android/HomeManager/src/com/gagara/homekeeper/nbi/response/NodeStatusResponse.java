@@ -100,12 +100,12 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
             data = new NodeModel(json.getInt(ID_KEY));
             data.setState(json.getInt(STATE_KEY) == 1 ? true : false);
             if (json.getLong(TIMESTAMP_KEY) != 0) {
-                data.setSwitchTimestamp(new Date(json.getLong(TIMESTAMP_KEY) + clocksDelta));
+                data.setSwitchTimestamp(new Date((json.getLong(TIMESTAMP_KEY) + clocksDelta) * 1000));
             }
             data.setForcedMode(json.getInt(FORCE_FLAG_KEY) == 1 ? true : false);
             if (json.has(FORCE_TIMESTAMP_KEY)
                     && json.getLong(FORCE_TIMESTAMP_KEY) != 0) {
-                data.setForcedModeTimestamp(new Date(json.getLong(FORCE_TIMESTAMP_KEY) + clocksDelta));
+                data.setForcedModeTimestamp(new Date((json.getLong(FORCE_TIMESTAMP_KEY) + clocksDelta) * 1000));
             }
             if (json.has(SENSOR_KEY)) {
                 JSONArray sensorsJson = json.getJSONArray(SENSOR_KEY);

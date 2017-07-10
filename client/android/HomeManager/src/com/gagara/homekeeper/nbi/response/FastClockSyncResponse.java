@@ -14,8 +14,7 @@ public class FastClockSyncResponse extends MessageHeader implements Response, Pa
 
     private static final String TAG = FastClockSyncResponse.class.getName();
 
-    private long clockMillis;
-    private int overflowCount;
+    private long clockSeconds;
 
     @Override
     public int describeContents() {
@@ -25,8 +24,7 @@ public class FastClockSyncResponse extends MessageHeader implements Response, Pa
     @Override
     public void writeToParcel(Parcel out, int flags) {
         super.writeToParcel(out, flags);
-        out.writeLong(clockMillis);
-        out.writeInt(overflowCount);
+        out.writeLong(clockSeconds);
     }
 
     public static final Parcelable.Creator<FastClockSyncResponse> CREATOR = new Parcelable.Creator<FastClockSyncResponse>() {
@@ -45,8 +43,7 @@ public class FastClockSyncResponse extends MessageHeader implements Response, Pa
 
     public FastClockSyncResponse(Parcel in) {
         super(in);
-        clockMillis = in.readLong();
-        overflowCount = in.readInt();
+        clockSeconds = in.readLong();
     }
 
     @Override
@@ -54,8 +51,7 @@ public class FastClockSyncResponse extends MessageHeader implements Response, Pa
         try {
             if (ControllerConfig.MessageType.FAST_CLOCK_SYNC == ControllerConfig.MessageType
                     .forCode(json.get(ControllerConfig.MSG_TYPE_KEY).toString())) {
-                this.setClockMillis(json.getLong(ControllerConfig.TIMESTAMP_KEY));
-                this.setOverflowCount(json.getInt(ControllerConfig.OVERFLOW_COUNT_KEY));
+                this.setClockSeconds(json.getLong(ControllerConfig.TIMESTAMP_KEY));
             }
         } catch (JSONException e) {
             Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
@@ -64,19 +60,11 @@ public class FastClockSyncResponse extends MessageHeader implements Response, Pa
         return this;
     }
 
-    public long getClockMillis() {
-        return clockMillis;
+    public long getClockSeconds() {
+        return clockSeconds;
     }
 
-    public void setClockMillis(long clockMillis) {
-        this.clockMillis = clockMillis;
-    }
-
-    public int getOverflowCount() {
-        return overflowCount;
-    }
-
-    public void setOverflowCount(int overflowCount) {
-        this.overflowCount = overflowCount;
+    public void setClockSeconds(long clockSeconds) {
+        this.clockSeconds = clockSeconds;
     }
 }

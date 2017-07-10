@@ -74,7 +74,7 @@ public class StateSensorStatusResponse extends MessageHeader implements Response
             data = new StateSensorModel(json.getInt(ID_KEY));
             data.setState(json.getInt(VALUE_KEY) == 1 ? true : false);
             if (json.getLong(TIMESTAMP_KEY) != 0) {
-                data.setSwitchTimestamp(new Date(json.getLong(TIMESTAMP_KEY) + clocksDelta));
+                data.setSwitchTimestamp(new Date((json.getLong(TIMESTAMP_KEY) + clocksDelta) * 1000));
             }
         } catch (JSONException e) {
             Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);

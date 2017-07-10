@@ -59,7 +59,6 @@ public class ControllerConfig {
     public static final String FORCE_FLAG_KEY = "ff";
     public static final String TIMESTAMP_KEY = "ts";
     public static final String FORCE_TIMESTAMP_KEY = "ft";
-    public static final String OVERFLOW_COUNT_KEY = "oc";
     public static final String NODE_KEY = "n";
     public static final String SENSOR_KEY = "s";
     public static final String VALUE_KEY = "v";
