@@ -74,7 +74,7 @@ static const uint16_t NODE_SOLAR_SECONDARY_BIT = 256;
 static const unsigned long MAX_TIMESTAMP = -1;
 static const int16_t UNKNOWN_SENSOR_VALUE = -127;
 static const uint8_t SENSORS_PRECISION = 9;
-static const unsigned long NODE_SWITCH_SAFE_TIME_MSEC = 60000;
+static const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 60;
 
 // EEPROM
 static const int NODE_STATE_EEPROM_ADDR = 0; // 2 bytes
@@ -92,7 +92,7 @@ static const int PRIMARY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR = STANDBY_HEATER
 // Primary Heater
 static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
 static const uint8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
-static const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_MSEC = 1200000; // 20 minutes
+static const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_SEC = 1200; // 20 minutes
 
 // heating
 static const uint8_t HEATING_ON_TEMP_THRESHOLD = 40;
@@ -100,7 +100,7 @@ static const uint8_t HEATING_OFF_TEMP_THRESHOLD = 36;
 static const uint8_t FLOOR_ON_TEMP_THRESHOLD = 35;
 static const uint8_t FLOOR_OFF_TEMP_THRESHOLD = 26;
 static const uint8_t PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 20;
-static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800000; // 30m
+static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800; // 30m
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
@@ -109,8 +109,8 @@ static const uint8_t BOILER_CRITICAL_MAX_TEMP_HIST = 5;
 
 // Circulation
 static const uint8_t CIRCULATION_TEMP_THRESHOLD = 37;
-static const unsigned long CIRCULATION_ACTIVE_PERIOD_MSEC = 180000; // 3m
-static const unsigned long CIRCULATION_PASSIVE_PERIOD_MSEC = 3420000; // 57m
+static const unsigned long CIRCULATION_ACTIVE_PERIOD_SEC = 180; // 3m
+static const unsigned long CIRCULATION_PASSIVE_PERIOD_SEC = 3420; // 57m
 
 // Standby Heater
 static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
@@ -125,12 +125,12 @@ static const uint8_t SOLAR_SECONDARY_BOILER_HIST = 5;
 static const uint8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
 
 // reporting
-static const unsigned long STATUS_REPORTING_PERIOD_MSEC = 5000;
-static const unsigned long SENSORS_REFRESH_INTERVAL_MSEC = 5000;
-static const unsigned long SENSORS_READ_INTERVAL_MSEC = 5000;
+static const unsigned long STATUS_REPORTING_PERIOD_SEC = 5; // 5s
+static const unsigned long SENSORS_REFRESH_INTERVAL_SEC = 5; // 5s
+static const unsigned long SENSORS_READ_INTERVAL_SEC = 5; // 5s
 
 // WiFi
-static const unsigned long WIFI_MAX_FAILURE_PERIOD_MSEC = 180000; // 3m
+static const unsigned long WIFI_MAX_FAILURE_PERIOD_SEC = 180; // 3m
 
 // RF
 static const uint64_t RF_PIPE_BASE = 0xE8E8F0F0A2LL;
@@ -406,11 +406,11 @@ void setup() {
 
 void loop() {
     tsCurr = getTimestamp();
-    if (diffTimestamps(tsCurr, tsLastSensorsRead) >= SENSORS_READ_INTERVAL_MSEC) {
+    if (diffTimestamps(tsCurr, tsLastSensorsRead) >= SENSORS_READ_INTERVAL_SEC) {
         readSensors();
         tsLastSensorsRead = tsCurr;
     }
-    if (diffTimestamps(tsCurr, tsLastSensorsRefresh) >= SENSORS_REFRESH_INTERVAL_MSEC) {
+    if (diffTimestamps(tsCurr, tsLastSensorsRefresh) >= SENSORS_REFRESH_INTERVAL_SEC) {
 #ifdef __DEBUG__
         Serial.print(F("free memory: "));
         Serial.println(freeMemory());
@@ -463,7 +463,7 @@ void processSupplyCircuit() {
     if (wasForceMode) {
         reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
     }
-    if (diffTimestamps(tsCurr, tsNodeSupply) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+    if (diffTimestamps(tsCurr, tsNodeSupply) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_REVERSE };
         int16_t sensVals[] = { tempSupply, tempReverse };
         if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
@@ -472,7 +472,7 @@ void processSupplyCircuit() {
                 // temp is equal
                 if (tempSupply <= PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP) {
                     // primary heater is on short circuit
-                    if (diffTimestamps(tsCurr, tsNodeSupply) < PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_MSEC) {
+                    if (diffTimestamps(tsCurr, tsNodeSupply) < PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_SEC) {
                         // pump active period is too short. give it some time
                         // do nothing
                     } else {
@@ -511,7 +511,7 @@ void processHeatingCircuit() {
     if (wasForceMode) {
         reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
     }
-    if (diffTimestamps(tsCurr, tsNodeHeating) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+    if (diffTimestamps(tsCurr, tsNodeHeating) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
         int16_t sensVals[] = { tempTank, tempMix, tempSbHeater };
         if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
@@ -567,7 +567,7 @@ void processFloorCircuit() {
     if (wasForceMode) {
         reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
     }
-    if (diffTimestamps(tsCurr, tsNodeFloor) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+    if (diffTimestamps(tsCurr, tsNodeFloor) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
         int16_t sensVals[] = { tempTank, tempMix, tempSbHeater };
         if (NODE_STATE_FLAGS & NODE_FLOOR_BIT) {
@@ -617,7 +617,7 @@ void processHotWaterCircuit() {
     if (wasForceMode) {
         reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
     }
-    if (diffTimestamps(tsCurr, tsNodeHotwater) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+    if (diffTimestamps(tsCurr, tsNodeHotwater) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_BOILER };
         int16_t sensVals[] = { tempTank, tempBoiler };
         if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
@@ -678,14 +678,14 @@ void processCirculationCircuit() {
     if (wasForceMode) {
         reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
     }
-    if (diffTimestamps(tsCurr, tsNodeCirculation) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+    if (diffTimestamps(tsCurr, tsNodeCirculation) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_BOILER };
         int16_t sensVals[] = { tempBoiler };
         if (NODE_STATE_FLAGS & NODE_CIRCULATION_BIT) {
             // pump is ON
             if (tempBoiler < (BOILER_CRITICAL_MAX_TEMP_THRESHOLD - BOILER_CRITICAL_MAX_TEMP_HIST)) {
                 // temp in boiler is normal
-                if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_ACTIVE_PERIOD_MSEC) {
+                if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_ACTIVE_PERIOD_SEC) {
                     // active period is over
                     // turn pump OFF
                     switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
@@ -720,7 +720,7 @@ void processCirculationCircuit() {
                     }
                 } else {
                     // temp in boiler is normal
-                    if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_PASSIVE_PERIOD_MSEC) {
+                    if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_PASSIVE_PERIOD_SEC) {
                         // passive period is over
                         // turn pump ON
                         switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
@@ -745,7 +745,7 @@ void processSolarPrimary() {
     if (wasForceMode) {
         reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
     }
-    if (diffTimestamps(tsCurr, tsNodeSolarPrimary) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+    if (diffTimestamps(tsCurr, tsNodeSolarPrimary) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_SOLAR_PRIMARY, SENSOR_BOILER };
         int16_t sensVals[] = { tempSolarPrimary, tempBoiler };
         if (NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) {
@@ -794,7 +794,7 @@ void processSolarSecondary() {
         reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
                 tsForcedNodeSolarSecondary);
     }
-    if (diffTimestamps(tsCurr, tsNodeSolarSecondary) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+    if (diffTimestamps(tsCurr, tsNodeSolarSecondary) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_SOLAR_SECONDARY, SENSOR_BOILER };
         int16_t sensVals[] = { tempSolarSecondary, tempBoiler };
         if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
@@ -829,7 +829,7 @@ void processStandbyHeater() {
     if (wasForceMode) {
         reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
     }
-    if (diffTimestamps(tsCurr, tsNodeSbHeater) >= NODE_SWITCH_SAFE_TIME_MSEC) {
+    if (diffTimestamps(tsCurr, tsNodeSbHeater) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_TEMP_ROOM_1 };
         int16_t sensVals[] = { tempTank, tempRoom1 };
         if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
@@ -1459,7 +1459,7 @@ void wifiCheckConnection() {
     if (wifiStationMode()) {
         if (!wifiGetRemoteIP()
                 || (validIP(SERVER_IP)
-                        && diffTimestamps(tsCurr, tsLastWifiSuccessTransmission) >= WIFI_MAX_FAILURE_PERIOD_MSEC)) {
+                        && diffTimestamps(tsCurr, tsLastWifiSuccessTransmission) >= WIFI_MAX_FAILURE_PERIOD_SEC)) {
             wifiInit();
             wifiSetup();
             wifiGetRemoteIP();
@@ -1621,7 +1621,7 @@ void wifiRead(char* req) {
 }
 
 void reportStatus() {
-    if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_MSEC) {
+    if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_SEC) {
         if (nextEntryReport == 0) {
             // check WiFi connectivity
             wifiCheckConnection();
@@ -1950,7 +1950,7 @@ bool parseCommand(char* command) {
                     tsLastSensorHumRoom1 = tsCurr;
                 } // else if(...)
             } else {
-                tsLastStatusReport = tsCurr - STATUS_REPORTING_PERIOD_MSEC;
+                tsLastStatusReport = tsCurr - STATUS_REPORTING_PERIOD_SEC;
             }
         } else if (strcmp(msgType, MSG_NODE_STATE_CHANGED) == 0) {
             // NSC
