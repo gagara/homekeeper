@@ -118,8 +118,9 @@ static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 // Solar
 static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 110; // stagnation
 static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
-static const uint8_t SOLAR_PRIMARY_BOILER_HIST = 7;
-static const uint8_t SOLAR_SECONDARY_BOILER_HIST = 5;
+static const uint8_t SOLAR_PRIMARY_BOILER_ON_HIST = 9;
+static const uint8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 3;
+static const uint8_t SOLAR_SECONDARY_BOILER_HIST = 2;
 
 // sensor BoilerPower
 static const uint8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
@@ -466,6 +467,7 @@ void processSupplyCircuit() {
     if (diffTimestamps(tsCurr, tsNodeSupply) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_REVERSE };
         int16_t sensVals[] = { tempSupply, tempReverse };
+
         if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
             // pump is ON
             if (tempSupply <= tempReverse) {
@@ -756,7 +758,7 @@ void processSolarPrimary() {
                 switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 2);
             } else {
                 // temp in solar primary is normal
-                if (tempSolarPrimary <= tempBoiler) {
+                if (tempSolarPrimary <= (tempBoiler + SOLAR_PRIMARY_BOILER_OFF_HIST)) {
                     // temp in solar primary is too low
                     // turn solar primary OFF
                     switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 2);
@@ -769,7 +771,7 @@ void processSolarPrimary() {
             // solar primary is OFF
             if (tempSolarPrimary < (SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD - SOLAR_PRIMARY_CRITICAL_TEMP_HIST)) {
                 // temp in solar primary is normal
-                if (tempSolarPrimary > (tempBoiler + SOLAR_PRIMARY_BOILER_HIST)) {
+                if (tempSolarPrimary > (tempBoiler + SOLAR_PRIMARY_BOILER_ON_HIST)) {
                     // temp in solar primary is high enough
                     // turn solar primary ON
                     switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 2);
@@ -1114,7 +1116,7 @@ int16_t getSensorValue(const uint8_t sensor) {
         }
     } else if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
         float vin = 5; // 5V
-        float r2 = 93.341; // 100Ohm + calibration
+        float r2 = 90.341; // 100Ohm + calibration
         int v = 0;
         for (int i = 0; i < 10; i++) {
             v += analogRead(SENSOR_SOLAR_PRIMARY);
