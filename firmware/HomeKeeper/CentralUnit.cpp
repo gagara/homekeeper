@@ -467,6 +467,10 @@ void processSupplyCircuit() {
     if (diffTimestamps(tsCurr, tsNodeSupply) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_REVERSE };
         int16_t sensVals[] = { tempSupply, tempReverse };
+        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        if (!validSensorValues(sensVals, sensCnt)) {
+            return;
+        }
 
         if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
             // pump is ON
@@ -480,12 +484,12 @@ void processSupplyCircuit() {
                     } else {
                         // pump active period is long enough
                         // turn pump OFF
-                        switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
+                        switchNodeState(NODE_SUPPLY, sensIds, sensVals, sensCnt);
                     }
                 } else {
                     // primary heater is in production mode
                     // turn pump OFF
-                    switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
+                    switchNodeState(NODE_SUPPLY, sensIds, sensVals, sensCnt);
                 }
             } else {
                 // delta is big enough
@@ -496,7 +500,7 @@ void processSupplyCircuit() {
             if (tempSupply >= (tempReverse + PRIMARY_HEATER_SUPPLY_REVERSE_HIST)) {
                 // delta is big enough
                 // turn pump ON
-                switchNodeState(NODE_SUPPLY, sensIds, sensVals, 2);
+                switchNodeState(NODE_SUPPLY, sensIds, sensVals, sensCnt);
             } else {
                 // temp is equal
                 // do nothing
@@ -516,6 +520,11 @@ void processHeatingCircuit() {
     if (diffTimestamps(tsCurr, tsNodeHeating) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
         int16_t sensVals[] = { tempTank, tempMix, tempSbHeater };
+        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        if (!validSensorValues(sensVals, sensCnt)) {
+            return;
+        }
+
         if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
             // pump is ON
             if (tempTank < HEATING_OFF_TEMP_THRESHOLD && tempMix < HEATING_OFF_TEMP_THRESHOLD
@@ -527,14 +536,14 @@ void processHeatingCircuit() {
                 } else {
                     // supply is off
                     // turn pump OFF
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
+                    switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
                 }
             } else {
                 // temp is high enough at least in one source
                 if (room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
                     // temp in Room1 is high enough OR standby heater is on
                     // turn pump OFF
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
+                    switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
                 } else {
                     // temp in Room1 is too low AND standby heater is off
                     // do nothing
@@ -551,7 +560,7 @@ void processHeatingCircuit() {
                 } else {
                     // temp in Room1 is low AND standby heater is off
                     // turn pump ON
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, 3);
+                    switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
                 }
             } else {
                 // temp in (tank && mix && sb_heater) is too low
@@ -572,6 +581,11 @@ void processFloorCircuit() {
     if (diffTimestamps(tsCurr, tsNodeFloor) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
         int16_t sensVals[] = { tempTank, tempMix, tempSbHeater };
+        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        if (!validSensorValues(sensVals, sensCnt)) {
+            return;
+        }
+
         if (NODE_STATE_FLAGS & NODE_FLOOR_BIT) {
             // pump is ON
             if (tempTank < FLOOR_OFF_TEMP_THRESHOLD && tempMix < FLOOR_OFF_TEMP_THRESHOLD
@@ -582,7 +596,7 @@ void processFloorCircuit() {
                     if (tempSbHeater <= tempMix && tempSbHeater <= tempTank) {
                         // temp in standby heater <= (temp in Mix && Tank)
                         // turn pump OFF
-                        switchNodeState(NODE_FLOOR, sensIds, sensVals, 3);
+                        switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
                     } else {
                         // temp in standby heater > (temp in Mix || Tank)
                         // do nothing
@@ -590,7 +604,7 @@ void processFloorCircuit() {
                 } else {
                     // standby heater is off
                     // turn pump OFF
-                    switchNodeState(NODE_FLOOR, sensIds, sensVals, 3);
+                    switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
                 }
             } else {
                 // temp is high enough at least in one source
@@ -602,7 +616,7 @@ void processFloorCircuit() {
                     || tempSbHeater >= FLOOR_ON_TEMP_THRESHOLD) {
                 // temp in (tank || mix || sb_heater) is high enough
                 // turn pump ON
-                switchNodeState(NODE_FLOOR, sensIds, sensVals, 3);
+                switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
             } else {
                 // temp in (tank && mix && sb_heater) is too low
                 // do nothing
@@ -622,6 +636,11 @@ void processHotWaterCircuit() {
     if (diffTimestamps(tsCurr, tsNodeHotwater) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_BOILER };
         int16_t sensVals[] = { tempTank, tempBoiler };
+        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        if (!validSensorValues(sensVals, sensCnt)) {
+            return;
+        }
+
         if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
             // pump is ON
             if (tempBoiler < (BOILER_CRITICAL_MAX_TEMP_THRESHOLD - BOILER_CRITICAL_MAX_TEMP_HIST)) {
@@ -629,7 +648,7 @@ void processHotWaterCircuit() {
                 if (tempTank <= tempBoiler) {
                     // temp in tank is low
                     // turn pump OFF
-                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
+                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
                 } else {
                     // temp in tank is high enough
                     // do nothing
@@ -642,7 +661,7 @@ void processHotWaterCircuit() {
                 } else {
                     // tank has no capacity
                     // turn pump ON
-                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
+                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
                 }
             }
         } else {
@@ -652,7 +671,7 @@ void processHotWaterCircuit() {
                 if (tempTank < tempBoiler) {
                     // tank has capacity
                     // turn pump ON
-                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
+                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
                 } else {
                     // tank has no capacity
                     // do nothing
@@ -662,7 +681,7 @@ void processHotWaterCircuit() {
                 if (tempTank > (tempBoiler + TANK_BOILER_HIST)) {
                     // temp in tank is high enough
                     // turn pump ON
-                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, 2);
+                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
                 } else {
                     // temp in tank is too low
                     // do nothing
@@ -683,6 +702,11 @@ void processCirculationCircuit() {
     if (diffTimestamps(tsCurr, tsNodeCirculation) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_BOILER };
         int16_t sensVals[] = { tempBoiler };
+        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        if (!validSensorValues(sensVals, sensCnt)) {
+            return;
+        }
+
         if (NODE_STATE_FLAGS & NODE_CIRCULATION_BIT) {
             // pump is ON
             if (tempBoiler < (BOILER_CRITICAL_MAX_TEMP_THRESHOLD - BOILER_CRITICAL_MAX_TEMP_HIST)) {
@@ -690,7 +714,7 @@ void processCirculationCircuit() {
                 if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_ACTIVE_PERIOD_SEC) {
                     // active period is over
                     // turn pump OFF
-                    switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
+                    switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
                 } else {
                     // active period is going on
                     // do nothing
@@ -700,7 +724,7 @@ void processCirculationCircuit() {
                 if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
                     // hotwater node is on
                     // turn pump OFF
-                    switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
+                    switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
                 } else {
                     // hotwater node is off
                     // do nothing
@@ -718,14 +742,14 @@ void processCirculationCircuit() {
                     } else {
                         // hotwater node is off
                         // turn pump ON
-                        switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
+                        switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
                     }
                 } else {
                     // temp in boiler is normal
                     if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_PASSIVE_PERIOD_SEC) {
                         // passive period is over
                         // turn pump ON
-                        switchNodeState(NODE_CIRCULATION, sensIds, sensVals, 1);
+                        switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
                     } else {
                         // passive period is going on
                         // do nothing
@@ -750,18 +774,23 @@ void processSolarPrimary() {
     if (diffTimestamps(tsCurr, tsNodeSolarPrimary) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_SOLAR_PRIMARY, SENSOR_BOILER };
         int16_t sensVals[] = { tempSolarPrimary, tempBoiler };
+        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        if (!validSensorValues(sensVals, sensCnt)) {
+            return;
+        }
+
         if (NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) {
             // solar primary is ON
             if (tempSolarPrimary >= SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD) {
                 // temp in solar primary is critically high. stagnation
                 // turn solar primary OFF
-                switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 2);
+                switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, sensCnt);
             } else {
                 // temp in solar primary is normal
                 if (tempSolarPrimary <= (tempBoiler + SOLAR_PRIMARY_BOILER_OFF_HIST)) {
                     // temp in solar primary is too low
                     // turn solar primary OFF
-                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 2);
+                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, sensCnt);
                 } else {
                     // temp in solar primary is high enough
                     // do nothing
@@ -774,7 +803,7 @@ void processSolarPrimary() {
                 if (tempSolarPrimary > (tempBoiler + SOLAR_PRIMARY_BOILER_ON_HIST)) {
                     // temp in solar primary is high enough
                     // turn solar primary ON
-                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, 2);
+                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, sensCnt);
                 } else {
                     // temp in solar primary is too low
                     // do nothing
@@ -799,12 +828,17 @@ void processSolarSecondary() {
     if (diffTimestamps(tsCurr, tsNodeSolarSecondary) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_SOLAR_SECONDARY, SENSOR_BOILER };
         int16_t sensVals[] = { tempSolarSecondary, tempBoiler };
+        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        if (!validSensorValues(sensVals, sensCnt)) {
+            return;
+        }
+
         if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
             // solar secondary is ON
             if (tempSolarSecondary <= tempBoiler) {
                 // temp in solar secondary is too low
                 // turn solar secondary OFF
-                switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, 2);
+                switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, sensCnt);
             } else {
                 // temp in solar secondary is high enough
                 // do nothing
@@ -814,7 +848,7 @@ void processSolarSecondary() {
             if (tempSolarSecondary > (tempBoiler + SOLAR_SECONDARY_BOILER_HIST)) {
                 // temp in solar secondary is high enough
                 // turn solar secondary ON
-                switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, 2);
+                switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, sensCnt);
             } else {
                 // temp in solar secondary is too low
                 // do nothing
@@ -834,18 +868,23 @@ void processStandbyHeater() {
     if (diffTimestamps(tsCurr, tsNodeSbHeater) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_TEMP_ROOM_1 };
         int16_t sensVals[] = { tempTank, tempRoom1 };
+        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        if (!validSensorValues(sensVals, sensCnt)) {
+            return;
+        }
+
         if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
             // heater is ON
             if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
                 // primary heater is on
                 // turn standby heater OFF
-                switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
+                switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
             } else {
                 // primary heater is off
                 if (tempTank > STANDBY_HEATER_ROOM_TEMP_THRESHOLD && room1TempReachedMinThreshold()) {
                     // temp in (tank && room1) is high enough
                     // turn heater OFF
-                    switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
+                    switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
                 } else {
                     // temp in (tank || room1) is too low
                     // do nothing
@@ -861,7 +900,7 @@ void processStandbyHeater() {
                 if (tempTank < STANDBY_HEATER_ROOM_TEMP_THRESHOLD || room1TempFailedMinThreshold()) {
                     // temp in (tank || room1) is too low
                     // turn heater ON
-                    switchNodeState(NODE_SB_HEATER, sensIds, sensVals, 2);
+                    switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
                 } else {
                     // temp in (tank && room1) is high enough
                     // do nothing
@@ -1160,6 +1199,15 @@ int8_t getSensorBoilerPowerState() {
     Serial.println(max);
 #endif
     return (max > SENSOR_BOILER_POWER_THERSHOLD) ? 1 : 0;
+}
+
+bool validSensorValues(const int16_t values[], const uint8_t size) {
+    for (int i = 0; i < size; i++) {
+        if (values[i] == UNKNOWN_SENSOR_VALUE) {
+            return false;
+        }
+    }
+    return true;
 }
 
 unsigned long getTimestamp() {
