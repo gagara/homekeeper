@@ -119,8 +119,9 @@ static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 110; // stagnation
 static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
 static const uint8_t SOLAR_PRIMARY_BOILER_ON_HIST = 9;
-static const uint8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 3;
-static const uint8_t SOLAR_SECONDARY_BOILER_HIST = 2;
+static const uint8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 0;
+static const uint8_t SOLAR_SECONDARY_BOILER_ON_HIST = 0;
+static const uint8_t SOLAR_SECONDARY_BOILER_OFF_HIST = -3;
 
 // sensor BoilerPower
 static const uint8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
@@ -835,7 +836,7 @@ void processSolarSecondary() {
 
         if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
             // solar secondary is ON
-            if (tempSolarSecondary <= tempBoiler) {
+            if (tempSolarSecondary <= (tempBoiler + SOLAR_SECONDARY_BOILER_OFF_HIST)) {
                 // temp in solar secondary is too low
                 // turn solar secondary OFF
                 switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, sensCnt);
@@ -845,7 +846,7 @@ void processSolarSecondary() {
             }
         } else {
             // solar secondary is OFF
-            if (tempSolarSecondary > (tempBoiler + SOLAR_SECONDARY_BOILER_HIST)) {
+            if (tempSolarSecondary > (tempBoiler + SOLAR_SECONDARY_BOILER_ON_HIST)) {
                 // temp in solar secondary is high enough
                 // turn solar secondary ON
                 switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, sensCnt);
