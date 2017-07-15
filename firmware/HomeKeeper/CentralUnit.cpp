@@ -116,12 +116,12 @@ static const unsigned long CIRCULATION_PASSIVE_PERIOD_SEC = 3420; // 57m
 static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 
 // Solar
+static const unsigned long SOLAR_PRIMARY_COLDSTART_PERIOD_SEC = 300; // 5m
 static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 110; // stagnation
 static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
 static const uint8_t SOLAR_PRIMARY_BOILER_ON_HIST = 9;
 static const uint8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 0;
 static const uint8_t SOLAR_SECONDARY_BOILER_ON_HIST = 0;
-static const uint8_t SOLAR_SECONDARY_BOILER_OFF_HIST = -3;
 
 // sensor BoilerPower
 static const uint8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
@@ -788,12 +788,18 @@ void processSolarPrimary() {
                 switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, sensCnt);
             } else {
                 // temp in solar primary is normal
-                if (tempSolarPrimary <= (tempBoiler + SOLAR_PRIMARY_BOILER_OFF_HIST)) {
-                    // temp in solar primary is too low
-                    // turn solar primary OFF
-                    switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, sensCnt);
+                if (diffTimestamps(tsCurr, tsNodeSolarPrimary) >= SOLAR_PRIMARY_COLDSTART_PERIOD_SEC) {
+                    // cold start period over
+                    if (tempSolarPrimary <= (tempBoiler + SOLAR_PRIMARY_BOILER_OFF_HIST)) {
+                        // temp in solar primary is too low
+                        // turn solar primary OFF
+                        switchNodeState(NODE_SOLAR_PRIMARY, sensIds, sensVals, sensCnt);
+                    } else {
+                        // temp in solar primary is high enough
+                        // do nothing
+                    }
                 } else {
-                    // temp in solar primary is high enough
+                    // in cold start period
                     // do nothing
                 }
             }
@@ -836,22 +842,28 @@ void processSolarSecondary() {
 
         if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
             // solar secondary is ON
-            if (tempSolarSecondary <= (tempBoiler + SOLAR_SECONDARY_BOILER_OFF_HIST)) {
-                // temp in solar secondary is too low
+            if (NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) {
+                // solar primary ON
+                // do nothing
+            } else {
+                // solar primary OFF
                 // turn solar secondary OFF
                 switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, sensCnt);
-            } else {
-                // temp in solar secondary is high enough
-                // do nothing
             }
         } else {
             // solar secondary is OFF
-            if (tempSolarSecondary > (tempBoiler + SOLAR_SECONDARY_BOILER_ON_HIST)) {
-                // temp in solar secondary is high enough
-                // turn solar secondary ON
-                switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, sensCnt);
+            if (NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) {
+                // solar primary ON
+                if (tempSolarSecondary > (tempBoiler + SOLAR_SECONDARY_BOILER_ON_HIST)) {
+                    // temp in solar secondary is high enough
+                    // turn solar secondary ON
+                    switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, sensCnt);
+                } else {
+                    // temp in solar secondary is too low
+                    // do nothing
+                }
             } else {
-                // temp in solar secondary is too low
+                // solar primary OFF
                 // do nothing
             }
         }
