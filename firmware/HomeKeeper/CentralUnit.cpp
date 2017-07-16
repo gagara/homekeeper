@@ -104,7 +104,7 @@ static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800; // 30m
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
-static const uint8_t BOILER_CRITICAL_MAX_TEMP_THRESHOLD = 70;
+static const uint8_t BOILER_CRITICAL_MAX_TEMP_THRESHOLD = 61;
 static const uint8_t BOILER_CRITICAL_MAX_TEMP_HIST = 5;
 
 // Circulation
@@ -661,7 +661,7 @@ void processHotWaterCircuit() {
                     // do nothing
                 } else {
                     // tank has no capacity
-                    // turn pump ON
+                    // turn pump OFF
                     switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
                 }
             }
@@ -669,12 +669,18 @@ void processHotWaterCircuit() {
             // pump is OFF
             if (tempBoiler >= BOILER_CRITICAL_MAX_TEMP_THRESHOLD) {
                 // temp in boiler critically high
-                if (tempTank < tempBoiler) {
-                    // tank has capacity
-                    // turn pump ON
-                    switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
+                if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
+                    // solar secondary node is ON
+                    if (tempTank < tempBoiler) {
+                        // tank has capacity
+                        // turn pump ON
+                        switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
+                    } else {
+                        // tank has no capacity
+                        // do nothing
+                    }
                 } else {
-                    // tank has no capacity
+                    // solar secondary node is OFF
                     // do nothing
                 }
             } else {
@@ -737,13 +743,19 @@ void processCirculationCircuit() {
                 // temp in boiler is high enough
                 if (tempBoiler >= BOILER_CRITICAL_MAX_TEMP_THRESHOLD) {
                     // temp in boiler critically high
-                    if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
-                        // hotwater node is on
-                        // do nothing
+                    if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
+                        // solar secondary node is ON
+                        if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
+                            // hotwater node is on
+                            // do nothing
+                        } else {
+                            // hotwater node is off
+                            // turn pump ON
+                            switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
+                        }
                     } else {
-                        // hotwater node is off
-                        // turn pump ON
-                        switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
+                        // solar secondary node is OFF
+                        // do nothing
                     }
                 } else {
                     // temp in boiler is normal
