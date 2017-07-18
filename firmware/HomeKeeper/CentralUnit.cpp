@@ -644,20 +644,14 @@ void processHotWaterCircuit() {
 
         if (NODE_STATE_FLAGS & NODE_HOTWATER_BIT) {
             // pump is ON
-            if (tempBoiler < (BOILER_SOLAR_MAX_TEMP_THRESHOLD - BOILER_SOLAR_MAX_TEMP_HIST)) {
-                // temp in boiler is normal
-                if (tempTank <= tempBoiler) {
-                    // temp in tank is low
+            if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
+                // solar secondary node is ON. cooling mode
+                if (tempBoiler < (BOILER_SOLAR_MAX_TEMP_THRESHOLD - BOILER_SOLAR_MAX_TEMP_HIST)) {
+                    // temp in boiler is normal
                     // turn pump OFF
                     switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
                 } else {
-                    // temp in tank is high enough
-                    // do nothing
-                }
-            } else {
-                // temp in boiler is high
-                if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
-                    // solar secondary node is ON
+                    // temp in boiler is high
                     if (tempTank < tempBoiler) {
                         // tank has capacity
                         // do nothing
@@ -666,18 +660,24 @@ void processHotWaterCircuit() {
                         // turn pump OFF
                         switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
                     }
-                } else {
-                    // solar secondary node is OFF
+                }
+            } else {
+                // solar secondary node is OFF. heating mode
+                if (tempTank <= tempBoiler) {
+                    // temp in tank is low
                     // turn pump OFF
                     switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
+                } else {
+                    // temp in tank is high enough
+                    // do nothing
                 }
             }
         } else {
             // pump is OFF
-            if (tempBoiler >= BOILER_SOLAR_MAX_TEMP_THRESHOLD) {
-                // temp in boiler is high
-                if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
-                    // solar secondary node is ON
+            if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
+                // solar secondary node is ON. cooling mode
+                if (tempBoiler >= BOILER_SOLAR_MAX_TEMP_THRESHOLD) {
+                    // temp in boiler is high
                     if (tempTank < tempBoiler) {
                         // tank has capacity
                         // turn pump ON
@@ -687,11 +687,11 @@ void processHotWaterCircuit() {
                         // do nothing
                     }
                 } else {
-                    // solar secondary node is OFF
+                    // temp in boiler is normal
                     // do nothing
                 }
             } else {
-                // temp in boiler is normal
+                // solar secondary node is OFF. heating mode
                 if (tempTank > (tempBoiler + TANK_BOILER_HIST)) {
                     // temp in tank is high enough
                     // turn pump ON
@@ -767,44 +767,30 @@ void processCirculationCircuit() {
             // pump is OFF
             if (tempBoiler >= CIRCULATION_TEMP_THRESHOLD) {
                 // temp in boiler is high enough
-                if (tempBoiler >= BOILER_SOLAR_MAX_TEMP_THRESHOLD) {
-                    // temp in boiler is high
-                    if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
-                        // solar secondary node is ON
-                        if (tempTank >= BOILER_SOLAR_MAX_TEMP_THRESHOLD) {
-                            // tank has no capacity. cooling
-                            // turn pump ON
-                            switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
-                        } else {
-                            // tank has capacity
-                            if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_PASSIVE_PERIOD_SEC) {
-                                // passive period is over
+                if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_PASSIVE_PERIOD_SEC) {
+                    // passive period is over
+                    // turn pump ON
+                    switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
+                } else {
+                    // passive period is going on
+                    if (tempBoiler >= BOILER_SOLAR_MAX_TEMP_THRESHOLD) {
+                        // temp in boiler is high
+                        if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
+                            // solar secondary node is ON
+                            if (tempTank >= BOILER_SOLAR_MAX_TEMP_THRESHOLD) {
+                                // tank has no capacity. cooling
                                 // turn pump ON
                                 switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
                             } else {
-                                // passive period is going on
+                                // tank has capacity
                                 // do nothing
                             }
-                        }
-                    } else {
-                        // solar secondary node is OFF
-                        if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_PASSIVE_PERIOD_SEC) {
-                            // passive period is over
-                            // turn pump ON
-                            switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
                         } else {
-                            // passive period is going on
+                            // solar secondary node is OFF
                             // do nothing
                         }
-                    }
-                } else {
-                    // temp in boiler is normal
-                    if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_PASSIVE_PERIOD_SEC) {
-                        // passive period is over
-                        // turn pump ON
-                        switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
                     } else {
-                        // passive period is going on
+                        // temp in boiler is normal
                         // do nothing
                     }
                 }
