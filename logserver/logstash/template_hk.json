@@ -53,8 +53,8 @@
         "sip": { "type": "ip" },
         "lip": { "type": "ip" },
         "sp": { "type": "integer" },
-        "grid_production": { "type": "integer" },
-        "solar_production": { "type": "integer" }
+        "production": { "type": "integer" },
+        "production_type": { "type": "string", "index": "not_analyzed" }
       }
     }
   }
