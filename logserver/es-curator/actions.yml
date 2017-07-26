@@ -1,7 +1,7 @@
 actions:
   1:
-    action: delete_indices
-    description: delete old indexes
+    action: close
+    description: close old indexes
     filters:
       - filtertype: age
         source: creation_date
