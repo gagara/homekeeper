@@ -730,7 +730,7 @@ void processCirculationCircuit() {
 
         if (NODE_STATE_FLAGS & NODE_CIRCULATION_BIT) {
             // pump is ON
-            if (tempBoiler < BOILER_SOLAR_MAX_TEMP_THRESHOLD) {
+            if (tempBoiler < CIRCULATION_COOLING_TEMP_THRESHOLD) {
                 // temp in boiler is normal
                 if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_ACTIVE_PERIOD_SEC) {
                     // active period is over
