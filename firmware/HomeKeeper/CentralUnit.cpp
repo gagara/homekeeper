@@ -104,11 +104,12 @@ static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800; // 30m
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HIST = 3;
-static const uint8_t BOILER_SOLAR_MAX_TEMP_THRESHOLD = 51;
+static const uint8_t BOILER_SOLAR_MAX_TEMP_THRESHOLD = 46;
 static const uint8_t BOILER_SOLAR_MAX_TEMP_HIST = 2;
 
 // Circulation
-static const uint8_t CIRCULATION_TEMP_THRESHOLD = 35;
+static const uint8_t CIRCULATION_MIN_TEMP_THRESHOLD = 35;
+static const uint8_t CIRCULATION_COOLING_TEMP_THRESHOLD = 61;
 static const unsigned long CIRCULATION_ACTIVE_PERIOD_SEC = 180; // 3m
 static const unsigned long CIRCULATION_PASSIVE_PERIOD_SEC = 3420; // 57m
 
@@ -743,7 +744,7 @@ void processCirculationCircuit() {
                 // temp in boiler is high
                 if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
                     // solar secondary node is ON
-                    if (tempTank < BOILER_SOLAR_MAX_TEMP_THRESHOLD) {
+                    if (tempTank < CIRCULATION_COOLING_TEMP_THRESHOLD) {
                         // tank has capacity
                         if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_ACTIVE_PERIOD_SEC) {
                             // active period is over
@@ -771,7 +772,7 @@ void processCirculationCircuit() {
             }
         } else {
             // pump is OFF
-            if (tempBoiler >= CIRCULATION_TEMP_THRESHOLD) {
+            if (tempBoiler >= CIRCULATION_MIN_TEMP_THRESHOLD) {
                 // temp in boiler is high enough
                 if (diffTimestamps(tsCurr, tsNodeCirculation) >= CIRCULATION_PASSIVE_PERIOD_SEC) {
                     // passive period is over
@@ -779,11 +780,11 @@ void processCirculationCircuit() {
                     switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
                 } else {
                     // passive period is going on
-                    if (tempBoiler >= BOILER_SOLAR_MAX_TEMP_THRESHOLD) {
+                    if (tempBoiler >= CIRCULATION_COOLING_TEMP_THRESHOLD) {
                         // temp in boiler is high
                         if (NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) {
                             // solar secondary node is ON
-                            if (tempTank >= BOILER_SOLAR_MAX_TEMP_THRESHOLD) {
+                            if (tempTank >= CIRCULATION_COOLING_TEMP_THRESHOLD) {
                                 // tank has no capacity. cooling
                                 // turn pump ON
                                 switchNodeState(NODE_CIRCULATION, sensIds, sensVals, sensCnt);
