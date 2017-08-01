@@ -610,7 +610,14 @@ void processFloorCircuit() {
                 }
             } else {
                 // temp is high enough at least in one source
-                // do nothing
+                if (!room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                    // temp in Room1 is low OR standby heater is on
+                    // do nothing
+                } else {
+                    // temp in Room1 is high enough AND standby heater is off
+                    // turn pump ON
+                    switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
+                }
             }
         } else {
             // pump is OFF
