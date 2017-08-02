@@ -117,11 +117,11 @@ static const unsigned long CIRCULATION_PASSIVE_PERIOD_SEC = 3420; // 57m
 static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 
 // Solar
-static const unsigned long SOLAR_PRIMARY_COLDSTART_PERIOD_SEC = 300; // 5m
+static const unsigned long SOLAR_PRIMARY_COLDSTART_PERIOD_SEC = 600; // 10m
 static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 110; // stagnation
 static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
 static const uint8_t SOLAR_PRIMARY_BOILER_ON_HIST = 9;
-static const uint8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 3;
+static const uint8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 0;
 static const uint8_t SOLAR_SECONDARY_BOILER_ON_HIST = 0;
 
 // sensor BoilerPower
