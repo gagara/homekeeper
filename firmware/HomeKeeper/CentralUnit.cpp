@@ -103,7 +103,8 @@ static const uint8_t PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 20;
 static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800; // 30m
 
 // Boiler heating
-static const uint8_t TANK_BOILER_HIST = 3;
+static const uint8_t TANK_BOILER_HEATING_ON_HIST = 3;
+static const uint8_t TANK_BOILER_HEATING_OFF_HIST = 1;
 static const uint8_t BOILER_SOLAR_MAX_TEMP_THRESHOLD = 46;
 static const uint8_t BOILER_SOLAR_MAX_TEMP_HIST = 2;
 
@@ -677,7 +678,7 @@ void processHotWaterCircuit() {
                 }
             } else {
                 // solar secondary node is OFF. heating mode
-                if (tempTank <= tempBoiler) {
+                if (tempTank <= (tempBoiler + TANK_BOILER_HEATING_OFF_HIST)) {
                     // temp in tank is low
                     // turn pump OFF
                     switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
@@ -706,7 +707,7 @@ void processHotWaterCircuit() {
                 }
             } else {
                 // solar secondary node is OFF. heating mode
-                if (tempTank > (tempBoiler + TANK_BOILER_HIST)) {
+                if (tempTank > (tempBoiler + TANK_BOILER_HEATING_ON_HIST)) {
                     // temp in tank is high enough
                     // turn pump ON
                     switchNodeState(NODE_HOTWATER, sensIds, sensVals, sensCnt);
