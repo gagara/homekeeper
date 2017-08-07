@@ -58,3 +58,7 @@ Use external toolchain:
 				</macros>
 
 =================
+
+# create snapshot repo in ES
+curl http://localhost:9200/_snapshot/backups -d '{"type": "fs", "settings": {"compress": true, "location": "/usr/share/elasticsearch/data/backups"}}'
+

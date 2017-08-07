@@ -1,0 +1,13 @@
+actions:
+  1:
+    action: snapshot
+    description: snapshot HK indexes
+    options:
+        repository: backups
+        name:
+        wait_for_completion: True
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: logstash_hk-
+

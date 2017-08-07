@@ -2,7 +2,8 @@ version: '2'
 services:
 
   elasticsearch:
-    image: elasticsearch:5.2-alpine
+    build:
+      context: ./elasticsearch
     restart: unless-stopped
     ports:
       - "9200:9200"

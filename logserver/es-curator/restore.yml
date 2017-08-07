@@ -1,0 +1,12 @@
+actions:
+  1:
+    action: restore
+    description: restore HK indexes
+    options:
+        repository: backups
+        name:
+        indices:
+        wait_for_completion: True
+    filters:
+      - filtertype: state
+        state: SUCCESS
