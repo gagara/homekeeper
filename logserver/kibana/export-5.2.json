@@ -48,20 +48,6 @@
     }
   },
   {
-    "_id": "b493f570-0fcc-11e7-9d51-398f58efdcd3",
-    "_type": "visualization",
-    "_source": {
-      "title": "Nodes Uptime",
-      "visState": "{\"title\":\"Nodes Uptime\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":true,\"addTooltip\":true,\"defaultYExtents\":false,\"legendPosition\":\"top\",\"mode\":\"grouped\",\"scale\":\"linear\",\"setYExtents\":false,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"period\",\"customLabel\":\"active time\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"date\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"enabled\":true,\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\"}}],\"listeners\":{}}",
-      "uiStateJSON": "{\"vis\":{\"legendOpen\":true}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"(m:csr AND csr_type:node AND csr_state:actual AND state:false AND NOT n.id:32) OR (m:csr AND csr_type:sensor AND sensor_type:state AND csr_state:actual AND state:false)\",\"analyze_wildcard\":true}},\"filter\":[]}"
-      }
-    }
-  },
-  {
     "_id": "fec151c0-7b28-11e7-8edb-11673d3a5fbb",
     "_type": "visualization",
     "_source": {
@@ -198,6 +184,20 @@
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "b493f570-0fcc-11e7-9d51-398f58efdcd3",
+    "_type": "visualization",
+    "_source": {
+      "title": "Nodes Uptime",
+      "visState": "{\"title\":\"Nodes Uptime\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":true,\"addTooltip\":true,\"defaultYExtents\":false,\"legendPosition\":\"top\",\"mode\":\"grouped\",\"scale\":\"linear\",\"setYExtents\":false,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"period\",\"customLabel\":\"active time\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"date\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"enabled\":true,\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"legendOpen\":true,\"colors\":{\"Solar Primay\":\"#C15C17\",\"Solar Secondary\":\"#EAB839\",\"Boiler Power\":\"#E24D42\",\"Hot water\":\"#962D82\",\"Circulation\":\"#629E51\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash_hk-*\",\"query\":{\"query_string\":{\"query\":\"(m:csr AND csr_type:node AND csr_state:actual AND state:false AND NOT n.id:32) OR (m:csr AND csr_type:sensor AND sensor_type:state AND csr_state:actual AND state:false)\",\"analyze_wildcard\":true}},\"filter\":[]}"
       }
     }
   }
