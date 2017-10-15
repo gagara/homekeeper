@@ -51,10 +51,6 @@ static const uint8_t NODE_SB_HEATER = 34;
 static const uint8_t NODE_SOLAR_PRIMARY = 36;
 static const uint8_t NODE_SOLAR_SECONDARY = 38;
 
-// RF pins
-static const uint8_t RF_CE_PIN = 9; //5
-static const uint8_t RF_CSN_PIN = 10; //6
-
 // WiFi pins
 static const uint8_t WIFI_RST_PIN = 12;
 
@@ -130,19 +126,10 @@ static const uint8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
 
 // reporting
 static const unsigned long STATUS_REPORTING_PERIOD_SEC = 5; // 5s
-static const unsigned long SENSORS_REFRESH_INTERVAL_SEC = 5; // 5s
 static const unsigned long SENSORS_READ_INTERVAL_SEC = 5; // 5s
 
 // WiFi
 static const unsigned long WIFI_MAX_FAILURE_PERIOD_SEC = 180; // 3m
-
-// RF
-static const uint64_t RF_PIPE_BASE = 0xE8E8F0F0A2LL;
-static const uint8_t RF_PACKET_LENGTH = 32;
-
-// sensors stats
-static const uint8_t SENSORS_RAW_VALUES_MAX_COUNT = 1; // disable
-static const uint8_t SENSOR_NOISE_THRESHOLD = 255; // disable
 
 // JSON
 static const char MSG_TYPE_KEY[] = "m";
@@ -175,8 +162,6 @@ static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
 static const uint8_t WIFI_MAX_AT_CMD_SIZE = 128;
 static const uint16_t WIFI_MAX_BUFFER_SIZE = 512;
 
-static const uint8_t RF_MAX_BODY_SIZE = 65;
-
 /* ===== End of Configuration ====== */
 
 /* =========== Variables =========== */
@@ -196,24 +181,6 @@ int16_t tempSolarSecondary = UNKNOWN_SENSOR_VALUE;
 int16_t STANDBY_HEATER_ROOM_TEMP_THRESHOLD = STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
 int16_t PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
 int16_t sensorBoilerPowerState = 0;
-
-// stats
-int16_t rawSupplyValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int16_t rawReverseValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int16_t rawTankValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int16_t rawBoilerValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int16_t rawMixValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int16_t rawSbHeaterValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int16_t rawSolarPrimaryValues[SENSORS_RAW_VALUES_MAX_COUNT];
-int16_t rawSolarSecondaryValues[SENSORS_RAW_VALUES_MAX_COUNT];
-uint8_t rawSupplyIdx = 0;
-uint8_t rawReverseIdx = 0;
-uint8_t rawTankIdx = 0;
-uint8_t rawBoilerIdx = 0;
-uint8_t rawMixIdx = 0;
-uint8_t rawSbHeaterIdx = 0;
-uint8_t rawSolarPrimaryIdx = 0;
-uint8_t rawSolarSecondaryIdx = 0;
 
 //// Nodes
 
@@ -252,7 +219,6 @@ uint8_t nextEntryReport = 0;
 
 // Timestamps
 unsigned long tsLastStatusReport = 0;
-unsigned long tsLastSensorsRefresh = 0;
 unsigned long tsLastSensorsRead = 0;
 
 unsigned long tsLastSensorTempRoom1 = 0;
@@ -301,9 +267,6 @@ HardwareSerial *bt = &Serial1;
 
 //WiFi
 HardwareSerial *wifi = &Serial2;
-
-// RF24
-RF24 radio(RF_CE_PIN, RF_CSN_PIN);
 
 //======== ============ ========//
 
@@ -378,34 +341,12 @@ void setup() {
     digitalWrite(NODE_SOLAR_PRIMARY, (~NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) ? HIGH : LOW);
     digitalWrite(NODE_SOLAR_SECONDARY, (~NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) ? HIGH : LOW);
 
-    // init sensors raw values arrays
-    for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
-        rawSupplyValues[i] = UNKNOWN_SENSOR_VALUE;
-        rawReverseValues[i] = UNKNOWN_SENSOR_VALUE;
-        rawTankValues[i] = UNKNOWN_SENSOR_VALUE;
-        rawBoilerValues[i] = UNKNOWN_SENSOR_VALUE;
-        rawMixValues[i] = UNKNOWN_SENSOR_VALUE;
-        rawSbHeaterValues[i] = UNKNOWN_SENSOR_VALUE;
-        rawSolarPrimaryValues[i] = UNKNOWN_SENSOR_VALUE;
-        rawSolarSecondaryValues[i] = UNKNOWN_SENSOR_VALUE;
-    }
-
     // read sensors calibration factors from EEPROM
     loadSensorsCalibrationFactors();
 
     // restore sensor thresholds
     STANDBY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
     PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(PRIMARY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
-
-    // init RF24 radio. not used for now
-    radio.begin();
-    radio.enableDynamicPayloads();
-    // listen on 2 channels
-    for (int i = 1; i <= 2; i++) {
-        radio.openReadingPipe(i, RF_PIPE_BASE + i);
-    }
-    radio.startListening();
-    radio.powerUp();
 }
 
 void loop() {
@@ -413,17 +354,10 @@ void loop() {
     if (diffTimestamps(tsCurr, tsLastSensorsRead) >= SENSORS_READ_INTERVAL_SEC) {
         readSensors();
         tsLastSensorsRead = tsCurr;
-    }
-    if (diffTimestamps(tsCurr, tsLastSensorsRefresh) >= SENSORS_REFRESH_INTERVAL_SEC) {
 #ifdef __DEBUG__
         Serial.print(F("free memory: "));
         Serial.println(freeMemory());
 #endif
-        digitalWrite(HEARTBEAT_LED, HIGH);
-
-        // refresh sensors values
-        refreshSensorValues();
-
         // heater <--> tank
         processSupplyCircuit();
         // tank <--> heating system
@@ -441,8 +375,7 @@ void loop() {
         // standby heater
         processStandbyHeater();
 
-        digitalWrite(HEARTBEAT_LED, LOW);
-        tsLastSensorsRefresh = tsCurr;
+        digitalWrite(HEARTBEAT_LED, digitalRead(HEARTBEAT_LED) ^ 1);
     }
     if (Serial.available() > 0) {
         processSerialMsg();
@@ -454,7 +387,10 @@ void loop() {
         processWifiReq();
     }
 
-    reportStatus();
+    if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_SEC) {
+        reportStatus();
+        tsLastStatusReport = tsCurr;
+    }
 
     tsPrev = tsCurr;
 }
@@ -1059,144 +995,15 @@ void loadWifiConfig() {
     validateStringParam(WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW) - 1);
 }
 
-void rfRead(char* msg) {
-    uint8_t len = 0;
-    bool eoi = false;
-    while (!eoi && len < RF_MAX_BODY_SIZE - 1) {
-        char packet[RF_PACKET_LENGTH];
-        uint8_t l = radio.getDynamicPayloadSize();
-        if (l > RF_PACKET_LENGTH) {
-            len = 0;
-            break;
-        }
-        radio.read(packet, l);
-        for (uint8_t i = 0; i < l && !eoi && len < RF_MAX_BODY_SIZE - 1; i++) {
-            msg[len++] = packet[i];
-            eoi = (packet[i] == '\n');
-        }
-    }
-    msg[len] = '\0';
-}
-
 void readSensors() {
-    readSensor(SENSOR_SUPPLY, rawSupplyValues, rawSupplyIdx);
-    readSensor(SENSOR_REVERSE, rawReverseValues, rawReverseIdx);
-    readSensor(SENSOR_TANK, rawTankValues, rawTankIdx);
-    readSensor(SENSOR_BOILER, rawBoilerValues, rawBoilerIdx);
-    readSensor(SENSOR_MIX, rawMixValues, rawMixIdx);
-    readSensor(SENSOR_SB_HEATER, rawSbHeaterValues, rawSbHeaterIdx);
-    readSensor(SENSOR_SOLAR_PRIMARY, rawSolarPrimaryValues, rawSolarPrimaryIdx);
-    readSensor(SENSOR_SOLAR_SECONDARY, rawSolarSecondaryValues, rawSolarSecondaryIdx);
-    // read remote sensors
-    if (radio.available()) {
-#ifdef __DEBUG__
-        Serial.println(F("got RF message"));
-#endif
-        processRfMsg();
-    }
-}
-
-void readSensor(const uint8_t id, int16_t* const &values, uint8_t &idx) {
-    uint8_t prevIdx;
-    uint8_t val;
-    if (idx == SENSORS_RAW_VALUES_MAX_COUNT) {
-        idx = 0;
-    }
-    if (idx > 0) {
-        prevIdx = idx - 1;
-    } else {
-        prevIdx = SENSORS_RAW_VALUES_MAX_COUNT;
-    }
-    val = getSensorValue(id);
-    if (values[prevIdx] == UNKNOWN_SENSOR_VALUE || abs(val - values[prevIdx]) < SENSOR_NOISE_THRESHOLD) {
-        values[idx] = val;
-    }
-    idx++;
-}
-
-void refreshSensorValues() {
-    double temp1 = 0;
-    double temp2 = 0;
-    double temp3 = 0;
-    double temp4 = 0;
-    double temp5 = 0;
-    double temp6 = 0;
-    double temp7 = 0;
-    double temp8 = 0;
-    int j1 = 0;
-    int j2 = 0;
-    int j3 = 0;
-    int j4 = 0;
-    int j5 = 0;
-    int j6 = 0;
-    int j7 = 0;
-    int j8 = 0;
-    for (int i = 0; i < SENSORS_RAW_VALUES_MAX_COUNT; i++) {
-        if (rawSupplyValues[i] != UNKNOWN_SENSOR_VALUE) {
-            temp1 += rawSupplyValues[i];
-            j1++;
-        }
-        if (rawReverseValues[i] != UNKNOWN_SENSOR_VALUE) {
-            temp2 += rawReverseValues[i];
-            j2++;
-        }
-        if (rawTankValues[i] != UNKNOWN_SENSOR_VALUE) {
-            temp3 += rawTankValues[i];
-            j3++;
-        }
-        if (rawBoilerValues[i] != UNKNOWN_SENSOR_VALUE) {
-            temp4 += rawBoilerValues[i];
-            j4++;
-        }
-        if (rawMixValues[i] != UNKNOWN_SENSOR_VALUE) {
-            temp5 += rawMixValues[i];
-            j5++;
-        }
-        if (rawSbHeaterValues[i] != UNKNOWN_SENSOR_VALUE) {
-            temp6 += rawSbHeaterValues[i];
-            j6++;
-        }
-        if (rawSolarPrimaryValues[i] != UNKNOWN_SENSOR_VALUE) {
-            temp7 += rawSolarPrimaryValues[i];
-            j7++;
-        }
-        if (rawSolarSecondaryValues[i] != UNKNOWN_SENSOR_VALUE) {
-            temp8 += rawSolarSecondaryValues[i];
-            j8++;
-        }
-    }
-    if (j1 > 0) {
-        tempSupply = int8_t(temp1 / j1 + 0.5);
-    }
-    if (j2 > 0) {
-        tempReverse = int8_t(temp2 / j2 + 0.5);
-    }
-    if (j3 > 0) {
-        tempTank = int8_t(temp3 / j3 + 0.5);
-    }
-    if (j4 > 0) {
-        tempBoiler = int8_t(temp4 / j4 + 0.5);
-    }
-    if (j5 > 0) {
-        tempMix = int8_t(temp5 / j5 + 0.5);
-    }
-    if (j6 > 0) {
-        tempSbHeater = int8_t(temp6 / j6 + 0.5);
-    }
-    if (j7 > 0) {
-        tempSolarPrimary = int8_t(temp7 / j7 + 0.5);
-    }
-    if (j8 > 0) {
-        tempSolarSecondary = int8_t(temp8 / j8 + 0.5);
-    }
-
-    // read sensorBoilerPower value
-    int8_t state = getSensorBoilerPowerState();
-    if (state != sensorBoilerPowerState) {
-        // state changed
-        sensorBoilerPowerState = state;
-        tsSensorBoilerPower = tsCurr;
-    }
+    tempSupply = getSensorValue(SENSOR_SUPPLY);
+    tempReverse = getSensorValue(SENSOR_REVERSE);
+    tempTank = getSensorValue(SENSOR_TANK);
+    tempBoiler = getSensorValue(SENSOR_BOILER);
+    tempMix = getSensorValue(SENSOR_MIX);
+    tempSbHeater = getSensorValue(SENSOR_SB_HEATER);
+    tempSolarPrimary = getSensorValue(SENSOR_SOLAR_PRIMARY);
+    tempSolarSecondary = getSensorValue(SENSOR_SOLAR_SECONDARY);
 }
 
 int16_t getSensorValue(const uint8_t sensor) {
@@ -1743,97 +1550,94 @@ void wifiRead(char* req) {
 }
 
 void reportStatus() {
-    if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_SEC) {
-        if (nextEntryReport == 0) {
-            // check WiFi connectivity
-            wifiCheckConnection();
-            // start reporting
-            nextEntryReport = SENSOR_SUPPLY;
-        }
-        switch (nextEntryReport) {
-        case SENSOR_SUPPLY:
-            reportSensorStatus(SENSOR_SUPPLY, tempSupply);
-            nextEntryReport = SENSOR_REVERSE;
-            break;
-        case SENSOR_REVERSE:
-            reportSensorStatus(SENSOR_REVERSE, tempReverse);
-            nextEntryReport = SENSOR_TANK;
-            break;
-        case SENSOR_TANK:
-            reportSensorStatus(SENSOR_TANK, tempTank);
-            nextEntryReport = SENSOR_MIX;
-            break;
-        case SENSOR_MIX:
-            reportSensorStatus(SENSOR_MIX, tempMix);
-            nextEntryReport = SENSOR_SB_HEATER;
-            break;
-        case SENSOR_SB_HEATER:
-            reportSensorStatus(SENSOR_SB_HEATER, tempSbHeater);
-            nextEntryReport = SENSOR_BOILER;
-            break;
-        case SENSOR_BOILER:
-            reportSensorStatus(SENSOR_BOILER, tempBoiler);
-            nextEntryReport = SENSOR_TEMP_ROOM_1;
-            break;
-        case SENSOR_TEMP_ROOM_1:
-            reportSensorStatus(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1);
-            nextEntryReport = SENSOR_HUM_ROOM_1;
-            break;
-        case SENSOR_HUM_ROOM_1:
-            reportSensorStatus(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1);
-            nextEntryReport = SENSOR_BOILER_POWER;
-            break;
-        case SENSOR_BOILER_POWER:
-            reportSensorStatus(SENSOR_BOILER_POWER, sensorBoilerPowerState, tsSensorBoilerPower);
-            nextEntryReport = SENSOR_SOLAR_PRIMARY;
-            break;
-        case SENSOR_SOLAR_PRIMARY:
-            reportSensorStatus(SENSOR_SOLAR_PRIMARY, tempSolarPrimary);
-            nextEntryReport = SENSOR_SOLAR_SECONDARY;
-            break;
-        case SENSOR_SOLAR_SECONDARY:
-            reportSensorStatus(SENSOR_SOLAR_SECONDARY, tempSolarSecondary);
-            nextEntryReport = NODE_SUPPLY;
-            break;
-        case NODE_SUPPLY:
-            reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
-            nextEntryReport = NODE_HEATING;
-            break;
-        case NODE_HEATING:
-            reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
-            reportSensorConfigValue(SENSOR_TH_ROOM1_PRIMARY_HEATER, PRIMARY_HEATER_ROOM_TEMP_THRESHOLD);
-            nextEntryReport = NODE_FLOOR;
-            break;
-        case NODE_FLOOR:
-            reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
-            nextEntryReport = NODE_SB_HEATER;
-            break;
-        case NODE_SB_HEATER:
-            reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
-            reportSensorConfigValue(SENSOR_TH_ROOM1_SB_HEATER, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
-            nextEntryReport = NODE_HOTWATER;
-            break;
-        case NODE_HOTWATER:
-            reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
-            nextEntryReport = NODE_CIRCULATION;
-            break;
-        case NODE_CIRCULATION:
-            reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
-            nextEntryReport = NODE_SOLAR_PRIMARY;
-            break;
-        case NODE_SOLAR_PRIMARY:
-            reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
-            nextEntryReport = NODE_SOLAR_SECONDARY;
-            break;
-        case NODE_SOLAR_SECONDARY:
-            reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
-                    tsForcedNodeSolarSecondary);
-            nextEntryReport = 0;
-            break;
-        default:
-            break;
-        }
-        tsLastStatusReport = tsCurr;
+    if (nextEntryReport == 0) {
+        // check WiFi connectivity
+        wifiCheckConnection();
+        // start reporting
+        nextEntryReport = SENSOR_SUPPLY;
+    }
+    switch (nextEntryReport) {
+    case SENSOR_SUPPLY:
+        reportSensorStatus(SENSOR_SUPPLY, tempSupply);
+        nextEntryReport = SENSOR_REVERSE;
+        break;
+    case SENSOR_REVERSE:
+        reportSensorStatus(SENSOR_REVERSE, tempReverse);
+        nextEntryReport = SENSOR_TANK;
+        break;
+    case SENSOR_TANK:
+        reportSensorStatus(SENSOR_TANK, tempTank);
+        nextEntryReport = SENSOR_MIX;
+        break;
+    case SENSOR_MIX:
+        reportSensorStatus(SENSOR_MIX, tempMix);
+        nextEntryReport = SENSOR_SB_HEATER;
+        break;
+    case SENSOR_SB_HEATER:
+        reportSensorStatus(SENSOR_SB_HEATER, tempSbHeater);
+        nextEntryReport = SENSOR_BOILER;
+        break;
+    case SENSOR_BOILER:
+        reportSensorStatus(SENSOR_BOILER, tempBoiler);
+        nextEntryReport = SENSOR_TEMP_ROOM_1;
+        break;
+    case SENSOR_TEMP_ROOM_1:
+        reportSensorStatus(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1);
+        nextEntryReport = SENSOR_HUM_ROOM_1;
+        break;
+    case SENSOR_HUM_ROOM_1:
+        reportSensorStatus(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1);
+        nextEntryReport = SENSOR_BOILER_POWER;
+        break;
+    case SENSOR_BOILER_POWER:
+        reportSensorStatus(SENSOR_BOILER_POWER, sensorBoilerPowerState, tsSensorBoilerPower);
+        nextEntryReport = SENSOR_SOLAR_PRIMARY;
+        break;
+    case SENSOR_SOLAR_PRIMARY:
+        reportSensorStatus(SENSOR_SOLAR_PRIMARY, tempSolarPrimary);
+        nextEntryReport = SENSOR_SOLAR_SECONDARY;
+        break;
+    case SENSOR_SOLAR_SECONDARY:
+        reportSensorStatus(SENSOR_SOLAR_SECONDARY, tempSolarSecondary);
+        nextEntryReport = NODE_SUPPLY;
+        break;
+    case NODE_SUPPLY:
+        reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
+        nextEntryReport = NODE_HEATING;
+        break;
+    case NODE_HEATING:
+        reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
+        reportSensorConfigValue(SENSOR_TH_ROOM1_PRIMARY_HEATER, PRIMARY_HEATER_ROOM_TEMP_THRESHOLD);
+        nextEntryReport = NODE_FLOOR;
+        break;
+    case NODE_FLOOR:
+        reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
+        nextEntryReport = NODE_SB_HEATER;
+        break;
+    case NODE_SB_HEATER:
+        reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
+        reportSensorConfigValue(SENSOR_TH_ROOM1_SB_HEATER, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+        nextEntryReport = NODE_HOTWATER;
+        break;
+    case NODE_HOTWATER:
+        reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
+        nextEntryReport = NODE_CIRCULATION;
+        break;
+    case NODE_CIRCULATION:
+        reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
+        nextEntryReport = NODE_SOLAR_PRIMARY;
+        break;
+    case NODE_SOLAR_PRIMARY:
+        reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
+        nextEntryReport = NODE_SOLAR_SECONDARY;
+        break;
+    case NODE_SOLAR_SECONDARY:
+        reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
+                tsForcedNodeSolarSecondary);
+        nextEntryReport = 0;
+        break;
+    default:
+        break;
     }
 }
 
@@ -2001,12 +1805,6 @@ void broadcastMsg(const char* msg) {
         Serial.println(F("wifi send: FAILED"));
     }
 #endif
-}
-
-void processRfMsg() {
-    char buff[JSON_MAX_SIZE + 1];
-    rfRead(buff);
-    parseCommand(buff);
 }
 
 void processSerialMsg() {
