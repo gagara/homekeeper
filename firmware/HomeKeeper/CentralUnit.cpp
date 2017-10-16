@@ -1004,6 +1004,13 @@ void readSensors() {
     tempSbHeater = getSensorValue(SENSOR_SB_HEATER);
     tempSolarPrimary = getSensorValue(SENSOR_SOLAR_PRIMARY);
     tempSolarSecondary = getSensorValue(SENSOR_SOLAR_SECONDARY);
+    // read sensorBoilerPower value
+    int8_t state = getSensorBoilerPowerState();
+    if (state != sensorBoilerPowerState) {
+        // state changed
+        sensorBoilerPowerState = state;
+        tsSensorBoilerPower = tsCurr;
+    }
 }
 
 int16_t getSensorValue(const uint8_t sensor) {
