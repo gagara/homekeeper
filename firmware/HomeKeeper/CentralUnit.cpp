@@ -1816,25 +1816,31 @@ void broadcastMsg(const char* msg) {
 
 void processSerialMsg() {
     char buff[JSON_MAX_SIZE + 1];
-    uint16_t l = Serial.readBytesUntil('\0', buff, JSON_MAX_SIZE);
-    buff[l] = '\0';
-    parseCommand(buff);
+    while (Serial.available()) {
+        uint16_t l = Serial.readBytesUntil('\0', buff, JSON_MAX_SIZE);
+        buff[l] = '\0';
+        parseCommand(buff);
+    }
 }
 
 void processBtMsg() {
     char buff[JSON_MAX_SIZE + 1];
-    uint16_t l = bt->readBytesUntil('\0', buff, JSON_MAX_SIZE);
-    buff[l] = '\0';
-    parseCommand(buff);
+    while (bt->available()) {
+        uint16_t l = bt->readBytesUntil('\0', buff, JSON_MAX_SIZE);
+        buff[l] = '\0';
+        parseCommand(buff);
+    }
 }
 
 void processWifiReq() {
     char buff[JSON_MAX_SIZE + 1];
-    wifiRead(buff);
-    if (parseCommand(buff)) {
-        wifiRsp200();
-    } else {
-        wifiRsp400();
+    while (wifi->available()) {
+        wifiRead(buff);
+        if (parseCommand(buff)) {
+            wifiRsp200();
+        } else {
+            wifiRsp400();
+        }
     }
 }
 
