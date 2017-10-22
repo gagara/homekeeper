@@ -29,6 +29,7 @@ void processCirculationCircuit();
 void processStandbyHeater();
 void processSolarPrimary();
 void processSolarSecondary();
+void logFreeMem();
 bool room1TempReachedMinThreshold();
 bool room1TempFailedMinThreshold();
 bool room1TempSatisfyMaxThreshold();

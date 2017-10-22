@@ -286,8 +286,7 @@ void setup() {
     wifiSetup();
     wifiGetRemoteIP();
 #ifdef __DEBUG__
-    Serial.print(F("free memory: "));
-    Serial.println(freeMemory());
+    logFreeMem();
 #endif
     pinMode(HEARTBEAT_LED, OUTPUT);
     digitalWrite(HEARTBEAT_LED, LOW);
@@ -355,8 +354,7 @@ void loop() {
         readSensors();
         tsLastSensorsRead = tsCurr;
 #ifdef __DEBUG__
-        Serial.print(F("free memory: "));
-        Serial.println(freeMemory());
+        logFreeMem();
 #endif
         // heater <--> tank
         processSupplyCircuit();
@@ -921,6 +919,13 @@ void processStandbyHeater() {
 
 /* ============ Helper methods ============ */
 
+void logFreeMem() {
+    Serial.print(getTimestamp());
+    Serial.print(F(": "));
+    Serial.print(F("free memory: "));
+    Serial.println(freeMemory());
+}
+
 bool room1TempReachedMinThreshold() {
     return (tsLastSensorTempRoom1 != 0
             && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
@@ -1410,8 +1415,7 @@ bool wifiGetRemoteIP() {
     uint16_t l = wifi->readBytesUntil('\0', buff, WIFI_MAX_AT_CMD_SIZE);
     buff[l] = '\0';
 #ifdef __DEBUG__
-    Serial.print(F("free memory: "));
-    Serial.println(freeMemory());
+    logFreeMem();
     Serial.print(F("wifi rq ip: "));
     Serial.println(buff);
 #endif
@@ -1668,10 +1672,7 @@ void reportNodeStatus(uint8_t id, uint16_t bit, unsigned long ts, unsigned long 
     root.printTo(json, JSON_MAX_SIZE);
 
 #ifdef __DEBUG__
-    Serial.print(getTimestamp());
-    Serial.print(F(": "));
-    Serial.print(F("free memory: "));
-    Serial.println(freeMemory());
+    logFreeMem();
 #endif
     broadcastMsg(json);
 }
@@ -1694,10 +1695,7 @@ void reportSensorStatus(const uint8_t id, const int16_t value, const unsigned lo
     root.printTo(json, JSON_MAX_SIZE);
 
 #ifdef __DEBUG__
-    Serial.print(getTimestamp());
-    Serial.print(F(": "));
-    Serial.print(F("free memory: "));
-    Serial.println(freeMemory());
+    logFreeMem();
 #endif
     broadcastMsg(json);
 }
@@ -1860,8 +1858,7 @@ bool parseCommand(char* command) {
     JsonObject& root = jsonBuffer.parseObject(command);
 #ifdef __DEBUG__
     Serial.println(F("parsed"));
-    Serial.print(F("free memory: "));
-    Serial.println(freeMemory());
+    logFreeMem();
 #endif
     if (root.success()) {
         const char* msgType = root[MSG_TYPE_KEY];
@@ -1982,8 +1979,7 @@ bool parseCommand(char* command) {
         return false;
     }
 #ifdef __DEBUG__
-    Serial.print(F("free memory: "));
-    Serial.println(freeMemory());
+    logFreeMem();
 #endif
     return true;
 }
