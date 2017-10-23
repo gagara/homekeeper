@@ -550,7 +550,7 @@ void processFloorCircuit() {
                     // do nothing
                 } else {
                     // temp in Room1 is high enough AND standby heater is off
-                    // turn pump ON
+                    // turn pump OFF
                     switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
                 }
             }
