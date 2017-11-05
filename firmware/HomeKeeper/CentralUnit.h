@@ -24,6 +24,7 @@ void setup();
 void processSupplyCircuit();
 void processHeatingCircuit();
 void processFloorCircuit();
+void processHeatingValve();
 void processHotWaterCircuit();
 void processCirculationCircuit();
 void processStandbyHeater();

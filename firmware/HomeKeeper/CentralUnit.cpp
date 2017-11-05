@@ -50,6 +50,8 @@ static const uint8_t NODE_CIRCULATION = 30; //11
 static const uint8_t NODE_SB_HEATER = 34;
 static const uint8_t NODE_SOLAR_PRIMARY = 36;
 static const uint8_t NODE_SOLAR_SECONDARY = 38;
+static const uint8_t NODE_HEATING_VALVE = 40;
+static const uint8_t NODE_RESERVED_ = 42;
 
 // WiFi pins
 static const uint8_t WIFI_RST_PIN = 12;
@@ -65,6 +67,8 @@ static const uint16_t NODE_CIRCULATION_BIT = 16;
 static const uint16_t NODE_SB_HEATER_BIT = 64;
 static const uint16_t NODE_SOLAR_PRIMARY_BIT = 128;
 static const uint16_t NODE_SOLAR_SECONDARY_BIT = 256;
+static const uint16_t NODE_HEATING_VALVE_BIT = 512;
+static const uint16_t NODE_RESERVED_BIT = 1024;
 
 // etc
 static const unsigned long MAX_TIMESTAMP = -1;
@@ -112,6 +116,10 @@ static const unsigned long CIRCULATION_PASSIVE_PERIOD_SEC = 3420; // 57m
 
 // Standby Heater
 static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
+
+// Tank
+static const uint8_t TANK_MIN_TEMP_THRESHOLD = 3;
+static const uint8_t TANK_MIN_TEMP_HIST = 2;
 
 // Solar
 static const unsigned long SOLAR_PRIMARY_COLDSTART_PERIOD_SEC = 600; // 10m
@@ -200,6 +208,7 @@ unsigned long tsNodeCirculation = 0;
 unsigned long tsNodeSbHeater = 0;
 unsigned long tsNodeSolarPrimary = 0;
 unsigned long tsNodeSolarSecondary = 0;
+unsigned long tsNodeHeatingValve = 0;
 
 // Nodes forced mode timestamps
 unsigned long tsForcedNodeSupply = 0;
@@ -210,6 +219,7 @@ unsigned long tsForcedNodeCirculation = 0;
 unsigned long tsForcedNodeSbHeater = 0;
 unsigned long tsForcedNodeSolarPrimary = 0;
 unsigned long tsForcedNodeSolarSecondary = 0;
+unsigned long tsForcedNodeHeatingValve = 0;
 
 // Sensors switch timestamps
 unsigned long tsSensorBoilerPower = 0;
@@ -329,6 +339,8 @@ void setup() {
     pinMode(NODE_SB_HEATER, OUTPUT);
     pinMode(NODE_SOLAR_PRIMARY, OUTPUT);
     pinMode(NODE_SOLAR_SECONDARY, OUTPUT);
+    pinMode(NODE_HEATING_VALVE, OUTPUT);
+    pinMode(NODE_RESERVED_, OUTPUT);
 
     // restore nodes state
     digitalWrite(NODE_SUPPLY, (~NODE_STATE_FLAGS & NODE_SUPPLY_BIT) ? HIGH : LOW);
@@ -339,6 +351,8 @@ void setup() {
     digitalWrite(NODE_SB_HEATER, (~NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) ? HIGH : LOW);
     digitalWrite(NODE_SOLAR_PRIMARY, (~NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) ? HIGH : LOW);
     digitalWrite(NODE_SOLAR_SECONDARY, (~NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) ? HIGH : LOW);
+    digitalWrite(NODE_HEATING_VALVE, (~NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) ? HIGH : LOW);
+    digitalWrite(NODE_RESERVED_, (~NODE_STATE_FLAGS & NODE_RESERVED_BIT) ? HIGH : LOW);
 
     // read sensors calibration factors from EEPROM
     loadSensorsCalibrationFactors();
@@ -362,6 +376,8 @@ void loop() {
         processHeatingCircuit();
         // floors
         processFloorCircuit();
+        // heating valve
+        processHeatingValve();
         // hot water
         processHotWaterCircuit();
         // circulation
@@ -472,18 +488,31 @@ void processHeatingCircuit() {
                     // do nothing
                 } else {
                     // supply is off
-                    // turn pump OFF
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
+                    if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
+                        // standby heater is on
+                        if (tempSbHeater <= tempMix && tempSbHeater <= tempTank) {
+                            // temp in standby heater <= (temp in Mix && Tank)
+                            // turn pump OFF
+                            switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
+                        } else {
+                            // temp in standby heater > (temp in Mix || Tank)
+                            // do nothing
+                        }
+                    } else {
+                        // standby heater is off
+                        // turn pump OFF
+                        switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
+                    }
                 }
             } else {
                 // temp is high enough at least in one source
-                if (room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
-                    // temp in Room1 is high enough OR standby heater is on
+                if (!room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                    // temp in Room1 is low OR standby heater is on
+                    // do nothing
+                } else {
+                    // temp in Room1 is high enough AND standby heater is off
                     // turn pump OFF
                     switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
-                } else {
-                    // temp in Room1 is too low AND standby heater is off
-                    // do nothing
                 }
             }
         } else {
@@ -491,13 +520,13 @@ void processHeatingCircuit() {
             if (tempTank >= HEATING_ON_TEMP_THRESHOLD || tempMix >= HEATING_ON_TEMP_THRESHOLD
                     || tempSbHeater >= HEATING_ON_TEMP_THRESHOLD) {
                 // temp in (tank || mix || sb_heater) is high enough
-                if (room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
-                    // temp in Room1 is high enough OR standby heater is on
-                    // do nothing
-                } else {
-                    // temp in Room1 is low AND standby heater is off
+                if (!room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                    // temp in Room1 is low OR standby heater is on
                     // turn pump ON
                     switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
+                } else {
+                    // temp in Room1 is high enough AND standby heater is off
+                    // do nothing
                 }
             } else {
                 // temp in (tank && mix && sb_heater) is too low
@@ -569,6 +598,71 @@ void processFloorCircuit() {
                 }
             } else {
                 // temp in (tank && mix && sb_heater) is too low
+                // do nothing
+            }
+        }
+    }
+}
+
+void processHeatingValve() {
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_HEATING_VALVE_BIT;
+    if (isInForcedMode(NODE_HEATING_VALVE_BIT, tsForcedNodeHeatingValve)) {
+        return;
+    }
+    if (wasForceMode) {
+        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve, tsForcedNodeHeatingValve);
+    }
+    if (diffTimestamps(tsCurr, tsNodeHeatingValve) >= NODE_SWITCH_SAFE_TIME_SEC) {
+        uint8_t sensIds[] = { SENSOR_TANK };
+        int16_t sensVals[] = { tempTank };
+        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        if (!validSensorValues(sensVals, sensCnt)) {
+            return;
+        }
+
+        if (NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) {
+            // valve is OPEN (short circuit)
+            if (tempTank < TANK_MIN_TEMP_THRESHOLD) {
+                // temp in tank is critically low
+                // CLOSE valve
+                switchNodeState(NODE_HEATING_VALVE, sensIds, sensVals, sensCnt);
+            } else {
+                // temp in tank is OK
+                if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
+                    // primary heater is ON
+                    if ((NODE_STATE_FLAGS & NODE_HEATING_BIT) || (NODE_STATE_FLAGS & NODE_FLOOR_BIT)) {
+                        // (heating || floor) node is ON
+                        // CLOSE valve
+                        switchNodeState(NODE_HEATING_VALVE, sensIds, sensVals, sensCnt);
+                    } else {
+                        // (heating && floor) node is OFF
+                        // do nothing
+                    }
+                } else {
+                    // primary heater is OFF
+                    // do nothing
+                }
+            }
+        } else {
+            // valve is CLOSED (full circuit)
+            if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
+                // stand by heater is on
+                if ((NODE_STATE_FLAGS & NODE_HEATING_BIT) || (NODE_STATE_FLAGS & NODE_FLOOR_BIT)) {
+                    // (heating || floor) node is ON
+                    if (tempTank >= TANK_MIN_TEMP_THRESHOLD + TANK_MIN_TEMP_HIST) {
+                        // temp in tank is OK
+                        // OPEN valve
+                        switchNodeState(NODE_HEATING_VALVE, sensIds, sensVals, sensCnt);
+                    } else {
+                        // temp in tank is critically low
+                        // do nothing
+                    }
+                } else {
+                    // (heating && floor) node is OFF
+                    // do nothing
+                }
+            } else {
+                // stand by heater is off
                 // do nothing
             }
         }
@@ -903,7 +997,7 @@ void processStandbyHeater() {
                 // do nothing
             } else {
                 // primary heater is off
-                if (tempTank < STANDBY_HEATER_ROOM_TEMP_THRESHOLD || room1TempFailedMinThreshold()) {
+                if (tempTank < TANK_MIN_TEMP_THRESHOLD || room1TempFailedMinThreshold()) {
                     // temp in (tank || room1) is too low
                     // turn heater ON
                     switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
@@ -1170,6 +1264,10 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
         bit = NODE_SOLAR_SECONDARY_BIT;
         ts = &tsNodeSolarSecondary;
         tsf = &tsForcedNodeSolarSecondary;
+    } else if (NODE_HEATING_VALVE == id) {
+        bit = NODE_HEATING_VALVE_BIT;
+        ts = &tsNodeHeatingValve;
+        tsf = &tsForcedNodeHeatingValve;
     }
 
     if (ts != NULL) {
@@ -1237,6 +1335,10 @@ void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
         forceNodeState(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, state, tsForcedNodeSolarSecondary, ts);
         reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
                 tsForcedNodeSolarSecondary);
+    } else if (NODE_HEATING_VALVE == id) {
+        forceNodeState(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, state, tsForcedNodeHeatingValve, ts);
+        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
+                tsForcedNodeHeatingValve);
     }
     // update node modes in EEPROM if forced permanently
     if (ts == 0) {
@@ -1299,6 +1401,11 @@ void unForceNodeState(uint8_t id) {
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SOLAR_SECONDARY_BIT;
         reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
                 tsForcedNodeSolarSecondary);
+    } else if (NODE_HEATING_VALVE == id) {
+        NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_HEATING_VALVE_BIT;
+        NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_HEATING_VALVE_BIT;
+        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
+                tsForcedNodeHeatingValve);
     }
     // update node modes in EEPROM if unforced from permanent
     if (prevPermanentlyForcedModeFlags != NODE_PERMANENTLY_FORCED_MODE_FLAGS) {
@@ -1645,6 +1752,11 @@ void reportStatus() {
     case NODE_SOLAR_SECONDARY:
         reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
                 tsForcedNodeSolarSecondary);
+        nextEntryReport = NODE_HEATING_VALVE;
+        break;
+    case NODE_HEATING_VALVE:
+        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
+                tsForcedNodeHeatingValve);
         nextEntryReport = 0;
         break;
     default:
