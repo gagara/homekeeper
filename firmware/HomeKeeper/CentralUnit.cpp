@@ -51,7 +51,7 @@ static const uint8_t NODE_SB_HEATER = 34;
 static const uint8_t NODE_SOLAR_PRIMARY = 36;
 static const uint8_t NODE_SOLAR_SECONDARY = 38;
 static const uint8_t NODE_HEATING_VALVE = 40;
-static const uint8_t NODE_RESERVED_ = 42;
+static const uint8_t NODE_RESERVED = 42;
 
 // WiFi pins
 static const uint8_t WIFI_RST_PIN = 12;
@@ -340,7 +340,7 @@ void setup() {
     pinMode(NODE_SOLAR_PRIMARY, OUTPUT);
     pinMode(NODE_SOLAR_SECONDARY, OUTPUT);
     pinMode(NODE_HEATING_VALVE, OUTPUT);
-    pinMode(NODE_RESERVED_, OUTPUT);
+    pinMode(NODE_RESERVED, OUTPUT);
 
     // restore nodes state
     digitalWrite(NODE_SUPPLY, (~NODE_STATE_FLAGS & NODE_SUPPLY_BIT) ? HIGH : LOW);
@@ -351,8 +351,9 @@ void setup() {
     digitalWrite(NODE_SB_HEATER, (~NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) ? HIGH : LOW);
     digitalWrite(NODE_SOLAR_PRIMARY, (~NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) ? HIGH : LOW);
     digitalWrite(NODE_SOLAR_SECONDARY, (~NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT) ? HIGH : LOW);
-    digitalWrite(NODE_HEATING_VALVE, (~NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) ? HIGH : LOW);
-    digitalWrite(NODE_RESERVED_, (~NODE_STATE_FLAGS & NODE_RESERVED_BIT) ? HIGH : LOW);
+    // these two have inverted levels
+    digitalWrite(NODE_HEATING_VALVE, (~NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) ? LOW : HIGH);
+    digitalWrite(NODE_RESERVED, LOW); // turn off reserved node
 
     // read sensors calibration factors from EEPROM
     loadSensorsCalibrationFactors();
@@ -1271,13 +1272,7 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
     }
 
     if (ts != NULL) {
-        if (NODE_STATE_FLAGS & bit) {
-            // switch OFF
-            digitalWrite(id, HIGH);
-        } else {
-            // switch ON
-            digitalWrite(id, LOW);
-        }
+        digitalWrite(id, digitalRead(id) ^ 1);
         NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
 
         *ts = getTimestamp();
