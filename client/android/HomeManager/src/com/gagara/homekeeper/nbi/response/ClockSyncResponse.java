@@ -47,15 +47,10 @@ public class ClockSyncResponse extends MessageHeader implements Response, Parcel
     }
 
     @Override
-    public ClockSyncResponse fromJson(JSONObject json) {
-        try {
-            if (ControllerConfig.MessageType.CLOCK_SYNC == ControllerConfig.MessageType
-                    .forCode(json.get(ControllerConfig.MSG_TYPE_KEY).toString())) {
-                this.setClockSeconds(json.getLong(ControllerConfig.TIMESTAMP_KEY));
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
-            return null;
+    public ClockSyncResponse fromJson(JSONObject json) throws JSONException {
+        if (ControllerConfig.MessageType.CLOCK_SYNC == ControllerConfig.MessageType
+                .forCode(json.get(ControllerConfig.MSG_TYPE_KEY).toString())) {
+            this.setClockSeconds(json.getLong(ControllerConfig.TIMESTAMP_KEY));
         }
         return this;
     }

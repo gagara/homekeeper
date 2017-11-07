@@ -92,35 +92,29 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
     }
 
     @Override
-    public NodeStatusResponse fromJson(JSONObject json) {
+    public NodeStatusResponse fromJson(JSONObject json) throws JSONException {
         if (clocksDelta == Long.MIN_VALUE) {
             throw new IllegalStateException("'clocksDelta' is not initialized");
         }
-        try {
-            data = new NodeModel(json.getInt(ID_KEY));
-            data.setState(json.getInt(STATE_KEY) == 1 ? true : false);
-            if (json.getLong(TIMESTAMP_KEY) != 0) {
-                data.setSwitchTimestamp(new Date((json.getLong(TIMESTAMP_KEY) + clocksDelta) * 1000));
+        data = new NodeModel(json.getInt(ID_KEY));
+        data.setState(json.getInt(STATE_KEY) == 1 ? true : false);
+        if (json.getLong(TIMESTAMP_KEY) != 0) {
+            data.setSwitchTimestamp(new Date((json.getLong(TIMESTAMP_KEY) + clocksDelta) * 1000));
+        }
+        data.setForcedMode(json.getInt(FORCE_FLAG_KEY) == 1 ? true : false);
+        if (json.has(FORCE_TIMESTAMP_KEY) && json.getLong(FORCE_TIMESTAMP_KEY) != 0) {
+            data.setForcedModeTimestamp(new Date((json.getLong(FORCE_TIMESTAMP_KEY) + clocksDelta) * 1000));
+        }
+        if (json.has(SENSOR_KEY)) {
+            JSONArray sensorsJson = json.getJSONArray(SENSOR_KEY);
+            for (int i = 0; i < sensorsJson.length(); i++) {
+                JSONObject sensorJson = sensorsJson.getJSONObject(i);
+                int id = sensorJson.getInt(ID_KEY);
+                int value = sensorJson.getInt(VALUE_KEY);
+                ValueSensorModel sensor = new ValueSensorModel(id);
+                sensor.setValue(value);
+                data.addSensor(sensor);
             }
-            data.setForcedMode(json.getInt(FORCE_FLAG_KEY) == 1 ? true : false);
-            if (json.has(FORCE_TIMESTAMP_KEY)
-                    && json.getLong(FORCE_TIMESTAMP_KEY) != 0) {
-                data.setForcedModeTimestamp(new Date((json.getLong(FORCE_TIMESTAMP_KEY) + clocksDelta) * 1000));
-            }
-            if (json.has(SENSOR_KEY)) {
-                JSONArray sensorsJson = json.getJSONArray(SENSOR_KEY);
-                for (int i = 0; i < sensorsJson.length(); i++) {
-                    JSONObject sensorJson = sensorsJson.getJSONObject(i);
-                    int id = sensorJson.getInt(ID_KEY);
-                    int value = sensorJson.getInt(VALUE_KEY);
-                    ValueSensorModel sensor = new ValueSensorModel(id);
-                    sensor.setValue(value);
-                    data.addSensor(sensor);
-                }
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
-            return null;
         }
         return this;
     }

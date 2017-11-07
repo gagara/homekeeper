@@ -88,35 +88,30 @@ public class CurrentStatusResponse extends MessageHeader implements Response, Pa
     }
 
     @Override
-    public CurrentStatusResponse fromJson(JSONObject json) {
+    public CurrentStatusResponse fromJson(JSONObject json) throws JSONException {
         if (clocksDelta == Long.MIN_VALUE) {
             throw new IllegalStateException("'clocksDelta' is not initialized");
         }
-        try {
-            if (ControllerConfig.MessageType.CURRENT_STATUS_REPORT == ControllerConfig.MessageType.forCode(json.get(
-                    MSG_TYPE_KEY).toString())) {
-                if (json.has(NODE_KEY)) {
-                    JSONObject nodeJson = json.getJSONObject(NODE_KEY);
-                    node = new NodeStatusResponse(clocksDelta);
-                    node.fromJson(nodeJson);
-                }
-                if (json.has(SENSOR_KEY)) {
-                    JSONObject sensorJson = json.getJSONObject(SENSOR_KEY);
-                    int id = sensorJson.getInt(ID_KEY);
-                    if (ViewUtils.validValueSensorId(id)) {
-                        valueSensor = new ValueSensorStatusResponse(clocksDelta);
-                        valueSensor.fromJson(sensorJson);
-                    } else {
-                        stateSensor = new StateSensorStatusResponse(clocksDelta);
-                        stateSensor.fromJson(sensorJson);
-                    }
-                }
-                return this;
-            } else {
-                return null;
+        if (ControllerConfig.MessageType.CURRENT_STATUS_REPORT == ControllerConfig.MessageType.forCode(json.get(
+                MSG_TYPE_KEY).toString())) {
+            if (json.has(NODE_KEY)) {
+                JSONObject nodeJson = json.getJSONObject(NODE_KEY);
+                node = new NodeStatusResponse(clocksDelta);
+                node.fromJson(nodeJson);
             }
-        } catch (JSONException e) {
-            Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
+            if (json.has(SENSOR_KEY)) {
+                JSONObject sensorJson = json.getJSONObject(SENSOR_KEY);
+                int id = sensorJson.getInt(ID_KEY);
+                if (ViewUtils.validValueSensorId(id)) {
+                    valueSensor = new ValueSensorStatusResponse(clocksDelta);
+                    valueSensor.fromJson(sensorJson);
+                } else {
+                    stateSensor = new StateSensorStatusResponse(clocksDelta);
+                    stateSensor.fromJson(sensorJson);
+                }
+            }
+            return this;
+        } else {
             return null;
         }
     }

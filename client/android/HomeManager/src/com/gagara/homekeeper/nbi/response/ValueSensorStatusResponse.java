@@ -66,21 +66,16 @@ public class ValueSensorStatusResponse extends MessageHeader implements Response
     }
 
     @Override
-    public ValueSensorStatusResponse fromJson(JSONObject json) {
-        try {
-            int id = json.getInt(ID_KEY);
-            int value = json.getInt(VALUE_KEY);
-            Date ts = UNDEFINED_DATE;
-            if (json.has(TIMESTAMP_KEY) && json.getLong(TIMESTAMP_KEY) != 0) {
-                ts = new Date((json.getLong(TIMESTAMP_KEY) + clocksDelta) * 1000);
-            }
-            data = new ValueSensorModel(id);
-            data.setValue(value);
-            data.setTimestamp(ts);
-        } catch (JSONException e) {
-            Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
-            return null;
+    public ValueSensorStatusResponse fromJson(JSONObject json) throws JSONException {
+        int id = json.getInt(ID_KEY);
+        int value = json.getInt(VALUE_KEY);
+        Date ts = UNDEFINED_DATE;
+        if (json.has(TIMESTAMP_KEY) && json.getLong(TIMESTAMP_KEY) != 0) {
+            ts = new Date((json.getLong(TIMESTAMP_KEY) + clocksDelta) * 1000);
         }
+        data = new ValueSensorModel(id);
+        data.setValue(value);
+        data.setTimestamp(ts);
         return this;
     }
 

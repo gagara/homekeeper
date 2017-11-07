@@ -47,15 +47,10 @@ public class FastClockSyncResponse extends MessageHeader implements Response, Pa
     }
 
     @Override
-    public FastClockSyncResponse fromJson(JSONObject json) {
-        try {
-            if (ControllerConfig.MessageType.FAST_CLOCK_SYNC == ControllerConfig.MessageType
-                    .forCode(json.get(ControllerConfig.MSG_TYPE_KEY).toString())) {
-                this.setClockSeconds(json.getLong(ControllerConfig.TIMESTAMP_KEY));
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
-            return null;
+    public FastClockSyncResponse fromJson(JSONObject json) throws JSONException {
+        if (ControllerConfig.MessageType.FAST_CLOCK_SYNC == ControllerConfig.MessageType
+                .forCode(json.get(ControllerConfig.MSG_TYPE_KEY).toString())) {
+            this.setClockSeconds(json.getLong(ControllerConfig.TIMESTAMP_KEY));
         }
         return this;
     }

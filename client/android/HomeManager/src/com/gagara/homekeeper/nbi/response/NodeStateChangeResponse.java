@@ -44,16 +44,11 @@ public class NodeStateChangeResponse extends NodeStatusResponse implements Respo
     }
 
     @Override
-    public NodeStateChangeResponse fromJson(JSONObject json) {
-        try {
-            if (ControllerConfig.MessageType.NODE_STATE_CHANGED == ControllerConfig.MessageType
-                    .forCode(json.get(ControllerConfig.MSG_TYPE_KEY).toString())) {
-                return (NodeStateChangeResponse) super.fromJson(json);
-            } else {
-                return null;
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
+    public NodeStateChangeResponse fromJson(JSONObject json) throws JSONException {
+        if (ControllerConfig.MessageType.NODE_STATE_CHANGED == ControllerConfig.MessageType.forCode(json.get(
+                ControllerConfig.MSG_TYPE_KEY).toString())) {
+            return (NodeStateChangeResponse) super.fromJson(json);
+        } else {
             return null;
         }
     }

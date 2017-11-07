@@ -47,17 +47,13 @@ public class ConfigurationResponse extends MessageHeader implements Response, Pa
     }
 
     @Override
-    public ConfigurationResponse fromJson(JSONObject json) {
-        try {
-            if (ControllerConfig.MessageType.CONFIGURATION == ControllerConfig.MessageType.forCode(json.get(
-                    ControllerConfig.MSG_TYPE_KEY).toString())) {
-                if (json.has(SENSOR_KEY) && json.getJSONObject(SENSOR_KEY).has(VALUE_KEY)) {
-                    ConfigurationResponse response = new SensorThresholdConfigurationResponse(clocksDelta);
-                    return response.fromJson(json);
-                }
+    public ConfigurationResponse fromJson(JSONObject json) throws JSONException {
+        if (ControllerConfig.MessageType.CONFIGURATION == ControllerConfig.MessageType.forCode(json.get(
+                ControllerConfig.MSG_TYPE_KEY).toString())) {
+            if (json.has(SENSOR_KEY) && json.getJSONObject(SENSOR_KEY).has(VALUE_KEY)) {
+                ConfigurationResponse response = new SensorThresholdConfigurationResponse(clocksDelta);
+                return response.fromJson(json);
             }
-        } catch (JSONException e) {
-            Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
         }
         return null;
     }

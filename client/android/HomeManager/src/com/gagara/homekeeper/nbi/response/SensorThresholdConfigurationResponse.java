@@ -59,17 +59,12 @@ public class SensorThresholdConfigurationResponse extends ConfigurationResponse 
     }
 
     @Override
-    public SensorThresholdConfigurationResponse fromJson(JSONObject json) {
-        try {
-            JSONObject sensor = json.getJSONObject(ControllerConfig.SENSOR_KEY);
-            int id = sensor.getInt(ID_KEY);
-            int value = sensor.getInt(VALUE_KEY);
-            data = new ValueSensorModel(id);
-            data.setValue(value);
-        } catch (JSONException e) {
-            Log.e(TAG, "failed to parse input message: " + e.getMessage(), e);
-            return null;
-        }
+    public SensorThresholdConfigurationResponse fromJson(JSONObject json) throws JSONException {
+        JSONObject sensor = json.getJSONObject(ControllerConfig.SENSOR_KEY);
+        int id = sensor.getInt(ID_KEY);
+        int value = sensor.getInt(VALUE_KEY);
+        data = new ValueSensorModel(id);
+        data.setValue(value);
         return this;
     }
 
