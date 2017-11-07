@@ -78,6 +78,7 @@
     <string name="node_circulation_name">Circulation</string>
     <string name="node_solar_primary_name">Solar Prim</string>
     <string name="node_solar_secondary_name">Solar Sec</string>
+    <string name="node_heating_valve_name">H. Valve</string>
     <string name="node_mix_name">Mix</string>
     <string name="node_sb_heater_name">SB Heater</string>
     <string name="node_details_unknown"></string>

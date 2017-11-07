@@ -3,6 +3,7 @@ package com.gagara.homekeeper.ui.viewmodel;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_CIRCULATION_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_FLOOR_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_HEATING_ID;
+import static com.gagara.homekeeper.common.ControllerConfig.NODE_HEATING_VALVE_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_HOTWATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_SB_HEATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_SOLAR_PRIMARY_ID;
@@ -77,6 +78,7 @@ public class TopModelView implements ModelView<Model> {
         NODES.put(NODE_CIRCULATION_ID, R.string.node_circulation_name);
         NODES.put(NODE_SOLAR_PRIMARY_ID, R.string.node_solar_primary_name);
         NODES.put(NODE_SOLAR_SECONDARY_ID, R.string.node_solar_secondary_name);
+        NODES.put(NODE_HEATING_VALVE_ID, R.string.node_heating_valve_name);
 
         int idx = 0;
         SENSORS_VIEW_LIST = new SparseIntArray();
@@ -97,6 +99,7 @@ public class TopModelView implements ModelView<Model> {
         NODES_VIEW_LIST.put(idx++, NODE_HEATING_ID);
         NODES_VIEW_LIST.put(idx++, NODE_FLOOR_ID);
         NODES_VIEW_LIST.put(idx++, NODE_SB_HEATER_ID);
+        NODES_VIEW_LIST.put(idx++, NODE_HEATING_VALVE_ID);
         NODES_VIEW_LIST.put(idx++, NODE_HOTWATER_ID);
         NODES_VIEW_LIST.put(idx++, NODE_CIRCULATION_ID);
         NODES_VIEW_LIST.put(idx++, NODE_SOLAR_PRIMARY_ID);

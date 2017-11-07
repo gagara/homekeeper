@@ -52,6 +52,7 @@ public class ControllerConfig {
     public static final int NODE_SB_HEATER_ID = 34;
     public static final int NODE_SOLAR_PRIMARY_ID = 36;
     public static final int NODE_SOLAR_SECONDARY_ID = 38;
+    public static final int NODE_HEATING_VALVE_ID = 40;
 
     public static final String MSG_TYPE_KEY = "m";
     public static final String ID_KEY = "id";
