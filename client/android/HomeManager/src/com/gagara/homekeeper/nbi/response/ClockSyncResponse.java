@@ -5,14 +5,11 @@ import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.nbi.MessageHeader;
 
 public class ClockSyncResponse extends MessageHeader implements Response, Parcelable {
-
-    private static final String TAG = ClockSyncResponse.class.getName();
 
     private long clockSeconds;
 

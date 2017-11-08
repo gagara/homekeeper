@@ -6,14 +6,11 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.gagara.homekeeper.common.ControllerConfig;
 
 @SuppressLint("UseSparseArrays")
 public class NodeStateChangeResponse extends NodeStatusResponse implements Response, Parcelable {
-
-    private static final String TAG = NodeStateChangeResponse.class.getName();
 
     @Override
     public int describeContents() {

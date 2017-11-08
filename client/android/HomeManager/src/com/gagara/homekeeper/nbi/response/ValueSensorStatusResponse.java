@@ -12,14 +12,11 @@ import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.gagara.homekeeper.model.ValueSensorModel;
 import com.gagara.homekeeper.nbi.MessageHeader;
 
 public class ValueSensorStatusResponse extends MessageHeader implements Response, Parcelable {
-
-    private static final String TAG = ValueSensorStatusResponse.class.getName();
 
     private ValueSensorModel data = null;
 

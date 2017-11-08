@@ -13,15 +13,12 @@ import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.nbi.MessageHeader;
 import com.gagara.homekeeper.ui.view.ViewUtils;
 
 public class CurrentStatusResponse extends MessageHeader implements Response, Parcelable {
-
-    private static final String TAG = CurrentStatusResponse.class.getName();
 
     private NodeStatusResponse node = null;
     private ValueSensorStatusResponse valueSensor = null;

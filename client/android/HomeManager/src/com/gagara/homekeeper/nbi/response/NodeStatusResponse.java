@@ -16,15 +16,12 @@ import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.ValueSensorModel;
 import com.gagara.homekeeper.nbi.MessageHeader;
 
 public class NodeStatusResponse extends MessageHeader implements Response, Parcelable {
-
-    private static final String TAG = NodeStatusResponse.class.getName();
 
     private NodeModel data = null;
 

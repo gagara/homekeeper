@@ -8,14 +8,11 @@ import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.model.ValueSensorModel;
 
 public class SensorThresholdConfigurationResponse extends ConfigurationResponse implements Response, Parcelable {
-
-    private static final String TAG = SensorThresholdConfigurationResponse.class.getName();
 
     private ValueSensorModel data = null;
 

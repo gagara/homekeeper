@@ -11,14 +11,11 @@ import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.gagara.homekeeper.model.StateSensorModel;
 import com.gagara.homekeeper.nbi.MessageHeader;
 
 public class StateSensorStatusResponse extends MessageHeader implements Response, Parcelable {
-
-    private static final String TAG = StateSensorStatusResponse.class.getName();
 
     private StateSensorModel data = null;
 
