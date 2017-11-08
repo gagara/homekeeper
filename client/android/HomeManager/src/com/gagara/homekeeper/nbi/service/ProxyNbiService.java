@@ -225,16 +225,11 @@ public class ProxyNbiService extends AbstractNbiService {
                 @Override
                 public void onErrorResponse(VolleyError e) {
                     Log.e(TAG, e.getMessage(), e);
-                    state = ERROR;
                     String msg = e.getMessage();
                     if (msg == null && e.networkResponse != null) {
                         msg = new String(e.networkResponse.data);
                     }
                     notifyStatusChange(e.getClass().getSimpleName() + ": " + msg);
-                    synchronized (serviceExecutor) {
-                        clocksDelta = null;
-                        serviceExecutor.notifyAll();
-                    }
                 }
             });
         }
