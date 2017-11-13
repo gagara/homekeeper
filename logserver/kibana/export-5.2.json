@@ -30,18 +30,11 @@
       "title": "Dynamics",
       "hits": 0,
       "description": "",
-      "panelsJSON": "[{\"col\":1,\"id\":\"7c19af90-0ebf-11e7-91d8-c97263d3d6b8\",\"panelIndex\":1,\"row\":9,\"size_x\":12,\"size_y\":5,\"type\":\"visualization\"},{\"col\":1,\"id\":\"46f3f660-0e77-11e7-91d8-c97263d3d6b8\",\"panelIndex\":2,\"row\":14,\"size_x\":12,\"size_y\":4,\"type\":\"visualization\"},{\"col\":1,\"id\":\"314b55c0-0e76-11e7-91d8-c97263d3d6b8\",\"panelIndex\":3,\"row\":3,\"size_x\":12,\"size_y\":6,\"type\":\"visualization\"},{\"col\":1,\"id\":\"900f2950-0ebd-11e7-91d8-c97263d3d6b8\",\"panelIndex\":4,\"row\":1,\"size_x\":12,\"size_y\":2,\"type\":\"visualization\"},{\"size_x\":12,\"size_y\":3,\"panelIndex\":5,\"type\":\"visualization\",\"id\":\"dcdfdb90-82b1-11e7-85ea-b586910de5f2\",\"col\":1,\"row\":18}]",
+      "panelsJSON": "[{\"col\":1,\"id\":\"7c19af90-0ebf-11e7-91d8-c97263d3d6b8\",\"panelIndex\":1,\"row\":10,\"size_x\":12,\"size_y\":5,\"type\":\"visualization\"},{\"col\":1,\"id\":\"46f3f660-0e77-11e7-91d8-c97263d3d6b8\",\"panelIndex\":2,\"row\":15,\"size_x\":12,\"size_y\":4,\"type\":\"visualization\"},{\"col\":1,\"id\":\"314b55c0-0e76-11e7-91d8-c97263d3d6b8\",\"panelIndex\":3,\"row\":3,\"size_x\":12,\"size_y\":7,\"type\":\"visualization\"},{\"col\":1,\"id\":\"900f2950-0ebd-11e7-91d8-c97263d3d6b8\",\"panelIndex\":4,\"row\":1,\"size_x\":12,\"size_y\":2,\"type\":\"visualization\"},{\"size_x\":12,\"size_y\":3,\"panelIndex\":5,\"type\":\"visualization\",\"id\":\"dcdfdb90-82b1-11e7-85ea-b586910de5f2\",\"col\":1,\"row\":19}]",
       "optionsJSON": "{\"darkTheme\":false}",
       "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-2\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-4\":{\"vis\":{\"legendOpen\":false}}}",
       "version": 1,
-      "timeRestore": true,
-      "timeTo": "now",
-      "timeFrom": "now-1h",
-      "refreshInterval": {
-        "display": "Off",
-        "pause": false,
-        "value": 0
-      },
+      "timeRestore": false,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
       }
