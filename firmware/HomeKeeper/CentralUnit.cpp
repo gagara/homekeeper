@@ -1141,7 +1141,7 @@ int16_t getSensorValue(const uint8_t sensor) {
         }
     } else if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
         float vin = 5; // 5V
-        float r2 = 90.341; // 100Ohm + calibration
+        float r2 = 91.335; // 100Ohm + calibration
         int v = 0;
         for (int i = 0; i < 10; i++) {
             v += analogRead(SENSOR_SOLAR_PRIMARY);
