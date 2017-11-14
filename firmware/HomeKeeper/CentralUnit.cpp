@@ -481,9 +481,12 @@ void processHeatingCircuit() {
 
         if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
             // pump is ON
-            if (tempTank < HEATING_OFF_TEMP_THRESHOLD && tempMix < HEATING_OFF_TEMP_THRESHOLD
-                    && tempSbHeater < HEATING_OFF_TEMP_THRESHOLD) {
-                // temp in (tank && mix && sb_heater) is too low
+            int16_t maxTemp = max(tempTank, max(tempMix, tempSbHeater));
+            if (NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) {
+                maxTemp = tempSbHeater;
+            }
+            if (maxTemp < HEATING_OFF_TEMP_THRESHOLD) {
+                // temp in all applicable sources is too low
                 if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
                     // supply is on
                     // do nothing
@@ -555,9 +558,12 @@ void processFloorCircuit() {
 
         if (NODE_STATE_FLAGS & NODE_FLOOR_BIT) {
             // pump is ON
-            if (tempTank < FLOOR_OFF_TEMP_THRESHOLD && tempMix < FLOOR_OFF_TEMP_THRESHOLD
-                    && tempSbHeater < FLOOR_OFF_TEMP_THRESHOLD) {
-                // temp in (tank && mix && sb_heater) is too low
+            int16_t maxTemp = max(tempTank, max(tempMix, tempSbHeater));
+            if (NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) {
+                maxTemp = tempSbHeater;
+            }
+            if (maxTemp < FLOOR_OFF_TEMP_THRESHOLD) {
+                // temp in all applicable sources is too low
                 if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
                     // standby heater is on
                     if (tempSbHeater <= tempMix && tempSbHeater <= tempTank) {
@@ -629,19 +635,32 @@ void processHeatingValve() {
                 switchNodeState(NODE_HEATING_VALVE, sensIds, sensVals, sensCnt);
             } else {
                 // temp in tank is OK
-                if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
-                    // primary heater is ON
-                    if ((NODE_STATE_FLAGS & NODE_HEATING_BIT) || (NODE_STATE_FLAGS & NODE_FLOOR_BIT)) {
-                        // (heating || floor) node is ON
+                if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
+                    // stand by heater is on
+                    // do nothing
+                } else {
+                    // stand by heater is off
+                    if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
+                        // primary heater is ON
                         // CLOSE valve
                         switchNodeState(NODE_HEATING_VALVE, sensIds, sensVals, sensCnt);
                     } else {
-                        // (heating && floor) node is OFF
-                        // do nothing
+                        // primary heater is OFF
+                        if ((NODE_STATE_FLAGS & NODE_HEATING_BIT) || (NODE_STATE_FLAGS & NODE_FLOOR_BIT)) {
+                            // (heating || floor) node is ON
+                            if (tempTank > tempSbHeater) {
+                                // tempTank > tempSbHeater
+                                // CLOSE valve
+                                switchNodeState(NODE_HEATING_VALVE, sensIds, sensVals, sensCnt);
+                            } else {
+                                // tempTank <= tempSbHeater
+                                // do nothing
+                            }
+                        } else {
+                            // (heating && floor) node is OFF
+                            // do nothing
+                        }
                     }
-                } else {
-                    // primary heater is OFF
-                    // do nothing
                 }
             }
         } else {
