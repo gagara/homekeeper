@@ -521,9 +521,12 @@ void processHeatingCircuit() {
             }
         } else {
             // pump is OFF
-            if (tempTank >= HEATING_ON_TEMP_THRESHOLD || tempMix >= HEATING_ON_TEMP_THRESHOLD
-                    || tempSbHeater >= HEATING_ON_TEMP_THRESHOLD) {
-                // temp in (tank || mix || sb_heater) is high enough
+            int16_t maxTemp = max(tempTank, max(tempMix, tempSbHeater));
+            if (NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) {
+                maxTemp = tempSbHeater;
+            }
+            if (maxTemp >= HEATING_ON_TEMP_THRESHOLD) {
+                // temp in one of applicable sources is high enough
                 if (!room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
                     // temp in Room1 is low OR standby heater is on
                     // turn pump ON
@@ -597,7 +600,7 @@ void processFloorCircuit() {
                 maxTemp = tempSbHeater;
             }
             if (maxTemp >= FLOOR_ON_TEMP_THRESHOLD) {
-                // temp in all applicable sources is high enough
+                // temp in one of applicable sources is high enough
                 if (!room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
                     // temp in Room1 is low OR standby heater is on
                     // turn pump ON
