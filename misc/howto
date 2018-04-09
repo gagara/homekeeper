@@ -3,10 +3,10 @@ sdptool browse local
 # register serial port
 sdptool add SP
 
-# listen for incoming connection
+# listen for incoming connection (slave mode)
 rfcomm listen /dev/rfcomm0
 
-# connect to BT
+# connect to BT (server mode)
 rfcomm bind /dev/rfcomm0 98:D3:31:60:3C:BD
 
 # disconnect
@@ -15,13 +15,36 @@ rfcomm release /dev/rfcomm0
 bluetoothctl
 power on/off
 
+# use terminal (e.g. cutecom)
+# -OR-
+# diectly in console
+$ cat /dev/rfcomm0
+$ echo "bla-bla-bla" > /dev/rfcomm0
+
 stty -F /dev/rfcomm0 -echo -onlcr -icrnl
 
 echo "{\"m\":\"cfg\",\"sip\":\"192.168.0.146\"}\" > /dev/rfcomm0
 echo "{\"m\":\"cfg\"}\" > /dev/rfcomm0
 
 ==========================
+HC-05 AT mode
+1. push button
+2. power on
+3. connect to /dev/ttyUSBx with terminal (e.g. cutecom)
+    baudrate: 38400
+    line endings: CR/LF
+==========================
+PT100 math
 
+r1 - pt100
+r2 - divider (100Ohm)
+v  - analog value
+-------------------------
+v = (1023*r2)/(r1 + r2)
+-------------------------
+r2 = r1*(1/(1023/v - 1))
+-------------------------
+===========================
 curl --basic -u proxy:proxy -H "Content-Type: application/json" -XPOST http://localhost:8088 -d '{"m":"csr"}'
 curl -v --basic -u proxy:proxy -H "Content-Type: application/json" -XPOST http://localhost:8088 -d '{"m":"log", "ts": 1469353609341}'
 
