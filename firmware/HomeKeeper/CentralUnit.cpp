@@ -109,7 +109,7 @@ static const uint8_t BOILER_SOLAR_MAX_TEMP_THRESHOLD = 46;
 static const uint8_t BOILER_SOLAR_MAX_TEMP_HIST = 2;
 
 // Circulation
-static const uint8_t CIRCULATION_MIN_TEMP_THRESHOLD = 41;
+static const uint8_t CIRCULATION_MIN_TEMP_THRESHOLD = 50;
 static const uint8_t CIRCULATION_COOLING_TEMP_THRESHOLD = 61;
 static const unsigned long CIRCULATION_ACTIVE_PERIOD_SEC = 180; // 3m
 static const unsigned long CIRCULATION_PASSIVE_PERIOD_SEC = 3420; // 57m
