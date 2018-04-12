@@ -8,7 +8,10 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-/* ========= Configuration ========= */
+#include "debug.h"
+#include "WiFi.h"
+
+/*============================= Global configuration ========================*/
 
 #define __DEBUG__
 
@@ -170,9 +173,7 @@ static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
 static const uint8_t WIFI_MAX_AT_CMD_SIZE = 128;
 static const uint16_t WIFI_MAX_BUFFER_SIZE = 512;
 
-/* ===== End of Configuration ====== */
-
-/* =========== Variables =========== */
+/*============================= Global variables ============================*/
 
 //// Sensors
 // Values
@@ -265,9 +266,7 @@ uint8_t CLIENT_ID = 0;
 uint8_t IP[4] = { 0, 0, 0, 0 };
 char OK[] = "OK";
 
-/* ======== End of Variables ======= */
-
-//======== Connectivity ========//
+/*============================= Connectivity ================================*/
 // Sensors
 OneWire oneWire(SENSORS_BUS);
 DallasTemperature sensors(&oneWire);
@@ -277,8 +276,9 @@ HardwareSerial *bt = &Serial1;
 
 //WiFi
 HardwareSerial *wifi = &Serial2;
+WiFi esp8266;
 
-//======== ============ ========//
+/*============================= Arduino entry point =========================*/
 
 void setup() {
     // Setup serial ports
@@ -291,7 +291,9 @@ void setup() {
     bt->begin(9600);
     // WiFi
     loadWifiConfig();
+    wifi->begin(115200);
     pinMode(WIFI_RST_PIN, OUTPUT);
+    esp8266.init(wifi, WIFI_RST_PIN);
     wifiInit();
     wifiSetup();
     wifiGetRemoteIP();
@@ -409,6 +411,8 @@ void loop() {
 
     tsPrev = tsCurr;
 }
+
+/*========================= Node processing methods =========================*/
 
 void processSupplyCircuit() {
     uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT;
@@ -1063,207 +1067,6 @@ void processStandbyHeater() {
     }
 }
 
-/* ============ Helper methods ============ */
-
-void logFreeMem() {
-    Serial.print(getTimestamp());
-    Serial.print(F(": "));
-    Serial.print(F("free memory: "));
-    Serial.println(freeMemory());
-}
-
-bool room1TempReachedMinThreshold() {
-    return (tsLastSensorTempRoom1 != 0
-            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 > STANDBY_HEATER_ROOM_TEMP_THRESHOLD)
-            || (tsLastSensorTempRoom1 != 0
-                    && diffTimestamps(tsCurr, tsLastSensorTempRoom1) >= HEATING_ROOM_1_MAX_VALIDITY_PERIOD)
-            || (tsLastSensorTempRoom1 == 0);
-}
-
-bool room1TempFailedMinThreshold() {
-    return (tsLastSensorTempRoom1 != 0
-            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 < STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
-}
-
-bool room1TempSatisfyMaxThreshold() {
-    return tsLastSensorTempRoom1 != 0
-            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 >= PRIMARY_HEATER_ROOM_TEMP_THRESHOLD;
-}
-
-void validateStringParam(char* str, int maxSize) {
-    char* ptr = str;
-    while (*ptr && (ptr - str) < maxSize) {
-        ptr++;
-    }
-    if (*ptr) {
-        str[0] = '\0';
-    }
-}
-
-void loadSensorsCalibrationFactors() {
-    SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 0);
-    SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 1);
-    SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 2);
-    SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 3);
-    SENSOR_MIX_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 4);
-    SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 5);
-    SENSOR_SOLAR_PRIMARY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 6);
-    SENSOR_SOLAR_SECONDARY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 7);
-}
-
-double readSensorCalibrationFactor(int offset) {
-    double f = EEPROM.readDouble(offset);
-    if (isnan(f) || f <= 0) {
-        f = 1;
-    }
-    return f;
-}
-
-void writeSensorCalibrationFactor(int offset, double value) {
-    EEPROM.writeDouble(offset, value);
-}
-
-void restoreNodesState() {
-    NODE_STATE_FLAGS = EEPROM.readInt(NODE_STATE_EEPROM_ADDR);
-    NODE_FORCED_MODE_FLAGS = EEPROM.readInt(NODE_FORCED_MODE_EEPROM_ADDR);
-    NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS;
-    NODE_STATE_FLAGS = NODE_STATE_FLAGS & NODE_PERMANENTLY_FORCED_MODE_FLAGS;
-}
-
-void loadWifiConfig() {
-    EEPROM.readBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
-    validateStringParam(WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP) - 1);
-    EEPROM.readBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
-    validateStringParam(WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW) - 1);
-    EEPROM.readBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
-    SERVER_PORT = EEPROM.readInt(SERVER_PORT_EEPROM_ADDR);
-    EEPROM.readBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
-    validateStringParam(WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP) - 1);
-    EEPROM.readBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
-    validateStringParam(WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW) - 1);
-}
-
-void readSensors() {
-    tempSupply = getSensorValue(SENSOR_SUPPLY);
-    tempReverse = getSensorValue(SENSOR_REVERSE);
-    tempTank = getSensorValue(SENSOR_TANK);
-    tempBoiler = getSensorValue(SENSOR_BOILER);
-    tempMix = getSensorValue(SENSOR_MIX);
-    tempSbHeater = getSensorValue(SENSOR_SB_HEATER);
-    tempSolarPrimary = getSensorValue(SENSOR_SOLAR_PRIMARY);
-    tempSolarSecondary = getSensorValue(SENSOR_SOLAR_SECONDARY);
-    // read sensorBoilerPower value
-    int8_t state = getSensorBoilerPowerState();
-    if (state != sensorBoilerPowerState) {
-        // state changed
-        sensorBoilerPowerState = state;
-        tsSensorBoilerPower = tsCurr;
-    }
-}
-
-int16_t getSensorValue(const uint8_t sensor) {
-    float result = UNKNOWN_SENSOR_VALUE;
-    if (SENSOR_SUPPLY == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_SUPPLY_ADDR)) {
-            result = sensors.getTempC(SENSOR_SUPPLY_ADDR) * SENSOR_SUPPLY_FACTOR;
-        }
-    } else if (SENSOR_REVERSE == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_REVERSE_ADDR)) {
-            result = sensors.getTempC(SENSOR_REVERSE_ADDR) * SENSOR_REVERSE_FACTOR;
-        }
-    } else if (SENSOR_TANK == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_TANK_ADDR)) {
-            result = sensors.getTempC(SENSOR_TANK_ADDR) * SENSOR_TANK_FACTOR;
-        }
-    } else if (SENSOR_BOILER == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_BOILER_ADDR)) {
-            result = sensors.getTempC(SENSOR_BOILER_ADDR) * SENSOR_BOILER_FACTOR;
-        }
-    } else if (SENSOR_MIX == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_MIX_ADDR)) {
-            result = sensors.getTempC(SENSOR_MIX_ADDR) * SENSOR_MIX_FACTOR;
-        }
-    } else if (SENSOR_SB_HEATER == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_SB_HEATER_ADDR)) {
-            result = sensors.getTempC(SENSOR_SB_HEATER_ADDR) * SENSOR_SB_HEATER_FACTOR;
-        }
-    } else if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
-        float vin = 5; // 5V
-        float r2 = 91.335; // 100Ohm + calibration
-        int v = 0;
-        for (int i = 0; i < 10; i++) {
-            v += analogRead(SENSOR_SOLAR_PRIMARY);
-            delay(100);
-        }
-        v = v / 10;
-        float vout = (vin / 1023.0) * v;
-        float r1 = (vin / vout - 1) * r2;
-#ifdef __DEBUG__
-        Serial.print(F("sensor SolarPrimary raw value: "));
-        Serial.print(v);
-        Serial.print(F("/"));
-        Serial.print(r1);
-        Serial.print(F("Ohm/"));
-        Serial.print((r1 - 100)/0.39);
-        Serial.println(F("C"));
-#endif
-        if (v > 0) {
-            result = (r1 - 100) / 0.39;
-        }
-    } else if (SENSOR_SOLAR_SECONDARY == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_SOLAR_SECONDARY_ADDR)) {
-            result = sensors.getTempC(SENSOR_SOLAR_SECONDARY_ADDR) * SENSOR_SOLAR_SECONDARY_FACTOR;
-        }
-    }
-    result = (result > 0) ? result + 0.5 : result - 0.5;
-    return int16_t(result);
-}
-
-int8_t getSensorBoilerPowerState() {
-    uint16_t max = 0;
-    for (uint8_t i = 0; i < 100; i++) {
-        uint16_t v = abs(analogRead(SENSOR_BOILER_POWER) - 512);
-        if (v > max && v < 1000) { // filter out error values. correct value should be <1000
-            max = v;
-        }
-        delay(1);
-    }
-#ifdef __DEBUG__
-    Serial.print(F("sensor BoilerPower raw value: "));
-    Serial.println(max);
-#endif
-    return (max > SENSOR_BOILER_POWER_THERSHOLD) ? 1 : 0;
-}
-
-bool validSensorValues(const int16_t values[], const uint8_t size) {
-    for (int i = 0; i < size; i++) {
-        if (values[i] == UNKNOWN_SENSOR_VALUE) {
-            return false;
-        }
-    }
-    return true;
-}
-
-unsigned long getTimestamp() {
-    unsigned long ts = millis();
-    if (ts < tsPrevRaw) {
-        overflowCount++;
-    }
-    tsPrevRaw = ts;
-    return (MAX_TIMESTAMP / 1000) * overflowCount + (ts / 1000);
-}
-
-unsigned long diffTimestamps(unsigned long hi, unsigned long lo) {
-    if (hi < lo) {
-        return lo - hi;
-    } else {
-        return hi - lo;
-    }
-}
-
 bool isInForcedMode(uint16_t bit, unsigned long ts) {
     if (NODE_FORCED_MODE_FLAGS & bit) { // forced mode
         if (ts == 0) {
@@ -1458,6 +1261,189 @@ void unForceNodeState(uint8_t id) {
         EEPROM.writeInt(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
     }
 }
+
+bool room1TempReachedMinThreshold() {
+    return (tsLastSensorTempRoom1 != 0
+            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+            && tempRoom1 > STANDBY_HEATER_ROOM_TEMP_THRESHOLD)
+            || (tsLastSensorTempRoom1 != 0
+                    && diffTimestamps(tsCurr, tsLastSensorTempRoom1) >= HEATING_ROOM_1_MAX_VALIDITY_PERIOD)
+            || (tsLastSensorTempRoom1 == 0);
+}
+
+bool room1TempFailedMinThreshold() {
+    return (tsLastSensorTempRoom1 != 0
+            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+            && tempRoom1 < STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+}
+
+bool room1TempSatisfyMaxThreshold() {
+    return tsLastSensorTempRoom1 != 0
+            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
+            && tempRoom1 >= PRIMARY_HEATER_ROOM_TEMP_THRESHOLD;
+}
+
+/*====================== Load/Save configuration in EEPROM ==================*/
+
+void loadSensorsCalibrationFactors() {
+    SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 0);
+    SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 1);
+    SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 2);
+    SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 3);
+    SENSOR_MIX_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 4);
+    SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 5);
+    SENSOR_SOLAR_PRIMARY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 6);
+    SENSOR_SOLAR_SECONDARY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 7);
+}
+
+double readSensorCalibrationFactor(int offset) {
+    double f = EEPROM.readDouble(offset);
+    if (isnan(f) || f <= 0) {
+        f = 1;
+    }
+    return f;
+}
+
+void writeSensorCalibrationFactor(int offset, double value) {
+    EEPROM.writeDouble(offset, value);
+}
+
+void restoreNodesState() {
+    NODE_STATE_FLAGS = EEPROM.readInt(NODE_STATE_EEPROM_ADDR);
+    NODE_FORCED_MODE_FLAGS = EEPROM.readInt(NODE_FORCED_MODE_EEPROM_ADDR);
+    NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS;
+    NODE_STATE_FLAGS = NODE_STATE_FLAGS & NODE_PERMANENTLY_FORCED_MODE_FLAGS;
+}
+
+void loadWifiConfig() {
+    EEPROM.readBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
+    validateStringParam(WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP) - 1);
+    EEPROM.readBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
+    validateStringParam(WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW) - 1);
+    EEPROM.readBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
+    SERVER_PORT = EEPROM.readInt(SERVER_PORT_EEPROM_ADDR);
+    EEPROM.readBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
+    validateStringParam(WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP) - 1);
+    EEPROM.readBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
+    validateStringParam(WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW) - 1);
+}
+
+void validateStringParam(char* str, int maxSize) {
+    char* ptr = str;
+    while (*ptr && (ptr - str) < maxSize) {
+        ptr++;
+    }
+    if (*ptr) {
+        str[0] = '\0';
+    }
+}
+
+/*====================== Sensors processing methods =========================*/
+
+void readSensors() {
+    tempSupply = getSensorValue(SENSOR_SUPPLY);
+    tempReverse = getSensorValue(SENSOR_REVERSE);
+    tempTank = getSensorValue(SENSOR_TANK);
+    tempBoiler = getSensorValue(SENSOR_BOILER);
+    tempMix = getSensorValue(SENSOR_MIX);
+    tempSbHeater = getSensorValue(SENSOR_SB_HEATER);
+    tempSolarPrimary = getSensorValue(SENSOR_SOLAR_PRIMARY);
+    tempSolarSecondary = getSensorValue(SENSOR_SOLAR_SECONDARY);
+    // read sensorBoilerPower value
+    int8_t state = getSensorBoilerPowerState();
+    if (state != sensorBoilerPowerState) {
+        // state changed
+        sensorBoilerPowerState = state;
+        tsSensorBoilerPower = tsCurr;
+    }
+}
+
+int16_t getSensorValue(const uint8_t sensor) {
+    float result = UNKNOWN_SENSOR_VALUE;
+    if (SENSOR_SUPPLY == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_SUPPLY_ADDR)) {
+            result = sensors.getTempC(SENSOR_SUPPLY_ADDR) * SENSOR_SUPPLY_FACTOR;
+        }
+    } else if (SENSOR_REVERSE == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_REVERSE_ADDR)) {
+            result = sensors.getTempC(SENSOR_REVERSE_ADDR) * SENSOR_REVERSE_FACTOR;
+        }
+    } else if (SENSOR_TANK == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_TANK_ADDR)) {
+            result = sensors.getTempC(SENSOR_TANK_ADDR) * SENSOR_TANK_FACTOR;
+        }
+    } else if (SENSOR_BOILER == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_BOILER_ADDR)) {
+            result = sensors.getTempC(SENSOR_BOILER_ADDR) * SENSOR_BOILER_FACTOR;
+        }
+    } else if (SENSOR_MIX == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_MIX_ADDR)) {
+            result = sensors.getTempC(SENSOR_MIX_ADDR) * SENSOR_MIX_FACTOR;
+        }
+    } else if (SENSOR_SB_HEATER == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_SB_HEATER_ADDR)) {
+            result = sensors.getTempC(SENSOR_SB_HEATER_ADDR) * SENSOR_SB_HEATER_FACTOR;
+        }
+    } else if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
+        float vin = 5; // 5V
+        float r2 = 91.335; // 100Ohm + calibration
+        int v = 0;
+        for (int i = 0; i < 10; i++) {
+            v += analogRead(SENSOR_SOLAR_PRIMARY);
+            delay(100);
+        }
+        v = v / 10;
+        float vout = (vin / 1023.0) * v;
+        float r1 = (vin / vout - 1) * r2;
+#ifdef __DEBUG__
+        Serial.print(F("sensor SolarPrimary raw value: "));
+        Serial.print(v);
+        Serial.print(F("/"));
+        Serial.print(r1);
+        Serial.print(F("Ohm/"));
+        Serial.print((r1 - 100)/0.39);
+        Serial.println(F("C"));
+#endif
+        if (v > 0) {
+            result = (r1 - 100) / 0.39;
+        }
+    } else if (SENSOR_SOLAR_SECONDARY == sensor) {
+        if (sensors.requestTemperaturesByAddress(SENSOR_SOLAR_SECONDARY_ADDR)) {
+            result = sensors.getTempC(SENSOR_SOLAR_SECONDARY_ADDR) * SENSOR_SOLAR_SECONDARY_FACTOR;
+        }
+    }
+    result = (result > 0) ? result + 0.5 : result - 0.5;
+    return int16_t(result);
+}
+
+int8_t getSensorBoilerPowerState() {
+    uint16_t max = 0;
+    for (uint8_t i = 0; i < 100; i++) {
+        uint16_t v = abs(analogRead(SENSOR_BOILER_POWER) - 512);
+        if (v > max && v < 1000) { // filter out error values. correct value should be <1000
+            max = v;
+        }
+        delay(1);
+    }
+#ifdef __DEBUG__
+    Serial.print(F("sensor BoilerPower raw value: "));
+    Serial.println(max);
+#endif
+    return (max > SENSOR_BOILER_POWER_THERSHOLD) ? 1 : 0;
+}
+
+bool validSensorValues(const int16_t values[], const uint8_t size) {
+    for (int i = 0; i < size; i++) {
+        if (values[i] == UNKNOWN_SENSOR_VALUE) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
+/*====================== Wifi================================================*/
 
 bool wifiStationMode() {
     return strlen(WIFI_REMOTE_AP) + strlen(WIFI_REMOTE_PW) > 0;
@@ -1713,6 +1699,8 @@ void wifiRead(char* req) {
 #endif
 }
 
+/*============================ Reporting ====================================*/
+
 void reportStatus() {
     if (nextEntryReport == 0) {
         // check WiFi connectivity
@@ -1954,21 +1942,7 @@ void syncClocks() {
     broadcastMsg(json);
 }
 
-void broadcastMsg(const char* msg) {
-    Serial.println(msg);
-    bt->println(msg);
-    bool ok = wifiSend(msg);
-    if (ok) {
-        tsLastWifiSuccessTransmission = tsCurr;
-    }
-#ifdef __DEBUG__
-    if (ok) {
-        Serial.println(F("wifi send: OK"));
-    } else {
-        Serial.println(F("wifi send: FAILED"));
-    }
-#endif
-}
+/*========================= Communication ===================================*/
 
 void processSerialMsg() {
     char buff[JSON_MAX_SIZE + 1];
@@ -1998,6 +1972,22 @@ void processWifiReq() {
             wifiRsp400();
         }
     }
+}
+
+void broadcastMsg(const char* msg) {
+    Serial.println(msg);
+    bt->println(msg);
+    bool ok = wifiSend(msg);
+    if (ok) {
+        tsLastWifiSuccessTransmission = tsCurr;
+    }
+#ifdef __DEBUG__
+    if (ok) {
+        Serial.println(F("wifi send: OK"));
+    } else {
+        Serial.println(F("wifi send: FAILED"));
+    }
+#endif
 }
 
 bool parseCommand(char* command) {
@@ -2141,3 +2131,30 @@ bool parseCommand(char* command) {
 #endif
     return true;
 }
+
+/*========================= Helper methods ==================================*/
+
+unsigned long getTimestamp() {
+    unsigned long ts = millis();
+    if (ts < tsPrevRaw) {
+        overflowCount++;
+    }
+    tsPrevRaw = ts;
+    return (MAX_TIMESTAMP / 1000) * overflowCount + (ts / 1000);
+}
+
+unsigned long diffTimestamps(unsigned long hi, unsigned long lo) {
+    if (hi < lo) {
+        return lo - hi;
+    } else {
+        return hi - lo;
+    }
+}
+
+void logFreeMem() {
+    Serial.print(getTimestamp());
+    Serial.print(F(": "));
+    Serial.print(F("free memory: "));
+    Serial.println(freeMemory());
+}
+
