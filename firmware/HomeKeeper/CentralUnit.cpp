@@ -8,8 +8,8 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#include "debug.h"
-#include "WiFi.h"
+#include <debug.h>
+#include <WiFi.h>
 
 /*============================= Global configuration ========================*/
 
@@ -294,6 +294,7 @@ void setup() {
     wifi->begin(115200);
     pinMode(WIFI_RST_PIN, OUTPUT);
     esp8266.init(wifi, WIFI_RST_PIN);
+    esp8266.begin(MODE_STA_AP);
     wifiInit();
     wifiSetup();
     wifiGetRemoteIP();
