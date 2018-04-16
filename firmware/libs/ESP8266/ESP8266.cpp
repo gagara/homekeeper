@@ -116,6 +116,7 @@ int ESP8266::readStaIp(uint8_t *ip) {
 }
 
 void ESP8266::send(const char* message) {
+    // TODO
     if (write(message)) {
         dbg(debugSerial, "send OK\n");
     } else {
@@ -124,11 +125,12 @@ void ESP8266::send(const char* message) {
 }
 
 size_t ESP8266::receive(char* message, size_t length) {
+    // TODO
     char buffer[MAX_MESSAGE_SIZE + 1];
     return read(buffer, MAX_MESSAGE_SIZE);
 }
 
-bool ESP8266::avaliabe() {
+bool ESP8266::available() {
     return espSerial->available();
 }
 
@@ -200,12 +202,19 @@ esp_cwmode ESP8266::getMode() {
 }
 
 bool ESP8266::tcpServerUp() {
-    char atcmd[MAX_AT_REQUEST_SIZE + 1];
-    sprintf(atcmd, "AT+CIPSERVER=1,%d", tcpServerPort);
-    return write(atcmd, EXPECT_OK, 200);
+    if (tcpServerPort > 0) {
+        char atcmd[MAX_AT_REQUEST_SIZE + 1];
+        sprintf(atcmd, "AT+CIPSERVER=1,%d", tcpServerPort);
+        return write(atcmd, EXPECT_OK, 200);
+    } else {
+        return true;
+    }
 }
 
 bool ESP8266::tcpServerDown() {
-    char atcmd[MAX_AT_REQUEST_SIZE + 1];
-    return write(F("AT+CIPSERVER=0"), EXPECT_OK, 200);
+    if (tcpServerPort > 0) {
+        return write(F("AT+CIPSERVER=0"), EXPECT_OK, 200);
+    } else {
+        return true;
+    }
 }

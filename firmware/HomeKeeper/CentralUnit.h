@@ -46,6 +46,7 @@ void restoreNodesState();
 void loadWifiConfig();
 void validateStringParam(char* str, int maxSize);
 
+void searchSensors();
 void readSensors();
 int16_t getSensorValue(const uint8_t sensor);
 int8_t getSensorBoilerPowerState();
@@ -69,22 +70,21 @@ bool parseCommand(char* command);
 
 unsigned long getTimestamp();
 unsigned long diffTimestamps(unsigned long hi, unsigned long lo);
-void logFreeMem();
 
 ////////////////////
-bool wifiStationMode();
-bool wifiAPMode();
-void wifiInit();
-void wifiSetup();
-void wifiCheckConnection();
-bool wifiGetRemoteIP();
-bool validIP(uint8_t ip[4]);
-bool wifiRsp(const char* body);
-bool wifiRsp200();
-bool wifiRsp400();
-bool wifiSend(const char* msg);
-bool wifiWrite(const char* msg, const char* rsp, const int wait = 0, const uint8_t maxRetry = 5);
-void wifiRead(char* req);
+//bool wifiStationMode();
+//bool wifiAPMode();
+//void wifiInit();
+//void wifiSetup();
+//void wifiCheckConnection();
+//bool wifiGetRemoteIP();
+//bool validIP(uint8_t ip[4]);
+//bool wifiRsp(const char* body);
+//bool wifiRsp200();
+//bool wifiRsp400();
+//bool wifiSend(const char* msg);
+//bool wifiWrite(const char* msg, const char* rsp, const int wait = 0, const uint8_t maxRetry = 5);
+//void wifiRead(char* req);
 /////////////////////////
 
 //Do not add code below this line

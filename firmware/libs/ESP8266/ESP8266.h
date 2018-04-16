@@ -28,16 +28,16 @@ public:
 
     static void send(const char* message);
     static size_t receive(char* message, size_t length);
-    static bool avaliabe();
+    static bool available();
+    static bool write(const char *message, esp_response expected_response = EXPECT_NOTHING, const uint16_t ttl = 3000, const uint8_t retry_count = 1);
+    static bool write(const __FlashStringHelper *message, esp_response expected_response = EXPECT_NOTHING, const uint16_t ttl = 3000, const uint8_t retry_count = 1);
+    static size_t read(char *buffer, size_t length, const uint16_t ttl = 3000);
 
 private:
     static Stream *espSerial;
     static Stream *debugSerial;
     static uint8_t hwResetPin;
     static uint16_t tcpServerPort;
-    static bool write(const char *message, esp_response expected_response = EXPECT_NOTHING, const uint16_t ttl = 3000, const uint8_t retry_count = 1);
-    static bool write(const __FlashStringHelper *message, esp_response expected_response = EXPECT_NOTHING, const uint16_t ttl = 3000, const uint8_t retry_count = 1);
-    static size_t read(char *buffer, size_t length, const uint16_t ttl = 3000);
     static esp_cwmode getMode();
     static bool tcpServerUp();
     static bool tcpServerDown();
