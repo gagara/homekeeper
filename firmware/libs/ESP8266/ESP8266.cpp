@@ -14,18 +14,13 @@ const uint16_t HARD_FAILURE_GRACE_PERIOD_SEC = 180;
 
 const char* esp_response_str[] { "\r\nOK\r\n", "\r\nERROR\r\n", "\r\n>\r\n", "\r\nWIFI CONNECTED\r\n" };
 
-Stream *ESP8266::espSerial;
-Stream *ESP8266::debugSerial;
-uint8_t ESP8266::hwResetPin;
-uint16_t ESP8266::tcpServerPort;
-unsigned long ESP8266::lastSuccessCommunicationTs;
-
 void ESP8266::init(Stream *espSerial, esp_cwmode mode, uint8_t hwResetPin, Stream *debugSerial) {
     ESP8266::espSerial = espSerial;
     ESP8266::debugSerial = debugSerial;
+    ESP8266::mode = mode;
     ESP8266::hwResetPin = hwResetPin;
-    ESP8266::tcpServerPort = 0;
-    ESP8266::lastSuccessCommunicationTs = 0;
+    ESP8266::lastSuccessCommunicationTs = millis();
+
     char atcmd[MAX_AT_REQUEST_SIZE + 1];
     dbg(debugSerial, F("wifi: init\n"));
     if (hwResetPin > 0) {
@@ -49,37 +44,51 @@ void ESP8266::setDebugPort(Stream *debugSerial) {
 }
 
 void ESP8266::startAP(const char *ssid, const char *password) {
-    int mode = getMode();
-    if (mode == MODE_AP || mode == MODE_STA_AP) {
-        char atcmd[MAX_AT_REQUEST_SIZE + 1];
-        // SSID, password, channel, enc_type, conn_cnt, hidden
-        sprintf(atcmd, "AT+CWSAP_CUR=\"%s\",\"%s\",%d,%d,%d,%d", ssid, password, 3, 2, 1, 1);
-        if (write(atcmd, EXPECT_OK, 1000)) {
-            dbgf(debugSerial, F("wifi: %s AP started\n"), ssid);
-        } else {
-            dbg(debugSerial, F("wifi: AP start failed\n"));
+    strncpy(apSsid, ssid, AP_CREDS_MAX_SIZE);
+    apSsid[AP_CREDS_MAX_SIZE - 1] = '\0';
+    strncpy(apPassword, password, AP_CREDS_MAX_SIZE);
+    apPassword[AP_CREDS_MAX_SIZE - 1] = '\0';
+
+    if (strlen(ssid)) {
+        if (mode == MODE_AP || mode == MODE_STA_AP) {
+            char atcmd[MAX_AT_REQUEST_SIZE + 1];
+            // SSID, password, channel, enc_type, conn_cnt, hidden
+            sprintf(atcmd, "AT+CWSAP_CUR=\"%s\",\"%s\",%d,%d,%d,%d", ssid, password, 3, 2, 1, 1);
+            if (write(atcmd, EXPECT_OK, 1000)) {
+                dbgf(debugSerial, F("wifi: %s AP started\n"), ssid);
+            } else {
+                dbg(debugSerial, F("wifi: AP start failed\n"));
+            }
         }
     }
 }
 
 void ESP8266::connect(const char *ssid, const char *password) {
-    int mode = getMode();
-    if (mode == MODE_STA || mode == MODE_STA_AP) {
-        char atcmd[MAX_AT_REQUEST_SIZE + 1];
-        // SSID, password
-        sprintf(atcmd, "AT+CWJAP_CUR=\"%s\",\"%s\"", ssid, password);
-        if (write(atcmd, EXPECT_CONNECTED, 5000)) {
-            dbgf(debugSerial, F("wifi: connected to %s\n"), ssid);
-            delay(2000);
-        } else {
-            dbg(debugSerial, F("wifi: connection failed\n"));
-            write(F("AT"), EXPECT_OK, 15000, 5);
+    strncpy(staSsid, ssid, AP_CREDS_MAX_SIZE);
+    staSsid[AP_CREDS_MAX_SIZE - 1] = '\0';
+    strncpy(staPassword, password, AP_CREDS_MAX_SIZE);
+    staPassword[AP_CREDS_MAX_SIZE - 1] = '\0';
+
+    if (strlen(ssid)) {
+        if (mode == MODE_STA || mode == MODE_STA_AP) {
+            char atcmd[MAX_AT_REQUEST_SIZE + 1];
+            // SSID, password
+            sprintf(atcmd, "AT+CWJAP_CUR=\"%s\",\"%s\"", ssid, password);
+            if (write(atcmd, EXPECT_CONNECTED, 5000)) {
+                dbgf(debugSerial, F("wifi: connected to %s\n"), ssid);
+                delay(2000);
+            } else {
+                dbg(debugSerial, F("wifi: connection failed\n"));
+                write(F("AT"), EXPECT_OK, 15000, 5);
+            }
         }
     }
 }
 
 void ESP8266::disconnect() {
-    int mode = getMode();
+    staSsid[0] = '\0';
+    staPassword[0] = '\0';
+
     if (mode == MODE_STA || mode == MODE_STA_AP) {
         if (write(F("AT+CWQAP"), EXPECT_OK, 1000)) {
             dbg(debugSerial, F("wifi: disconnected from AP\n"));
@@ -89,17 +98,30 @@ void ESP8266::disconnect() {
     }
 }
 
+void ESP8266::reconnect() {
+    char ssid[AP_CREDS_MAX_SIZE];
+    strncpy(ssid, staSsid, AP_CREDS_MAX_SIZE);
+    char password[AP_CREDS_MAX_SIZE];
+    strncpy(password, staPassword, AP_CREDS_MAX_SIZE);
+    disconnect();
+    connect(ssid, password);
+}
+
 void ESP8266::startTcpServer(const unsigned int port) {
     tcpServerPort = port;
-    if (tcpServerUp()) {
-        dbgf(debugSerial, F("wifi: TCP server UP on port %d\n"), tcpServerPort);
-    } else {
-        dbg(debugSerial, F("wifi: TCP server start failed\n"));
+
+    if (port > 0) {
+        if (tcpServerUp()) {
+            dbgf(debugSerial, F("wifi: TCP server UP on port %d\n"), tcpServerPort);
+        } else {
+            dbg(debugSerial, F("wifi: TCP server start failed\n"));
+        }
     }
 }
 
 void ESP8266::stopTcpServer() {
     tcpServerPort = 0;
+
     if (tcpServerDown()) {
         dbg(debugSerial, F("wifi: TCP server DOWN\n"));
     } else {
@@ -129,9 +151,12 @@ void ESP8266::send(const char* message) {
         if (tsDelta < SOFT_FAILURE_GRACE_PERIOD_SEC) {
             // all ok
         } else if (tsDelta < HARD_FAILURE_GRACE_PERIOD_SEC) {
-            // try to reconnect
+            reconnect();
         } else {
-            // reboot
+            init(espSerial, mode, hwResetPin, debugSerial);
+            startAP(apSsid, apPassword);
+            connect(staSsid, staPassword);
+            startTcpServer(tcpServerPort);
         }
     } else {
         lastSuccessCommunicationTs = 0;
@@ -208,18 +233,6 @@ size_t ESP8266::read(char* buffer, size_t length, const uint16_t ttl) {
     }
     dbgf(debugSerial, F("\n"));
     return i;
-}
-
-esp_cwmode ESP8266::getMode() {
-    char atrsp[MAX_AT_RESPONSE_SIZE + 1];
-    write(F("AT+CWMODE_CUR?"));
-    read(atrsp, MAX_AT_RESPONSE_SIZE);
-    int mode;
-    if (sscanf(strstr(atrsp, "+CWMODE_CUR:"), "+CWMODE_CUR:%d", &mode)) {
-        return esp_cwmode(mode);
-    } else {
-        return MODE_UNKNOWN;
-    }
 }
 
 bool ESP8266::tcpServerUp() {
