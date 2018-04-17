@@ -18,6 +18,7 @@ enum esp_response {
 class ESP8266 {
 public:
     static void init(Stream *espSerial, esp_cwmode mode = MODE_STA, uint8_t hwResetPin = 0, Stream *debugSerial = &Serial);
+    static void setDebugPort(Stream *debugSerial);
     static void startAP(const char *ssid, const char *password);
     static void connect(const char *ssid, const char *password);
     static void disconnect();
@@ -28,7 +29,7 @@ public:
 
     static void send(const char* message);
     static size_t receive(char* message, size_t length);
-    static bool available();
+    static int available();
     static bool write(const char *message, esp_response expected_response = EXPECT_NOTHING, const uint16_t ttl = 3000, const uint8_t retry_count = 1);
     static bool write(const __FlashStringHelper *message, esp_response expected_response = EXPECT_NOTHING, const uint16_t ttl = 3000, const uint8_t retry_count = 1);
     static size_t read(char *buffer, size_t length, const uint16_t ttl = 3000);
@@ -38,6 +39,7 @@ private:
     static Stream *debugSerial;
     static uint8_t hwResetPin;
     static uint16_t tcpServerPort;
+    static unsigned long lastSuccessCommunicationTs;
     static esp_cwmode getMode();
     static bool tcpServerUp();
     static bool tcpServerDown();

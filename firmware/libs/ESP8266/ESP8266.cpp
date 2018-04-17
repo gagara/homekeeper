@@ -9,24 +9,23 @@
 const uint8_t MAX_AT_REQUEST_SIZE = 64;
 const uint8_t MAX_AT_RESPONSE_SIZE = 64;
 const uint8_t MAX_MESSAGE_SIZE = 128;
+const uint16_t SOFT_FAILURE_GRACE_PERIOD_SEC = 60;
+const uint16_t HARD_FAILURE_GRACE_PERIOD_SEC = 180;
 
-const char* esp_response_str[] {
-    "\r\nOK\r\n",
-    "\r\nERROR\r\n",
-    "\r\n>\r\n",
-    "\r\nWIFI CONNECTED\r\n"
-};
+const char* esp_response_str[] { "\r\nOK\r\n", "\r\nERROR\r\n", "\r\n>\r\n", "\r\nWIFI CONNECTED\r\n" };
 
 Stream *ESP8266::espSerial;
 Stream *ESP8266::debugSerial;
 uint8_t ESP8266::hwResetPin;
 uint16_t ESP8266::tcpServerPort;
+unsigned long ESP8266::lastSuccessCommunicationTs;
 
 void ESP8266::init(Stream *espSerial, esp_cwmode mode, uint8_t hwResetPin, Stream *debugSerial) {
     ESP8266::espSerial = espSerial;
     ESP8266::debugSerial = debugSerial;
     ESP8266::hwResetPin = hwResetPin;
     ESP8266::tcpServerPort = 0;
+    ESP8266::lastSuccessCommunicationTs = 0;
     char atcmd[MAX_AT_REQUEST_SIZE + 1];
     dbg(debugSerial, F("wifi: init\n"));
     if (hwResetPin > 0) {
@@ -43,6 +42,10 @@ void ESP8266::init(Stream *espSerial, esp_cwmode mode, uint8_t hwResetPin, Strea
     sprintf(atcmd, "AT+CWMODE_CUR=%d", mode);
     write(atcmd, EXPECT_OK, 300);
     write(F("AT+CIPMUX=1"), EXPECT_OK, 300);
+}
+
+void ESP8266::setDebugPort(Stream *debugSerial) {
+    ESP8266::debugSerial = debugSerial;
 }
 
 void ESP8266::startAP(const char *ssid, const char *password) {
@@ -94,6 +97,7 @@ void ESP8266::startTcpServer(const unsigned int port) {
         dbg(debugSerial, F("wifi: TCP server start failed\n"));
     }
 }
+
 void ESP8266::stopTcpServer() {
     tcpServerPort = 0;
     if (tcpServerDown()) {
@@ -115,14 +119,27 @@ int ESP8266::readStaIp(uint8_t *ip) {
     char atrsp[MAX_AT_RESPONSE_SIZE + 1];
     write(F("AT+CIPSTA?"));
     read(atrsp, MAX_AT_RESPONSE_SIZE);
-    return sscanf(strstr(atrsp, "+CIPSTA:ip:"), "+CIPSTA:ip:\"%d.%d.%d.%d\"", (int*) &ip[0], (int*) &ip[1], (int*) &ip[2],
-            (int*) &ip[3]);
+    return sscanf(strstr(atrsp, "+CIPSTA:ip:"), "+CIPSTA:ip:\"%d.%d.%d.%d\"", (int*) &ip[0], (int*) &ip[1],
+            (int*) &ip[2], (int*) &ip[3]);
 }
 
 void ESP8266::send(const char* message) {
+    unsigned long tsDelta = millis() - lastSuccessCommunicationTs;
+    if (tsDelta > 0) {
+        if (tsDelta < SOFT_FAILURE_GRACE_PERIOD_SEC) {
+            // all ok
+        } else if (tsDelta < HARD_FAILURE_GRACE_PERIOD_SEC) {
+            // try to reconnect
+        } else {
+            // reboot
+        }
+    } else {
+        lastSuccessCommunicationTs = 0;
+    }
     // TODO
     if (write(message)) {
         dbg(debugSerial, "send OK\n");
+        lastSuccessCommunicationTs = millis();
     } else {
         dbg(debugSerial, "send ERR\n");
     }
@@ -134,7 +151,7 @@ size_t ESP8266::receive(char* message, size_t length) {
     return read(buffer, MAX_MESSAGE_SIZE);
 }
 
-bool ESP8266::available() {
+int ESP8266::available() {
     return espSerial->available();
 }
 
@@ -186,7 +203,7 @@ size_t ESP8266::read(char* buffer, size_t length, const uint16_t ttl) {
         while (espSerial->available() > 0 && i < length) {
             buffer[i++] = (char) espSerial->read();
             buffer[i] = '\0';
-            dbgf(debugSerial, &buffer[i-1]);
+            dbgf(debugSerial, &buffer[i - 1]);
         }
     }
     dbgf(debugSerial, F("\n"));

@@ -54,7 +54,7 @@ bool validSensorValues(const int16_t values[], const uint8_t size);
 
 void reportStatus();
 void reportNodeStatus(uint8_t nodeId, uint16_t nodeBit, unsigned long ts, unsigned long tsf);
-void reportSensorStatus(const uint8_t id, const int16_t value,const unsigned long ts = 0);
+void reportSensorStatus(const uint8_t id, const int16_t value, const unsigned long ts = 0);
 void reportConfiguration();
 void reportSensorCalibrationFactor(const uint8_t id, const double value);
 void reportSensorConfigValue(const uint8_t id, const int8_t value);
@@ -62,9 +62,9 @@ void reportStringConfig(const char* key, const char* value);
 void reportNumberConfig(const char* key, const int value);
 void syncClocks();
 
-void processSerialMsg();
+void processDebugMsg();
 void processBtMsg();
-void processWifiReq();
+void processWifiMsg();
 void broadcastMsg(const char* msg);
 bool parseCommand(char* command);
 

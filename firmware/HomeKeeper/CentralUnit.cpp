@@ -69,7 +69,7 @@ static const uint16_t NODE_SB_HEATER_BIT = 64;
 static const uint16_t NODE_SOLAR_PRIMARY_BIT = 128;
 static const uint16_t NODE_SOLAR_SECONDARY_BIT = 256;
 static const uint16_t NODE_HEATING_VALVE_BIT = 512;
-static const uint16_t NODE_RESERVED_BIT = 1024;
+//static const uint16_t NODE_RESERVED_BIT = 1024;
 
 // etc
 static const unsigned long MAX_TIMESTAMP = -1;
@@ -161,6 +161,7 @@ static const char WIFI_LOCAL_PASSWORD_KEY[] = "lpw";
 static const char SERVER_IP_KEY[] = "sip";
 static const char SERVER_PORT_KEY[] = "sp";
 static const char LOCAL_IP_KEY[] = "lip";
+static const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
 
 static const uint8_t JSON_MAX_SIZE = 128;
 static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
@@ -255,9 +256,13 @@ uint16_t SERVER_PORT = 80;
 uint8_t WIFI_STA_IP[4] = { 0, 0, 0, 0 };
 
 /*============================= Connectivity ================================*/
+
 // Sensors
 OneWire oneWire(SENSORS_BUS);
 DallasTemperature sensors(&oneWire);
+
+// Debug port
+HardwareSerial *debug = &Serial;
 
 // BT
 HardwareSerial *bt = &Serial1;
@@ -266,14 +271,11 @@ HardwareSerial *bt = &Serial1;
 HardwareSerial *wifi = &Serial2;
 ESP8266 esp8266;
 
-// Debug port
-Stream *debug = &Serial;
-
 /*============================= Arduino entry point =========================*/
 
 void setup() {
     // Setup serial ports
-    Serial.begin(9600);
+    debug->begin(9600);
     bt->begin(9600);
     wifi->begin(115200);
 
@@ -375,14 +377,14 @@ void loop() {
 
         digitalWrite(HEARTBEAT_LED, digitalRead(HEARTBEAT_LED) ^ 1);
     }
-    if (Serial.available() > 0) {
-        processSerialMsg();
+    if (debug->available() > 0) {
+        processDebugMsg();
     }
     if (bt->available() > 0) {
         processBtMsg();
     }
-    if (esp8266.available() > 0) {
-        processWifiReq();
+    if (wifi->available() > 0) {
+        processWifiMsg();
     }
 
     if (diffTimestamps(tsCurr, tsLastStatusReport) >= STATUS_REPORTING_PERIOD_SEC) {
@@ -1167,8 +1169,7 @@ void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
                 tsForcedNodeSolarSecondary);
     } else if (NODE_HEATING_VALVE == id) {
         forceNodeState(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, state, tsForcedNodeHeatingValve, ts);
-        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
-                tsForcedNodeHeatingValve);
+        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve, tsForcedNodeHeatingValve);
     }
     // update node modes in EEPROM if forced permanently
     if (ts == 0) {
@@ -1234,8 +1235,7 @@ void unForceNodeState(uint8_t id) {
     } else if (NODE_HEATING_VALVE == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_HEATING_VALVE_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_HEATING_VALVE_BIT;
-        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
-                tsForcedNodeHeatingValve);
+        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve, tsForcedNodeHeatingValve);
     }
     // update node modes in EEPROM if unforced from permanent
     if (prevPermanentlyForcedModeFlags != NODE_PERMANENTLY_FORCED_MODE_FLAGS) {
@@ -1320,6 +1320,7 @@ void validateStringParam(char* str, int maxSize) {
 }
 
 /*====================== Sensors processing methods =========================*/
+
 void searchSensors() {
     DeviceAddress sensAddr;
     dbg(debug, F("found sensors:\n"));
@@ -1388,7 +1389,7 @@ int16_t getSensorValue(const uint8_t sensor) {
         float vout = (vin / 1023.0) * v;
         float r1 = (vin / vout - 1) * r2;
 
-        dbgf(debug, F("SolarPrimary: %d/%dOhm/%dC\n"), v, r1, (r1 - 100)/0.39);
+        dbgf(debug, F("SolarPrimary: %d/%dOhm/%dC\n"), v, r1, (r1 - 100) / 0.39);
 
         if (v > 0) {
             result = (r1 - 100) / 0.39;
@@ -1423,8 +1424,6 @@ bool validSensorValues(const int16_t values[], const uint8_t size) {
     }
     return true;
 }
-
-
 
 /*====================== Wifi================================================*/
 //
@@ -1770,8 +1769,7 @@ void reportStatus() {
         nextEntryReport = NODE_HEATING_VALVE;
         break;
     case NODE_HEATING_VALVE:
-        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
-                tsForcedNodeHeatingValve);
+        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve, tsForcedNodeHeatingValve);
         nextEntryReport = 0;
         break;
     default:
@@ -1916,10 +1914,10 @@ void syncClocks() {
 
 /*========================= Communication ===================================*/
 
-void processSerialMsg() {
+void processDebugMsg() {
     char buff[JSON_MAX_SIZE + 1];
-    while (Serial.available()) {
-        uint16_t l = Serial.readBytesUntil('\0', buff, JSON_MAX_SIZE);
+    while (debug->available()) {
+        uint16_t l = debug->readBytesUntil('\0', buff, JSON_MAX_SIZE);
         buff[l] = '\0';
         parseCommand(buff);
     }
@@ -1934,13 +1932,14 @@ void processBtMsg() {
     }
 }
 
-void processWifiReq() {
+void processWifiMsg() {
     char buff[JSON_MAX_SIZE + 1];
     esp8266.receive(buff, JSON_MAX_SIZE);
+    parseCommand(buff);
 }
 
 void broadcastMsg(const char* msg) {
-    Serial.println(msg);
+    debug->println(msg);
     bt->println(msg);
     esp8266.send(msg);
 }
@@ -2071,6 +2070,18 @@ bool parseCommand(char* command) {
             } else if (root.containsKey(SERVER_PORT_KEY)) {
                 SERVER_PORT = root[SERVER_PORT_KEY].as<int>();
                 EEPROM.writeInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
+            } else if (root.containsKey(DEBUG_SERIAL_PORT_KEY)) {
+                uint8_t sp = root[DEBUG_SERIAL_PORT_KEY].as<int>();
+                if (sp == 0) {
+                    debug = &Serial;
+                } else if (sp == 1) {
+                    debug = &Serial1;
+                } else if (sp == 2) {
+                    debug = &Serial2;
+                } else if (sp == 3) {
+                    debug = &Serial3;
+                }
+                esp8266.setDebugPort(debug);
             } else {
                 reportConfiguration();
             }
