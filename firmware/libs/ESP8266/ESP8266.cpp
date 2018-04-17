@@ -24,12 +24,12 @@ uint16_t ESP8266::tcpServerPort;
 
 void ESP8266::init(Stream *espSerial, esp_cwmode mode, uint8_t hwResetPin, Stream *debugSerial) {
     ESP8266::espSerial = espSerial;
-    ESP8266::hwResetPin = hwResetPin;
     ESP8266::debugSerial = debugSerial;
+    ESP8266::hwResetPin = hwResetPin;
     ESP8266::tcpServerPort = 0;
     char atcmd[MAX_AT_REQUEST_SIZE + 1];
     dbg(debugSerial, F("wifi: init\n"));
-    if (ESP8266::hwResetPin > 0) {
+    if (hwResetPin > 0) {
         // hardware reset
         dbg(debugSerial, F("wifi: hw reset\n"));
         digitalWrite(hwResetPin, LOW);
@@ -37,6 +37,8 @@ void ESP8266::init(Stream *espSerial, esp_cwmode mode, uint8_t hwResetPin, Strea
         digitalWrite(hwResetPin, HIGH);
         delay(1000);
     }
+    write(F("AT+RST"), EXPECT_OK, 300);
+    delay(1000);
     write(F("AT+CIPMODE=0"), EXPECT_OK, 300);
     sprintf(atcmd, "AT+CWMODE_CUR=%d", mode);
     write(atcmd, EXPECT_OK, 300);
@@ -65,8 +67,10 @@ void ESP8266::connect(const char *ssid, const char *password) {
         sprintf(atcmd, "AT+CWJAP_CUR=\"%s\",\"%s\"", ssid, password);
         if (write(atcmd, EXPECT_CONNECTED, 5000)) {
             dbgf(debugSerial, F("wifi: connected to %s\n"), ssid);
+            delay(2000);
         } else {
             dbg(debugSerial, F("wifi: connection failed\n"));
+            write(F("AT"), EXPECT_OK, 15000, 5);
         }
     }
 }
