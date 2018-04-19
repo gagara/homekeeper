@@ -83,11 +83,13 @@ uint8_t overflowCount = 0;
 uint8_t nextEntryReport = 0;
 
 // WiFi
-char WIFI_REMOTE_AP[32];
-char WIFI_REMOTE_PW[32];
-uint8_t SERVER_IP[4] = { 0, 0, 0, 0 };
+esp_config_t WIFI_REMOTE_AP;
+esp_config_t WIFI_REMOTE_PW;
+esp_config_t WIFI_LOCAL_AP;
+esp_config_t WIFI_LOCAL_PW;
+esp_ip_t SERVER_IP = { 0, 0, 0, 0 };
 uint16_t SERVER_PORT = 80;
-uint8_t WIFI_STA_IP[4] = { 0, 0, 0, 0 };
+esp_ip_t WIFI_STA_IP = { 0, 0, 0, 0 };
 
 /*============================= Connectivity ================================*/
 
@@ -124,9 +126,9 @@ void setup() {
     // setup WiFi
     loadWifiConfig();
     esp8266.init(wifi, MODE_STA_AP, WIFI_RST_PIN, debug);
-    esp8266.connect(WIFI_REMOTE_AP, WIFI_REMOTE_PW);
+    esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
     delay(2000);
-    esp8266.readStaIp(WIFI_STA_IP);
+    esp8266.readStaIp(&WIFI_STA_IP);
     dbgf(debug, F("STA IP: %d.%d.%d.%d"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
 
     dbgf(debug, F("%lu: freeMem: %d\n"), getTimestamp(), freeMemory());
@@ -496,7 +498,7 @@ void processWifiMsg() {
 
 void broadcastMsg(const char* msg) {
     debug->println(msg);
-    esp8266.send(msg);
+    esp8266.send(SERVER_IP, SERVER_PORT, msg);
 }
 
 bool parseCommand(char* command) {
