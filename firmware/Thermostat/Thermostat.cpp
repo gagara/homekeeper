@@ -10,6 +10,8 @@
 #include <debug.h>
 #include <ESP8266.h>
 
+#define __DEBUG__
+
 /*============================= Global configuration ========================*/
 
 // Sensor pin
@@ -96,9 +98,14 @@ esp_ip_t WIFI_STA_IP = { 0, 0, 0, 0 };
 // DHT sensor
 DHT dht(DHT_PIN, DHT11);
 
-// Debug port
-SoftwareSerial debugSerial(DEBUG_SERIAL_RX_PIN, DEBUG_SERIAL_TX_PIN);
-SoftwareSerial *debug = &debugSerial;
+// Serial port
+SoftwareSerial serialPort(DEBUG_SERIAL_RX_PIN, DEBUG_SERIAL_TX_PIN);
+SoftwareSerial *serial = &serialPort;
+#ifdef __DEBUG__
+SoftwareSerial *debug = serial;
+#else
+SoftwareSerial *debug = NULL;
+#endif
 
 //WiFi
 HardwareSerial *wifi = &Serial;
@@ -108,7 +115,7 @@ ESP8266 esp8266;
 
 void setup() {
     // Setup serial ports
-    debug->begin(9600);
+    serial->begin(9600);
     wifi->begin(115200);
 
     dbg(debug, F("STARTING\n"));
@@ -125,10 +132,10 @@ void setup() {
 
     // setup WiFi
     loadWifiConfig();
-    esp8266.init(wifi, MODE_STA_AP, WIFI_RST_PIN, debug);
+    esp8266.init(wifi, MODE_STA_AP, WIFI_RST_PIN);
     esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
     delay(2000);
-    esp8266.readStaIp(&WIFI_STA_IP);
+    esp8266.readStaIp(WIFI_STA_IP);
     dbgf(debug, F("STA IP: %d.%d.%d.%d"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
 
     dbgf(debug, F("%lu: freeMem: %d\n"), getTimestamp(), freeMemory());
@@ -142,8 +149,8 @@ void loop() {
 
         digitalWrite(HEARTBEAT_LED, digitalRead(HEARTBEAT_LED) ^ 1);
     }
-    if (debug->available() > 0) {
-        processDebugMsg();
+    if (serial->available() > 0) {
+        processSerialMsg();
     }
     if (wifi->available() > 0) {
         processWifiMsg();
@@ -454,7 +461,7 @@ void reportSensorCalibrationFactor(const uint8_t id, const double value) {
     char json[JSON_MAX_SIZE];
     root.printTo(json, JSON_MAX_SIZE);
 
-    debug->println(json);
+    serial->println(json);
 }
 
 void reportNumberConfig(const char* key, const int value) {
@@ -466,7 +473,7 @@ void reportNumberConfig(const char* key, const int value) {
     char json[JSON_MAX_SIZE];
     root.printTo(json, JSON_MAX_SIZE);
 
-    debug->println(json);
+    serial->println(json);
 }
 
 void reportStringConfig(const char* key, const char* value) {
@@ -478,14 +485,14 @@ void reportStringConfig(const char* key, const char* value) {
     char json[JSON_MAX_SIZE];
     root.printTo(json, JSON_MAX_SIZE);
 
-    debug->println(json);
+    serial->println(json);
 }
 
 /*========================= Communication ===================================*/
 
-void processDebugMsg() {
+void processSerialMsg() {
     char buff[JSON_MAX_SIZE + 1];
-    uint16_t l = debug->readBytesUntil('\0', buff, JSON_MAX_SIZE);
+    uint16_t l = serial->readBytesUntil('\0', buff, JSON_MAX_SIZE);
     buff[l] = '\0';
     parseCommand(buff);
 }
@@ -497,7 +504,7 @@ void processWifiMsg() {
 }
 
 void broadcastMsg(const char* msg) {
-    debug->println(msg);
+    serial->println(msg);
     esp8266.send(SERVER_IP, SERVER_PORT, msg);
 }
 

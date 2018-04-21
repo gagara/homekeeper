@@ -11,6 +11,8 @@
 #include <debug.h>
 #include <ESP8266.h>
 
+#define __DEBUG__
+
 /*============================= Global configuration ========================*/
 
 // Sensors IDs
@@ -261,8 +263,13 @@ esp_ip_t WIFI_STA_IP = { 0, 0, 0, 0 };
 OneWire oneWire(SENSORS_BUS);
 DallasTemperature sensors(&oneWire);
 
-// Debug port
-HardwareSerial *debug = &Serial;
+// Serial port
+HardwareSerial *serial = &Serial;
+#ifdef __DEBUG__
+HardwareSerial *debug = serial;
+#else
+HardwareSerial *debug = NULL;
+#endif
 
 // BT
 HardwareSerial *bt = &Serial1;
@@ -275,7 +282,7 @@ ESP8266 esp8266;
 
 void setup() {
     // Setup serial ports
-    debug->begin(9600);
+    serial->begin(9600);
     bt->begin(9600);
     wifi->begin(115200);
 
@@ -337,12 +344,12 @@ void setup() {
 
     // setup WiFi
     loadWifiConfig();
-    esp8266.init(wifi, MODE_STA_AP, WIFI_RST_PIN, debug);
+    esp8266.init(wifi, MODE_STA_AP, WIFI_RST_PIN);
     esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
     esp8266.startAP(&WIFI_LOCAL_AP, &WIFI_LOCAL_PW);
     esp8266.startTcpServer(SERVER_PORT);
     delay(2000);
-    esp8266.readStaIp(&WIFI_STA_IP);
+    esp8266.readStaIp(WIFI_STA_IP);
     dbgf(debug, F("STA IP: %d.%d.%d.%d"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
 
     dbgf(debug, F("%lu: freeMem: %d\n"), getTimestamp(), freeMemory());
@@ -377,8 +384,8 @@ void loop() {
 
         digitalWrite(HEARTBEAT_LED, digitalRead(HEARTBEAT_LED) ^ 1);
     }
-    if (debug->available() > 0) {
-        processDebugMsg();
+    if (serial->available() > 0) {
+        processSerialMsg();
     }
     if (bt->available() > 0) {
         processBtMsg();
@@ -1914,10 +1921,10 @@ void syncClocks() {
 
 /*========================= Communication ===================================*/
 
-void processDebugMsg() {
+void processSerialMsg() {
     char buff[JSON_MAX_SIZE + 1];
-    while (debug->available()) {
-        uint16_t l = debug->readBytesUntil('\0', buff, JSON_MAX_SIZE);
+    while (serial->available()) {
+        uint16_t l = serial->readBytesUntil('\0', buff, JSON_MAX_SIZE);
         buff[l] = '\0';
         parseCommand(buff);
     }
@@ -1939,7 +1946,7 @@ void processWifiMsg() {
 }
 
 void broadcastMsg(const char* msg) {
-    debug->println(msg);
+    serial->println(msg);
     bt->println(msg);
     esp8266.send(SERVER_IP, SERVER_PORT, msg);
 }
@@ -2072,7 +2079,9 @@ bool parseCommand(char* command) {
                 EEPROM.writeInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
             } else if (root.containsKey(DEBUG_SERIAL_PORT_KEY)) {
                 uint8_t sp = root[DEBUG_SERIAL_PORT_KEY].as<int>();
-                if (sp == 0) {
+                if (sp == -1) {
+                    debug = NULL;
+                } else if (sp == 0) {
                     debug = &Serial;
                 } else if (sp == 1) {
                     debug = &Serial1;
@@ -2081,7 +2090,7 @@ bool parseCommand(char* command) {
                 } else if (sp == 3) {
                     debug = &Serial3;
                 }
-                esp8266.setDebugPort(debug);
+                esp8266.setDebug(debug);
             } else {
                 reportConfiguration();
             }

@@ -39,7 +39,7 @@ void reportSensorCalibrationFactor(const uint8_t id, const double value);
 void reportNumberConfig(const char* key, const int value);
 void reportStringConfig(const char* key, const char* value);
 
-void processDebugMsg();
+void processSerialMsg();
 void processWifiMsg();
 void broadcastMsg(const char* msg);
 bool parseCommand(char* command);

@@ -3,8 +3,6 @@
 
 #include "Arduino.h"
 
-#define __DEBUG__
-
 void dbg(Stream *s, const char *msg);
 void dbgf(Stream *s, const char *fomat, ...);
 void dbg(Stream *s, const __FlashStringHelper *msg);

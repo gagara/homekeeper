@@ -62,7 +62,7 @@ void reportStringConfig(const char* key, const char* value);
 void reportNumberConfig(const char* key, const int value);
 void syncClocks();
 
-void processDebugMsg();
+void processSerialMsg();
 void processBtMsg();
 void processWifiMsg();
 void broadcastMsg(const char* msg);
