@@ -25,7 +25,7 @@ typedef uint8_t esp_ip_t[4];
 
 class ESP8266 {
 public:
-    void init(Stream *port, esp_cwmode mode = MODE_STA, uint8_t resetPin = 0);
+    void init(Stream *port, esp_cwmode mode = MODE_STA, uint8_t resetPin = 0, uint16_t failureGracePeriodSec = 0);
     void setDebug(Stream *port);
     void startAP(const esp_config_t *ssid, const esp_config_t *password);
     void connect(const esp_config_t *ssid, const esp_config_t *password);
@@ -53,15 +53,19 @@ private:
     esp_config_t *staSsid = NULL;
     esp_config_t *staPassword = NULL;
     uint16_t tcpServerPort = 0;
-    unsigned long lastSuccessConnectionTs = 0;
+    uint16_t failureGracePeriod = 0;
+    unsigned long lastSuccessRequestTs = 0;
+    esp_ip_t staIp;
+    unsigned long connectTs = 0;
     uint8_t reconnectCount = 0;
     bool persistDebug = false;
     bool tcpServerUp();
     bool tcpServerDown();
-    void checkConnection();
+    void errorsRecovery();
     void sendResponse(uint16_t httpCode, const char *content);
     bool waitUntilBusy(const uint16_t ttl = 5000, const uint8_t retryCount = 1);
     void bufAdd(char *buffer, const size_t bsize, const size_t idx, const char c);
+    bool validIP(esp_ip_t ip);
 };
 
 #endif /* WIFI_H_ */

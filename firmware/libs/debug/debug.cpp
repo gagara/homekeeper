@@ -8,6 +8,12 @@ void dbg(Stream *s, const char *msg) {
     }
 }
 
+void dbg(Stream *s, const __FlashStringHelper *msg) {
+    if (s) {
+        s->print(msg);
+    }
+}
+
 void dbgf(Stream *s, const char *format, ...) {
     if (s) {
         char buf[MAX_DEBUG_BUFFER_SIZE];
@@ -16,12 +22,6 @@ void dbgf(Stream *s, const char *format, ...) {
         vsnprintf(buf, MAX_DEBUG_BUFFER_SIZE, format, args);
         va_end(args);
         dbg(s, buf);
-    }
-}
-
-void dbg(Stream *s, const __FlashStringHelper *msg) {
-    if (s) {
-        s->print(msg);
     }
 }
 
