@@ -31,11 +31,10 @@ public:
     void connect(const esp_config_t *ssid, const esp_config_t *password);
     void disconnect();
     void reconnect();
+    bool getStaIP(esp_ip_t ip);
     void startTcpServer(const uint16_t port);
     void stopTcpServer();
-    int readApIp(esp_ip_t ip);
-    int readStaIp(esp_ip_t ip);
-    uint16_t send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message);
+    uint16_t send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message, const uint8_t connRetryCount = 1);
     size_t receive(char* message, size_t msize);
     int available();
     bool write(const char *message, esp_response expectedResponse = EXPECT_NOTHING, const uint16_t ttl = 1000, const uint8_t retryCount = 1);
@@ -59,8 +58,11 @@ private:
     unsigned long connectTs = 0;
     uint8_t reconnectCount = 0;
     bool persistDebug = false;
+    int readApIp(esp_ip_t ip);
+    int readStaIp(esp_ip_t ip);
     bool tcpServerUp();
     bool tcpServerDown();
+    uint16_t doSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message, const uint8_t connRetryCount = 1);
     void errorsRecovery();
     void sendResponse(uint16_t httpCode, const char *content);
     bool waitUntilBusy(const uint16_t ttl = 5000, const uint8_t retryCount = 1);

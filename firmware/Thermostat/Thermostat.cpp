@@ -23,8 +23,8 @@ static const uint8_t SENSOR_HUM = (54 + 16) + (4 * 1) + 1;
 static const uint8_t WIFI_RST_PIN = 0; // n/a
 
 // Debug serial port
-static const uint8_t DEBUG_SERIAL_TX_PIN = 3;
-static const uint8_t DEBUG_SERIAL_RX_PIN = 2;
+static const uint8_t DEBUG_SERIAL_TX_PIN = 2;
+static const uint8_t DEBUG_SERIAL_RX_PIN = 3;
 
 static const uint8_t HEARTBEAT_LED = 13;
 
@@ -45,6 +45,7 @@ static const int16_t UNKNOWN_SENSOR_VALUE = -127;
 // reporting
 static const unsigned long STATUS_REPORTING_PERIOD_SEC = 15; // 15s //disabled in LowPower mode
 static const unsigned long SENSORS_READ_INTERVAL_SEC = 15; // 15s //disabled in LowPower mode
+static const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
 
 // JSON
 static const char MSG_TYPE_KEY[] = "m";
@@ -60,6 +61,7 @@ static const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
 static const char SERVER_IP_KEY[] = "sip";
 static const char SERVER_PORT_KEY[] = "sp";
 static const char LOCAL_IP_KEY[] = "lip";
+static const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
 
 static const uint8_t JSON_MAX_SIZE = 64;
 static const uint8_t JSON_MAX_BUFFER_SIZE = 128;
@@ -92,6 +94,7 @@ esp_config_t WIFI_LOCAL_PW;
 esp_ip_t SERVER_IP = { 0, 0, 0, 0 };
 uint16_t SERVER_PORT = 80;
 esp_ip_t WIFI_STA_IP = { 0, 0, 0, 0 };
+uint16_t TCP_SERVER_PORT = 80;
 
 /*============================= Connectivity ================================*/
 
@@ -132,10 +135,9 @@ void setup() {
 
     // setup WiFi
     loadWifiConfig();
-    esp8266.init(wifi, MODE_STA_AP, WIFI_RST_PIN);
+    esp8266.init(wifi, MODE_STA, WIFI_RST_PIN, WIFI_FAILURE_GRACE_PERIOD_SEC);
     esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
-    delay(2000);
-    esp8266.readStaIp(WIFI_STA_IP);
+    esp8266.getStaIP(WIFI_STA_IP);
     dbgf(debug, F("STA IP: %d.%d.%d.%d"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
 
     dbgf(debug, F("%lu: freeMem: %d\n"), getTimestamp(), freeMemory());
@@ -219,182 +221,6 @@ int8_t getSensorValue(const uint8_t sensor) {
     result = (result > 0) ? result + 0.5 : result - 0.5;
     return int16_t(result);
 }
-
-//void wifiCheckConnection() {
-//    if (!wifiGetRemoteIP()
-//            || (validIP(SERVER_IP)
-//                    && diffTimestamps(tsCurr, tsLastWifiSuccessTransmission) >= WIFI_MAX_FAILURE_PERIOD_MSEC)) {
-//        wifiInit();
-//        wifiSetup();
-//        wifiGetRemoteIP();
-//        tsLastWifiSuccessTransmission = tsCurr;
-//    }
-//}
-//
-//void wifiInit() {
-//    // hardware reset
-//#ifdef __DEBUG__
-//    Serial.println(F("wifi init"));
-//#endif
-//    digitalWrite(WIFI_RST_PIN, LOW);
-//    delay(500);
-//    digitalWrite(WIFI_RST_PIN, HIGH);
-//    delay(1000);
-//
-//    wifi.end();
-//    wifi.begin(115200);
-//    wifi.println(F("AT+CIOBAUD=9600"));
-//    wifi.end();
-//    wifi.begin(9600);
-//    IP[0] = 0;
-//    IP[1] = 0;
-//    IP[2] = 0;
-//    IP[3] = 0;
-//}
-//
-//void wifiSetup() {
-//#ifdef __DEBUG__
-//    Serial.println(F("wifi setup"));
-//#endif
-//    char buff[WIFI_MAX_BUFFER_SIZE + 1];
-//    wifi.println(F("AT+RST"));
-//    delay(500);
-//    wifi.println(F("AT+CIPMODE=0"));
-//    delay(100);
-//    wifi.println(F("AT+CWMODE_CUR=1"));
-//#ifdef __DEBUG__
-//    Serial.println(F("runing in STATION mode"));
-//#endif
-//    delay(100);
-//#ifdef __DEBUG__
-//    Serial.println(F("starting TCP server"));
-//#endif
-//    wifi.println(F("AT+CIPMUX=1"));
-//    delay(100);
-//    wifi.println(F("AT+CIPSERVER=1,80"));
-//    delay(100);
-//    wifi.println(F("AT+CIPSTO=5"));
-//    delay(100);
-//    if (strlen(WIFI_REMOTE_AP) + strlen(WIFI_REMOTE_PW) > 0) {
-//        // join AP
-//        sprintf(buff, "AT+CWJAP_CUR=\"%s\",\"%s\"", WIFI_REMOTE_AP, WIFI_REMOTE_PW);
-//#ifdef __DEBUG__
-//        Serial.print(F("wifi join AP: "));
-//        Serial.println(buff);
-//#endif
-//        wifi.println(buff);
-//        delay(10000);
-//    } else {
-//#ifdef __DEBUG__
-//        Serial.println(F("no AP configured"));
-//#endif
-//    }
-//    uint16_t l = wifi.readBytesUntil('\0', buff, WIFI_MAX_BUFFER_SIZE);
-//    buff[l] = '\0';
-//#ifdef __DEBUG__
-//    Serial.print(F("wifi setup rsp: "));
-//    Serial.println(buff);
-//#endif
-//}
-//
-//bool wifiGetRemoteIP() {
-//    wifi.println(F("AT+CIFSR"));
-//    char buff[WIFI_MAX_AT_CMD_SIZE + 1];
-//    uint16_t l = wifi.readBytesUntil('\0', buff, WIFI_MAX_AT_CMD_SIZE);
-//    buff[l] = '\0';
-//#ifdef __DEBUG__
-//    Serial.print(F("free memory: "));
-//    Serial.println(freeMemory());
-//    Serial.print(F("wifi rq ip: "));
-//    Serial.println(buff);
-//#endif
-//    int n = 0;
-//    int tmp[4];
-//    char *substr;
-//    substr = strstr(buff, ":STAIP,");
-//    if (substr != NULL) {
-//        n += sscanf(substr, ":STAIP,\"%d.%d.%d.%d", &tmp[0], &tmp[1], &tmp[2], &tmp[3]);
-//    }
-//    if (n == 4) {
-//        IP[0] = tmp[0];
-//        IP[1] = tmp[1];
-//        IP[2] = tmp[2];
-//        IP[3] = tmp[3];
-//#ifdef __DEBUG__
-//        char ip[16];
-//        sprintf(ip, "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
-//        Serial.print(F("wifi got ip: "));
-//        Serial.println(ip);
-//#endif
-//        return validIP(IP);
-//    }
-//    return false;
-//}
-//
-//bool validIP(uint8_t ip[4]) {
-//    int sum = ip[0] + ip[1] + ip[2] + ip[3];
-//    return sum > 0 && sum < 255 * 4;
-//}
-//
-//bool wifiSend(const char* msg) {
-//    if (validIP(IP) && validIP(SERVER_IP)) {
-//        char buff[WIFI_MAX_BUFFER_SIZE + 1];
-//        char atcmd[WIFI_MAX_AT_CMD_SIZE];
-//
-//        sprintf(buff,
-//                "POST / HTTP/1.1\r\nUser-Agent: ESP8266\r\nAccept: */*\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s\r\n",
-//                strlen(msg), msg);
-//
-//        sprintf(atcmd, "AT+CIPSTART=3,\"TCP\",\"%d.%d.%d.%d\",%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2],
-//                SERVER_IP[3], SERVER_PORT);
-//        if (!wifiWrite(atcmd, "CONNECT", 300, 3))
-//            return false;
-//
-//        sprintf(atcmd, "AT+CIPSEND=3,%d", strlen(buff));
-//        if (!wifiWrite(atcmd, ">", 300, 3))
-//            return false;
-//
-//        if (!wifiWrite(buff, OK, 300, 1))
-//            return false;
-//
-//        delay(2000);
-//        bool rsp = false;
-//        if (wifi.available()) {
-//            uint16_t l = wifi.readBytesUntil('\0', buff, WIFI_MAX_BUFFER_SIZE);
-//            buff[l] = '\0';
-//#ifdef __DEBUG__
-//            Serial.print(F("wifi rsp len: "));
-//            Serial.println(l);
-//            Serial.print(F("wifi rsp: "));
-//            Serial.println(buff);
-//#endif
-//            if (strstr(buff, "OK") != NULL) {
-//                rsp = true;
-//            }
-//        }
-//        sprintf(atcmd, "AT+CIPCLOSE=3");
-//        wifiWrite(atcmd, OK, 100, 1);
-//        return rsp;
-//    } else {
-//        return false;
-//    }
-//}
-//
-//bool wifiWrite(const char* msg, const char* rsp, const int wait, const uint8_t maxRetry) {
-//    char r[strlen(rsp) + 1];
-//    strcpy(r, rsp);
-//    r[strlen(rsp)] = '\0';
-//    byte a = 0;
-//    while (a < maxRetry) {
-//        wifi.println(msg);
-//        delay(wait);
-//        if (wifi.find(r)) {
-//            break;
-//        }
-//        a++;
-//    }
-//    return a < maxRetry;
-//}
 
 /*============================ Reporting ====================================*/
 
@@ -505,7 +331,9 @@ void processWifiMsg() {
 
 void broadcastMsg(const char* msg) {
     serial->println(msg);
-    esp8266.send(SERVER_IP, SERVER_PORT, msg);
+    unsigned long start = getTimestamp();
+    int httpRsp = esp8266.send(SERVER_IP, SERVER_PORT, msg, 3);
+    dbgf(debug, F("HTTP: %d (%d sec)\n"), httpRsp, getTimestamp() - start);
 }
 
 bool parseCommand(char* command) {
@@ -558,6 +386,14 @@ bool parseCommand(char* command) {
             } else if (root.containsKey(SERVER_PORT_KEY)) {
                 SERVER_PORT = root[SERVER_PORT_KEY].as<int>();
                 EEPROM.writeInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
+            } else if (root.containsKey(DEBUG_SERIAL_PORT_KEY)) {
+                int sp = root[DEBUG_SERIAL_PORT_KEY].as<int>();
+                if (sp == -1) {
+                    debug = NULL;
+                } else if (sp == 1) {
+                    debug = serial;
+                }
+                esp8266.setDebug(debug);
             } else {
                 reportConfiguration();
             }

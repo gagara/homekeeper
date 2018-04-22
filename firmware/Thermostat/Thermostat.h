@@ -47,15 +47,5 @@ bool parseCommand(char* command);
 unsigned long getTimestamp();
 unsigned long diffTimestamps(unsigned long hi, unsigned long lo);
 
-//void readSensor(uint8_t id, int8_t* const &values, uint8_t &idx);
-//void refreshSensorValues();
-//void wifiInit();
-//void wifiSetup();
-//void wifiCheckConnection();
-//bool wifiGetRemoteIP();
-//bool validIP(uint8_t ip[4]);
-//bool wifiSend(const char* msg);
-//bool wifiWrite(const char* msg, const char* rsp, const int wait = 0, const uint8_t maxRetry = 5);
-
 //Do not add code below this line
 #endif /* _Thermostat_H_ */

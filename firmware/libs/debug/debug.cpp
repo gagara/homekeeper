@@ -1,15 +1,30 @@
 #include "debug.h"
 
+#include <MemoryFree.h>
+
 const uint8_t MAX_DEBUG_BUFFER_SIZE = 64;
 
 void dbg(Stream *s, const char *msg) {
     if (s) {
+        if (msg[0] == ':' && msg[1] != '\0') {
+            s->print(millis());
+            s->print(F(":["));
+            s->print(freeMemory());
+            s->print(F("]"));
+        }
         s->print(msg);
     }
 }
 
 void dbg(Stream *s, const __FlashStringHelper *msg) {
     if (s) {
+        PGM_P p = reinterpret_cast<PGM_P>(msg);
+        if (pgm_read_byte(p) == ':' && pgm_read_byte(++p) != '\0') {
+            s->print(millis());
+            s->print(F(":["));
+            s->print(freeMemory());
+            s->print(F("]"));
+        }
         s->print(msg);
     }
 }

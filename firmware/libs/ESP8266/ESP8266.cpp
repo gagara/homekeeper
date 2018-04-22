@@ -12,7 +12,6 @@ const uint8_t MAX_AT_REQUEST_SIZE = 64;
 const uint8_t MAX_AT_RESPONSE_SIZE = 32;
 const uint8_t MAX_MESSAGE_SIZE = 64;
 const uint8_t FAILURE_RECONNECTS_MAX_COUNT = 3;
-const uint8_t TCP_CONNECT_RETRY_COUNT = 1;
 const uint16_t STA_RECONNECT_INTERVAL_SEC = 60;
 
 const char* esp_response_str[] { "\r\nOK\r\n", "\r\nSEND OK\r\n", "CONNECT\r\n", "\r\nWIFI CONNECTED\r\n", "\r\n>",
@@ -37,8 +36,9 @@ void ESP8266::init(Stream *port, esp_cwmode mode, uint8_t resetPin, uint16_t fai
     connectTs = 0;
     reconnectCount = 0;
 
+    dbg(debug, F(":wifi:init\n"));
+
     char atcmd[MAX_AT_REQUEST_SIZE + 1];
-    dbg(debug, F("wifi: init\n"));
     if (hwResetPin > 0) {
         // hardware reset
         dbg(debug, F("wifi: hw reset\n"));
@@ -53,6 +53,7 @@ void ESP8266::init(Stream *port, esp_cwmode mode, uint8_t resetPin, uint16_t fai
     sprintf(atcmd, "AT+CWMODE_CUR=%d", mode);
     write(atcmd, EXPECT_OK, 300);
     write(F("AT+CIPMUX=1"), EXPECT_OK, 300);
+    write(F("AT+CIPSERVERMAXCONN=1"), EXPECT_OK, 300);
 }
 
 void ESP8266::setDebug(Stream *port) {
@@ -71,9 +72,9 @@ void ESP8266::startAP(const esp_config_t *ssid, const esp_config_t *password) {
             // SSID, password, channel, enc_type, max_conn, hidden
             sprintf(atcmd, "AT+CWSAP_CUR=\"%s\",\"%s\",%d,%d,%d,%d", (char*) ssid, (char*) password, 3, 2, 4, 0);
             if (write(atcmd, EXPECT_OK, 1000)) {
-                dbgf(debug, F("wifi: %s AP started\n"), ssid);
+                dbgf(debug, F(":wifi:AP:start:OK:%s\n"), ssid);
             } else {
-                dbg(debug, F("wifi: AP start failed\n"));
+                dbg(debug, F(":wifi:AP:start:FAIL:%s\n"));
             }
         }
     }
@@ -89,9 +90,9 @@ void ESP8266::connect(const esp_config_t *ssid, const esp_config_t *password) {
             // SSID, password
             sprintf(atcmd, "AT+CWJAP_CUR=\"%s\",\"%s\"", (char*) ssid, (char*) password);
             if (write(atcmd, EXPECT_WIFI_CONNECTED, 5000)) {
-                dbgf(debug, F("wifi: connected to %s\n"), ssid);
+                dbgf(debug, F(":wifi:STA:conn:OK:%s\n"), ssid);
             } else {
-                dbgf(debug, F("wifi: failed connecting to %s\n"), ssid);
+                dbgf(debug, F(":wifi:STA:conn:FAIL:%s\n"), ssid);
             }
             waitUntilBusy(15000, 5);
             readStaIp(staIp);
@@ -106,9 +107,9 @@ void ESP8266::disconnect() {
 
     if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
         if (write(F("AT+CWQAP"), EXPECT_OK, 1000)) {
-            dbg(debug, F("wifi: disconn from AP\n"));
+            dbg(debug, F(":wifi:STA:disconn:OK\n"));
         } else {
-            dbg(debug, F("wifi: disconn from AP failed\n"));
+            dbg(debug, F(":wifi:STA:disconn:FAIL\n"));
         }
         staIp[0] = staIp[1] = staIp[2] = staIp[3] = 0;
     }
@@ -122,14 +123,22 @@ void ESP8266::reconnect() {
     reconnectCount++;
 }
 
+bool ESP8266::getStaIP(esp_ip_t ip) {
+    ip[0] = staIp[0];
+    ip[1] = staIp[1];
+    ip[2] = staIp[2];
+    ip[3] = staIp[3];
+    return validIP(ip);;
+}
+
 void ESP8266::startTcpServer(const uint16_t port) {
     tcpServerPort = port;
 
     if (port > 0) {
         if (tcpServerUp()) {
-            dbgf(debug, F("wifi: TCP server UP on port %d\n"), tcpServerPort);
+            dbgf(debug, F(":wifi:TCP_SRV:up:%d\n"), tcpServerPort);
         } else {
-            dbg(debug, F("wifi: TCP server start failed\n"));
+            dbg(debug, F(":wifi:TCP_SRV:up:FAIL\n"));
         }
     }
 }
@@ -138,93 +147,16 @@ void ESP8266::stopTcpServer() {
     tcpServerPort = 0;
 
     if (tcpServerDown()) {
-        dbg(debug, F("wifi: TCP server DOWN\n"));
+        dbg(debug, F(":wifi:TCP_SRV:down:OK\n"));
     } else {
-        dbg(debug, F("wifi: TCP server stop failed\n"));
+        dbg(debug, F(":wifi:TCP_SRV:down:FAIL\n"));
     }
 }
 
-int ESP8266::readApIp(esp_ip_t ip) {
-    int res = 0;
-    char atrsp[MAX_AT_RESPONSE_SIZE + 1];
-    write(F("AT+CIPAP?"));
-    if (readUntil(atrsp, MAX_AT_RESPONSE_SIZE, "+CIPAP:ip:")) {
-        read(atrsp, MAX_AT_RESPONSE_SIZE);
-        res = sscanf(atrsp, "\"%d.%d.%d.%d\"", (int*) &ip[0], (int*) &ip[1], (int*) &ip[2], (int*) &ip[3]);
-        while (read(atrsp, MAX_AT_RESPONSE_SIZE))
-            ;
-    }
-    return res;
-}
-
-int ESP8266::readStaIp(esp_ip_t ip) {
-    int res = 0;
-    char atrsp[MAX_AT_RESPONSE_SIZE + 1];
-    write(F("AT+CIPSTA?"));
-    if (readUntil(atrsp, MAX_AT_RESPONSE_SIZE, "+CIPSTA:ip:")) {
-        read(atrsp, MAX_AT_RESPONSE_SIZE);
-        res = sscanf(atrsp, "\"%d.%d.%d.%d\"", (int*) &ip[0], (int*) &ip[1], (int*) &ip[2], (int*) &ip[3]);
-        while (read(atrsp, MAX_AT_RESPONSE_SIZE))
-            ;
-    }
-    return res;
-}
-
-uint16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message) {
-    uint16_t httpRsp = 0;
-    if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
-        if (validIP(staIp)) {
-            tcpServerDown();
-            //connect to dstIP:dstPort
-            uint8_t i = 0;
-            bool connected = false;
-            char atcmd[MAX_AT_REQUEST_SIZE + 1];
-            sprintf(atcmd, "AT+CIPSTART=0,\"TCP\",\"%d.%d.%d.%d\",%d,0", dstIP[0], dstIP[1], dstIP[2], dstIP[3],
-                    dstPort);
-            while (i < TCP_CONNECT_RETRY_COUNT && !(connected = write(atcmd, EXPECT_CONNECT, 3000))) {
-                delay(1000);
-                i++;
-            }
-            if (connected) {
-                // send HTTP request
-                if (write(F("AT+CIPSENDEX=0,2048"), EXPECT_PROMPT)) {
-                    char rspBuff[MAX_MESSAGE_SIZE + 1];
-                    sprintf(atcmd, "Content-Length: %d\r\n", strlen(message));
-                    write(F("POST / HTTP/1.1"));
-                    write(F("User-Agent: ESP8266"));
-                    write(F("Accept: */*"));
-                    write(F("Content-Type: application/json"));
-                    write(atcmd);
-                    write(message);
-                    write("\\0");
-                    // handle response
-                    if (readUntil(rspBuff, MAX_MESSAGE_SIZE, "SEND OK", 5000)
-                            && readUntil(rspBuff, MAX_MESSAGE_SIZE, "+IPD,0,", 5000)
-                            && readUntil(rspBuff, MAX_MESSAGE_SIZE, "HTTP/") && read(rspBuff, MAX_MESSAGE_SIZE)) {
-                        int d;
-                        if (sscanf(&rspBuff[0], "%d.%d %d\r\n", &d, &d, &httpRsp)) {
-                            // all good. response parsed
-                            lastSuccessRequestTs = millis();
-                            reconnectCount = 0;
-                        }
-                        // consume rest of response
-                        while (read(rspBuff, MAX_MESSAGE_SIZE))
-                            ;
-                    }
-                }
-            }
-            waitUntilBusy();
-            write(F("AT+CIPCLOSE=0"), EXPECT_OK);
-            if (httpRsp == 0) {
-                errorsRecovery();
-            }
-            tcpServerUp();
-        } else {
-            dbg(debug, F("wifi: send: no IP\n"));
-            errorsRecovery();
-        }
-    } else {
-        dbg(debug, F("wifi: send: not STA\n"));
+uint16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message, uint8_t connRetryCount) {
+    uint16_t httpRsp = doSend(dstIP, dstPort, message, connRetryCount);
+    if (httpRsp == 0) {
+        errorsRecovery();
     }
     return httpRsp;
 }
@@ -328,6 +260,34 @@ bool ESP8266::readUntil(char *buffer, size_t bsize, const char *target, const ui
     return (strstr(buffer, target));
 }
 
+/* ================================== Private ================================== */
+
+int ESP8266::readApIp(esp_ip_t ip) {
+    int res = 0;
+    char atrsp[MAX_AT_RESPONSE_SIZE + 1];
+    write(F("AT+CIPAP?"));
+    if (readUntil(atrsp, MAX_AT_RESPONSE_SIZE, "+CIPAP:ip:")) {
+        read(atrsp, MAX_AT_RESPONSE_SIZE);
+        res = sscanf(atrsp, "\"%d.%d.%d.%d\"", (int*) &ip[0], (int*) &ip[1], (int*) &ip[2], (int*) &ip[3]);
+        while (read(atrsp, MAX_AT_RESPONSE_SIZE))
+            ;
+    }
+    return res;
+}
+
+int ESP8266::readStaIp(esp_ip_t ip) {
+    int res = 0;
+    char atrsp[MAX_AT_RESPONSE_SIZE + 1];
+    write(F("AT+CIPSTA?"));
+    if (readUntil(atrsp, MAX_AT_RESPONSE_SIZE, "+CIPSTA:ip:")) {
+        read(atrsp, MAX_AT_RESPONSE_SIZE);
+        res = sscanf(atrsp, "\"%d.%d.%d.%d\"", (int*) &ip[0], (int*) &ip[1], (int*) &ip[2], (int*) &ip[3]);
+        while (read(atrsp, MAX_AT_RESPONSE_SIZE))
+            ;
+    }
+    return res;
+}
+
 bool ESP8266::tcpServerUp() {
     if (tcpServerPort > 0) {
         char atcmd[MAX_AT_REQUEST_SIZE + 1];
@@ -346,9 +306,60 @@ bool ESP8266::tcpServerDown() {
     }
 }
 
+uint16_t ESP8266::doSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message, uint8_t connRetryCount) {
+    uint16_t httpRsp = 0;
+    if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
+        if (validIP(staIp)) {
+            tcpServerDown();
+            //connect to dstIP:dstPort
+            char atcmd[MAX_AT_REQUEST_SIZE + 1];
+            sprintf(atcmd, "AT+CIPSTART=0,\"TCP\",\"%d.%d.%d.%d\",%d,0", dstIP[0], dstIP[1], dstIP[2], dstIP[3],
+                    dstPort);
+            uint8_t i = 0;
+            bool connected = false;
+            while (i < connRetryCount && !(connected = write(atcmd, EXPECT_CONNECT, 3000))) {
+                delay(1000);
+                i++;
+            }
+            if (connected) {
+                // send HTTP request
+                if (write(F("AT+CIPSENDEX=0,2048"), EXPECT_PROMPT)) {
+                    char rspBuff[MAX_MESSAGE_SIZE + 1];
+                    sprintf(atcmd, "Content-Length: %d\r\n", strlen(message));
+                    write(F("POST / HTTP/1.1"));
+                    write(F("User-Agent: ESP8266"));
+                    write(F("Accept: */*"));
+                    write(F("Content-Type: application/json"));
+                    write(atcmd);
+                    write(message);
+                    write("\\0");
+                    // handle response
+                    if (readUntil(rspBuff, MAX_MESSAGE_SIZE, "SEND OK", 5000)
+                            && readUntil(rspBuff, MAX_MESSAGE_SIZE, "+IPD,0,", 5000)
+                            && readUntil(rspBuff, MAX_MESSAGE_SIZE, "HTTP/") && read(rspBuff, MAX_MESSAGE_SIZE)) {
+                        int d;
+                        if (sscanf(&rspBuff[0], "%d.%d %d\r\n", &d, &d, &httpRsp)) {
+                            // all good. response parsed
+                            lastSuccessRequestTs = millis();
+                            reconnectCount = 0;
+                        }
+                        // consume rest of response
+                        while (read(rspBuff, MAX_MESSAGE_SIZE))
+                            ;
+                    }
+                }
+            }
+            waitUntilBusy();
+            write(F("AT+CIPCLOSE=0"), EXPECT_OK);
+            tcpServerUp();
+        }
+    }
+    return httpRsp;
+}
+
 void ESP8266::errorsRecovery() {
     if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
-        dbg(debug, F("wifi: error recovery\n"));
+        dbg(debug, F(":wifi:ERR_RECOVERY\n"));
         unsigned long ts = millis();
         if ((!validIP(staIp) && (ts - connectTs) > STA_RECONNECT_INTERVAL_SEC * 1000)
                 || (failureGracePeriod > 0 && (ts - lastSuccessRequestTs) > failureGracePeriod * 1000)) {
