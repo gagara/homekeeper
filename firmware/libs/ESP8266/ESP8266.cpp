@@ -118,8 +118,10 @@ void ESP8266::disconnect() {
 void ESP8266::reconnect() {
     esp_config_t *ssid = staSsid;
     esp_config_t *password = staPassword;
+    tcpServerDown();
     disconnect();
     connect(ssid, password);
+    tcpServerUp();
     reconnectCount++;
 }
 

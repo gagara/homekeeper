@@ -284,8 +284,8 @@ ESP8266 esp8266;
 
 void setup() {
     // Setup serial ports
-    serial->begin(9600);
-    bt->begin(9600);
+    serial->begin(115200);
+    bt->begin(115200);
     wifi->begin(115200);
 
     dbg(debug, F("STARTING\n"));
@@ -347,8 +347,8 @@ void setup() {
     // setup WiFi
     loadWifiConfig();
     esp8266.init(wifi, MODE_STA_AP, WIFI_RST_PIN, WIFI_FAILURE_GRACE_PERIOD_SEC);
-    esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
     esp8266.startAP(&WIFI_LOCAL_AP, &WIFI_LOCAL_PW);
+    esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
     esp8266.startTcpServer(TCP_SERVER_PORT);
     esp8266.getStaIP(WIFI_STA_IP);
     dbgf(debug, F("STA IP: %d.%d.%d.%d"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
@@ -1828,13 +1828,9 @@ bool parseCommand(char* command) {
                 if (sp == -1) {
                     debug = NULL;
                 } else if (sp == 0) {
-                    debug = &Serial;
+                    debug = serial;
                 } else if (sp == 1) {
-                    debug = &Serial1;
-                } else if (sp == 2) {
-                    debug = &Serial2;
-                } else if (sp == 3) {
-                    debug = &Serial3;
+                    debug = bt;
                 }
                 esp8266.setDebug(debug);
             } else {
