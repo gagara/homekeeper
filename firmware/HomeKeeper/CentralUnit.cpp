@@ -2,7 +2,6 @@
 
 #include <Arduino.h>
 #include <EEPROMex.h>
-#include <MemoryFree.h>
 #include <RF24.h>
 #include <ArduinoJson.h>
 #include <OneWire.h>
@@ -288,7 +287,7 @@ void setup() {
     bt->begin(115200);
     wifi->begin(115200);
 
-    dbg(debug, F("STARTING\n"));
+    dbg(debug, F(":STARTING\n"));
 
     // init heartbeat led
     pinMode(HEARTBEAT_LED, OUTPUT);
@@ -346,14 +345,13 @@ void setup() {
 
     // setup WiFi
     loadWifiConfig();
+    dbgf(debug, F(":setup wifi:R_AP:%s:L_AP:%s:L_PORT:%d\n"), &WIFI_REMOTE_AP, &WIFI_LOCAL_AP, TCP_SERVER_PORT);
     esp8266.init(wifi, MODE_STA_AP, WIFI_RST_PIN, WIFI_FAILURE_GRACE_PERIOD_SEC);
     esp8266.startAP(&WIFI_LOCAL_AP, &WIFI_LOCAL_PW);
     esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
     esp8266.startTcpServer(TCP_SERVER_PORT);
     esp8266.getStaIP(WIFI_STA_IP);
-    dbgf(debug, F("STA IP: %d.%d.%d.%d"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
-
-    dbgf(debug, F("%lu: freeMem: %d\n"), getTimestamp(), freeMemory());
+    dbgf(debug, F(":STA_IP: %d.%d.%d.%d\n"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
 }
 
 void loop() {
@@ -361,8 +359,6 @@ void loop() {
     if (diffTimestamps(tsCurr, tsLastSensorsRead) >= SENSORS_READ_INTERVAL_SEC) {
         readSensors();
         tsLastSensorsRead = tsCurr;
-
-        dbgf(debug, F("%lu: freeMem: %d\n"), getTimestamp(), freeMemory());
 
         // heater <--> tank
         processSupplyCircuit();
@@ -1331,7 +1327,7 @@ void validateStringParam(char* str, int maxSize) {
 
 void searchSensors() {
     DeviceAddress sensAddr;
-    dbg(debug, F("found sensors:\n"));
+    dbg(debug, F(":sensors:found:\n"));
     oneWire.reset_search();
     while (oneWire.search(sensAddr)) {
         for (uint8_t i = 0; i < 8; i++) {
@@ -1339,6 +1335,7 @@ void searchSensors() {
         }
         dbg(debug, F("\n"));
     }
+    dbg(debug, F(":sensors:end\n"));
 }
 
 void readSensors() {
@@ -1397,7 +1394,7 @@ int16_t getSensorValue(const uint8_t sensor) {
         float vout = (vin / 1023.0) * v;
         float r1 = (vin / vout - 1) * r2;
 
-        dbgf(debug, F("SolarPrimary: %d/%dOhm/%dC\n"), v, r1, (r1 - 100) / 0.39);
+        dbgf(debug, F(":SolarPrimary:%d/%dOhm/%dC\n"), v, r1, (r1 - 100) / 0.39);
 
         if (v > 0) {
             result = (r1 - 100) / 0.39;
@@ -1420,8 +1417,9 @@ int8_t getSensorBoilerPowerState() {
         }
         delay(1);
     }
-    dbgf(debug, F("BoilerPower: %d\n"), max);
-    return (max > SENSOR_BOILER_POWER_THERSHOLD) ? 1 : 0;
+    uint8_t state = (max > SENSOR_BOILER_POWER_THERSHOLD) ? 1 : 0;
+    dbgf(debug, F(":BoilerPower:%d/%d\n"), max, state);
+    return state;
 }
 
 bool validSensorValues(const int16_t values[], const uint8_t size) {
@@ -1685,32 +1683,32 @@ void processBtMsg() {
 
 void processWifiMsg() {
     char buff[JSON_MAX_SIZE + 1];
-    esp8266.receive(buff, JSON_MAX_SIZE);
+    unsigned long start = millis();
+    uint8_t l = esp8266.receive(buff, JSON_MAX_SIZE);
+    dbgf(debug, F(":HTTP:receive:%d bytes:[%d msec]\n"), l, millis() - start);
     parseCommand(buff);
 }
 
 void broadcastMsg(const char* msg) {
     serial->println(msg);
     bt->println(msg);
-    unsigned long start = getTimestamp();
+    unsigned long start = millis();
     int httpRsp = esp8266.send(SERVER_IP, SERVER_PORT, msg);
-    dbgf(debug, F("HTTP: %d (%d sec)\n"), httpRsp, getTimestamp() - start);
+    dbgf(debug, F(":HTTP:send:%d:[%d msec]\n"), httpRsp, millis() - start);
 }
 
 bool parseCommand(char* command) {
-    dbgf(debug, F("parsing cmd: %s\n"), command);
+    dbgf(debug, F(":parse cmd:%s\n"), command);
 
     if (strstr(command, "AT") == command) {
         // this is AT command for ESP8266
-        dbgf(debug, F("sending to ESP8266: %s\n"), command);
+        dbgf(debug, F(":ESP8266:%s\n"), command);
         esp8266.write(command);
         return true;
     }
 
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.parseObject(command);
-
-    dbg(debug, F("parsed\n"));
 
     if (root.success()) {
         const char* msgType = root[MSG_TYPE_KEY];

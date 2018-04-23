@@ -3,7 +3,6 @@
 #include <Arduino.h>
 #include <DHT.h>
 #include <EEPROMex.h>
-#include <MemoryFree.h>
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 
@@ -121,7 +120,7 @@ void setup() {
     serial->begin(115200);
     wifi->begin(115200);
 
-    dbg(debug, F("STARTING\n"));
+    dbg(debug, F(":STARTING\n"));
 
     // init heartbeat led
     pinMode(HEARTBEAT_LED, OUTPUT);
@@ -135,13 +134,11 @@ void setup() {
 
     // setup WiFi
     loadWifiConfig();
+    dbgf(debug, F(":setup wifi:R_AP:%s:\n"), &WIFI_REMOTE_AP);
     esp8266.init(wifi, MODE_STA, WIFI_RST_PIN, WIFI_FAILURE_GRACE_PERIOD_SEC);
     esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
-    esp8266.startTcpServer(TCP_SERVER_PORT);
     esp8266.getStaIP(WIFI_STA_IP);
     dbgf(debug, F("STA IP: %d.%d.%d.%d"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
-
-    dbgf(debug, F("%lu: freeMem: %d\n"), getTimestamp(), freeMemory());
 }
 
 void loop() {
@@ -326,31 +323,31 @@ void processSerialMsg() {
 
 void processWifiMsg() {
     char buff[JSON_MAX_SIZE + 1];
-    esp8266.receive(buff, JSON_MAX_SIZE);
+    unsigned long start = millis();
+    uint8_t l = esp8266.receive(buff, JSON_MAX_SIZE);
+    dbgf(debug, F(":HTTP:receive:%d bytes:[%d msec]\n"), l, millis() - start);
     parseCommand(buff);
 }
 
 void broadcastMsg(const char* msg) {
     serial->println(msg);
-    unsigned long start = getTimestamp();
+    unsigned long start = millis();
     int httpRsp = esp8266.send(SERVER_IP, SERVER_PORT, msg, 3);
-    dbgf(debug, F("HTTP: %d (%d sec)\n"), httpRsp, getTimestamp() - start);
+    dbgf(debug, F(":HTTP:send:%d:[%d msec]\n"), httpRsp, millis() - start);
 }
 
 bool parseCommand(char* command) {
-    dbgf(debug, F("parsing cmd: %s\n"), command);
+    dbgf(debug, F(":parse cmd:%s\n"), command);
 
     if (strstr(command, "AT") == command) {
         // this is AT command for ESP8266
-        dbgf(debug, F("sending to ESP8266: %s\n"), command);
+        dbgf(debug, F(":ESP8266:%s\n"), command);
         esp8266.write(command);
         return true;
     }
 
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.parseObject(command);
-
-    dbg(debug, F("parsed\n"));
 
     if (root.success()) {
         const char* msgType = root[MSG_TYPE_KEY];

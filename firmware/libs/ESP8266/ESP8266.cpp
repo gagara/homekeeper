@@ -25,8 +25,11 @@ Stream *defaultDebug = NULL;
 
 void ESP8266::init(Stream *port, esp_cwmode mode, uint8_t resetPin, uint16_t failureGracePeriodSec) {
     if (!persistDebug) {
-        ESP8266::debug = defaultDebug;
+        debug = defaultDebug;
     }
+
+    dbg(debug, F(":wifi:init\n"));
+
     espSerial = port;
     cwMode = mode;
     hwResetPin = resetPin;
@@ -35,13 +38,10 @@ void ESP8266::init(Stream *port, esp_cwmode mode, uint8_t resetPin, uint16_t fai
     staIp[0] = staIp[1] = staIp[2] = staIp[3] = 0;
     connectTs = 0;
     reconnectCount = 0;
-
-    dbg(debug, F(":wifi:init\n"));
-
     char atcmd[MAX_AT_REQUEST_SIZE + 1];
     if (hwResetPin > 0) {
         // hardware reset
-        dbg(debug, F("wifi: hw reset\n"));
+        dbg(debug, F(":wifi:hwReset\n"));
         digitalWrite(hwResetPin, LOW);
         delay(500);
         digitalWrite(hwResetPin, HIGH);
@@ -157,6 +157,7 @@ void ESP8266::stopTcpServer() {
 
 uint16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message, uint8_t connRetryCount) {
     uint16_t httpRsp = doSend(dstIP, dstPort, message, connRetryCount);
+    dbgf(debug, F(":wifi:send:%d:%s\n"), httpRsp, message);
     if (httpRsp == 0) {
         errorsRecovery();
     }
@@ -166,6 +167,7 @@ uint16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char*
 size_t ESP8266::receive(char* message, size_t msize) {
     message[0] = '\0';
     char rspBuff[MAX_MESSAGE_SIZE + 1];
+    uint16_t rsp = 0;
     if (readUntil(rspBuff, MAX_MESSAGE_SIZE, "+IPD,0,", 5000)) {
         if (readUntil(rspBuff, MAX_MESSAGE_SIZE, "HTTP/") && strstr(rspBuff, "POST / ")) {
             if (readUntil(rspBuff, MAX_MESSAGE_SIZE, "\r\n\r\n")) {
@@ -177,15 +179,16 @@ size_t ESP8266::receive(char* message, size_t msize) {
                 // consume rest of response
                 while (read(rspBuff, MAX_MESSAGE_SIZE))
                     ;
-                sendResponse(200, "OK");
+                sendResponse(rsp = 200, "OK");
             } else {
-                sendResponse(400, "BAD REQUEST");
+                sendResponse(rsp = 400, "BAD REQUEST");
             }
         } else {
-            sendResponse(404, "NOT FOUND");
+            sendResponse(rsp = 404, "NOT FOUND");
         }
         write(F("AT+CIPCLOSE=0"), EXPECT_OK);
     }
+    dbgf(debug, F(":wifi:receive:%d:%s\n"), rsp, message);
     return strlen(message);
 }
 
@@ -229,37 +232,11 @@ bool ESP8266::write(const __FlashStringHelper* message, esp_response expectedRes
 }
 
 size_t ESP8266::read(char* buffer, size_t bsize, const uint16_t ttl) {
-    unsigned long start = millis();
-    uint8_t i = 0;
-    buffer[i] = '\0';
-    dbgf(debug, F("wifi:<<["));
-    while (millis() >= start && millis() - start < ttl && i < bsize) {
-        while (espSerial->available() > 0 && i < bsize) {
-            char c = (char) espSerial->read();
-            bufAdd(buffer, bsize, i, c);
-            dbgf(debug, F("%c"), c);
-            i++;
-        }
-    }
-    dbgf(debug, F("]\n"));
-    return i;
+    return read(buffer, bsize, NULL, ttl);
 }
 
 bool ESP8266::readUntil(char *buffer, size_t bsize, const char *target, const uint16_t ttl) {
-    unsigned long start = millis();
-    uint8_t i = 0;
-    buffer[i] = '\0';
-    dbgf(debug, F("wifi:<<["));
-    while (millis() >= start && millis() - start < ttl && !strstr(buffer, target)) {
-        while (espSerial->available() > 0 && !strstr(buffer, target)) {
-            char c = (char) espSerial->read();
-            bufAdd(buffer, bsize, i, c);
-            dbgf(debug, F("%c"), c);
-            i++;
-        }
-    }
-    dbgf(debug, F("]\n"));
-    return (strstr(buffer, target));
+    return read(buffer, bsize, target, ttl);
 }
 
 /* ================================== Private ================================== */
@@ -306,6 +283,24 @@ bool ESP8266::tcpServerDown() {
     } else {
         return true;
     }
+}
+
+size_t ESP8266::read(char *buffer, size_t bsize, const char *target, const uint16_t ttl) {
+    unsigned long start = millis();
+    uint8_t i = 0;
+    buffer[i] = '\0';
+    dbgf(debug, F("wifi:<<["));
+    while (millis() - start < ttl && ((target != NULL && !strstr(buffer, target)) || (i < bsize))) {
+        while (espSerial->available() > 0 && ((target != NULL && !strstr(buffer, target)) || (i < bsize))) {
+            char c = (char) espSerial->read();
+            bufAdd(buffer, bsize, i, c);
+            dbgf(debug, F("%c"), c);
+            i++;
+        }
+    }
+    dbgf(debug, F("]\n"));
+    return i;
+
 }
 
 uint16_t ESP8266::doSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message, uint8_t connRetryCount) {
@@ -359,6 +354,15 @@ uint16_t ESP8266::doSend(const esp_ip_t dstIP, const uint16_t dstPort, const cha
     return httpRsp;
 }
 
+void ESP8266::sendResponse(uint16_t httpCode, const char *content) {
+    char rsp[MAX_AT_REQUEST_SIZE + 1];
+    sprintf(rsp, "HTTP/1.0 %d %s", httpCode, content);
+    if (write(F("AT+CIPSENDEX=0,2048"), EXPECT_PROMPT)) {
+        write(rsp);
+        write("\\0", EXPECT_SEND_OK);
+    }
+}
+
 void ESP8266::errorsRecovery() {
     if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
         dbg(debug, F(":wifi:ERR_RECOVERY\n"));
@@ -376,15 +380,6 @@ void ESP8266::errorsRecovery() {
                 startTcpServer(tcpServerPort);
             }
         }
-    }
-}
-
-void ESP8266::sendResponse(uint16_t httpCode, const char *content) {
-    char rsp[MAX_AT_REQUEST_SIZE + 1];
-    sprintf(rsp, "HTTP/1.0 %d %s", httpCode, content);
-    if (write(F("AT+CIPSENDEX=0,2048"), EXPECT_PROMPT)) {
-        write(rsp);
-        write("\\0", EXPECT_SEND_OK);
     }
 }
 
