@@ -1,0 +1,32 @@
+#
+# central unit
+#
+{"m":"cfg","s":{"id":54,"cf":1.00}}     supply
+{"m":"cfg","s":{"id":55,"cf":1.00}}     reverse
+{"m":"cfg","s":{"id":56,"cf":1.00}}     tank
+{"m":"cfg","s":{"id":57,"cf":1.10}}     boiler
+{"m":"cfg","s":{"id":58,"cf":1.00}}     mix
+{"m":"cfg","s":{"id":59,"cf":1.00}}     sb_heater
+{"m":"cfg","s":{"id":61,"cf":1.00}}     solar_prim
+{"m":"cfg","s":{"id":62,"cf":1.00}}     solar_sec
+{"m":"cfg","s":{"id":201,"v":20}}       room1_min_temp
+{"m":"cfg","s":{"id":202,"v":21}}       room1_max_temp
+{"m":"cfg","rap":"********"}            router AP
+{"m":"cfg","rpw":"********"}            router PW
+{"m":"cfg","lap":"********"}            central unit AP
+{"m":"cfg","lpw":"********"}            central unit PW
+{"m":"cfg","sip":"192.168.*.*"}         server IP
+{"m":"cfg","sp":8085}                   server Port
+{"m":"cfg","lip":"192.168.*.*"}         IP (assigned by router)       
+
+#
+# Room1
+#
+{"m":"cfg","s":{"id":74,"cf":1.00}}     temp 
+{"m":"cfg","s":{"id":75,"cf":1.00}}     hum
+{"m":"cfg","rap":"********"}            central unit AP
+{"m":"cfg","rpw":"********"}            central unit PW
+{"m":"cfg","sip":"192.168.4.1"}         central unit IP
+{"m":"cfg","sp":80}                     central unit Port 
+{"m":"cfg","lip":"0.0.0.0"}             IP )assigned by central unit)
+

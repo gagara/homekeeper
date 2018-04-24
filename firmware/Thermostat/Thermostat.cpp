@@ -117,7 +117,7 @@ ESP8266 esp8266;
 
 void setup() {
     // Setup serial ports
-    serial->begin(115200);
+    serial->begin(9600);
     wifi->begin(115200);
 
     dbg(debug, F(":STARTING\n"));
@@ -134,13 +134,11 @@ void setup() {
 
     // setup WiFi
     loadWifiConfig();
-    dbgf(debug, F(":setup wifi:R_AP:%s:\n"), &WIFI_REMOTE_AP);
+    dbgf(debug, F(":setup wifi:R_AP:%s\n"), &WIFI_REMOTE_AP);
     esp8266.init(wifi, MODE_STA, WIFI_RST_PIN, WIFI_FAILURE_GRACE_PERIOD_SEC);
     esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
     esp8266.getStaIP(WIFI_STA_IP);
     dbgf(debug, F("STA IP: %d.%d.%d.%d"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
-
-    EEPROM.setMaxAllowedWrites(30);
 }
 
 void loop() {
