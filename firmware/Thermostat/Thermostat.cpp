@@ -139,6 +139,8 @@ void setup() {
     esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
     esp8266.getStaIP(WIFI_STA_IP);
     dbgf(debug, F("STA IP: %d.%d.%d.%d"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
+
+    EEPROM.setMaxAllowedWrites(30);
 }
 
 void loop() {

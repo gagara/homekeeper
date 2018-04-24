@@ -236,7 +236,8 @@ size_t ESP8266::read(char* buffer, size_t bsize, const uint16_t ttl) {
 }
 
 bool ESP8266::readUntil(char *buffer, size_t bsize, const char *target, const uint16_t ttl) {
-    return read(buffer, bsize, target, ttl);
+    read(buffer, bsize, target, ttl);
+    return strstr(buffer, target);
 }
 
 /* ================================== Private ================================== */
@@ -300,12 +301,7 @@ size_t ESP8266::read(char *buffer, size_t bsize, const char *target, const uint1
         }
     }
     dbgf(debug, F("]\n"));
-    if (target != NULL) {
-        return strstr(buffer, target) ? 1 : 0;
-    } else {
-        return i;
-    }
-
+    return i;
 }
 
 uint16_t ESP8266::doSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message, uint8_t connRetryCount) {

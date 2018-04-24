@@ -352,6 +352,8 @@ void setup() {
     esp8266.startTcpServer(TCP_SERVER_PORT);
     esp8266.getStaIP(WIFI_STA_IP);
     dbgf(debug, F(":STA_IP: %d.%d.%d.%d\n"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
+
+    EEPROM.setMaxAllowedWrites(30);
 }
 
 void loop() {
