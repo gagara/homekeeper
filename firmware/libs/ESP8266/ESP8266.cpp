@@ -290,8 +290,9 @@ size_t ESP8266::read(char *buffer, size_t bsize, const char *target, const uint1
     uint8_t i = 0;
     buffer[i] = '\0';
     dbgf(debug, F("wifi:<<["));
-    while (millis() - start < ttl && ((target != NULL && !strstr(buffer, target)) || (i < bsize))) {
-        while (espSerial->available() > 0 && ((target != NULL && !strstr(buffer, target)) || (i < bsize))) {
+    while (millis() - start < ttl && ((target != NULL && !strstr(buffer, target)) || (target == NULL && i < bsize))) {
+        while (espSerial->available() > 0
+                && ((target != NULL && !strstr(buffer, target)) || (target == NULL && i < bsize))) {
             char c = (char) espSerial->read();
             bufAdd(buffer, bsize, i, c);
             dbgf(debug, F("%c"), c);
@@ -299,7 +300,11 @@ size_t ESP8266::read(char *buffer, size_t bsize, const char *target, const uint1
         }
     }
     dbgf(debug, F("]\n"));
-    return i;
+    if (target != NULL) {
+        return strstr(buffer, target) ? 1 : 0;
+    } else {
+        return i;
+    }
 
 }
 
