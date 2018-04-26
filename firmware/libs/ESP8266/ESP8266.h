@@ -44,7 +44,7 @@ public:
 private:
     Stream *debug = NULL;
     Stream *espSerial = NULL;
-    uint8_t hwResetPin = 0;
+    uint8_t rstPin = 0;
     esp_cwmode cwMode = MODE_STA;
     esp_config_t *apSsid = NULL;
     esp_config_t *apPassword = NULL;

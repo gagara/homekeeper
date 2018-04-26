@@ -32,19 +32,19 @@ void ESP8266::init(Stream *port, esp_cwmode mode, uint8_t resetPin, uint16_t fai
 
     espSerial = port;
     cwMode = mode;
-    hwResetPin = resetPin;
+    rstPin = resetPin;
     failureGracePeriod = failureGracePeriodSec;
     lastSuccessRequestTs = millis();
     staIp[0] = staIp[1] = staIp[2] = staIp[3] = 0;
     connectTs = 0;
     reconnectCount = 0;
     char atcmd[MAX_AT_REQUEST_SIZE + 1];
-    if (hwResetPin > 0) {
+    if (rstPin > 0) {
         // hardware reset
         dbg(debug, F(":wifi:hwReset\n"));
-        digitalWrite(hwResetPin, LOW);
+        digitalWrite(rstPin, LOW);
         delay(500);
-        digitalWrite(hwResetPin, HIGH);
+        digitalWrite(rstPin, HIGH);
         delay(1000);
     }
     write(F("AT+RST"), EXPECT_OK, 300);
@@ -375,7 +375,7 @@ void ESP8266::errorsRecovery() {
                 lastSuccessRequestTs = millis();
             } else {
                 // restart ESP8266
-                init(espSerial, cwMode, hwResetPin, failureGracePeriod);
+                init(espSerial, cwMode, rstPin, failureGracePeriod);
                 startAP(apSsid, apPassword);
                 connect(staSsid, staPassword);
                 startTcpServer(tcpServerPort);
