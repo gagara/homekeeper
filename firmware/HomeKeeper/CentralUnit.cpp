@@ -106,7 +106,7 @@ static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800; // 30m
 
 // Boiler heating
 static const uint8_t TANK_BOILER_HEATING_ON_HIST = 3;
-static const uint8_t TANK_BOILER_HEATING_OFF_HIST = 1;
+static const uint8_t TANK_BOILER_HEATING_OFF_HIST = 2;
 static const uint8_t BOILER_SOLAR_MAX_TEMP_THRESHOLD = 46;
 static const uint8_t BOILER_SOLAR_MAX_TEMP_HIST = 2;
 

@@ -4,7 +4,7 @@
 {"m":"cfg","s":{"id":54,"cf":1.00}}     supply
 {"m":"cfg","s":{"id":55,"cf":1.00}}     reverse
 {"m":"cfg","s":{"id":56,"cf":1.00}}     tank
-{"m":"cfg","s":{"id":57,"cf":1.10}}     boiler
+{"m":"cfg","s":{"id":57,"cf":1.15}}     boiler
 {"m":"cfg","s":{"id":58,"cf":1.00}}     mix
 {"m":"cfg","s":{"id":59,"cf":1.00}}     sb_heater
 {"m":"cfg","s":{"id":61,"cf":1.00}}     solar_prim
