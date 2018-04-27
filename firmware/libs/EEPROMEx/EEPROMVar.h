@@ -21,17 +21,22 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#ifndef EEPROMVAR_h
+#define EEPROMVAR_h
+
 template<typename T> class EEPROMVar 
 {
 	public:
-	  EEPROMVar(T init) {
-		address = EEPROM.getAddress(sizeof(T));	
-		var = init;
+	  EEPROMVar(const T& init):
+		var(init),
+		address(EEPROM.getAddress(sizeof(T)))
+	  {
 	  }
+
 	  operator T () { 
 		return var; 
 	  }
-	  EEPROMVar &operator=(T val) {
+	  EEPROMVar &operator=(const T& val) {
 		var = val;
 		return *this;
 	  }
@@ -81,3 +86,5 @@ template<typename T> class EEPROMVar
 	  T var;
 	  int address;
 };
+
+#endif //EEPROMVAR_h
