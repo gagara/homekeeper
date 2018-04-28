@@ -9,6 +9,16 @@
 {"m":"cfg","s":{"id":59,"cf":1.00}}     sb_heater
 {"m":"cfg","s":{"id":61,"cf":1.00}}     solar_prim
 {"m":"cfg","s":{"id":62,"cf":1.00}}     solar_sec
+
+{"m":"cfg","s":{"id":54,"uid":"28FF7084231604A5"}}
+{"m":"cfg","s":{"id":55,"uid":"28FFB77C231604BB"}}
+{"m":"cfg","s":{"id":56,"uid":"28FF628223160453"}}
+{"m":"cfg","s":{"id":57,"uid":"28FFD1842316045B"}}
+{"m":"cfg","s":{"id":58,"uid":"28FF4590231604C5"}}
+{"m":"cfg","s":{"id":59,"uid":"28FF285B23160495"}}
+{"m":"cfg","s":{"id":61,"uid":"28FFC366231604EA"}} -- not used
+{"m":"cfg","s":{"id":62,"uid":"28FFCC84231604CB"}}
+
 {"m":"cfg","s":{"id":201,"v":20}}       room1_min_temp
 {"m":"cfg","s":{"id":202,"v":21}}       room1_max_temp
 {"m":"cfg","rap":"********"}            router AP
@@ -18,7 +28,6 @@
 {"m":"cfg","sip":"192.168.*.*"}         server IP
 {"m":"cfg","sp":8085}                   server Port
 {"m":"cfg","lip":"192.168.*.*"}         IP (assigned by router)       
-
 #
 # Room1
 #
@@ -28,5 +37,4 @@
 {"m":"cfg","rpw":"********"}            central unit PW
 {"m":"cfg","sip":"192.168.4.1"}         central unit IP
 {"m":"cfg","sp":80}                     central unit Port 
-{"m":"cfg","lip":"0.0.0.0"}             IP )assigned by central unit)
-
+{"m":"cfg","lip":"0.0.0.0"}             IP (assigned by central unit)

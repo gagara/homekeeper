@@ -193,10 +193,16 @@ size_t ESP8266::receive(char* message, size_t msize) {
 }
 
 int ESP8266::available() {
+    if (!espSerial) {
+        return 0;
+    }
     return espSerial->available();
 }
 
 bool ESP8266::write(const char* message, esp_response expectedResponse, const uint16_t ttl, const uint8_t retryCount) {
+    if (!espSerial) {
+        return false;
+    }
     for (uint8_t retry = 0; retry < retryCount; retry++) {
         dbgf(debug, F("wifi:>>%s\n"), message);
         // clear input buffer
@@ -287,6 +293,9 @@ bool ESP8266::tcpServerDown() {
 }
 
 size_t ESP8266::read(char *buffer, size_t bsize, const char *target, const uint16_t ttl) {
+    if (!espSerial) {
+        return 0;
+    }
     unsigned long start = millis();
     uint8_t i = 0;
     buffer[i] = '\0';

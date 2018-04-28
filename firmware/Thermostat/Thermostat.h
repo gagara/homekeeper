@@ -23,9 +23,9 @@ void setup();
 void setup();
 void loop();
 
-void loadSensorsCalibrationFactors();
-double readSensorCalibrationFactor(int offset);
-void writeSensorCalibrationFactor(double value, int addr);
+double readSensorCF(const uint8_t sensor);
+void saveSensorCF(const uint8_t sensor, const double value);
+int sensorCfOffset(const uint8_t sensor);
 void loadWifiConfig();
 void validateStringParam(char* str, int maxSize);
 
@@ -35,7 +35,7 @@ int8_t getSensorValue(uint8_t sensor);
 void reportStatus();
 void reportSensorStatus(const uint8_t id, const uint8_t value);
 void reportConfiguration();
-void reportSensorCalibrationFactor(const uint8_t id, const double value);
+void reportSensorCfConfig(const uint8_t id);
 void reportNumberConfig(const char* key, const int value);
 void reportStringConfig(const char* key, const char* value);
 

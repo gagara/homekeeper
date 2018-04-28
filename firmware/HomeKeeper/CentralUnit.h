@@ -9,6 +9,8 @@
 #include "Arduino.h"
 //add your includes for the project CentralUnit here
 
+#include <DallasTemperature.h>
+
 //end of add your includes here
 #ifdef __cplusplus
 extern "C" {
@@ -39,12 +41,20 @@ bool room1TempReachedMinThreshold();
 bool room1TempFailedMinThreshold();
 bool room1TempSatisfyMaxThreshold();
 
-void loadSensorsCalibrationFactors();
-double readSensorCalibrationFactor(int offset);
-void writeSensorCalibrationFactor(int offset, double value);
+double readSensorCF(const uint8_t sensor);
+void saveSensorCF(const uint8_t sensor, const double value);
+void readSensorUID(const uint8_t sensor, DeviceAddress uid);
+void saveSensorUID(const uint8_t sensor, const DeviceAddress uid);
+int16_t readSensorTH(const uint8_t sensor);
+void saveSensorTH(const uint8_t sensor, const int16_t value);
+int sensorCfOffset(const uint8_t sensor);
+int sensorUidOffset(const uint8_t sensor);
+int sensorThOffset(const uint8_t sensor);
 void restoreNodesState();
 void loadWifiConfig();
-void validateStringParam(char* str, int maxSize);
+void validateStringParam(char *str, int maxSize);
+void str2uid(const char *str, DeviceAddress uid);
+void uid2str(const DeviceAddress *uid, char *str);
 
 void searchSensors();
 void readSensors();
@@ -55,12 +65,14 @@ bool validSensorValues(const int16_t values[], const uint8_t size);
 void reportStatus();
 void reportNodeStatus(uint8_t nodeId, uint16_t nodeBit, unsigned long ts, unsigned long tsf);
 void reportSensorStatus(const uint8_t id, const int16_t value, const unsigned long ts = 0);
+void reportSensorThStatus(const uint8_t id);
+void reportTimestamp();
 void reportConfiguration();
-void reportSensorCalibrationFactor(const uint8_t id, const double value);
-void reportSensorConfigValue(const uint8_t id, const int8_t value);
+void reportSensorCfConfig(const uint8_t id);
+void reportSensorUidConfig(const uint8_t id);
+void reportSensorThConfig(const uint8_t id);
 void reportStringConfig(const char* key, const char* value);
 void reportNumberConfig(const char* key, const int value);
-void syncClocks();
 
 void processSerialMsg();
 void processBtMsg();

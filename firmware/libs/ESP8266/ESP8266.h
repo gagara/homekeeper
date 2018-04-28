@@ -45,7 +45,7 @@ private:
     Stream *debug = NULL;
     Stream *espSerial = NULL;
     uint8_t rstPin = 0;
-    esp_cwmode cwMode = MODE_STA;
+    esp_cwmode cwMode = MODE_UNKNOWN;
     esp_config_t *apSsid = NULL;
     esp_config_t *apPassword = NULL;
     esp_config_t *staSsid = NULL;

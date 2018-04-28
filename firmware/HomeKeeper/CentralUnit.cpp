@@ -15,158 +15,143 @@
 /*============================= Global configuration ========================*/
 
 // Sensors IDs
-static const uint8_t SENSOR_SUPPLY = 54;
-static const uint8_t SENSOR_REVERSE = 55;
-static const uint8_t SENSOR_TANK = 56;
-static const uint8_t SENSOR_BOILER = 57;
-static const uint8_t SENSOR_MIX = 58;
-static const uint8_t SENSOR_SB_HEATER = 59;
-static const uint8_t SENSOR_BOILER_POWER = 60;
-static const uint8_t SENSOR_SOLAR_PRIMARY = 61; //A7
-static const uint8_t SENSOR_SOLAR_SECONDARY = 62;
-static const uint8_t SENSOR_TEMP_ROOM_1 = (54 + 16) + (4 * 1) + 0;
-static const uint8_t SENSOR_HUM_ROOM_1 = (54 + 16) + (4 * 1) + 1;
-// Sensor thresholds
-static const uint8_t SENSOR_TH_ROOM1_SB_HEATER = 200 + 1;
-static const uint8_t SENSOR_TH_ROOM1_PRIMARY_HEATER = 200 + 2;
+const uint8_t SENSOR_SUPPLY = 54;
+const uint8_t SENSOR_REVERSE = 55;
+const uint8_t SENSOR_TANK = 56;
+const uint8_t SENSOR_BOILER = 57;
+const uint8_t SENSOR_MIX = 58;
+const uint8_t SENSOR_SB_HEATER = 59;
+const uint8_t SENSOR_BOILER_POWER = 60;
+const uint8_t SENSOR_SOLAR_PRIMARY = 61; //A7
+const uint8_t SENSOR_SOLAR_SECONDARY = 62;
+const uint8_t SENSOR_TEMP_ROOM_1 = (54 + 16) + (4 * 1) + 0;
+const uint8_t SENSOR_HUM_ROOM_1 = (54 + 16) + (4 * 1) + 1;
 
-// Sensors Addresses
-static const DeviceAddress SENSOR_SUPPLY_ADDR = { 0x28, 0xFF, 0x70, 0x84, 0x23, 0x16, 0x04, 0xA5 };
-static const DeviceAddress SENSOR_REVERSE_ADDR = { 0x28, 0xFF, 0xB7, 0x7C, 0x23, 0x16, 0x04, 0xBB };
-static const DeviceAddress SENSOR_TANK_ADDR = { 0x28, 0xFF, 0x62, 0x82, 0x23, 0x16, 0x04, 0x53 };
-static const DeviceAddress SENSOR_BOILER_ADDR = { 0x28, 0xFF, 0xD1, 0x84, 0x23, 0x16, 0x04, 0x5B };
-static const DeviceAddress SENSOR_MIX_ADDR = { 0x28, 0xFF, 0x45, 0x90, 0x23, 0x16, 0x04, 0xC5 };
-static const DeviceAddress SENSOR_SB_HEATER_ADDR = { 0x28, 0xFF, 0x28, 0x5B, 0x23, 0x16, 0x04, 0x95 };
-//static const DeviceAddress SENSOR_SOLAR_PRIMAY_ADDR = { 0x28, 0xFF, 0xC3, 0x66, 0x23, 0x16, 0x04, 0xEA }; // analog sensor
-static const DeviceAddress SENSOR_SOLAR_SECONDARY_ADDR = { 0x28, 0xFF, 0xCC, 0x84, 0x23, 0x16, 0x04, 0xCB };
+const uint8_t SENSORS_ADDR_CFG[] = { SENSOR_SUPPLY, SENSOR_REVERSE, SENSOR_TANK, SENSOR_BOILER, SENSOR_MIX,
+        SENSOR_SB_HEATER, SENSOR_SOLAR_PRIMARY, SENSOR_SOLAR_SECONDARY, /*reserved*/0, 0 };
+
+// Sensor thresholds
+const uint8_t SENSOR_TH_ROOM1_SB_HEATER = 200 + 1;
+const uint8_t SENSOR_TH_ROOM1_PRIMARY_HEATER = 200 + 2;
+
+const uint8_t SENSORS_TH_ADDR_CFG[] = { SENSOR_TH_ROOM1_SB_HEATER, SENSOR_TH_ROOM1_PRIMARY_HEATER, /*reserved*/0, 0, 0,
+        0, 0, 0, 0, 0 };
 
 // Sensors Bus pin
-static const uint8_t SENSORS_BUS = 49;
+const uint8_t SENSORS_BUS = 49;
 
 // Nodes pins
-static const uint8_t NODE_SUPPLY = 22; //7
-static const uint8_t NODE_HEATING = 24; //8
-static const uint8_t NODE_FLOOR = 26; //9
-static const uint8_t NODE_HOTWATER = 28; //10
-static const uint8_t NODE_CIRCULATION = 30; //11
-static const uint8_t NODE_SB_HEATER = 34;
-static const uint8_t NODE_SOLAR_PRIMARY = 36;
-static const uint8_t NODE_SOLAR_SECONDARY = 38;
-static const uint8_t NODE_HEATING_VALVE = 40;
-static const uint8_t NODE_RESERVED = 42;
+const uint8_t NODE_SUPPLY = 22; //7
+const uint8_t NODE_HEATING = 24; //8
+const uint8_t NODE_FLOOR = 26; //9
+const uint8_t NODE_HOTWATER = 28; //10
+const uint8_t NODE_CIRCULATION = 30; //11
+const uint8_t NODE_SB_HEATER = 34;
+const uint8_t NODE_SOLAR_PRIMARY = 36;
+const uint8_t NODE_SOLAR_SECONDARY = 38;
+const uint8_t NODE_HEATING_VALVE = 40;
+const uint8_t NODE_RESERVED = 42;
 
 // WiFi pins
-static const uint8_t WIFI_RST_PIN = 12;
+const uint8_t WIFI_RST_PIN = 12;
 
-static const uint8_t HEARTBEAT_LED = 13;
+const uint8_t HEARTBEAT_LED = 13;
 
 // Nodes State
-static const uint16_t NODE_SUPPLY_BIT = 1;
-static const uint16_t NODE_HEATING_BIT = 2;
-static const uint16_t NODE_FLOOR_BIT = 4;
-static const uint16_t NODE_HOTWATER_BIT = 8;
-static const uint16_t NODE_CIRCULATION_BIT = 16;
-static const uint16_t NODE_SB_HEATER_BIT = 64;
-static const uint16_t NODE_SOLAR_PRIMARY_BIT = 128;
-static const uint16_t NODE_SOLAR_SECONDARY_BIT = 256;
-static const uint16_t NODE_HEATING_VALVE_BIT = 512;
-//static const uint16_t NODE_RESERVED_BIT = 1024;
+const uint16_t NODE_SUPPLY_BIT = 1;
+const uint16_t NODE_HEATING_BIT = 2;
+const uint16_t NODE_FLOOR_BIT = 4;
+const uint16_t NODE_HOTWATER_BIT = 8;
+const uint16_t NODE_CIRCULATION_BIT = 16;
+const uint16_t NODE_SB_HEATER_BIT = 64;
+const uint16_t NODE_SOLAR_PRIMARY_BIT = 128;
+const uint16_t NODE_SOLAR_SECONDARY_BIT = 256;
+const uint16_t NODE_HEATING_VALVE_BIT = 512;
+//const uint16_t NODE_RESERVED_BIT = 1024;
 
 // etc
-static const unsigned long MAX_TIMESTAMP = -1;
-static const int16_t UNKNOWN_SENSOR_VALUE = -127;
-static const uint8_t SENSORS_PRECISION = 9;
-static const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 60;
-
-// EEPROM
-static const int NODE_STATE_EEPROM_ADDR = 0; // 2 bytes
-static const int NODE_FORCED_MODE_EEPROM_ADDR = NODE_STATE_EEPROM_ADDR + 2; // 2 bytes
-static const int SENSORS_FACTORS_EEPROM_ADDR = NODE_FORCED_MODE_EEPROM_ADDR + 2; // 8 x 4 bytes
-static const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR + (8 * 4); // 32 bytes
-static const int WIFI_REMOTE_PW_EEPROM_ADDR = WIFI_REMOTE_AP_EEPROM_ADDR + 32; // 32 bytes
-static const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + 32; // 4 bytes
-static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + 4; // 2 bytes
-static const int WIFI_LOCAL_AP_EEPROM_ADDR = SERVER_PORT_EEPROM_ADDR + 2; // 32 bytes
-static const int WIFI_LOCAL_PW_EEPROM_ADDR = WIFI_LOCAL_AP_EEPROM_ADDR + 32; // 32 bytes
-static const int STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR = WIFI_LOCAL_PW_EEPROM_ADDR + 32; // 1 byte
-static const int PRIMARY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR = STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR + 1; // 1 byte
+const unsigned long MAX_TIMESTAMP = -1;
+const int16_t UNKNOWN_SENSOR_VALUE = -127;
+const uint8_t SENSORS_PRECISION = 9;
+const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 60;
 
 // Primary Heater
-static const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
-static const uint8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
-static const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_SEC = 1200; // 20 minutes
+const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
+const uint8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
+const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_SEC = 1200; // 20 minutes
 
 // heating
-static const uint8_t HEATING_ON_TEMP_THRESHOLD = 40;
-static const uint8_t HEATING_OFF_TEMP_THRESHOLD = 36;
-static const uint8_t FLOOR_ON_TEMP_THRESHOLD = 35;
-static const uint8_t FLOOR_OFF_TEMP_THRESHOLD = 26;
-static const uint8_t PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 20;
-static const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800; // 30m
+const uint8_t HEATING_ON_TEMP_THRESHOLD = 40;
+const uint8_t HEATING_OFF_TEMP_THRESHOLD = 36;
+const uint8_t FLOOR_ON_TEMP_THRESHOLD = 35;
+const uint8_t FLOOR_OFF_TEMP_THRESHOLD = 26;
+const uint8_t PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 20;
+const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800; // 30m
 
 // Boiler heating
-static const uint8_t TANK_BOILER_HEATING_ON_HIST = 3;
-static const uint8_t TANK_BOILER_HEATING_OFF_HIST = 2;
-static const uint8_t BOILER_SOLAR_MAX_TEMP_THRESHOLD = 46;
-static const uint8_t BOILER_SOLAR_MAX_TEMP_HIST = 2;
+const uint8_t TANK_BOILER_HEATING_ON_HIST = 3;
+const uint8_t TANK_BOILER_HEATING_OFF_HIST = 2;
+const uint8_t BOILER_SOLAR_MAX_TEMP_THRESHOLD = 46;
+const uint8_t BOILER_SOLAR_MAX_TEMP_HIST = 2;
 
 // Circulation
-static const uint8_t CIRCULATION_MIN_TEMP_THRESHOLD = 50;
-static const uint8_t CIRCULATION_COOLING_TEMP_THRESHOLD = 61;
-static const unsigned long CIRCULATION_ACTIVE_PERIOD_SEC = 180; // 3m
-static const unsigned long CIRCULATION_PASSIVE_PERIOD_SEC = 3420; // 57m
+const uint8_t CIRCULATION_MIN_TEMP_THRESHOLD = 50;
+const uint8_t CIRCULATION_COOLING_TEMP_THRESHOLD = 61;
+const unsigned long CIRCULATION_ACTIVE_PERIOD_SEC = 180; // 3m
+const unsigned long CIRCULATION_PASSIVE_PERIOD_SEC = 3420; // 57m
 
 // Standby Heater
-static const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
+const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 
 // Tank
-static const uint8_t TANK_MIN_TEMP_THRESHOLD = 3;
-static const uint8_t TANK_MIN_TEMP_HIST = 2;
+const uint8_t TANK_MIN_TEMP_THRESHOLD = 3;
+const uint8_t TANK_MIN_TEMP_HIST = 2;
 
 // Solar
-static const unsigned long SOLAR_PRIMARY_COLDSTART_PERIOD_SEC = 600; // 10m
-static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 110; // stagnation
-static const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
-static const uint8_t SOLAR_PRIMARY_BOILER_ON_HIST = 9;
-static const uint8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 0;
-static const uint8_t SOLAR_SECONDARY_BOILER_ON_HIST = 0;
+const unsigned long SOLAR_PRIMARY_COLDSTART_PERIOD_SEC = 600; // 10m
+const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 110; // stagnation
+const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
+const uint8_t SOLAR_PRIMARY_BOILER_ON_HIST = 9;
+const uint8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 0;
+const uint8_t SOLAR_SECONDARY_BOILER_ON_HIST = 0;
 
 // sensor BoilerPower
-static const uint8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
+const uint8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
 
 // reporting
-static const unsigned long STATUS_REPORTING_PERIOD_SEC = 5; // 5s
-static const unsigned long SENSORS_READ_INTERVAL_SEC = 5; // 5s
-static const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 300; // 5 minutes
+const unsigned long STATUS_REPORTING_PERIOD_SEC = 5; // 5s
+const unsigned long SENSORS_READ_INTERVAL_SEC = 5; // 5s
+const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 300; // 5 minutes
 
 // JSON
-static const char MSG_TYPE_KEY[] = "m";
-static const char ID_KEY[] = "id";
-static const char STATE_KEY[] = "ns";
-static const char FORCE_FLAG_KEY[] = "ff";
-static const char TIMESTAMP_KEY[] = "ts";
-static const char FORCE_TIMESTAMP_KEY[] = "ft";
-static const char CALIBRATION_FACTOR_KEY[] = "cf";
-static const char NODES_KEY[] = "n";
-static const char SENSORS_KEY[] = "s";
-static const char VALUE_KEY[] = "v";
+const char MSG_TYPE_KEY[] = "m";
+const char ID_KEY[] = "id";
+const char STATE_KEY[] = "ns";
+const char FORCE_FLAG_KEY[] = "ff";
+const char TIMESTAMP_KEY[] = "ts";
+const char FORCE_TIMESTAMP_KEY[] = "ft";
+const char CALIBRATION_FACTOR_KEY[] = "cf";
+const char NODES_KEY[] = "n";
+const char SENSORS_KEY[] = "s";
+const char VALUE_KEY[] = "v";
+const char UID_KEY[] = "uid";
 
-static const char MSG_CURRENT_STATUS_REPORT[] = "csr";
-static const char MSG_NODE_STATE_CHANGED[] = "nsc";
-static const char MSG_CLOCK_SYNC[] = "cls";
-static const char MSG_CONFIGURATION[] = "cfg";
+const char MSG_CURRENT_STATUS_REPORT[] = "csr";
+const char MSG_NODE_STATE_CHANGED[] = "nsc";
+const char MSG_CLOCK_SYNC[] = "cls";
+const char MSG_CONFIGURATION[] = "cfg";
 
-static const char WIFI_REMOTE_AP_KEY[] = "rap";
-static const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
-static const char WIFI_LOCAL_AP_KEY[] = "lap";
-static const char WIFI_LOCAL_PASSWORD_KEY[] = "lpw";
-static const char SERVER_IP_KEY[] = "sip";
-static const char SERVER_PORT_KEY[] = "sp";
-static const char LOCAL_IP_KEY[] = "lip";
-static const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
+const char WIFI_REMOTE_AP_KEY[] = "rap";
+const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
+const char WIFI_LOCAL_AP_KEY[] = "lap";
+const char WIFI_LOCAL_PASSWORD_KEY[] = "lpw";
+const char SERVER_IP_KEY[] = "sip";
+const char SERVER_PORT_KEY[] = "sp";
+const char LOCAL_IP_KEY[] = "lip";
+const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
 
-static const uint8_t JSON_MAX_SIZE = 128;
-static const uint8_t JSON_MAX_BUFFER_SIZE = 255;
+const uint8_t JSON_MAX_SIZE = 128;
+const uint8_t JSON_MAX_BUFFER_SIZE = 255;
 
 /*============================= Global variables ============================*/
 
@@ -182,8 +167,6 @@ int16_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
 int16_t humRoom1 = UNKNOWN_SENSOR_VALUE;
 int16_t tempSolarPrimary = UNKNOWN_SENSOR_VALUE;
 int16_t tempSolarSecondary = UNKNOWN_SENSOR_VALUE;
-int16_t STANDBY_HEATER_ROOM_TEMP_THRESHOLD = STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
-int16_t PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD;
 int16_t sensorBoilerPowerState = 0;
 
 //// Nodes
@@ -236,16 +219,6 @@ unsigned long tsCurr = 0;
 
 uint8_t overflowCount = 0;
 
-// sensor calibration factors
-double SENSOR_SUPPLY_FACTOR = 1;
-double SENSOR_REVERSE_FACTOR = 1;
-double SENSOR_TANK_FACTOR = 1;
-double SENSOR_BOILER_FACTOR = 1;
-double SENSOR_MIX_FACTOR = 1;
-double SENSOR_SB_HEATER_FACTOR = 1;
-double SENSOR_SOLAR_PRIMARY_FACTOR = 1;
-double SENSOR_SOLAR_SECONDARY_FACTOR = 1;
-
 unsigned long boilerPowersaveCurrentPassivePeriod = 0;
 
 // WiFi
@@ -257,6 +230,24 @@ esp_ip_t SERVER_IP = { 0, 0, 0, 0 };
 uint16_t SERVER_PORT = 80;
 esp_ip_t WIFI_STA_IP = { 0, 0, 0, 0 };
 uint16_t TCP_SERVER_PORT = 80;
+
+// EEPROM addresses
+const int NODE_STATE_FLAGS_EEPROM_ADDR = 0;
+const int NODE_FORCED_MODE_FLAGS_EEPROM_ADDR = NODE_STATE_FLAGS_EEPROM_ADDR + sizeof(NODE_STATE_FLAGS);
+const int SENSORS_UIDS_EEPROM_ADDR = NODE_FORCED_MODE_FLAGS_EEPROM_ADDR + sizeof(NODE_FORCED_MODE_FLAGS);
+const int SENSORS_FACTORS_EEPROM_ADDR = SENSORS_UIDS_EEPROM_ADDR
+        + sizeof(DeviceAddress) * sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]);
+const int SENSORS_TH_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR
+        + sizeof(double) * sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]);
+const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_TH_EEPROM_ADDR
+        + sizeof(int16_t) * sizeof(SENSORS_TH_ADDR_CFG) / sizeof(SENSORS_TH_ADDR_CFG[0]);
+const int WIFI_REMOTE_PW_EEPROM_ADDR = WIFI_REMOTE_AP_EEPROM_ADDR + sizeof(WIFI_REMOTE_AP);
+const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + sizeof(WIFI_REMOTE_PW);
+const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + sizeof(SERVER_IP);
+const int WIFI_LOCAL_AP_EEPROM_ADDR = SERVER_PORT_EEPROM_ADDR + sizeof(SERVER_PORT);
+const int WIFI_LOCAL_PW_EEPROM_ADDR = WIFI_LOCAL_AP_EEPROM_ADDR + sizeof(WIFI_LOCAL_AP);
+
+int eepromWriteCount = 0;
 
 /*============================= Connectivity ================================*/
 
@@ -318,13 +309,6 @@ void setup() {
     sensors.begin();
     sensors.setResolution(SENSORS_PRECISION);
     searchSensors();
-
-    // read sensors calibration factors from EEPROM
-    loadSensorsCalibrationFactors();
-
-    // restore sensor thresholds
-    STANDBY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
-    PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = EEPROM.readByte(PRIMARY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR);
 
     // read forced node state flags from EEPROM
     // default node state -- OFF
@@ -1024,7 +1008,7 @@ void processStandbyHeater() {
                 switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
             } else {
                 // primary heater is off
-                if (tempTank > STANDBY_HEATER_ROOM_TEMP_THRESHOLD && room1TempReachedMinThreshold()) {
+                if (tempTank > readSensorTH(SENSOR_TH_ROOM1_SB_HEATER) && room1TempReachedMinThreshold()) {
                     // temp in (tank && room1) is high enough
                     // turn heater OFF
                     switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
@@ -1177,8 +1161,8 @@ void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
     }
     // update node modes in EEPROM if forced permanently
     if (ts == 0) {
-        EEPROM.writeInt(NODE_STATE_EEPROM_ADDR, NODE_STATE_FLAGS);
-        EEPROM.writeInt(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
+        eepromWriteCount += EEPROM.updateInt(NODE_STATE_FLAGS_EEPROM_ADDR, NODE_STATE_FLAGS);
+        eepromWriteCount += EEPROM.updateInt(NODE_FORCED_MODE_FLAGS_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
     }
 }
 
@@ -1243,14 +1227,14 @@ void unForceNodeState(uint8_t id) {
     }
     // update node modes in EEPROM if unforced from permanent
     if (prevPermanentlyForcedModeFlags != NODE_PERMANENTLY_FORCED_MODE_FLAGS) {
-        EEPROM.writeInt(NODE_FORCED_MODE_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
+        eepromWriteCount += EEPROM.updateInt(NODE_FORCED_MODE_FLAGS_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
     }
 }
 
 bool room1TempReachedMinThreshold() {
     return (tsLastSensorTempRoom1 != 0
             && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 > STANDBY_HEATER_ROOM_TEMP_THRESHOLD)
+            && tempRoom1 > readSensorTH(SENSOR_TH_ROOM1_SB_HEATER))
             || (tsLastSensorTempRoom1 != 0
                     && diffTimestamps(tsCurr, tsLastSensorTempRoom1) >= HEATING_ROOM_1_MAX_VALIDITY_PERIOD)
             || (tsLastSensorTempRoom1 == 0);
@@ -1259,43 +1243,98 @@ bool room1TempReachedMinThreshold() {
 bool room1TempFailedMinThreshold() {
     return (tsLastSensorTempRoom1 != 0
             && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 < STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+            && tempRoom1 < readSensorTH(SENSOR_TH_ROOM1_SB_HEATER));
 }
 
 bool room1TempSatisfyMaxThreshold() {
     return tsLastSensorTempRoom1 != 0
             && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 >= PRIMARY_HEATER_ROOM_TEMP_THRESHOLD;
+            && tempRoom1 >= readSensorTH(SENSOR_TH_ROOM1_PRIMARY_HEATER);
 }
 
 /*====================== Load/Save configuration in EEPROM ==================*/
 
-void loadSensorsCalibrationFactors() {
-    SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 0);
-    SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 1);
-    SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 2);
-    SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 3);
-    SENSOR_MIX_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 4);
-    SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 5);
-    SENSOR_SOLAR_PRIMARY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 6);
-    SENSOR_SOLAR_SECONDARY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 7);
-}
-
-double readSensorCalibrationFactor(int offset) {
-    double f = EEPROM.readDouble(offset);
-    if (isnan(f) || f <= 0) {
-        f = 1;
+double readSensorCF(uint8_t sensor) {
+    double f = 0;
+    if (sensorCfOffset(sensor) >= 0) {
+        f = EEPROM.readDouble(SENSORS_FACTORS_EEPROM_ADDR + sensorCfOffset(sensor));
+        if (isnan(f) || f <= 0) {
+            f = 1;
+        }
     }
     return f;
 }
 
-void writeSensorCalibrationFactor(int offset, double value) {
-    EEPROM.writeDouble(offset, value);
+void saveSensorCF(uint8_t sensor, double value) {
+    if (sensorCfOffset(sensor) >= 0) {
+        eepromWriteCount += EEPROM.updateDouble(SENSORS_FACTORS_EEPROM_ADDR + sensorCfOffset(sensor), value);
+    }
+}
+
+void readSensorUID(uint8_t sensor, DeviceAddress uid) {
+    uid[0] = uid[1] = uid[2] = uid[3] = uid[4] = uid[5] = uid[6] = uid[7] = 0;
+    if (sensorUidOffset(sensor) >= 0) {
+        EEPROM.readBlock(SENSORS_UIDS_EEPROM_ADDR + sensorUidOffset(sensor), uid, sizeof(DeviceAddress));
+    }
+}
+
+void saveSensorUID(uint8_t sensor, DeviceAddress uid) {
+    if (sensorUidOffset(sensor) >= 0) {
+        eepromWriteCount += EEPROM.updateBlock(SENSORS_UIDS_EEPROM_ADDR + sensorUidOffset(sensor), uid,
+                sizeof(DeviceAddress));
+    }
+}
+
+int16_t readSensorTH(uint8_t sensor) {
+    int16_t v = UNKNOWN_SENSOR_VALUE;
+    if (sensorThOffset(sensor) >= 0) {
+        v = EEPROM.readInt(SENSORS_TH_EEPROM_ADDR + sensorThOffset(sensor));
+    }
+    return v;
+}
+
+void saveSensorTH(uint8_t sensor, int16_t value) {
+    if (sensorThOffset(sensor) >= 0) {
+        eepromWriteCount += EEPROM.updateInt(SENSORS_TH_EEPROM_ADDR + sensorThOffset(sensor), value);
+    }
+}
+
+int sensorCfOffset(uint8_t sensor) {
+    int offset = 0;
+    for (uint8_t i = 0; i < sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]); i++) {
+        if (SENSORS_ADDR_CFG[i] == sensor) {
+            return offset;
+        }
+        offset += sizeof(double);
+    }
+    return -1;
+}
+
+int sensorUidOffset(uint8_t sensor) {
+    int offset = 0;
+    for (uint8_t i = 0; i < sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]); i++) {
+        if (SENSORS_ADDR_CFG[i] == sensor) {
+            return offset;
+        }
+        offset += sizeof(DeviceAddress);
+    }
+    return -1;
+}
+
+int sensorThOffset(uint8_t sensor) {
+    int offset = 0;
+    for (uint8_t i = 0; i < sizeof(SENSORS_TH_ADDR_CFG) / sizeof(SENSORS_TH_ADDR_CFG[0]); i++) {
+        if (SENSORS_TH_ADDR_CFG[i] == sensor) {
+            return offset;
+        }
+        offset += sizeof(int16_t);
+    }
+    return -1;
 }
 
 void restoreNodesState() {
-    NODE_STATE_FLAGS = EEPROM.readInt(NODE_STATE_EEPROM_ADDR);
-    NODE_FORCED_MODE_FLAGS = EEPROM.readInt(NODE_FORCED_MODE_EEPROM_ADDR);
+    NODE_STATE_FLAGS = EEPROM.readInt(NODE_STATE_FLAGS_EEPROM_ADDR);
+    NODE_FORCED_MODE_FLAGS = EEPROM.readInt(NODE_FORCED_MODE_FLAGS_EEPROM_ADDR);
     NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS;
     NODE_STATE_FLAGS = NODE_STATE_FLAGS & NODE_PERMANENTLY_FORCED_MODE_FLAGS;
 }
@@ -1323,6 +1362,21 @@ void validateStringParam(char* str, int maxSize) {
     }
 }
 
+void str2uid(const char *str, DeviceAddress uid) {
+    char buf[2];
+    for (uint8_t i = 0; i < 16; i = i + 2) {
+        buf[0] = str[i];
+        buf[1] = str[i + 1];
+        sscanf(buf, "%X", (unsigned int*) &uid[i / 2]);
+    }
+}
+
+void uid2str(const DeviceAddress uid, char *str) {
+    for (uint8_t i = 0; i < 8; i++) {
+        sprintf(&str[i * 2], "%02X", uid[i]);
+    }
+}
+
 /*====================== Sensors processing methods =========================*/
 
 void searchSensors() {
@@ -1330,10 +1384,9 @@ void searchSensors() {
     dbg(debug, F(":sensors:found:\n"));
     oneWire.reset_search();
     while (oneWire.search(sensAddr)) {
-        for (uint8_t i = 0; i < 8; i++) {
-            dbgf(debug, F("0x%02X "), sensAddr[i]);
-        }
-        dbg(debug, F("\n"));
+        char buf[16];
+        uid2str(sensAddr, buf);
+        dbgf(debug, F("%s\n"), buf);
     }
     dbg(debug, F(":sensors:end\n"));
 }
@@ -1358,31 +1411,7 @@ void readSensors() {
 
 int16_t getSensorValue(const uint8_t sensor) {
     float result = UNKNOWN_SENSOR_VALUE;
-    if (SENSOR_SUPPLY == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_SUPPLY_ADDR)) {
-            result = sensors.getTempC(SENSOR_SUPPLY_ADDR) * SENSOR_SUPPLY_FACTOR;
-        }
-    } else if (SENSOR_REVERSE == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_REVERSE_ADDR)) {
-            result = sensors.getTempC(SENSOR_REVERSE_ADDR) * SENSOR_REVERSE_FACTOR;
-        }
-    } else if (SENSOR_TANK == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_TANK_ADDR)) {
-            result = sensors.getTempC(SENSOR_TANK_ADDR) * SENSOR_TANK_FACTOR;
-        }
-    } else if (SENSOR_BOILER == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_BOILER_ADDR)) {
-            result = sensors.getTempC(SENSOR_BOILER_ADDR) * SENSOR_BOILER_FACTOR;
-        }
-    } else if (SENSOR_MIX == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_MIX_ADDR)) {
-            result = sensors.getTempC(SENSOR_MIX_ADDR) * SENSOR_MIX_FACTOR;
-        }
-    } else if (SENSOR_SB_HEATER == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_SB_HEATER_ADDR)) {
-            result = sensors.getTempC(SENSOR_SB_HEATER_ADDR) * SENSOR_SB_HEATER_FACTOR;
-        }
-    } else if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
+    if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
         float vin = 5; // 5V
         float r2 = 91.335; // 100Ohm + calibration
         int v = 0;
@@ -1399,9 +1428,20 @@ int16_t getSensorValue(const uint8_t sensor) {
         if (v > 0) {
             result = (r1 - 100) / 0.39;
         }
-    } else if (SENSOR_SOLAR_SECONDARY == sensor) {
-        if (sensors.requestTemperaturesByAddress(SENSOR_SOLAR_SECONDARY_ADDR)) {
-            result = sensors.getTempC(SENSOR_SOLAR_SECONDARY_ADDR) * SENSOR_SOLAR_SECONDARY_FACTOR;
+    } else { // all other digital
+        DeviceAddress uid;
+        readSensorUID(sensor, uid);
+        if (sensors.requestTemperaturesByAddress(uid)) {
+            uint8_t retry = 0;
+            while ((result = sensors.getTempC(uid)) == DEVICE_DISCONNECTED_C && retry < 10) {
+                delay(10);
+                retry++;
+            }
+            if (result != DEVICE_DISCONNECTED_C) {
+                result *= readSensorCF(sensor);
+            } else {
+                result = UNKNOWN_SENSOR_VALUE;
+            }
         }
     }
     result = (result > 0) ? result + 0.5 : result - 0.5;
@@ -1488,7 +1528,7 @@ void reportStatus() {
         break;
     case NODE_HEATING:
         reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
-        reportSensorConfigValue(SENSOR_TH_ROOM1_PRIMARY_HEATER, PRIMARY_HEATER_ROOM_TEMP_THRESHOLD);
+        reportSensorThStatus(SENSOR_TH_ROOM1_PRIMARY_HEATER);
         nextEntryReport = NODE_FLOOR;
         break;
     case NODE_FLOOR:
@@ -1497,7 +1537,7 @@ void reportStatus() {
         break;
     case NODE_SB_HEATER:
         reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
-        reportSensorConfigValue(SENSOR_TH_ROOM1_SB_HEATER, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
+        reportSensorThStatus(SENSOR_TH_ROOM1_SB_HEATER);
         nextEntryReport = NODE_HOTWATER;
         break;
     case NODE_HOTWATER:
@@ -1568,18 +1608,57 @@ void reportSensorStatus(const uint8_t id, const int16_t value, const unsigned lo
     broadcastMsg(json);
 }
 
+void reportSensorThStatus(const uint8_t id) {
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+
+    JsonObject& sens = jsonBuffer.createObject();
+    sens[ID_KEY] = id;
+    sens[VALUE_KEY] = readSensorTH(id);
+
+    root[SENSORS_KEY] = sens;
+
+    char json[JSON_MAX_SIZE];
+    root.printTo(json, JSON_MAX_SIZE);
+
+    broadcastMsg(json);
+}
+
+void reportTimestamp() {
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CLOCK_SYNC;
+    root[TIMESTAMP_KEY] = getTimestamp();
+
+    char json[JSON_MAX_SIZE];
+    root.printTo(json, JSON_MAX_SIZE);
+
+    broadcastMsg(json);
+}
+
 void reportConfiguration() {
     char ip[16];
-    reportSensorCalibrationFactor(SENSOR_SUPPLY, SENSOR_SUPPLY_FACTOR);
-    reportSensorCalibrationFactor(SENSOR_REVERSE, SENSOR_REVERSE_FACTOR);
-    reportSensorCalibrationFactor(SENSOR_TANK, SENSOR_TANK_FACTOR);
-    reportSensorCalibrationFactor(SENSOR_BOILER, SENSOR_BOILER_FACTOR);
-    reportSensorCalibrationFactor(SENSOR_MIX, SENSOR_MIX_FACTOR);
-    reportSensorCalibrationFactor(SENSOR_SB_HEATER, SENSOR_SB_HEATER_FACTOR);
-    reportSensorCalibrationFactor(SENSOR_SOLAR_PRIMARY, SENSOR_SOLAR_PRIMARY_FACTOR);
-    reportSensorCalibrationFactor(SENSOR_SOLAR_SECONDARY, SENSOR_SOLAR_SECONDARY_FACTOR);
-    reportSensorConfigValue(SENSOR_TH_ROOM1_SB_HEATER, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
-    reportSensorConfigValue(SENSOR_TH_ROOM1_PRIMARY_HEATER, PRIMARY_HEATER_ROOM_TEMP_THRESHOLD);
+    reportSensorCfConfig(SENSOR_SUPPLY);
+    reportSensorCfConfig(SENSOR_REVERSE);
+    reportSensorCfConfig(SENSOR_TANK);
+    reportSensorCfConfig(SENSOR_BOILER);
+    reportSensorCfConfig(SENSOR_MIX);
+    reportSensorCfConfig(SENSOR_SB_HEATER);
+    reportSensorCfConfig(SENSOR_SOLAR_PRIMARY);
+    reportSensorCfConfig(SENSOR_SOLAR_SECONDARY);
+
+    reportSensorUidConfig(SENSOR_SUPPLY);
+    reportSensorUidConfig(SENSOR_REVERSE);
+    reportSensorUidConfig(SENSOR_TANK);
+    reportSensorUidConfig(SENSOR_BOILER);
+    reportSensorUidConfig(SENSOR_MIX);
+    reportSensorUidConfig(SENSOR_SB_HEATER);
+    reportSensorUidConfig(SENSOR_SOLAR_SECONDARY);
+
+    reportSensorThConfig(SENSOR_TH_ROOM1_SB_HEATER);
+    reportSensorThConfig(SENSOR_TH_ROOM1_PRIMARY_HEATER);
+
     reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
     reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
     reportStringConfig(WIFI_LOCAL_AP_KEY, WIFI_LOCAL_AP);
@@ -1589,40 +1668,65 @@ void reportConfiguration() {
     reportNumberConfig(SERVER_PORT_KEY, SERVER_PORT);
     sprintf(ip, "%d.%d.%d.%d", WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
     reportStringConfig(LOCAL_IP_KEY, ip);
+    dbgf(debug, F(":EEPROM:written:%d bytes\n"), eepromWriteCount);
 }
 
-void reportSensorCalibrationFactor(const uint8_t id, const double value) {
+void reportSensorCfConfig(const uint8_t id) {
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.createObject();
     root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
 
     JsonObject& sens = jsonBuffer.createObject();
     sens[ID_KEY] = id;
-    sens[CALIBRATION_FACTOR_KEY] = value;
+    sens[CALIBRATION_FACTOR_KEY] = readSensorCF(id);
 
     root[SENSORS_KEY] = sens;
 
     char json[JSON_MAX_SIZE];
     root.printTo(json, JSON_MAX_SIZE);
 
-    broadcastMsg(json);
+    serial->println(json);
+    bt->println(json);
 }
 
-void reportSensorConfigValue(const uint8_t id, const int8_t value) {
+void reportSensorUidConfig(const uint8_t id) {
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.createObject();
     root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
 
     JsonObject& sens = jsonBuffer.createObject();
     sens[ID_KEY] = id;
-    sens[VALUE_KEY] = value;
+    DeviceAddress uid;
+    readSensorUID(id, uid);
+    char uidStr[16];
+    uid2str(uid, uidStr);
+    sens[UID_KEY] = uidStr;
 
     root[SENSORS_KEY] = sens;
 
     char json[JSON_MAX_SIZE];
     root.printTo(json, JSON_MAX_SIZE);
 
-    broadcastMsg(json);
+    serial->println(json);
+    bt->println(json);
+}
+
+void reportSensorThConfig(const uint8_t id) {
+    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.createObject();
+    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+
+    JsonObject& sens = jsonBuffer.createObject();
+    sens[ID_KEY] = id;
+    sens[VALUE_KEY] = readSensorTH(id);
+
+    root[SENSORS_KEY] = sens;
+
+    char json[JSON_MAX_SIZE];
+    root.printTo(json, JSON_MAX_SIZE);
+
+    serial->println(json);
+    bt->println(json);
 }
 
 void reportStringConfig(const char* key, const char* value) {
@@ -1634,7 +1738,8 @@ void reportStringConfig(const char* key, const char* value) {
     char json[JSON_MAX_SIZE];
     root.printTo(json, JSON_MAX_SIZE);
 
-    broadcastMsg(json);
+    serial->println(json);
+    bt->println(json);
 }
 
 void reportNumberConfig(const char* key, const int value) {
@@ -1646,19 +1751,8 @@ void reportNumberConfig(const char* key, const int value) {
     char json[JSON_MAX_SIZE];
     root.printTo(json, JSON_MAX_SIZE);
 
-    broadcastMsg(json);
-}
-
-void syncClocks() {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CLOCK_SYNC;
-    root[TIMESTAMP_KEY] = getTimestamp();
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    broadcastMsg(json);
+    serial->println(json);
+    bt->println(json);
 }
 
 /*========================= Communication ===================================*/
@@ -1714,7 +1808,7 @@ bool parseCommand(char* command) {
         const char* msgType = root[MSG_TYPE_KEY];
         if (strcmp(msgType, MSG_CLOCK_SYNC) == 0) {
             // SYNC
-            syncClocks();
+            reportTimestamp();
         } else if (strcmp(msgType, MSG_CURRENT_STATUS_REPORT) == 0) {
             // CSR
             if (root.containsKey(SENSORS_KEY)) {
@@ -1759,68 +1853,39 @@ bool parseCommand(char* command) {
                 if (sensor.containsKey(ID_KEY) && sensor.containsKey(CALIBRATION_FACTOR_KEY)) {
                     uint8_t id = sensor[ID_KEY].as<uint8_t>();
                     double cf = sensor[CALIBRATION_FACTOR_KEY].as<double>();
-                    if (id == SENSOR_SUPPLY) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 0, cf);
-                        SENSOR_SUPPLY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 0);
-                    } else if (id == SENSOR_REVERSE) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 1, cf);
-                        SENSOR_REVERSE_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 1);
-                    } else if (id == SENSOR_TANK) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 2, cf);
-                        SENSOR_TANK_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 2);
-                    } else if (id == SENSOR_BOILER) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 3, cf);
-                        SENSOR_BOILER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 3);
-                    } else if (id == SENSOR_MIX) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 4, cf);
-                        SENSOR_MIX_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 4);
-                    } else if (id == SENSOR_SB_HEATER) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 5, cf);
-                        SENSOR_SB_HEATER_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 5);
-                    } else if (id == SENSOR_SOLAR_PRIMARY) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 6, cf);
-                        SENSOR_SOLAR_PRIMARY_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 6);
-                    } else if (id == SENSOR_SOLAR_SECONDARY) {
-                        writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4 * 7, cf);
-                        SENSOR_SOLAR_SECONDARY_FACTOR = readSensorCalibrationFactor(
-                                SENSORS_FACTORS_EEPROM_ADDR + 4 * 7);
-                    }
+                    saveSensorCF(id, cf);
+                } else if (sensor.containsKey(ID_KEY) && sensor.containsKey(UID_KEY)) {
+                    uint8_t id = sensor[ID_KEY].as<uint8_t>();
+                    DeviceAddress uid;
+                    str2uid(sensor[UID_KEY].asString(), uid);
+                    saveSensorUID(id, uid);
                 } else if (sensor.containsKey(ID_KEY) && sensor.containsKey(VALUE_KEY)) {
                     uint8_t id = sensor[ID_KEY].as<uint8_t>();
-                    uint8_t val = sensor[VALUE_KEY].as<uint8_t>();
-                    if (id == SENSOR_TH_ROOM1_SB_HEATER) {
-                        EEPROM.writeByte(STANDBY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR, val);
-                        STANDBY_HEATER_ROOM_TEMP_THRESHOLD = val;
-                        reportSensorConfigValue(SENSOR_TH_ROOM1_SB_HEATER, STANDBY_HEATER_ROOM_TEMP_THRESHOLD);
-                    } else if (id == SENSOR_TH_ROOM1_PRIMARY_HEATER) {
-                        EEPROM.writeByte(PRIMARY_HEATER_ROOM_TEMP_THRESHOLD_EEPROM_ADDR, val);
-                        PRIMARY_HEATER_ROOM_TEMP_THRESHOLD = val;
-                        reportSensorConfigValue(SENSOR_TH_ROOM1_PRIMARY_HEATER, PRIMARY_HEATER_ROOM_TEMP_THRESHOLD);
-                    }
+                    int16_t val = sensor[VALUE_KEY].as<int16_t>();
+                    saveSensorTH(id, val);
+                    reportSensorStatus(id, readSensorTH(id));
                 }
             } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {
                 sprintf(WIFI_REMOTE_AP, "%s", root[WIFI_REMOTE_AP_KEY].asString());
-                EEPROM.writeBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
+                eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP,
+                        sizeof(WIFI_REMOTE_AP));
             } else if (root.containsKey(WIFI_REMOTE_PASSWORD_KEY)) {
                 sprintf(WIFI_REMOTE_PW, "%s", root[WIFI_REMOTE_PASSWORD_KEY].asString());
-                EEPROM.writeBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
+                eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW,
+                        sizeof(WIFI_REMOTE_PW));
             } else if (root.containsKey(WIFI_LOCAL_AP_KEY)) {
                 sprintf(WIFI_LOCAL_AP, "%s", root[WIFI_LOCAL_AP_KEY].asString());
-                EEPROM.writeBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
+                eepromWriteCount += EEPROM.updateBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
             } else if (root.containsKey(WIFI_LOCAL_PASSWORD_KEY)) {
                 sprintf(WIFI_LOCAL_PW, "%s", root[WIFI_LOCAL_PASSWORD_KEY].asString());
-                EEPROM.writeBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
+                eepromWriteCount += EEPROM.updateBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
             } else if (root.containsKey(SERVER_IP_KEY)) {
-                int tmpIP[4];
-                sscanf(root[SERVER_IP_KEY], "%d.%d.%d.%d", &tmpIP[0], &tmpIP[1], &tmpIP[2], &tmpIP[3]);
-                SERVER_IP[0] = tmpIP[0];
-                SERVER_IP[1] = tmpIP[1];
-                SERVER_IP[2] = tmpIP[2];
-                SERVER_IP[3] = tmpIP[3];
-                EEPROM.writeBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
+                sscanf(root[SERVER_IP_KEY], "%d.%d.%d.%d", (int*) &SERVER_IP[0], (int*) &SERVER_IP[1],
+                        (int*) &SERVER_IP[2], (int*) &SERVER_IP[3]);
+                eepromWriteCount += EEPROM.updateBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
             } else if (root.containsKey(SERVER_PORT_KEY)) {
                 SERVER_PORT = root[SERVER_PORT_KEY].as<int>();
-                EEPROM.writeInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
+                eepromWriteCount += EEPROM.updateInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
             } else if (root.containsKey(DEBUG_SERIAL_PORT_KEY)) {
                 int sp = root[DEBUG_SERIAL_PORT_KEY].as<int>();
                 if (sp == -1) {

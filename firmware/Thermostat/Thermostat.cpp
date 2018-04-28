@@ -18,6 +18,8 @@ static const uint8_t DHT_PIN = 5;
 static const uint8_t SENSOR_TEMP = (54 + 16) + (4 * 1) + 0;
 static const uint8_t SENSOR_HUM = (54 + 16) + (4 * 1) + 1;
 
+const uint8_t SENSORS_ADDR_CFG[] = { SENSOR_TEMP, SENSOR_HUM };
+
 // WiFi pins
 static const uint8_t WIFI_RST_PIN = 0; // n/a
 
@@ -26,16 +28,6 @@ static const uint8_t DEBUG_SERIAL_TX_PIN = 2;
 static const uint8_t DEBUG_SERIAL_RX_PIN = 3;
 
 static const uint8_t HEARTBEAT_LED = 13;
-
-static const int SENSORS_FACTORS_EEPROM_ADDR = 0; // 2 x 4 bytes
-static const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR + (2 * 4); // 32 bytes
-static const int WIFI_REMOTE_PW_EEPROM_ADDR = WIFI_REMOTE_AP_EEPROM_ADDR + 32; // 32 bytes
-static const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + 32; // 4 bytes
-static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + 4; // 2 bytes
-
-// sensor calibration factors
-double SENSOR_TEMP_FACTOR = 1.0;
-double SENSOR_HUM_FACTOR = 1.0;
 
 // etc
 static const unsigned long MAX_TIMESTAMP = -1;
@@ -95,6 +87,16 @@ uint16_t SERVER_PORT = 80;
 esp_ip_t WIFI_STA_IP = { 0, 0, 0, 0 };
 uint16_t TCP_SERVER_PORT = 80;
 
+// EEPROM addresses
+static const int SENSORS_FACTORS_EEPROM_ADDR = 0;
+static const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR
+        + sizeof(double) * sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]);
+static const int WIFI_REMOTE_PW_EEPROM_ADDR = WIFI_REMOTE_AP_EEPROM_ADDR + sizeof(WIFI_REMOTE_AP);
+static const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + sizeof(WIFI_REMOTE_PW);
+static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + sizeof(SERVER_IP);
+
+int eepromWriteCount = 0;
+
 /*============================= Connectivity ================================*/
 
 // DHT sensor
@@ -128,9 +130,6 @@ void setup() {
 
     // init esp8266 hw reset pin. N/A
     //pinMode(WIFI_RST_PIN, OUTPUT);
-
-    // read sensors calibration factors from EEPROM
-    loadSensorsCalibrationFactors();
 
     // setup WiFi
     loadWifiConfig();
@@ -166,21 +165,32 @@ void loop() {
 
 /*====================== Load/Save configuration in EEPROM ==================*/
 
-void loadSensorsCalibrationFactors() {
-    SENSOR_TEMP_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0);
-    SENSOR_HUM_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
-}
-
-double readSensorCalibrationFactor(int offset) {
-    double f = EEPROM.readDouble(offset);
-    if (isnan(f) || f <= 0) {
-        f = 1;
+double readSensorCF(uint8_t sensor) {
+    double f = 0;
+    if (sensorCfOffset(sensor) >= 0) {
+        f = EEPROM.readDouble(SENSORS_FACTORS_EEPROM_ADDR + sensorCfOffset(sensor));
+        if (isnan(f) || f <= 0) {
+            f = 1;
+        }
     }
     return f;
 }
 
-void writeSensorCalibrationFactor(int offset, double value) {
-    EEPROM.writeDouble(offset, value);
+void saveSensorCF(uint8_t sensor, double value) {
+    if (sensorCfOffset(sensor) >= 0) {
+        eepromWriteCount += EEPROM.updateDouble(SENSORS_FACTORS_EEPROM_ADDR + sensorCfOffset(sensor), value);
+    }
+}
+
+int sensorCfOffset(uint8_t sensor) {
+    int offset = 0;
+    for (uint8_t i = 0; i < sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]); i++) {
+        if (SENSORS_ADDR_CFG[i] == sensor) {
+            return offset;
+        }
+        offset += sizeof(double);
+    }
+    return -1;
 }
 
 void loadWifiConfig() {
@@ -212,9 +222,9 @@ void readSensors() {
 int8_t getSensorValue(const uint8_t sensor) {
     float result = UNKNOWN_SENSOR_VALUE;
     if (SENSOR_TEMP == sensor) {
-        result = dht.readTemperature() * SENSOR_TEMP_FACTOR;
+        result = dht.readTemperature() * readSensorCF(SENSOR_TEMP);
     } else if (SENSOR_HUM == sensor) {
-        result = dht.readHumidity() * SENSOR_HUM_FACTOR;
+        result = dht.readHumidity() * readSensorCF(SENSOR_HUM);
     }
     result = (result > 0) ? result + 0.5 : result - 0.5;
     return int16_t(result);
@@ -260,8 +270,8 @@ void reportSensorStatus(const uint8_t id, const uint8_t value) {
 
 void reportConfiguration() {
     char ip[16];
-    reportSensorCalibrationFactor(SENSOR_TEMP, SENSOR_TEMP_FACTOR);
-    reportSensorCalibrationFactor(SENSOR_HUM, SENSOR_HUM_FACTOR);
+    reportSensorCfConfig(SENSOR_TEMP);
+    reportSensorCfConfig(SENSOR_HUM);
     reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
     reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
     sprintf(ip, "%d.%d.%d.%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2], SERVER_IP[3]);
@@ -269,16 +279,17 @@ void reportConfiguration() {
     reportNumberConfig(SERVER_PORT_KEY, SERVER_PORT);
     sprintf(ip, "%d.%d.%d.%d", WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
     reportStringConfig(LOCAL_IP_KEY, ip);
+    dbgf(debug, F(":EEPROM:written:%d bytes\n"), eepromWriteCount);
 }
 
-void reportSensorCalibrationFactor(const uint8_t id, const double value) {
+void reportSensorCfConfig(const uint8_t id) {
     StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.createObject();
     root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
 
     JsonObject& sens = jsonBuffer.createObject();
     sens[ID_KEY] = id;
-    sens[CALIBRATION_FACTOR_KEY] = value;
+    sens[CALIBRATION_FACTOR_KEY] = readSensorCF(id);
 
     root[SENSORS_KEY] = sens;
 
@@ -360,30 +371,20 @@ bool parseCommand(char* command) {
             if (sensor.containsKey(ID_KEY) && sensor.containsKey(CALIBRATION_FACTOR_KEY)) {
                 uint8_t id = sensor[ID_KEY].as<uint8_t>();
                 double cf = sensor[CALIBRATION_FACTOR_KEY].as<double>();
-                if (id == SENSOR_TEMP) {
-                    writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0, cf);
-                    SENSOR_TEMP_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 0);
-                } else if (id == SENSOR_HUM) {
-                    writeSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4, cf);
-                    SENSOR_HUM_FACTOR = readSensorCalibrationFactor(SENSORS_FACTORS_EEPROM_ADDR + 4);
-                }
+                saveSensorCF(id, cf);
             } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {
                 sprintf(WIFI_REMOTE_AP, "%s", root[WIFI_REMOTE_AP_KEY].asString());
-                EEPROM.writeBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
+                eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
             } else if (root.containsKey(WIFI_REMOTE_PASSWORD_KEY)) {
                 sprintf(WIFI_REMOTE_PW, "%s", root[WIFI_REMOTE_PASSWORD_KEY].asString());
-                EEPROM.writeBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
+                eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
             } else if (root.containsKey(SERVER_IP_KEY)) {
-                int tmpIP[4];
-                sscanf(root[SERVER_IP_KEY], "%d.%d.%d.%d", &tmpIP[0], &tmpIP[1], &tmpIP[2], &tmpIP[3]);
-                SERVER_IP[0] = tmpIP[0];
-                SERVER_IP[1] = tmpIP[1];
-                SERVER_IP[2] = tmpIP[2];
-                SERVER_IP[3] = tmpIP[3];
-                EEPROM.writeBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
+                sscanf(root[SERVER_IP_KEY], "%d.%d.%d.%d", (int*) &SERVER_IP[0], (int*) &SERVER_IP[1],
+                        (int*) &SERVER_IP[2], (int*) &SERVER_IP[3]);
+                eepromWriteCount += EEPROM.updateBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
             } else if (root.containsKey(SERVER_PORT_KEY)) {
                 SERVER_PORT = root[SERVER_PORT_KEY].as<int>();
-                EEPROM.writeInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
+                eepromWriteCount += EEPROM.updateInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
             } else if (root.containsKey(DEBUG_SERIAL_PORT_KEY)) {
                 int sp = root[DEBUG_SERIAL_PORT_KEY].as<int>();
                 if (sp == -1) {
