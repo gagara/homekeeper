@@ -293,7 +293,11 @@ void setup() {
     // init solar primary sensor
     pinMode(SENSOR_SOLAR_PRIMARY, INPUT);
 
-    // init nodes
+    // restore forced node state flags from EEPROM
+    // default node state -- OFF
+    restoreNodesState();
+
+    // init nodes pins
     pinMode(NODE_SUPPLY, OUTPUT);
     pinMode(NODE_HEATING, OUTPUT);
     pinMode(NODE_FLOOR, OUTPUT);
@@ -304,15 +308,6 @@ void setup() {
     pinMode(NODE_SOLAR_SECONDARY, OUTPUT);
     pinMode(NODE_HEATING_VALVE, OUTPUT);
     pinMode(NODE_RESERVED, OUTPUT);
-
-    // init sensors
-    sensors.begin();
-    sensors.setResolution(SENSORS_PRECISION);
-    searchSensors();
-
-    // read forced node state flags from EEPROM
-    // default node state -- OFF
-    restoreNodesState();
 
     // restore nodes state
     digitalWrite(NODE_SUPPLY, (~NODE_STATE_FLAGS & NODE_SUPPLY_BIT) ? HIGH : LOW);
@@ -326,6 +321,11 @@ void setup() {
     // these two have inverted levels
     digitalWrite(NODE_HEATING_VALVE, (~NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) ? LOW : HIGH);
     digitalWrite(NODE_RESERVED, LOW); // turn off reserved node
+
+    // init sensors
+    sensors.begin();
+    sensors.setResolution(SENSORS_PRECISION);
+    searchSensors();
 
     // setup WiFi
     loadWifiConfig();
