@@ -55,7 +55,7 @@ def controller_send(req):
 
 
 def logserver_send(req):
-    headers = {'User-Agent': 'proxy','Content-Type': 'application/x-www-form-urlencoded'}
+    headers = {'User-Agent': 'proxy','Content-Type': 'application/json'}
     host = "http://%s:%d" % (app.config['LOGSERVER_HOST'], app.config['LOGSERVER_PORT'])
     if app.debug : print('>>>LOGSERVER: %s; %s' % (host, req))
     requests.post(host, json=req, headers=headers, timeout=app.config['LOGSERVER_CONN_TIMEOUT_SEC'])
