@@ -1477,6 +1477,9 @@ void reportStatus() {
         // start reporting
         nextEntryReport = SENSOR_SUPPLY;
     }
+    //////////////////////////
+    char buf[JSON_MAX_BUFFER_SIZE] = "{\"m\":\"nsc\",\"id\":36,\"ns\":0,\"ts\":68086,\"ff\":0,\"s\":[{\"id\":61,\"v\":42},{\"id\":57,\"v\":45}]}";
+    //////////////////////////
     switch (nextEntryReport) {
     case SENSOR_SUPPLY:
         reportSensorStatus(SENSOR_SUPPLY, tempSupply);
@@ -1560,6 +1563,9 @@ void reportStatus() {
     case NODE_HEATING_VALVE:
         reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve, tsForcedNodeHeatingValve);
         nextEntryReport = 0;
+        ///////////////////
+        broadcastMsg(buf);
+        ///////////////////
         break;
     default:
         break;
@@ -1779,8 +1785,10 @@ void processWifiMsg() {
     char buff[JSON_MAX_SIZE + 1];
     unsigned long start = millis();
     uint8_t l = esp8266.receive(buff, JSON_MAX_SIZE);
-    dbgf(debug, F(":HTTP:receive:%d bytes:[%d msec]\n"), l, millis() - start);
-    parseCommand(buff);
+    if (l > 0) {
+        dbgf(debug, F(":HTTP:receive:%d bytes:[%d msec]\n"), l, millis() - start);
+        parseCommand(buff);
+    }
 }
 
 void broadcastMsg(const char* msg) {

@@ -34,8 +34,13 @@ void dbgf(Stream *s, const char *format, ...) {
         char buf[MAX_DEBUG_BUFFER_SIZE];
         va_list args;
         va_start(args, format);
-        vsnprintf(buf, MAX_DEBUG_BUFFER_SIZE, format, args);
+        int len = vsnprintf(buf, MAX_DEBUG_BUFFER_SIZE, format, args);
         va_end(args);
+        if (len > MAX_DEBUG_BUFFER_SIZE) { // message truncated
+            buf[MAX_DEBUG_BUFFER_SIZE - 1] = '\0';
+            buf[MAX_DEBUG_BUFFER_SIZE - 2] = '\n';
+            buf[MAX_DEBUG_BUFFER_SIZE - 3] = buf[MAX_DEBUG_BUFFER_SIZE - 4] = buf[MAX_DEBUG_BUFFER_SIZE - 5] = '.';
+        }
         dbg(s, buf);
     }
 }
@@ -55,8 +60,13 @@ void dbgf(Stream *s, const __FlashStringHelper *format, ...) {
         char buf[MAX_DEBUG_BUFFER_SIZE];
         va_list args;
         va_start(args, format);
-        vsnprintf(buf, MAX_DEBUG_BUFFER_SIZE, mfmt, args);
+        int len = vsnprintf(buf, MAX_DEBUG_BUFFER_SIZE, mfmt, args);
         va_end(args);
+        if (len > MAX_DEBUG_BUFFER_SIZE) { // message truncated
+            buf[MAX_DEBUG_BUFFER_SIZE - 1] = '\0';
+            buf[MAX_DEBUG_BUFFER_SIZE - 2] = '\n';
+            buf[MAX_DEBUG_BUFFER_SIZE - 3] = buf[MAX_DEBUG_BUFFER_SIZE - 4] = buf[MAX_DEBUG_BUFFER_SIZE - 5] = '.';
+        }
         dbg(s, buf);
     }
 }

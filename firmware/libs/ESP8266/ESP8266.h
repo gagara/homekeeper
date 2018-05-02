@@ -25,21 +25,25 @@ typedef uint8_t esp_ip_t[4];
 
 class ESP8266 {
 public:
-    void init(Stream *port, esp_cwmode mode = MODE_STA, uint8_t resetPin = 0, uint16_t failureGracePeriodSec = 0);
-    void setDebug(Stream *port);
-    void startAP(const esp_config_t *ssid, const esp_config_t *password);
-    void connect(const esp_config_t *ssid, const esp_config_t *password);
-    void disconnect();
-    void reconnect();bool getStaIP(esp_ip_t ip);
-    void startTcpServer(const uint16_t port);
-    void stopTcpServer();
-    uint16_t send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message, const uint8_t connRetryCount = 1);
-    size_t receive(char* message, size_t msize);
-    int available();bool write(const char *message, esp_response expectedResponse = EXPECT_NOTHING, const uint16_t ttl =
-            1000, const uint8_t retryCount = 1);bool write(const __FlashStringHelper *message,
-            esp_response expectedResponse = EXPECT_NOTHING, const uint16_t ttl = 1000, const uint8_t retryCount = 1);
-    size_t read(char *buffer, size_t bsize, const uint16_t ttl = 1000);bool readUntil(char *buffer, const size_t bsize,
-            const char *target, const uint16_t ttl = 1000);
+    void init(Stream *port, esp_cwmode mode = MODE_STA, uint8_t resetPin = 0, uint16_t failureGracePeriodSec = 0); //
+    void setDebug(Stream *port); //
+    void startAP(const esp_config_t *ssid, const esp_config_t *password); //
+    void connect(const esp_config_t *ssid, const esp_config_t *password); //
+    void disconnect(); //
+    void reconnect(); //
+    bool getStaIP(esp_ip_t ip); //
+    void startTcpServer(const uint16_t port); //
+    void stopTcpServer(); //
+    uint16_t send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message); //
+    size_t receive(char* message, size_t msize); //
+    int available(); //
+    bool write(const char *message, esp_response expectedResponse = EXPECT_NOTHING, const uint16_t ttl = 1000,
+            const uint8_t retryCount = 1); //
+    bool write(const __FlashStringHelper *message, esp_response expectedResponse = EXPECT_NOTHING, const uint16_t ttl =
+            1000, const uint8_t retryCount = 1); //
+    size_t read(char *buffer, size_t bsize, const uint16_t ttl = 1000); //
+    bool readUntil(char *buffer, const size_t bsize, const char *target, const uint16_t ttl = 1000);
+    size_t readUntil(char *buffer, const size_t bsize, const size_t length, const uint16_t ttl = 1000);
 
 private:
     Stream *debug = NULL;
@@ -51,19 +55,20 @@ private:
     esp_config_t *staSsid = NULL;
     esp_config_t *staPassword = NULL;
     uint16_t tcpServerPort = 0;
-    uint16_t failureGracePeriod = 0;
+    unsigned long failureGracePeriod = 0;
     unsigned long lastSuccessRequestTs = 0;
     esp_ip_t staIp;
     unsigned long connectTs = 0;
     uint8_t reconnectCount = 0;bool persistDebug = false;
-    int readApIp(esp_ip_t ip);
-    int readStaIp(esp_ip_t ip);bool tcpServerUp();bool tcpServerDown();
-    size_t read(char *buffer, size_t bsize, const char *target, const uint16_t ttl);
-    uint16_t doSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message,
-            const uint8_t connRetryCount = 1);
-    void sendResponse(uint16_t httpCode, const char *content);
-    void errorsRecovery();bool waitUntilBusy(const uint16_t ttl = 5000, const uint8_t retryCount = 1);
-    void bufAdd(char *buffer, const size_t bsize, const size_t idx, const char c);bool validIP(esp_ip_t ip);
+    int readApIp(esp_ip_t ip); //
+    int readStaIp(esp_ip_t ip); //
+    size_t read(char *buffer, size_t bsize, const char *target, const size_t length, const uint16_t ttl); //
+    uint16_t doSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message); //
+    void sendResponse(uint16_t httpCode, const char *content); //
+    void errorsRecovery(); //
+    bool waitUntilBusy(const uint16_t ttl = 5000, const uint8_t retryCount = 1); //
+    void bufAdd(char *buffer, const size_t bsize, const size_t idx, const char c); //
+    bool validIP(esp_ip_t ip); //
 };
 
 #endif /* WIFI_H_ */

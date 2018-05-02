@@ -119,7 +119,7 @@ ESP8266 esp8266;
 
 void setup() {
     // Setup serial ports
-    serial->begin(9600);
+    serial->begin(115200);
     wifi->begin(115200);
 
     dbg(debug, F(":STARTING\n"));
@@ -336,14 +336,16 @@ void processWifiMsg() {
     char buff[JSON_MAX_SIZE + 1];
     unsigned long start = millis();
     uint8_t l = esp8266.receive(buff, JSON_MAX_SIZE);
-    dbgf(debug, F(":HTTP:receive:%d bytes:[%d msec]\n"), l, millis() - start);
-    parseCommand(buff);
+    if (l > 0) {
+        dbgf(debug, F(":HTTP:receive:%d bytes:[%d msec]\n"), l, millis() - start);
+        parseCommand(buff);
+    }
 }
 
 void broadcastMsg(const char* msg) {
     serial->println(msg);
     unsigned long start = millis();
-    int httpRsp = esp8266.send(SERVER_IP, SERVER_PORT, msg, 3);
+    int httpRsp = esp8266.send(SERVER_IP, SERVER_PORT, msg);
     dbgf(debug, F(":HTTP:send:%d:[%d msec]\n"), httpRsp, millis() - start);
 }
 
