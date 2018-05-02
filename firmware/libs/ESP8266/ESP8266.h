@@ -43,6 +43,7 @@ public:
             1000, const uint8_t retryCount = 1); //
     size_t read(char *buffer, size_t bsize, const uint16_t ttl = 1000); //
     bool readUntil(char *buffer, const size_t bsize, const char *target, const uint16_t ttl = 1000);
+    bool readUntil(char *buffer, const size_t bsize, const __FlashStringHelper *target, const uint16_t ttl = 1000);
     size_t readUntil(char *buffer, const size_t bsize, const size_t length, const uint16_t ttl = 1000);
 
 private:
@@ -63,7 +64,6 @@ private:
     int readApIp(esp_ip_t ip); //
     int readStaIp(esp_ip_t ip); //
     size_t read(char *buffer, size_t bsize, const char *target, const size_t length, const uint16_t ttl); //
-    uint16_t doSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message); //
     void sendResponse(uint16_t httpCode, const char *content); //
     void errorsRecovery(); //
     bool waitUntilBusy(const uint16_t ttl = 5000, const uint8_t retryCount = 1); //

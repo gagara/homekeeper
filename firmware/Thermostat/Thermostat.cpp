@@ -14,55 +14,55 @@
 /*============================= Global configuration ========================*/
 
 // Sensor pin
-static const uint8_t DHT_PIN = 5;
-static const uint8_t SENSOR_TEMP = (54 + 16) + (4 * 1) + 0;
-static const uint8_t SENSOR_HUM = (54 + 16) + (4 * 1) + 1;
+const uint8_t DHT_PIN = 5;
+const uint8_t SENSOR_TEMP = (54 + 16) + (4 * 1) + 0;
+const uint8_t SENSOR_HUM = (54 + 16) + (4 * 1) + 1;
 
 const uint8_t SENSORS_ADDR_CFG[] = { SENSOR_TEMP, SENSOR_HUM };
 
 // WiFi pins
-static const uint8_t WIFI_RST_PIN = 0; // n/a
+const uint8_t WIFI_RST_PIN = 0; // n/a
 
 // Debug serial port
-static const uint8_t DEBUG_SERIAL_TX_PIN = 2;
-static const uint8_t DEBUG_SERIAL_RX_PIN = 3;
+const uint8_t DEBUG_SERIAL_TX_PIN = 2;
+const uint8_t DEBUG_SERIAL_RX_PIN = 3;
 
-static const uint8_t HEARTBEAT_LED = 13;
+const uint8_t HEARTBEAT_LED = 13;
 
 // etc
-static const unsigned long MAX_TIMESTAMP = -1;
-static const int16_t UNKNOWN_SENSOR_VALUE = -127;
+const unsigned long MAX_TIMESTAMP = -1;
+const int16_t UNKNOWN_SENSOR_VALUE = -127;
 
 // reporting
-static const unsigned long STATUS_REPORTING_PERIOD_SEC = 15; // 15s //disabled in LowPower mode
-static const unsigned long SENSORS_READ_INTERVAL_SEC = 15; // 15s //disabled in LowPower mode
-static const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
+const unsigned long STATUS_REPORTING_PERIOD_SEC = 15; // 15s //disabled in LowPower mode
+const unsigned long SENSORS_READ_INTERVAL_SEC = 15; // 15s //disabled in LowPower mode
+const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
 
 // JSON
-static const char MSG_TYPE_KEY[] = "m";
-static const char ID_KEY[] = "id";
-static const char SENSORS_KEY[] = "s";
-static const char VALUE_KEY[] = "v";
-static const char CALIBRATION_FACTOR_KEY[] = "cf";
+const char MSG_TYPE_KEY[] = "m";
+const char ID_KEY[] = "id";
+const char SENSORS_KEY[] = "s";
+const char VALUE_KEY[] = "v";
+const char CALIBRATION_FACTOR_KEY[] = "cf";
 
-static const char MSG_CURRENT_STATUS_REPORT[] = "csr";
-static const char MSG_CONFIGURATION[] = "cfg";
-static const char WIFI_REMOTE_AP_KEY[] = "rap";
-static const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
-static const char SERVER_IP_KEY[] = "sip";
-static const char SERVER_PORT_KEY[] = "sp";
-static const char LOCAL_IP_KEY[] = "lip";
-static const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
+const char MSG_CURRENT_STATUS_REPORT[] = "csr";
+const char MSG_CONFIGURATION[] = "cfg";
+const char WIFI_REMOTE_AP_KEY[] = "rap";
+const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
+const char SERVER_IP_KEY[] = "sip";
+const char SERVER_PORT_KEY[] = "sp";
+const char LOCAL_IP_KEY[] = "lip";
+const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
 
-static const uint8_t JSON_MAX_SIZE = 64;
-static const uint8_t JSON_MAX_BUFFER_SIZE = 128;
+const uint8_t JSON_MAX_SIZE = 64;
+const uint8_t JSON_MAX_BUFFER_SIZE = 128;
 
 /*============================= Global variables ============================*/
 
 //// Sensors
 // Values
-uint8_t tempRoom = 0;
-uint8_t humRoom = 0;
+int8_t tempRoom = 0;
+int8_t humRoom = 0;
 
 // Timestamps
 unsigned long tsLastStatusReport = 0;
@@ -88,12 +88,12 @@ esp_ip_t WIFI_STA_IP = { 0, 0, 0, 0 };
 uint16_t TCP_SERVER_PORT = 80;
 
 // EEPROM addresses
-static const int SENSORS_FACTORS_EEPROM_ADDR = 0;
-static const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR
+const int SENSORS_FACTORS_EEPROM_ADDR = 0;
+const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR
         + sizeof(double) * sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]);
-static const int WIFI_REMOTE_PW_EEPROM_ADDR = WIFI_REMOTE_AP_EEPROM_ADDR + sizeof(WIFI_REMOTE_AP);
-static const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + sizeof(WIFI_REMOTE_PW);
-static const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + sizeof(SERVER_IP);
+const int WIFI_REMOTE_PW_EEPROM_ADDR = WIFI_REMOTE_AP_EEPROM_ADDR + sizeof(WIFI_REMOTE_AP);
+const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + sizeof(WIFI_REMOTE_PW);
+const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + sizeof(SERVER_IP);
 
 int eepromWriteCount = 0;
 
@@ -227,7 +227,7 @@ int8_t getSensorValue(const uint8_t sensor) {
         result = dht.readHumidity() * readSensorCF(SENSOR_HUM);
     }
     result = (result > 0) ? result + 0.5 : result - 0.5;
-    return int16_t(result);
+    return int8_t(result);
 }
 
 /*============================ Reporting ====================================*/
@@ -376,10 +376,12 @@ bool parseCommand(char* command) {
                 saveSensorCF(id, cf);
             } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {
                 sprintf(WIFI_REMOTE_AP, "%s", root[WIFI_REMOTE_AP_KEY].asString());
-                eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
+                eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP,
+                        sizeof(WIFI_REMOTE_AP));
             } else if (root.containsKey(WIFI_REMOTE_PASSWORD_KEY)) {
                 sprintf(WIFI_REMOTE_PW, "%s", root[WIFI_REMOTE_PASSWORD_KEY].asString());
-                eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
+                eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW,
+                        sizeof(WIFI_REMOTE_PW));
             } else if (root.containsKey(SERVER_IP_KEY)) {
                 sscanf(root[SERVER_IP_KEY], "%d.%d.%d.%d", (int*) &SERVER_IP[0], (int*) &SERVER_IP[1],
                         (int*) &SERVER_IP[2], (int*) &SERVER_IP[3]);

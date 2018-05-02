@@ -159,7 +159,64 @@ void ESP8266::stopTcpServer() {
 }
 
 uint16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message) {
-    uint16_t httpRsp = doSend(dstIP, dstPort, message);
+    uint16_t httpRsp = 0;
+    if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
+        if (validIP(staIp)) {
+            char input[MAX_MESSAGE_SIZE + 1];
+            char atcmd[MAX_AT_REQUEST_SIZE + 1];
+            //connect to dstIP:dstPort
+            bool connected = false;
+            input[0] = '\0';
+            sprintf(atcmd, "AT+CIPSTART=4,\"TCP\",\"%d.%d.%d.%d\",%d,0\r\n", dstIP[0], dstIP[1], dstIP[2], dstIP[3],
+                    dstPort);
+            write(atcmd);
+            while (readUntil(input, MAX_MESSAGE_SIZE, F("\r\n"), 3000) && strlen(input) > 0) {
+                if (strstr(input, "4,CONNECT")) {
+                    connected = true;
+                    break;
+                } else if (strstr(input, "ERROR")) {
+                    break;
+                }
+            }
+            if (connected) {
+                // connection established. send HTTP request
+                if (write(F("AT+CIPSENDEX=4,2048\r\n"), EXPECT_PROMPT)) {
+                    sprintf(atcmd, "Content-Length: %d\r\n", strlen(message));
+                    write(F("POST / HTTP/1.1\r\n"));
+                    write(F("User-Agent: ESP8266\r\n"));
+                    write(F("Accept: */*\r\n"));
+                    write(F("Content-Type: application/json\r\n"));
+                    write(atcmd);
+                    write(F("Connection: close\r\n\r\n"));
+                    write(message);
+                    write("\\0");
+                    // handle response
+                    if (readUntil(input, MAX_MESSAGE_SIZE, F("SEND OK"), 5000)
+                            && readUntil(input, MAX_MESSAGE_SIZE, F("+IPD,4,"))
+                            && readUntil(input, MAX_MESSAGE_SIZE, F("HTTP/"))
+                            && readUntil(input, MAX_MESSAGE_SIZE, F("\r\n"))) {
+                        int d;
+                        if (sscanf(&input[0], "%d.%d %d\r\n", &d, &d, &httpRsp)) {
+                            // HTTP response code parsed
+                            lastSuccessRequestTs = millis();
+                            reconnectCount = 0;
+                            // consume response body if any
+                            if (readUntil(input, MAX_MESSAGE_SIZE, F("+IPD,4,"))
+                                    && readUntil(input, MAX_MESSAGE_SIZE, F(":"))) {
+                                if (sscanf(&input[0], "%d", &d)) { // body length
+                                    readUntil(input, MAX_MESSAGE_SIZE, d);
+                                }
+                            }
+                        }
+                    }
+                }
+                // close connection if required
+                if (!strstr(input, "4,CLOSED") && !readUntil(input, MAX_MESSAGE_SIZE, F("4,CLOSED"))) {
+                    write(F("AT+CIPCLOSE=4\r\n"), EXPECT_OK);
+                }
+            }
+        }
+    }
     dbgf(debug, F(":wifi:send:%d:%s\n"), httpRsp, message);
     if (httpRsp == 0) {
         errorsRecovery();
@@ -170,29 +227,48 @@ uint16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char*
 size_t ESP8266::receive(char* message, size_t msize) {
     message[0] = '\0';
     char input[MAX_MESSAGE_SIZE + 1];
-    int connId;
-    int len;
+    char atcmd[MAX_AT_REQUEST_SIZE + 1];
     uint16_t rsp = 0;
-    if (readUntil(input, MAX_MESSAGE_SIZE, "+IPD,", 5000) && readUntil(input, MAX_MESSAGE_SIZE, ":")) {
-        if (sscanf(&input[0], "%d,%d:", &connId, &len) && readUntil(input, MAX_MESSAGE_SIZE, "HTTP/") && strstr(input, "POST / ")) {
-            if (readUntil(input, MAX_MESSAGE_SIZE, "\r\n\r\n")) { // skip headers
-                read(message, msize);
-                !!!!!!!!!!!!!
-                char *end;
-                if ((end = strstr(message, "0,CLOSED"))) {
-                    end = '\0';
+    if (readUntil(input, MAX_MESSAGE_SIZE, F(",CONNECT")) && readUntil(input, MAX_MESSAGE_SIZE, F("+IPD,"))
+            && readUntil(input, MAX_MESSAGE_SIZE, F(":"))) {
+        // connection from client established
+        int connId;
+        int len;
+        bool closed = false;
+        if (sscanf(&input[0], "%d,%d:", &connId, &len)) {
+            // got connId and request length
+            if (readUntil(input, MAX_MESSAGE_SIZE, F("HTTP/")) && strstr(input, "POST / ")) {
+                if (readUntil(input, MAX_MESSAGE_SIZE, F("\r\n\r\n"))) { // skip headers
+                    read(message, msize);
+                    sprintf(atcmd, "%d,CLOSED", connId);
+                    if (strstr(message, atcmd)) {
+                        // client already closed connection
+                        message[strstr(message, atcmd) - message] = '\0';
+                        closed = true;
+                    } else {
+                        // consume rest of response until connection closed or timeout
+                        while (!readUntil(input, MAX_MESSAGE_SIZE, atcmd) && strlen(input) > 0) {
+                            if (strstr(input, atcmd)) {
+                                closed = true;
+                            }
+                        }
+                        if (!closed) {
+                            sendResponse(rsp = 200, "OK");
+                        }
+                    }
+                } else {
+                    sendResponse(rsp = 400, "BAD REQUEST");
                 }
-                // consume rest of response
-                while (read(input, MAX_MESSAGE_SIZE))
-                    ;
-                sendResponse(rsp = 200, "OK");
             } else {
-                sendResponse(rsp = 400, "BAD REQUEST");
+                sendResponse(rsp = 404, "NOT FOUND");
+            }
+            if (!closed) {
+                sprintf(atcmd, "AT+CIPCLOSE=%d\r\n", connId);
+                write(atcmd, EXPECT_OK);
             }
         } else {
-            sendResponse(rsp = 404, "NOT FOUND");
+            // connId unknown, don't try to close
         }
-        write(F("AT+CIPCLOSE=0\r\n"), EXPECT_OK);
     }
     dbgf(debug, F(":wifi:receive:%d:%s\n"), rsp, message);
     return strlen(message);
@@ -254,6 +330,19 @@ bool ESP8266::readUntil(char *buffer, size_t bsize, const char *target, const ui
     return strstr(buffer, target);
 }
 
+bool ESP8266::readUntil(char *buffer, size_t bsize, const __FlashStringHelper *target, const uint16_t ttl) {
+    char targetStr[MAX_MESSAGE_SIZE + 1];
+    int i = 0;
+    targetStr[i] = '\0';
+    PGM_P p = reinterpret_cast<PGM_P>(target);
+    char c;
+    while ((c = pgm_read_byte(p++)) != 0 && i < MAX_MESSAGE_SIZE) {
+        targetStr[i++] = c;
+        targetStr[i] = '\0';
+    }
+    return readUntil(buffer, bsize, targetStr, ttl);
+}
+
 size_t ESP8266::readUntil(char *buffer, const size_t bsize, const size_t length, const uint16_t ttl) {
     return read(buffer, bsize, NULL, length, ttl);
 }
@@ -264,7 +353,7 @@ int ESP8266::readApIp(esp_ip_t ip) {
     int res = 0;
     char atrsp[MAX_AT_RESPONSE_SIZE + 1];
     write(F("AT+CIPAP?\r\n"));
-    if (readUntil(atrsp, MAX_AT_RESPONSE_SIZE, "+CIPAP:ip:")) {
+    if (readUntil(atrsp, MAX_AT_RESPONSE_SIZE, F("+CIPAP:ip:"))) {
         read(atrsp, MAX_AT_RESPONSE_SIZE);
         res = sscanf(atrsp, "\"%d.%d.%d.%d\"", (int*) &ip[0], (int*) &ip[1], (int*) &ip[2], (int*) &ip[3]);
         while (read(atrsp, MAX_AT_RESPONSE_SIZE))
@@ -277,7 +366,7 @@ int ESP8266::readStaIp(esp_ip_t ip) {
     int res = 0;
     char atrsp[MAX_AT_RESPONSE_SIZE + 1];
     write(F("AT+CIPSTA?\r\n"));
-    if (readUntil(atrsp, MAX_AT_RESPONSE_SIZE, "+CIPSTA:ip:")) {
+    if (readUntil(atrsp, MAX_AT_RESPONSE_SIZE, F("+CIPSTA:ip:"))) {
         read(atrsp, MAX_AT_RESPONSE_SIZE);
         res = sscanf(atrsp, "\"%d.%d.%d.%d\"", (int*) &ip[0], (int*) &ip[1], (int*) &ip[2], (int*) &ip[3]);
         while (read(atrsp, MAX_AT_RESPONSE_SIZE))
@@ -306,58 +395,6 @@ size_t ESP8266::read(char *buffer, size_t bsize, const char *target, const size_
     }
     dbgf(debug, F("]\n"));
     return i;
-}
-
-uint16_t ESP8266::doSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message) {
-    uint16_t httpRsp = 0;
-    if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
-        if (validIP(staIp)) {
-            char input[MAX_MESSAGE_SIZE + 1];
-            char atcmd[MAX_AT_REQUEST_SIZE + 1];
-            //connect to dstIP:dstPort
-            sprintf(atcmd, "AT+CIPSTART=4,\"TCP\",\"%d.%d.%d.%d\",%d,0\r\n", dstIP[0], dstIP[1], dstIP[2], dstIP[3],
-                    dstPort);
-            write(atcmd);
-            if (readUntil(input, MAX_MESSAGE_SIZE, "CONNECT", 3000) && strstr(input, "1,CONNECT")) {
-                // connection established. send HTTP request
-                if (write(F("AT+CIPSENDEX=4,2048\r\n"), EXPECT_PROMPT)) {
-                    sprintf(atcmd, "Content-Length: %d\r\n", strlen(message));
-                    write(F("POST / HTTP/1.1\r\n"));
-                    write(F("User-Agent: ESP8266\r\n"));
-                    write(F("Accept: */*\r\n"));
-                    write(F("Content-Type: application/json\r\n"));
-                    write(atcmd);
-                    write(F("Connection: close\r\n\r\n"));
-                    write(message);
-                    write("\\0");
-                    // handle response
-                    if (readUntil(input, MAX_MESSAGE_SIZE, "SEND OK", 5000)
-                            && readUntil(input, MAX_MESSAGE_SIZE, "+IPD,4,", 5000)
-                            && readUntil(input, MAX_MESSAGE_SIZE, "HTTP/")
-                            && readUntil(input, MAX_MESSAGE_SIZE, "\r\n")) {
-                        int d;
-                        if (sscanf(&input[0], "%d.%d %d\r\n", &d, &d, &httpRsp)) {
-                            // HTTP response code parsed
-                            lastSuccessRequestTs = millis();
-                            reconnectCount = 0;
-                            // consume response body if any
-                            if (readUntil(input, MAX_MESSAGE_SIZE, "+IPD,4,")
-                                    && readUntil(input, MAX_MESSAGE_SIZE, ":")) {
-                                if (sscanf(&input[0], "%d", &d)) { // body length
-                                    readUntil(input, MAX_MESSAGE_SIZE, d);
-                                }
-                            }
-                        }
-                    }
-                }
-                // close connection if required
-                if (!strstr(input, "4,CLOSED") && !readUntil(input, MAX_MESSAGE_SIZE, "4,CLOSED", 100)) {
-                    write(F("AT+CIPCLOSE=4\r\n"));
-                }
-            }
-        }
-    }
-    return httpRsp;
 }
 
 void ESP8266::sendResponse(uint16_t httpCode, const char *content) {

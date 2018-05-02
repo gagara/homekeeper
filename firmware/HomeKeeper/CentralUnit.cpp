@@ -71,52 +71,52 @@ const uint16_t NODE_HEATING_VALVE_BIT = 512;
 
 // etc
 const unsigned long MAX_TIMESTAMP = -1;
-const int16_t UNKNOWN_SENSOR_VALUE = -127;
+const int8_t UNKNOWN_SENSOR_VALUE = -127;
 const uint8_t SENSORS_PRECISION = 9;
 const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 60;
 
 // Primary Heater
-const uint8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
-const uint8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
+const int8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
+const int8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
 const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_SEC = 1200; // 20 minutes
 
 // heating
-const uint8_t HEATING_ON_TEMP_THRESHOLD = 40;
-const uint8_t HEATING_OFF_TEMP_THRESHOLD = 36;
-const uint8_t FLOOR_ON_TEMP_THRESHOLD = 35;
-const uint8_t FLOOR_OFF_TEMP_THRESHOLD = 26;
-const uint8_t PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 20;
+const int8_t HEATING_ON_TEMP_THRESHOLD = 40;
+const int8_t HEATING_OFF_TEMP_THRESHOLD = 36;
+const int8_t FLOOR_ON_TEMP_THRESHOLD = 35;
+const int8_t FLOOR_OFF_TEMP_THRESHOLD = 26;
+const int8_t PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 20;
 const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800; // 30m
 
 // Boiler heating
-const uint8_t TANK_BOILER_HEATING_ON_HIST = 3;
-const uint8_t TANK_BOILER_HEATING_OFF_HIST = 2;
-const uint8_t BOILER_SOLAR_MAX_TEMP_THRESHOLD = 46;
-const uint8_t BOILER_SOLAR_MAX_TEMP_HIST = 2;
+const int8_t TANK_BOILER_HEATING_ON_HIST = 3;
+const int8_t TANK_BOILER_HEATING_OFF_HIST = 2;
+const int8_t BOILER_SOLAR_MAX_TEMP_THRESHOLD = 46;
+const int8_t BOILER_SOLAR_MAX_TEMP_HIST = 2;
 
 // Circulation
-const uint8_t CIRCULATION_MIN_TEMP_THRESHOLD = 50;
-const uint8_t CIRCULATION_COOLING_TEMP_THRESHOLD = 61;
+const int8_t CIRCULATION_MIN_TEMP_THRESHOLD = 50;
+const int8_t CIRCULATION_COOLING_TEMP_THRESHOLD = 61;
 const unsigned long CIRCULATION_ACTIVE_PERIOD_SEC = 180; // 3m
 const unsigned long CIRCULATION_PASSIVE_PERIOD_SEC = 3420; // 57m
 
 // Standby Heater
-const uint8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
+const int8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 
 // Tank
-const uint8_t TANK_MIN_TEMP_THRESHOLD = 3;
-const uint8_t TANK_MIN_TEMP_HIST = 2;
+const int8_t TANK_MIN_TEMP_THRESHOLD = 3;
+const int8_t TANK_MIN_TEMP_HIST = 2;
 
 // Solar
 const unsigned long SOLAR_PRIMARY_COLDSTART_PERIOD_SEC = 600; // 10m
-const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 110; // stagnation
-const uint8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
-const uint8_t SOLAR_PRIMARY_BOILER_ON_HIST = 9;
-const uint8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 0;
-const uint8_t SOLAR_SECONDARY_BOILER_ON_HIST = 0;
+const int8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 110; // stagnation
+const int8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
+const int8_t SOLAR_PRIMARY_BOILER_ON_HIST = 9;
+const int8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 0;
+const int8_t SOLAR_SECONDARY_BOILER_ON_HIST = 0;
 
 // sensor BoilerPower
-const uint8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
+const int8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
 
 // reporting
 const unsigned long STATUS_REPORTING_PERIOD_SEC = 5; // 5s
@@ -157,17 +157,17 @@ const uint8_t JSON_MAX_BUFFER_SIZE = 255;
 
 //// Sensors
 // Values
-int16_t tempSupply = UNKNOWN_SENSOR_VALUE;
-int16_t tempReverse = UNKNOWN_SENSOR_VALUE;
-int16_t tempTank = UNKNOWN_SENSOR_VALUE;
-int16_t tempBoiler = UNKNOWN_SENSOR_VALUE;
-int16_t tempMix = UNKNOWN_SENSOR_VALUE;
-int16_t tempSbHeater = UNKNOWN_SENSOR_VALUE;
-int16_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
-int16_t humRoom1 = UNKNOWN_SENSOR_VALUE;
-int16_t tempSolarPrimary = UNKNOWN_SENSOR_VALUE;
-int16_t tempSolarSecondary = UNKNOWN_SENSOR_VALUE;
-int16_t sensorBoilerPowerState = 0;
+int8_t tempSupply = UNKNOWN_SENSOR_VALUE;
+int8_t tempReverse = UNKNOWN_SENSOR_VALUE;
+int8_t tempTank = UNKNOWN_SENSOR_VALUE;
+int8_t tempBoiler = UNKNOWN_SENSOR_VALUE;
+int8_t tempMix = UNKNOWN_SENSOR_VALUE;
+int8_t tempSbHeater = UNKNOWN_SENSOR_VALUE;
+int8_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
+int8_t humRoom1 = UNKNOWN_SENSOR_VALUE;
+int8_t tempSolarPrimary = UNKNOWN_SENSOR_VALUE;
+int8_t tempSolarSecondary = UNKNOWN_SENSOR_VALUE;
+int8_t sensorBoilerPowerState = 0;
 
 //// Nodes
 
@@ -1409,7 +1409,7 @@ void readSensors() {
     }
 }
 
-int16_t getSensorValue(const uint8_t sensor) {
+int8_t getSensorValue(const uint8_t sensor) {
     float result = UNKNOWN_SENSOR_VALUE;
     if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
         float vin = 5; // 5V
@@ -1445,7 +1445,7 @@ int16_t getSensorValue(const uint8_t sensor) {
         }
     }
     result = (result > 0) ? result + 0.5 : result - 0.5;
-    return int16_t(result);
+    return int8_t(result);
 }
 
 int8_t getSensorBoilerPowerState() {

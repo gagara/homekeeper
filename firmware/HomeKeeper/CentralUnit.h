@@ -58,7 +58,7 @@ void uid2str(const DeviceAddress *uid, char *str);
 
 void searchSensors();
 void readSensors();
-int16_t getSensorValue(const uint8_t sensor);
+int8_t getSensorValue(const uint8_t sensor);
 int8_t getSensorBoilerPowerState();
 bool validSensorValues(const int16_t values[], const uint8_t size);
 
