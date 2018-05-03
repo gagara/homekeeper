@@ -1822,7 +1822,7 @@ bool parseCommand(char* command) {
             if (root.containsKey(SENSORS_KEY)) {
                 JsonObject& sensor = root[SENSORS_KEY];
                 uint8_t id = sensor[ID_KEY].as<uint8_t>();
-                uint8_t val = sensor[VALUE_KEY].as<uint8_t>();
+                int8_t val = sensor[VALUE_KEY].as<int8_t>();
                 // find sensor
                 if (id == SENSOR_TEMP_ROOM_1) {
                     tempRoom1 = val;

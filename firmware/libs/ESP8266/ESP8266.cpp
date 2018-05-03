@@ -174,6 +174,8 @@ uint16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char*
                 if (strstr(input, "4,CONNECT")) {
                     connected = true;
                     break;
+                } else if (strstr(input, ",CONNECT")) {
+                    break;
                 } else if (strstr(input, "ERROR")) {
                     break;
                 }
@@ -191,8 +193,8 @@ uint16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char*
                     write(message);
                     write("\\0");
                     // handle response
-                    if (readUntil(input, MAX_MESSAGE_SIZE, F("SEND OK"), 5000)
-                            && readUntil(input, MAX_MESSAGE_SIZE, F("+IPD,4,"))
+                    if (readUntil(input, MAX_MESSAGE_SIZE, F("SEND OK"))
+                            && readUntil(input, MAX_MESSAGE_SIZE, F("+IPD,4,"), 5000)
                             && readUntil(input, MAX_MESSAGE_SIZE, F("HTTP/"))
                             && readUntil(input, MAX_MESSAGE_SIZE, F("\r\n"))) {
                         int d;
@@ -229,8 +231,7 @@ size_t ESP8266::receive(char* message, size_t msize) {
     char input[MAX_MESSAGE_SIZE + 1];
     char atcmd[MAX_AT_REQUEST_SIZE + 1];
     uint16_t rsp = 0;
-    if (readUntil(input, MAX_MESSAGE_SIZE, F(",CONNECT")) && readUntil(input, MAX_MESSAGE_SIZE, F("+IPD,"))
-            && readUntil(input, MAX_MESSAGE_SIZE, F(":"))) {
+    if (readUntil(input, MAX_MESSAGE_SIZE, F("+IPD,")) && readUntil(input, MAX_MESSAGE_SIZE, F(":"))) {
         // connection from client established
         int connId;
         int len;
