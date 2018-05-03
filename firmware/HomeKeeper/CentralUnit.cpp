@@ -2,7 +2,6 @@
 
 #include <Arduino.h>
 #include <EEPROMex.h>
-#include <RF24.h>
 #include <ArduinoJson.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>

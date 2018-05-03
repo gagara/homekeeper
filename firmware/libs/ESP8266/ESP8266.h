@@ -5,10 +5,6 @@
 
 #define ESP_CONFIG_TYPE_SIZE 32
 
-const uint8_t IN_BUFF_SIZE = 64;
-const uint8_t OUT_BUFF_SIZE = 64;
-const uint8_t TMP_BUFF_SIZE = 64;
-
 enum esp_cwmode {
     MODE_UNKNOWN = 0, MODE_STA = 1, MODE_AP = 2, MODE_STA_AP = 3,
 };
@@ -65,9 +61,6 @@ private:
     esp_ip_t staIp;
     unsigned long connectTs = 0;
     uint8_t reconnectCount = 0;bool persistDebug = false;
-    char inBuff[IN_BUFF_SIZE + 1];
-    char outBuff[OUT_BUFF_SIZE + 1];
-    char tmpBuff[TMP_BUFF_SIZE + 1];
     int readApIp(esp_ip_t ip); //
     int readStaIp(esp_ip_t ip); //
     size_t read(char *buffer, size_t bsize, const char *target, const size_t length, const uint16_t ttl); //

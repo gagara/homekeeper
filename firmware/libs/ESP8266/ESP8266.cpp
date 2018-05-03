@@ -20,6 +20,15 @@ Stream *defaultDebug = &Serial;
 Stream *defaultDebug = NULL;
 #endif
 
+// Buffers
+const uint8_t IN_BUFF_SIZE = 64;
+const uint8_t OUT_BUFF_SIZE = 64;
+const uint8_t TMP_BUFF_SIZE = 64;
+
+char inBuff[IN_BUFF_SIZE + 1];
+char outBuff[OUT_BUFF_SIZE + 1];
+char tmpBuff[TMP_BUFF_SIZE + 1];
+
 void ESP8266::init(Stream *port, esp_cwmode mode, uint8_t resetPin, uint16_t failureGracePeriodSec) {
     if (!persistDebug) {
         debug = defaultDebug;
