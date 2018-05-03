@@ -304,8 +304,8 @@ uint16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const c
         if (validIP(staIp)) {
             //connect to dstIP:dstPort
             bool connected = false;
-            sprintf(outBuff, "AT+CIPSTART=4,\"TCP\",\"%d.%d.%d.%d\",%d,0\r\n", dstIP[0], dstIP[1], dstIP[2], dstIP[3],
-                    dstPort);
+            snprintf(outBuff, OUT_BUFF_SIZE, "AT+CIPSTART=4,\"TCP\",\"%d.%d.%d.%d\",%d,0\r\n", dstIP[0], dstIP[1],
+                    dstIP[2], dstIP[3], dstPort);
             write(outBuff);
             inBuff[0] = '\0';
             while (readUntil(inBuff, IN_BUFF_SIZE, F("\r\n"), 3000) && strlen(inBuff) > 0) {
@@ -325,7 +325,7 @@ uint16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const c
                     write(F("User-Agent: ESP8266\r\n"));
                     write(F("Accept: */*\r\n"));
                     write(F("Content-Type: application/json\r\n"));
-                    sprintf(outBuff, "Content-Length: %d\r\n", strlen(message));
+                    snprintf(outBuff, OUT_BUFF_SIZE, "Content-Length: %d\r\n", strlen(message));
                     write(outBuff);
                     write(F("Connection: close\r\n\r\n"));
                     write(message);
