@@ -161,20 +161,20 @@ void ESP8266::stopTcpServer() {
     tcpServerPort = 0;
 }
 
-uint16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message) {
-    uint16_t httpRsp = httpSend(dstIP, dstPort, message);
-    dbgf(debug, F(":wifi:send:%d:%s\n"), httpRsp, message);
-    if (httpRsp == 0) {
+int16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message) {
+    int16_t status = httpSend(dstIP, dstPort, message);
+    dbgf(debug, F(":wifi:send:%d:%s\n"), status, message);
+    if (status == 0) {
         dropConnection();
         errorsRecovery();
     }
-    return httpRsp;
+    return status;
 }
 
 size_t ESP8266::receive(char* message, size_t msize) {
-    uint16_t httpRsp = httpReceive(message, msize);
-    dbgf(debug, F(":wifi:receive:%d:%s\n"), httpRsp, message);
-    if (httpRsp == 0) {
+    uint16_t status = httpReceive(message, msize);
+    dbgf(debug, F(":wifi:receive:%d:%s\n"), status, message);
+    if (status == 0) {
         dropConnection();
     }
     return strlen(message);
@@ -298,8 +298,8 @@ size_t ESP8266::read(char *buffer, size_t bsize, const char *target, const size_
     return i;
 }
 
-uint16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message) {
-    uint16_t httpRsp = 0;
+int16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message) {
+    int16_t status = -1;
     if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
         if (validIP(staIp)) {
             //connect to dstIP:dstPort
@@ -319,6 +319,7 @@ uint16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const c
                 }
             }
             if (connected) {
+                status = 0;
                 // connection established. send HTTP request
                 if (write(F("AT+CIPSENDEX=4,2048\r\n"), EXPECT_PROMPT)) {
                     write(F("POST / HTTP/1.1\r\n"));
@@ -336,7 +337,7 @@ uint16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const c
                             && readUntil(inBuff, IN_BUFF_SIZE, F("HTTP/"))
                             && readUntil(inBuff, IN_BUFF_SIZE, F("\r\n"))) {
                         int d;
-                        if (sscanf(&inBuff[0], "%d.%d %u\r\n", &d, &d, &httpRsp)) {
+                        if (sscanf(&inBuff[0], "%d.%d %u\r\n", &d, &d, &status)) {
                             // HTTP response code parsed
                             lastSuccessRequestTs = millis();
                             reconnectCount = 0;
@@ -357,14 +358,15 @@ uint16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const c
             }
         }
     }
-    return httpRsp;
+    return status;
 }
 
-uint16_t ESP8266::httpReceive(char* message, size_t msize) {
-    uint16_t rsp = 0;
+int16_t ESP8266::httpReceive(char* message, size_t msize) {
+    int16_t status = -1;
     message[0] = '\0';
     if (readUntil(inBuff, IN_BUFF_SIZE, F("+IPD,")) && readUntil(inBuff, IN_BUFF_SIZE, F(":"))) {
         // connection from client established
+        status = 0;
         int connId;
         int len;
         bool closed = false;
@@ -386,14 +388,14 @@ uint16_t ESP8266::httpReceive(char* message, size_t msize) {
                             }
                         }
                         if (!closed) {
-                            sendResponse(rsp = 200, "OK");
+                            sendResponse(status = 200, "OK");
                         }
                     }
                 } else {
-                    sendResponse(rsp = 400, "BAD REQUEST");
+                    sendResponse(status = 400, "BAD REQUEST");
                 }
             } else {
-                sendResponse(rsp = 404, "NOT FOUND");
+                sendResponse(status = 404, "NOT FOUND");
             }
             if (!closed) {
                 snprintf(outBuff, OUT_BUFF_SIZE, "AT+CIPCLOSE=%d\r\n", connId);
@@ -403,7 +405,7 @@ uint16_t ESP8266::httpReceive(char* message, size_t msize) {
             // connId unknown, don't try to close
         }
     }
-    return rsp;
+    return status;
 }
 
 void ESP8266::sendResponse(uint16_t httpCode, const char *content) {
@@ -416,10 +418,10 @@ void ESP8266::sendResponse(uint16_t httpCode, const char *content) {
 
 void ESP8266::errorsRecovery() {
     if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
+        dbg(debug, F(":wifi:ERR_RECOVERY\n"));
         unsigned long ts = millis();
         if ((!validIP(staIp) && (ts - connectTs) > STA_RECONNECT_INTERVAL)
                 || (failureGracePeriod > 0 && (ts - lastSuccessRequestTs) > failureGracePeriod)) {
-            dbg(debug, F(":wifi:ERR_RECOVERY\n"));
             if (reconnectCount < FAILURE_RECONNECTS_MAX_COUNT) {
                 reconnect();
                 lastSuccessRequestTs = millis();
@@ -436,12 +438,17 @@ void ESP8266::errorsRecovery() {
 
 void ESP8266::dropConnection() {
     int connId;
+    dbg(debug, F(":wifi:DROP_CONN\n"));
     write(F("AT+CIPSTATUS\r\n"));
-    if (readUntil(inBuff, IN_BUFF_SIZE, F("+CIPSTATUS:")) && readUntil(inBuff, IN_BUFF_SIZE, F("\r\n"))
-            && sscanf(&inBuff[0], "%d,", &connId)) {
-        dbg(debug, F(":wifi:DROP_CLIENT\n"));
-        snprintf(outBuff, OUT_BUFF_SIZE, "AT+CIPCLOSE=%d\r\n", connId);
-        write(outBuff, EXPECT_OK);
+    while (readUntil(inBuff, IN_BUFF_SIZE, F("\r\n"))) {
+        if (strstr(inBuff, "+CIPSTATUS:")) {
+            if (sscanf(strstr(inBuff, ":"), ":%d,", &connId)) {
+                snprintf(outBuff, OUT_BUFF_SIZE, "AT+CIPCLOSE=%d\r\n", connId);
+                write(outBuff, EXPECT_OK);
+            }
+        } else if (strstr(inBuff, "OK") || strstr(inBuff, "ERROR")) {
+            break;
+        }
     }
 }
 

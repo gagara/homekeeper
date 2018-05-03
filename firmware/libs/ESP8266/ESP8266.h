@@ -34,7 +34,7 @@ public:
     bool getStaIP(esp_ip_t ip); //
     void startTcpServer(const uint16_t port); //
     void stopTcpServer(); //
-    uint16_t send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message); //
+    int16_t send(const esp_ip_t dstIP, const uint16_t dstPort, const char* message); //
     size_t receive(char* message, size_t msize); //
     int available(); //
     bool write(const char *message, esp_response expectedResponse = EXPECT_NOTHING, const uint16_t ttl = 1000,
@@ -64,8 +64,8 @@ private:
     int readApIp(esp_ip_t ip); //
     int readStaIp(esp_ip_t ip); //
     size_t read(char *buffer, size_t bsize, const char *target, const size_t length, const uint16_t ttl); //
-    uint16_t httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message); //
-    uint16_t httpReceive(char* message, size_t msize); //
+    int16_t httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const char* message); //
+    int16_t httpReceive(char* message, size_t msize); //
     void sendResponse(uint16_t httpCode, const char *content); //
     void errorsRecovery(); //
     void dropConnection(); //

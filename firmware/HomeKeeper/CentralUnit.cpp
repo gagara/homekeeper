@@ -1794,8 +1794,8 @@ void broadcastMsg(const char* msg) {
     serial->println(msg);
     bt->println(msg);
     unsigned long start = millis();
-    int httpRsp = esp8266.send(SERVER_IP, SERVER_PORT, msg);
-    dbgf(debug, F(":HTTP:send:%d:[%d msec]\n"), httpRsp, millis() - start);
+    int status = esp8266.send(SERVER_IP, SERVER_PORT, msg);
+    dbgf(debug, F(":HTTP:send:%d:[%d msec]\n"), status, millis() - start);
 }
 
 bool parseCommand(char* command) {
