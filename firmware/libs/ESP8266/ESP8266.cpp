@@ -162,6 +162,7 @@ uint16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char*
     uint16_t httpRsp = httpSend(dstIP, dstPort, message);
     dbgf(debug, F(":wifi:send:%d:%s\n"), httpRsp, message);
     if (httpRsp == 0) {
+        dropConnection();
         errorsRecovery();
     }
     return httpRsp;
@@ -421,7 +422,6 @@ void ESP8266::sendResponse(uint16_t httpCode, const char *content) {
 }
 
 void ESP8266::errorsRecovery() {
-    dropConnection();
     if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
         unsigned long ts = millis();
         if ((!validIP(staIp) && (ts - connectTs) > STA_RECONNECT_INTERVAL)
