@@ -171,7 +171,7 @@ size_t ESP8266::receive(char* message, size_t msize) {
     uint16_t httpRsp = httpReceive(message, msize);
     dbgf(debug, F(":wifi:receive:%d:%s\n"), httpRsp, message);
     if (httpRsp == 0) {
-        dropClientConnection();
+        dropConnection();
     }
     return strlen(message);
 }
@@ -312,7 +312,7 @@ uint16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const c
                     dstPort);
             write(atcmd);
             while (readUntil(input, MAX_MESSAGE_SIZE, F("\r\n"), 3000) && strlen(input) > 0) {
-                if (strstr(input, "4,CONNECT")) {
+                if (strstr(input, "4,CONNECT") || strstr(input, "ALREADY CONNECTED")) {
                     connected = true;
                     break;
                 } else if (strstr(input, ",CONNECT")) {
@@ -421,6 +421,7 @@ void ESP8266::sendResponse(uint16_t httpCode, const char *content) {
 }
 
 void ESP8266::errorsRecovery() {
+    dropConnection();
     if (cwMode == MODE_STA || cwMode == MODE_STA_AP) {
         unsigned long ts = millis();
         if ((!validIP(staIp) && (ts - connectTs) > STA_RECONNECT_INTERVAL)
@@ -440,7 +441,7 @@ void ESP8266::errorsRecovery() {
     }
 }
 
-void ESP8266::dropClientConnection() {
+void ESP8266::dropConnection() {
     char input[MAX_MESSAGE_SIZE + 1];
     char atcmd[MAX_AT_REQUEST_SIZE + 1];
     int connId;

@@ -68,7 +68,7 @@ private:
     uint16_t httpReceive(char* message, size_t msize); //
     void sendResponse(uint16_t httpCode, const char *content); //
     void errorsRecovery(); //
-    void dropClientConnection(); //
+    void dropConnection(); //
     bool waitUntilBusy(const uint16_t ttl = 5000, const uint8_t retryCount = 1); //
     void bufAdd(char *buffer, const size_t bsize, const size_t idx, const char c); //
     bool validIP(esp_ip_t ip); //
