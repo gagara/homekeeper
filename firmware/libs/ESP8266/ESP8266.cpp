@@ -143,6 +143,7 @@ void ESP8266::startTcpServer(const uint16_t port) {
     if (tcpServerPort > 0) {
         snprintf(outBuff, OUT_BUFF_SIZE, "AT+CIPSERVER=1,%d\r\n", tcpServerPort);
         if (write(outBuff, EXPECT_OK, 600, 3)) {
+            write(F("AT+CIPSTO=10\r\n"), EXPECT_OK);
             dbgf(debug, F(":wifi:TCP_SRV:up:%d\n"), tcpServerPort);
         } else {
             dbg(debug, F(":wifi:TCP_SRV:up:FAIL\n"));
