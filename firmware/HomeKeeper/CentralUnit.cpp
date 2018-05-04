@@ -1476,9 +1476,6 @@ void reportStatus() {
         // start reporting
         nextEntryReport = SENSOR_SUPPLY;
     }
-    //////////////////////////
-    char buf[JSON_MAX_BUFFER_SIZE] = "{\"m\":\"nsc\",\"id\":36,\"ns\":0,\"ts\":68086,\"ff\":0,\"s\":[{\"id\":61,\"v\":42},{\"id\":57,\"v\":45}]}";
-    //////////////////////////
     switch (nextEntryReport) {
     case SENSOR_SUPPLY:
         reportSensorStatus(SENSOR_SUPPLY, tempSupply);
@@ -1562,9 +1559,6 @@ void reportStatus() {
     case NODE_HEATING_VALVE:
         reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve, tsForcedNodeHeatingValve);
         nextEntryReport = 0;
-        ///////////////////
-        broadcastMsg(buf);
-        ///////////////////
         break;
     default:
         break;
