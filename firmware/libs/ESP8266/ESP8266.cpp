@@ -167,6 +167,8 @@ int16_t ESP8266::send(const esp_ip_t dstIP, const uint16_t dstPort, const char* 
     dbgf(debug, F(":wifi:send:%d:%s\n"), status, message);
     if (status == 0) {
         dropConnection();
+    }
+    if (status <= 0) {
         errorsRecovery();
     }
     return status;
@@ -313,10 +315,10 @@ int16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const ch
                 if (strstr(inBuff, "4,CONNECT") || strstr(inBuff, "ALREADY CONNECTED")) {
                     connected = true;
                     break;
-                } else if (strstr(inBuff, ",CONNECT")) {
+                } else if (strstr(inBuff, ",CONNECT") || strstr(inBuff, "ERROR")) {
                     break;
-                } else if (strstr(inBuff, "ERROR")) {
-                    break;
+                } else if (strstr(inBuff, "no ip")) {
+                    staIp[0] = staIp[1] = staIp[2] = staIp[3] = 0;
                 }
             }
             if (connected) {
