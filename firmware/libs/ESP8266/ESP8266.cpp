@@ -463,7 +463,6 @@ void ESP8266::append(char *buffer, const size_t bsize, const size_t idx, const c
     if (idx < bsize) {
         buffer[idx] = c;
         buffer[idx + 1] = '\0';
-
     } else {
         size_t i = 0;
         for (i = 0; i < bsize - 1; i++) {

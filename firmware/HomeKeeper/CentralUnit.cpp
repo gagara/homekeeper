@@ -228,7 +228,7 @@ esp_config_t WIFI_LOCAL_PW;
 esp_ip_t SERVER_IP = { 0, 0, 0, 0 };
 uint16_t SERVER_PORT = 80;
 esp_ip_t WIFI_STA_IP = { 0, 0, 0, 0 };
-uint16_t TCP_SERVER_PORT = 80;
+uint16_t TCP_SERVER_PORT = 8084;
 
 // EEPROM addresses
 const int NODE_STATE_FLAGS_EEPROM_ADDR = 0;

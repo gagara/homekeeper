@@ -36,5 +36,5 @@
 {"m":"cfg","rap":"********"}            central unit AP
 {"m":"cfg","rpw":"********"}            central unit PW
 {"m":"cfg","sip":"192.168.4.1"}         central unit IP
-{"m":"cfg","sp":80}                     central unit Port 
+{"m":"cfg","sp":8084}                   central unit Port
 {"m":"cfg","lip":"0.0.0.0"}             IP (assigned by central unit)
