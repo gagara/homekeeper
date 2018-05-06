@@ -8,6 +8,7 @@ from flask import jsonify
 from flask import request, Response
 
 from time import time
+from time import sleep
 
 
 app = Flask(__name__)
@@ -50,6 +51,7 @@ def controller_send(req):
         except:
             rcode = 0
         retry = retry + 1
+        sleep(3)
     if rcode != 200:
         raise Exception()
 
