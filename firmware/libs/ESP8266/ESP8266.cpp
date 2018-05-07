@@ -378,6 +378,12 @@ int16_t ESP8266::httpReceive(char* message, size_t msize) {
             if (readUntil(inBuff, IN_BUFF_SIZE, F("HTTP/")) && strstr(inBuff, "POST / ")) {
                 if (readUntil(inBuff, IN_BUFF_SIZE, F("\r\n\r\n"))) { // skip headers
                     read(message, msize);
+                    snprintf(tmpBuff, TMP_BUFF_SIZE, "+IPD,%d,", connId);
+                    if (strstr(message, tmpBuff)) {
+                        // body was sent as separate package
+                        // truncate AT command +IPD,connId,len:
+                        strcpy(message, strstr(message, ":") + 1);
+                    }
                     snprintf(tmpBuff, TMP_BUFF_SIZE, "%d,CLOSED", connId);
                     if (strstr(message, tmpBuff)) {
                         // client already closed connection

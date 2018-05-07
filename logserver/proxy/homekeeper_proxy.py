@@ -40,13 +40,14 @@ def requires_auth(f):
 ####### #### ######### #########
 
 def controller_send(req):
+    headers = {'User-Agent': 'proxy','Content-Type': 'application/json','Connection': 'close'}
     host = "http://%s:%d" % (app.config['CONTROLLER_HOST'], app.config['CONTROLLER_PORT'])
     retry = 0
     rcode = 0
     while retry < app.config['CONTROLLER_CONN_MAX_RETRY'] and rcode != 200:
         if app.debug : print('>>>CONTROLLER: %s; %s' % (host, req))
         try:
-            r = requests.post(host, json=req, timeout=app.config['CONTROLLER_CONN_TIMEOUT_SEC'])
+            r = requests.post(host, json=req, headers=headers, timeout=app.config['CONTROLLER_CONN_TIMEOUT_SEC'])
             rcode = r.status_code
         except:
             rcode = 0
