@@ -345,7 +345,7 @@ int16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const ch
                             lastSuccessRequestTs = millis();
                             reconnectCount = 0;
                             // consume response body if any
-                            if (readUntil(inBuff, IN_BUFF_SIZE, F("+IPD,4,"))
+                            if (readUntil(inBuff, IN_BUFF_SIZE, F("+IPD,4,"), 100)
                                     && readUntil(inBuff, IN_BUFF_SIZE, F(":"))) {
                                 if (sscanf(&inBuff[0], "%d", &d)) { // body length
                                     readUntil(inBuff, IN_BUFF_SIZE, d);
@@ -377,7 +377,7 @@ int16_t ESP8266::httpReceive(char* message, size_t msize) {
             // got connId and request length
             if (readUntil(inBuff, IN_BUFF_SIZE, F("HTTP/")) && strstr(inBuff, "POST / ")) {
                 if (readUntil(inBuff, IN_BUFF_SIZE, F("\r\n\r\n"))) { // skip headers
-                    read(message, msize);
+                    read(message, msize, 500);
                     snprintf(tmpBuff, TMP_BUFF_SIZE, "+IPD,%d,", connId);
                     if (strstr(message, tmpBuff)) {
                         // body was sent as separate package
@@ -391,7 +391,7 @@ int16_t ESP8266::httpReceive(char* message, size_t msize) {
                         closed = true;
                     } else {
                         // consume rest of response until connection closed or timeout
-                        while (!readUntil(inBuff, IN_BUFF_SIZE, tmpBuff) && strlen(inBuff) > 0) {
+                        while (!readUntil(inBuff, IN_BUFF_SIZE, tmpBuff, 100) && strlen(inBuff) > 0) {
                             if (strstr(inBuff, tmpBuff)) {
                                 closed = true;
                             }
