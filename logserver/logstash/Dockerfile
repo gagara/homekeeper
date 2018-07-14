@@ -3,8 +3,12 @@ FROM docker.elastic.co/logstash/logstash:6.3.1
 RUN set -ex; \
 	/usr/share/logstash/bin/logstash-plugin install logstash-filter-elasticsearch logstash-filter-aggregate
 
+ADD pipelines.yml /usr/share/logstash/config/pipelines.yml
+
 ADD logstash_hk.conf /usr/share/logstash/pipeline/logstash_hk.conf
 ADD template_hk.json /usr/share/logstash/config/template_hk.json 
+ADD logstash_solar.conf /usr/share/logstash/pipeline/logstash_solar.conf
+ADD template_solar.json /usr/share/logstash/config/template_solar.json 
 
-CMD ["-f", "/usr/share/logstash/pipeline/logstash_hk.conf", "-w", "1"]
+CMD ["-w", "1"]
 

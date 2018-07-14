@@ -9,19 +9,19 @@
       "properties" : {
         "headers" : {
           "properties" : {
-            "http_user_agent": { "type": "string", "index": "not_analyzed" }
+            "http_user_agent": { "type": "keyword" }
           }
         },
-        "message": { "type": "string", "index": "not_analyzed" },
+        "message": { "type": "keyword" },
         "prev_timestamp": { "type": "date" },
         "period": { "type": "long" },
-        "csr_type": { "type": "string", "index": "not_analyzed" },
-        "csr_state": { "type": "string", "index": "not_analyzed" },
-        "sensor_type": { "type": "string", "index": "not_analyzed" },
-        "name": { "type": "string", "index": "not_analyzed" },
+        "csr_type": { "type": "keyword" },
+        "csr_state": { "type": "keyword" },
+        "sensor_type": { "type": "keyword" },
+        "name": { "type": "keyword" },
         "state": { "type": "boolean" },
-        "state_str": { "type": "string", "index": "not_analyzed" },
-        "m": { "type": "string", "index": "not_analyzed" },
+        "state_str": { "type": "keyword" },
+        "m": { "type": "keyword" },
         "id": { "type": "integer" },
         "ns": { "type": "byte" },
         "ts": { "type": "long" },
@@ -48,13 +48,13 @@
         },
         "s_id": { "type": "integer" },
         "s_v": { "type": "integer" },
-        "ap": { "type": "string", "index": "not_analyzed" },
-        "pw": { "type": "string", "index": "not_analyzed" },
+        "ap": { "type": "keyword" },
+        "pw": { "type": "keyword" },
         "sip": { "type": "ip" },
         "lip": { "type": "ip" },
         "sp": { "type": "integer" },
         "production": { "type": "integer" },
-        "production_type": { "type": "string", "index": "not_analyzed" }
+        "production_type": { "type": "keyword" }
       }
     }
   }
