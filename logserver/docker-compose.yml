@@ -18,7 +18,8 @@ services:
       - elasticsearch
 
   kibana:
-    image: kibana:5.2
+    build:
+      context: ./kibana
     restart: unless-stopped
     ports:
       - "5601:5601"

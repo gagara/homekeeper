@@ -1,4 +1,4 @@
-FROM logstash:5.2-alpine
+FROM docker.elastic.co/logstash/logstash:6.3.1
 
 RUN set -ex; \
 	/usr/share/logstash/bin/logstash-plugin install logstash-filter-elasticsearch logstash-filter-aggregate
