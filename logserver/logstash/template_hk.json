@@ -1,11 +1,7 @@
 {
-  "template" : "logstash_hk-*",
-  "settings" : {
-    "index.refresh_interval" : "5s"
-  },
+  "index_patterns" : ["logstash_hk-*"],
   "mappings" : {
-    "_default_" : {
-      "_all" : {"enabled" : true, "omit_norms" : true},
+    "doc" : {
       "properties" : {
         "headers" : {
           "properties" : {
