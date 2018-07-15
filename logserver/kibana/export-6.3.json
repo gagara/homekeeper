@@ -62,7 +62,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"csr_type:sensor AND csr_state:actual AND (s.id:74 OR s.id:75) AND NOT s.v:\\\"-127\\\"\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"csr_type:sensor AND csr_state:actual AND (s.id:74 OR s.id:75) AND NOT s.v:\\\"-127\\\"\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -79,7 +79,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"csr_type:sensor AND sensor_type:state\"}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"csr_type:sensor AND sensor_type:state\"}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -96,7 +96,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -113,24 +113,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"m:nsc OR (m:csr AND csr_type:node)\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "b493f570-0fcc-11e7-9d51-398f58efdcd3",
-    "_type": "visualization",
-    "_source": {
-      "title": "Nodes Uptime",
-      "visState": "{\"title\":\"Nodes Uptime\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":true,\"addTooltip\":true,\"defaultYExtents\":false,\"legendPosition\":\"top\",\"mode\":\"grouped\",\"scale\":\"linear\",\"setYExtents\":false,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"period\",\"customLabel\":\"active time\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"date\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"enabled\":true,\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"id\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"node\"}}],\"listeners\":{}}",
-      "uiStateJSON": "{\"vis\":{\"legendOpen\":true,\"colors\":{\"Solar Primay\":\"#C15C17\",\"Solar Secondary\":\"#EAB839\",\"Boiler Power\":\"#E24D42\",\"Hot water\":\"#962D82\",\"Circulation\":\"#629E51\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"(m:csr AND csr_type:node AND csr_state:actual AND state:false AND NOT n.id:32 AND NOT n.id:40) OR (m:csr AND csr_type:sensor AND sensor_type:state AND csr_state:actual AND state:false)\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"m:nsc OR (m:csr AND csr_type:node)\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -147,7 +130,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -164,7 +147,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -181,7 +164,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"production_type:solar\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"production_type:solar\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -198,7 +181,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -215,7 +198,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -232,7 +215,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -249,7 +232,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -266,7 +249,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"query\":{\"query_string\":{\"query\":\"s_id:56 OR s_id:57\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"s_id:56 OR s_id:57\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -283,7 +266,24 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"4a4d4760-871d-11e8-aab5-f7171330a20a\",\"query\":{\"language\":\"lucene\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"csr_type:sensor AND sensor_type:value AND !s.id:75 AND !s.id:74\",\"default_field\":\"*\"}}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"language\":\"lucene\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"csr_type:sensor AND sensor_type:value AND !s.id:75 AND !s.id:74\",\"default_field\":\"*\"}}},\"filter\":[]}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "b493f570-0fcc-11e7-9d51-398f58efdcd3",
+    "_type": "visualization",
+    "_source": {
+      "title": "Nodes Uptime",
+      "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{\"customLabel\":\"active time\",\"field\":\"period\"},\"schema\":\"metric\",\"type\":\"sum\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customInterval\":\"2h\",\"customLabel\":\"date\",\"extended_bounds\":{},\"field\":\"@timestamp\",\"interval\":\"d\",\"min_doc_count\":1},\"schema\":\"segment\",\"type\":\"date_histogram\"},{\"enabled\":true,\"id\":\"3\",\"params\":{\"field\":\"name\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"order\":\"asc\",\"orderAgg\":{\"enabled\":true,\"id\":\"3-orderAgg\",\"params\":{\"field\":\"n.id\"},\"schema\":{\"aggFilter\":[\"!top_hits\",\"!percentiles\",\"!median\",\"!std_dev\",\"!derivative\",\"!moving_avg\",\"!serial_diff\",\"!cumulative_sum\",\"!avg_bucket\",\"!max_bucket\",\"!min_bucket\",\"!sum_bucket\"],\"deprecate\":false,\"editor\":false,\"group\":\"none\",\"hideCustomLabel\":true,\"max\":null,\"min\":0,\"name\":\"orderAgg\",\"params\":[],\"title\":\"Order Agg\"},\"type\":\"max\"},\"orderBy\":\"custom\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"size\":10},\"schema\":\"group\",\"type\":\"terms\"}],\"params\":{\"addLegend\":true,\"addTimeMarker\":true,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":false,\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"legendPosition\":\"top\",\"mode\":\"grouped\",\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"active time\"},\"mode\":\"normal\",\"show\":\"true\",\"type\":\"histogram\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":false,\"times\":[],\"type\":\"histogram\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"mode\":\"grouped\",\"setYExtents\":false,\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"active time\"},\"type\":\"value\"}],\"yAxis\":{}},\"title\":\"Nodes Uptime\",\"type\":\"histogram\"}",
+      "uiStateJSON": "{\"vis\":{\"legendOpen\":true,\"colors\":{\"Solar Primay\":\"#C15C17\",\"Solar Secondary\":\"#EAB839\",\"Boiler Power\":\"#E24D42\",\"Hot water\":\"#962D82\",\"Circulation\":\"#629E51\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"(m:csr AND csr_type:node AND csr_state:actual AND state:false AND NOT n.id:32 AND NOT n.id:40) OR (m:csr AND csr_type:sensor AND sensor_type:state AND csr_state:actual AND state:false)\",\"analyze_wildcard\":true,\"default_field\":\"*\"}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
