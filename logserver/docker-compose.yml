@@ -38,3 +38,10 @@ services:
       - elasticsearch
       - logstash
 
+  curator:
+    build:
+      context: ./curator
+    restart: unless-stopped
+    depends_on:
+      - elasticsearch
+
