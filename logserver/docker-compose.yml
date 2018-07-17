@@ -12,6 +12,13 @@ services:
     build:
       context: ./logstash
     restart: unless-stopped
+    environment:
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
+      - HK_PIPELINE_HOST=0.0.0.0
+      - HK_PIPELINE_PORT=8085
+      - FRONIUS_HOST=192.168.64.1
+      - FRONIUS_PORT=7080
     ports:
       - "8085:8085"
       - "8065:8065"
