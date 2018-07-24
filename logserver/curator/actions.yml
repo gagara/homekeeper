@@ -1,7 +1,9 @@
 actions:
   1:
     action: close
-    description: close old indexes
+    description: close old HK indexes
+    options:
+      ignore_empty_list: true
     filters:
       - filtertype: age
         source: creation_date
@@ -11,4 +13,17 @@ actions:
       - filtertype: pattern
         kind: prefix
         value: logstash_hk-
-
+  2:
+    action: close
+    description: close old Solar indexes
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 45
+      - filtertype: pattern
+        kind: prefix
+        value: logstash_solar-

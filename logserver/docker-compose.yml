@@ -23,7 +23,6 @@ services:
       - FRONIUS_ARCH_RQ_PULL_INTERVAL=300
     ports:
       - "8085:8085"
-      - "8065:8065"
     depends_on:
       - elasticsearch
 
