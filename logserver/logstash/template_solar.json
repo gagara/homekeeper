@@ -9,8 +9,8 @@
         "Header.RequestArguments.DataCollection" : { "type" : "keyword" },
         "Header.RequestArguments.Channel" : { "type" : "keyword" },
         "Header.Status.Reason" : { "type" : "keyword" },
-        "Body.Data.DeviceStatus.ErrorCodeDescription" : { "type" : "keyword" },
-        "Body.Data.DeviceStatus.StatusCodeDescription" : { "type" : "keyword" }
+        "Body.Data.DeviceStatus.StatusCodeDescription" : { "type" : "keyword" },
+        "Body.Data.DeviceStatus.ErrorCodeDescription" : { "type" : "keyword" }
       }
     }
   }
