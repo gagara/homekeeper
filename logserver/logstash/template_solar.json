@@ -3,13 +3,15 @@
   "mappings" : {
     "doc" : {
       "properties" : {
-        "headers" : {
-          "properties" : {
-            "http_user_agent": { "type": "keyword" }
-          }
-        }
+        "Header.RequestArguments.Scope" : { "type" : "keyword" },
+        "Header.RequestArguments.DeviceClass" : { "type" : "keyword" },
+        "Header.RequestArguments.DeviceId" : { "type" : "keyword" },
+        "Header.RequestArguments.DataCollection" : { "type" : "keyword" },
+        "Header.RequestArguments.Channel" : { "type" : "keyword" },
+        "Header.Status.Reason" : { "type" : "keyword" },
+        "Body.Data.DeviceStatus.ErrorCodeDescription" : { "type" : "keyword" },
+        "Body.Data.DeviceStatus.StatusCodeDescription" : { "type" : "keyword" }
       }
     }
   }
 }
-
