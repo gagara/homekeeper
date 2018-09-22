@@ -469,7 +469,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"Head.RequestArguments.Channel:GVDPR_Energy_Lose AND Head.Status.Code:0\"}}"
+        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\"}}"
       }
     },
     "_meta": {
