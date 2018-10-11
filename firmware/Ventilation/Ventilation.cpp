@@ -5,6 +5,7 @@
 #include <EEPROMex.h>
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
+#include <Stepper.h>
 
 #include <debug.h>
 #include <ESP8266.h>
@@ -24,11 +25,13 @@ const uint8_t SENSOR_HUM_OUT = (54 + 16) + (4 * 2) + 3;
 // Node id
 const uint8_t NODE_VENTILATION = 44;
 
-// nodes pins
+// Stepper pins
 const uint8_t MOTOR_PIN_1 = 7;
 const uint8_t MOTOR_PIN_2 = 8;
 const uint8_t MOTOR_PIN_3 = 9;
 const uint8_t MOTOR_PIN_4 = 10;
+const uint8_t MOTOR_STEPS = 32;
+const uint16_t MOTOR_STEPS_PER_REVOLUTION = 2048;
 
 const uint8_t SENSORS_ADDR_CFG[] = { SENSOR_TEMP_IN, SENSOR_HUM_IN, SENSOR_TEMP_OUT, SENSOR_HUM_OUT };
 
@@ -47,11 +50,15 @@ const uint8_t HEARTBEAT_LED = 13;
 // etc
 const unsigned long MAX_TIMESTAMP = -1;
 const int16_t UNKNOWN_SENSOR_VALUE = -127;
+const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 60;
 
 // reporting
 const unsigned long STATUS_REPORTING_PERIOD_SEC = 60; // 1 minute
 const unsigned long SENSORS_READ_INTERVAL_SEC = 60; // 1 minute
 const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
+
+// ventilation
+const int8_t TEMP_IN_OUT_HIST = 3;
 
 // JSON
 const char MSG_TYPE_KEY[] = "m";
@@ -142,6 +149,9 @@ int eepromWriteCount = 0;
 DHT dhtIn(DHT_IN_PIN, DHT11);
 DHT dhtOut(DHT_OUT_PIN, DHT11);
 
+// Stepper
+Stepper motor(MOTOR_STEPS, MOTOR_PIN_1, MOTOR_PIN_3, MOTOR_PIN_2, MOTOR_PIN_4);
+
 // Serial port
 SoftwareSerial serialPort(DEBUG_SERIAL_RX_PIN, DEBUG_SERIAL_TX_PIN);
 SoftwareSerial *serial = &serialPort;
@@ -165,6 +175,9 @@ void setup() {
     // init heartbeat led
     pinMode(HEARTBEAT_LED, OUTPUT);
     digitalWrite(HEARTBEAT_LED, LOW);
+
+    // init motor
+    motor.setSpeed(200);
 
     // init esp8266 hw reset pin. N/A
     //pinMode(WIFI_RST_PIN, OUTPUT);
@@ -208,7 +221,43 @@ void loop() {
 /*========================= Node processing methods =========================*/
 
 void processVentilationValve() {
-    // TODO
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT;
+    if (isInForcedMode(NODE_VENTILATION_BIT, tsForcedNodeVentilation)) {
+        return;
+    }
+    if (wasForceMode) {
+        reportNodeStatus(NODE_VENTILATION, NODE_VENTILATION_BIT, tsNodeVentilation, tsForcedNodeVentilation);
+    }
+    if (diffTimestamps(tsCurr, tsNodeVentilation) >= NODE_SWITCH_SAFE_TIME_SEC) {
+        uint8_t sensIds[] = { SENSOR_TEMP_IN, SENSOR_TEMP_OUT };
+        int16_t sensVals[] = { tempIn, tempOut };
+        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        if (!validSensorValues(sensVals, sensCnt)) {
+            return;
+        }
+
+        if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
+            // ventilation is OPEN
+            if (tempIn <= tempOut) {
+                // temp outside is high
+                // CLOSE ventilation
+                switchNodeState(NODE_VENTILATION, sensIds, sensVals, sensCnt);
+            } else {
+                // temp outside is low
+                // do nothing
+            }
+        } else {
+            // ventilation is CLOSED
+            if (tempIn >= (tempOut + TEMP_IN_OUT_HIST)) {
+                // temp outside is low enough
+                // OPEN ventilation
+                switchNodeState(NODE_VENTILATION, sensIds, sensVals, sensCnt);
+            } else {
+                // temp outside is high
+                // do nothing
+            }
+        }
+    }
 }
 
 bool isInForcedMode(uint16_t bit, unsigned long ts) {
@@ -235,10 +284,10 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
         bit = NODE_VENTILATION_BIT;
         ts = &tsNodeVentilation;
         tsf = &tsForcedNodeVentilation;
+        switchVentilationValve();
     }
 
     if (ts != NULL) {
-        digitalWrite(id, digitalRead(id) ^ 1);
         NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
 
         *ts = getTimestamp();
@@ -314,6 +363,16 @@ void unForceNodeState(uint8_t id) {
     }
 }
 
+void switchVentilationValve() {
+    if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
+        // OPENED
+        motor.step(-MOTOR_STEPS_PER_REVOLUTION); //close
+    } else {
+        // CLOSED
+        motor.step(MOTOR_STEPS_PER_REVOLUTION); //open
+    }
+}
+
 /*====================== Load/Save configuration in EEPROM ==================*/
 
 double readSensorCF(uint8_t sensor) {
@@ -386,6 +445,15 @@ int8_t getSensorValue(const uint8_t sensor) {
 
     result = (result > 0) ? result + 0.5 : result - 0.5;
     return int8_t(result);
+}
+
+bool validSensorValues(const int16_t values[], const uint8_t size) {
+    for (int i = 0; i < size; i++) {
+        if (values[i] == UNKNOWN_SENSOR_VALUE) {
+            return false;
+        }
+    }
+    return true;
 }
 
 /*============================ Reporting ====================================*/

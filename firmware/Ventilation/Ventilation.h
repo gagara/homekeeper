@@ -29,6 +29,7 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts);
 void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &nodeTs, unsigned long ts);
 void unForceNodeState(uint8_t id);
+void switchVentilationValve();
 
 double readSensorCF(const uint8_t sensor);
 void saveSensorCF(const uint8_t sensor, const double value);
@@ -38,6 +39,7 @@ void validateStringParam(char* str, int maxSize);
 
 void readSensors();
 int8_t getSensorValue(uint8_t sensor);
+bool validSensorValues(const int16_t values[], const uint8_t size);
 
 void reportStatus();
 void reportNodeStatus(uint8_t id, uint16_t bit, unsigned long ts, unsigned long tsf);
