@@ -9,6 +9,7 @@
 
 #include <debug.h>
 #include <ESP8266.h>
+#include <jsoner.h>
 
 #define __DEBUG__
 
@@ -61,31 +62,31 @@ const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
 const int8_t TEMP_IN_OUT_HIST = 3;
 
 // JSON
-const char MSG_TYPE_KEY[] = "m";
-const char ID_KEY[] = "id";
-const char STATE_KEY[] = "ns";
-const char FORCE_FLAG_KEY[] = "ff";
-const char TIMESTAMP_KEY[] = "ts";
-const char FORCE_TIMESTAMP_KEY[] = "ft";
-const char CALIBRATION_FACTOR_KEY[] = "cf";
-const char NODES_KEY[] = "n";
-const char SENSORS_KEY[] = "s";
-const char VALUE_KEY[] = "v";
-
-const char MSG_CURRENT_STATUS_REPORT[] = "csr";
-const char MSG_NODE_STATE_CHANGED[] = "nsc";
-const char MSG_CLOCK_SYNC[] = "cls";
-const char MSG_CONFIGURATION[] = "cfg";
-
-const char WIFI_REMOTE_AP_KEY[] = "rap";
-const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
-const char SERVER_IP_KEY[] = "sip";
-const char SERVER_PORT_KEY[] = "sp";
-const char LOCAL_IP_KEY[] = "lip";
-const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
+//const char MSG_TYPE_KEY[] = "m";
+//const char ID_KEY[] = "id";
+//const char STATE_KEY[] = "ns";
+//const char FORCE_FLAG_KEY[] = "ff";
+//const char TIMESTAMP_KEY[] = "ts";
+//const char FORCE_TIMESTAMP_KEY[] = "ft";
+//const char CALIBRATION_FACTOR_KEY[] = "cf";
+//const char NODES_KEY[] = "n";
+//const char SENSORS_KEY[] = "s";
+//const char VALUE_KEY[] = "v";
+//
+//const char MSG_CURRENT_STATUS_REPORT[] = "csr";
+//const char MSG_NODE_STATE_CHANGED[] = "nsc";
+//const char MSG_CLOCK_SYNC[] = "cls";
+//const char MSG_CONFIGURATION[] = "cfg";
+//
+//const char WIFI_REMOTE_AP_KEY[] = "rap";
+//const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
+//const char SERVER_IP_KEY[] = "sip";
+//const char SERVER_PORT_KEY[] = "sp";
+//const char LOCAL_IP_KEY[] = "lip";
+//const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
 
 const uint8_t JSON_MAX_SIZE = 64;
-const uint8_t JSON_MAX_BUFFER_SIZE = 128;
+//const uint8_t JSON_MAX_BUFFER_SIZE = 128;
 
 /*============================= Global variables ============================*/
 
@@ -198,10 +199,10 @@ void loop() {
         tsLastSensorRead = tsCurr;
 
         digitalWrite(HEARTBEAT_LED, digitalRead(HEARTBEAT_LED) ^ 1);
-    }
 
-    // ventilation valve
-    processVentilationValve();
+        // ventilation valve
+        processVentilationValve();
+    }
 
     if (serial->available() > 0) {
         processSerialMsg();
@@ -226,7 +227,10 @@ void processVentilationValve() {
         return;
     }
     if (wasForceMode) {
-        reportNodeStatus(NODE_VENTILATION, NODE_VENTILATION_BIT, tsNodeVentilation, tsForcedNodeVentilation);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_VENTILATION, NODE_STATE_FLAGS & NODE_VENTILATION_BIT, tsNodeVentilation,
+                NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeVentilation) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TEMP_IN, SENSOR_TEMP_OUT };
@@ -293,28 +297,31 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
         *ts = getTimestamp();
 
         // report state change
-        StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-        JsonObject& root = jsonBuffer.createObject();
-        root[MSG_TYPE_KEY] = MSG_NODE_STATE_CHANGED;
-        root[ID_KEY] = id;
-        root[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
-        root[TIMESTAMP_KEY] = *ts;
-        root[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
-        if (NODE_FORCED_MODE_FLAGS & bit) {
-            root[FORCE_TIMESTAMP_KEY] = *tsf;
-        }
-
-        JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
-        for (unsigned int i = 0; i < sensCnt; i++) {
-            JsonObject& sens = jsonBuffer.createObject();
-            sens[ID_KEY] = sensId[i];
-            sens[VALUE_KEY] = sensVal[i];
-            sensors.add(sens);
-        }
-
         char json[JSON_MAX_SIZE];
-        root.printTo(json, JSON_MAX_SIZE);
-
+        jsonifyNodeStateChange(id, NODE_STATE_FLAGS & bit, *ts, NODE_FORCED_MODE_FLAGS & bit, *tsf, sensId, sensVal,
+                sensCnt, json, JSON_MAX_SIZE);
+//        StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//        JsonObject& root = jsonBuffer.createObject();
+//        root[MSG_TYPE_KEY] = MSG_NODE_STATE_CHANGED;
+//        root[ID_KEY] = id;
+//        root[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
+//        root[TIMESTAMP_KEY] = *ts;
+//        root[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
+//        if (NODE_FORCED_MODE_FLAGS & bit) {
+//            root[FORCE_TIMESTAMP_KEY] = *tsf;
+//        }
+//
+//        JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
+//        for (unsigned int i = 0; i < sensCnt; i++) {
+//            JsonObject& sens = jsonBuffer.createObject();
+//            sens[ID_KEY] = sensId[i];
+//            sens[VALUE_KEY] = sensVal[i];
+//            sensors.add(sens);
+//        }
+//
+//        char json[JSON_MAX_SIZE];
+//        root.printTo(json, JSON_MAX_SIZE);
+//
         broadcastMsg(json);
     }
 }
@@ -322,7 +329,10 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
     if (NODE_VENTILATION == id) {
         forceNodeState(NODE_VENTILATION, NODE_VENTILATION_BIT, state, tsForcedNodeVentilation, ts);
-        reportNodeStatus(NODE_VENTILATION, NODE_VENTILATION_BIT, tsNodeVentilation, tsForcedNodeVentilation);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_VENTILATION, NODE_STATE_FLAGS & NODE_VENTILATION_BIT, tsNodeVentilation,
+                NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     // update node modes in EEPROM if forced permanently
     if (ts == 0) {
@@ -355,7 +365,10 @@ void unForceNodeState(uint8_t id) {
     if (NODE_VENTILATION == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_VENTILATION_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_VENTILATION_BIT;
-        reportNodeStatus(NODE_VENTILATION, NODE_VENTILATION_BIT, tsNodeVentilation, tsForcedNodeVentilation);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_VENTILATION, NODE_STATE_FLAGS & NODE_VENTILATION_BIT, tsNodeVentilation,
+                NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     // update node modes in EEPROM if unforced from permanent
     if (prevPermanentlyForcedModeFlags != NODE_PERMANENTLY_FORCED_MODE_FLAGS) {
@@ -459,119 +472,132 @@ bool validSensorValues(const int16_t values[], const uint8_t size) {
 /*============================ Reporting ====================================*/
 
 void reportStatus() {
-    reportSensorStatus(SENSOR_TEMP_IN, tempIn);
-    reportSensorStatus(SENSOR_HUM_IN, humIn);
-    reportSensorStatus(SENSOR_TEMP_OUT, tempOut);
-    reportSensorStatus(SENSOR_HUM_OUT, humOut);
-}
-
-void reportNodeStatus(uint8_t id, uint16_t bit, unsigned long ts, unsigned long tsf) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
-
-    JsonObject& node = jsonBuffer.createObject();
-    node[ID_KEY] = id;
-    node[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
-    node[TIMESTAMP_KEY] = ts;
-    node[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
-    if (NODE_FORCED_MODE_FLAGS & bit) {
-        node[FORCE_TIMESTAMP_KEY] = tsf;
-    }
-
-    root[NODES_KEY] = node;
-
     char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
 
-    broadcastMsg(json);
+    jsonifySensorValue(SENSOR_TEMP_IN, tempIn, json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifySensorValue(SENSOR_HUM_IN, humIn, json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifySensorValue(SENSOR_TEMP_OUT, tempOut, json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifySensorValue(SENSOR_HUM_OUT, humOut, json, JSON_MAX_SIZE);
+    serial->println(json);
 }
 
-void reportSensorStatus(const uint8_t id, const uint8_t value) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
+//void reportNodeStatus(uint8_t id, uint16_t bit, unsigned long ts, unsigned long tsf) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
+//
+//    JsonObject& node = jsonBuffer.createObject();
+//    node[ID_KEY] = id;
+//    node[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
+//    node[TIMESTAMP_KEY] = ts;
+//    node[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
+//    if (NODE_FORCED_MODE_FLAGS & bit) {
+//        node[FORCE_TIMESTAMP_KEY] = tsf;
+//    }
+//
+//    root[NODES_KEY] = node;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    broadcastMsg(json);
+//}
 
-    JsonObject& sens = jsonBuffer.createObject();
-    sens[ID_KEY] = id;
-    sens[VALUE_KEY] = value;
-
-    root[SENSORS_KEY] = sens;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    broadcastMsg(json);
-}
-
-void reportTimestamp() {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CLOCK_SYNC;
-    root[TIMESTAMP_KEY] = getTimestamp();
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    broadcastMsg(json);
-}
+//void reportSensorStatus(const uint8_t id, const uint8_t value) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
+//
+//    JsonObject& sens = jsonBuffer.createObject();
+//    sens[ID_KEY] = id;
+//    sens[VALUE_KEY] = value;
+//
+//    root[SENSORS_KEY] = sens;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    broadcastMsg(json);
+//}
+//
 
 void reportConfiguration() {
+    char json[JSON_MAX_SIZE];
     char ip[16];
-    reportSensorCfConfig(SENSOR_TEMP_IN);
-    reportSensorCfConfig(SENSOR_HUM_IN);
-    reportSensorCfConfig(SENSOR_TEMP_OUT);
-    reportSensorCfConfig(SENSOR_HUM_OUT);
-    reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
-    reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
+
+    jsonifySensorConfigCf(SENSOR_TEMP_IN, readSensorCF(SENSOR_TEMP_IN), json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifySensorConfigCf(SENSOR_HUM_IN, readSensorCF(SENSOR_HUM_IN), json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifySensorConfigCf(SENSOR_TEMP_OUT, readSensorCF(SENSOR_TEMP_OUT), json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifySensorConfigCf(SENSOR_HUM_OUT, readSensorCF(SENSOR_HUM_OUT), json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifyConfig(F("rap"), WIFI_REMOTE_AP, json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifyConfig(F("rpw"), WIFI_REMOTE_PW, json, JSON_MAX_SIZE);
+    serial->println(json);
     sprintf(ip, "%d.%d.%d.%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2], SERVER_IP[3]);
-    reportStringConfig(SERVER_IP_KEY, ip);
-    reportNumberConfig(SERVER_PORT_KEY, SERVER_PORT);
+    jsonifyConfig(F("sip"), ip, json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifyConfig(F("sp"), &SERVER_PORT, json, JSON_MAX_SIZE);
+    serial->println(json);
     sprintf(ip, "%d.%d.%d.%d", WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
-    reportStringConfig(LOCAL_IP_KEY, ip);
+    jsonifyConfig(F("lip"), ip, json, JSON_MAX_SIZE);
+    serial->println(json);
     dbgf(debug, F(":EEPROM:written:%d bytes\n"), eepromWriteCount);
 }
 
-void reportSensorCfConfig(const uint8_t id) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-
-    JsonObject& sens = jsonBuffer.createObject();
-    sens[ID_KEY] = id;
-    sens[CALIBRATION_FACTOR_KEY] = readSensorCF(id);
-
-    root[SENSORS_KEY] = sens;
-
+void reportTimestamp() {
     char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    serial->println(json);
+    jsonifyClockSync(getTimestamp(), json, JSON_MAX_SIZE);
+    broadcastMsg(json);
 }
 
-void reportNumberConfig(const char* key, const int value) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-    root[key] = value;
 
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    serial->println(json);
-}
-
-void reportStringConfig(const char* key, const char* value) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-    root[key] = value;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    serial->println(json);
-}
+//void reportSensorCfConfig(const uint8_t id) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+//
+//    JsonObject& sens = jsonBuffer.createObject();
+//    sens[ID_KEY] = id;
+//    sens[CALIBRATION_FACTOR_KEY] = readSensorCF(id);
+//
+//    root[SENSORS_KEY] = sens;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    serial->println(json);
+//}
+//
+//void reportNumberConfig(const char* key, const int value) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+//    root[key] = value;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    serial->println(json);
+//}
+//
+//void reportStringConfig(const char* key, const char* value) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+//    root[key] = value;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    serial->println(json);
+//}
 
 /*========================= Communication ===================================*/
 
@@ -609,27 +635,26 @@ bool parseCommand(char* command) {
         return true;
     }
 
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    DynamicJsonBuffer jsonBuffer(JSON_MAX_SIZE * 2);
     JsonObject& root = jsonBuffer.parseObject(command);
 
     if (root.success()) {
-        const char* msgType = root[MSG_TYPE_KEY];
-        if (strcmp(msgType, MSG_CLOCK_SYNC) == 0) {
+        if (root[F("m")] == F("cls")) {
             // SYNC
             reportTimestamp();
-        } else if (strcmp(msgType, MSG_CURRENT_STATUS_REPORT) == 0) {
+        } else if (root[F("m")] == F("csr")) {
             // CSR
             tsLastStatusReport = tsCurr - STATUS_REPORTING_PERIOD_SEC;
-        } else if (strcmp(msgType, MSG_NODE_STATE_CHANGED) == 0) {
+        } else if (root[F("m")] == F("nsc")) {
             // NSC
-            if (root.containsKey(ID_KEY)) {
-                uint8_t id = root[ID_KEY].as<uint8_t>();
-                if (root.containsKey(STATE_KEY)) {
-                    uint8_t state = root[STATE_KEY].as<uint8_t>();
+            if (root.containsKey(F("id"))) {
+                uint8_t id = root[F("id")].as<uint8_t>();
+                if (root.containsKey(F("ns"))) {
+                    uint8_t state = root[F("ns")].as<uint8_t>();
                     if (state == 0 || state == 1) {
                         unsigned long ts;
-                        if (root.containsKey(FORCE_TIMESTAMP_KEY)) {
-                            ts = root[FORCE_TIMESTAMP_KEY].as<unsigned long>();
+                        if (root.containsKey(F("ft"))) {
+                            ts = root[F("ft")].as<unsigned long>();
                             ts += tsCurr;
                         } else {
                             ts = 0;
@@ -640,30 +665,30 @@ bool parseCommand(char* command) {
                     unForceNodeState(id);
                 }
             }
-        } else if (strcmp(msgType, MSG_CONFIGURATION) == 0) {
+        } else if (root[F("m")] == F("cfg")) {
             // CFG
-            JsonObject& sensor = root[SENSORS_KEY].asObject();
-            if (sensor.containsKey(ID_KEY) && sensor.containsKey(CALIBRATION_FACTOR_KEY)) {
-                uint8_t id = sensor[ID_KEY].as<uint8_t>();
-                double cf = sensor[CALIBRATION_FACTOR_KEY].as<double>();
+            JsonObject& sensor = root[F("s")].asObject();
+            if (sensor.containsKey(F("id")) && sensor.containsKey(F("cf"))) {
+                uint8_t id = sensor[F("id")].as<uint8_t>();
+                double cf = sensor[F("cf")].as<double>();
                 saveSensorCF(id, cf);
-            } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {
-                sprintf(WIFI_REMOTE_AP, "%s", root[WIFI_REMOTE_AP_KEY].asString());
+            } else if (root.containsKey(F("rap"))) {
+                sprintf(WIFI_REMOTE_AP, "%s", root[F("rap")].asString());
                 eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP,
                         sizeof(WIFI_REMOTE_AP));
-            } else if (root.containsKey(WIFI_REMOTE_PASSWORD_KEY)) {
-                sprintf(WIFI_REMOTE_PW, "%s", root[WIFI_REMOTE_PASSWORD_KEY].asString());
+            } else if (root.containsKey(F("rpw"))) {
+                sprintf(WIFI_REMOTE_PW, "%s", root[F("rpw")].asString());
                 eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW,
                         sizeof(WIFI_REMOTE_PW));
-            } else if (root.containsKey(SERVER_IP_KEY)) {
-                sscanf(root[SERVER_IP_KEY], "%d.%d.%d.%d", (int*) &SERVER_IP[0], (int*) &SERVER_IP[1],
-                        (int*) &SERVER_IP[2], (int*) &SERVER_IP[3]);
+            } else if (root.containsKey(F("sip"))) {
+                sscanf(root[F("sip")], "%d.%d.%d.%d", (int*) &SERVER_IP[0], (int*) &SERVER_IP[1], (int*) &SERVER_IP[2],
+                        (int*) &SERVER_IP[3]);
                 eepromWriteCount += EEPROM.updateBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
-            } else if (root.containsKey(SERVER_PORT_KEY)) {
-                SERVER_PORT = root[SERVER_PORT_KEY].as<int>();
+            } else if (root.containsKey(F("sp"))) {
+                SERVER_PORT = root[F("sp")].as<int>();
                 eepromWriteCount += EEPROM.updateInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
-            } else if (root.containsKey(DEBUG_SERIAL_PORT_KEY)) {
-                int sp = root[DEBUG_SERIAL_PORT_KEY].as<int>();
+            } else if (root.containsKey(F("dsp"))) {
+                int sp = root[F("dsp")].as<int>();
                 if (sp == -1) {
                     debug = NULL;
                 } else if (sp == 1) {
