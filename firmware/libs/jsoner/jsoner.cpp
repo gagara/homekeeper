@@ -93,7 +93,19 @@ void jsonifySensorConfigCf(const uint8_t id, //
 }
 
 void jsonifyConfig(const __FlashStringHelper *key, //
-        const void *value, //
+        const int value, //
+        char *buffer, //
+        const size_t bsize) {
+    DynamicJsonBuffer jsonBuffer(bsize * 2);
+    JsonObject& root = jsonBuffer.createObject();
+    root[F("m")] = F("cfg");
+    root[key] = value;
+
+    root.printTo(buffer, bsize);
+}
+
+void jsonifyConfig(const __FlashStringHelper *key, //
+        const char *value, //
         char *buffer, //
         const size_t bsize) {
     DynamicJsonBuffer jsonBuffer(bsize * 2);

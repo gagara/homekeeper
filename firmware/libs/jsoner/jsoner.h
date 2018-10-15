@@ -1,7 +1,7 @@
 #ifndef JSONER_H_
 #define JSONER_H_
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 void jsonifyNodeStatus(const uint8_t id, //
         const uint8_t ns, //
@@ -29,7 +29,11 @@ void jsonifySensorConfigCf(const uint8_t id, //
         char *buffer, //
         const size_t bsize);
 void jsonifyConfig(const __FlashStringHelper *key, //
-        const void *value, //
+        const int value, //
+        char *buffer, //
+        const size_t bsize);
+void jsonifyConfig(const __FlashStringHelper *key, //
+        const char *value, //
         char *buffer, //
         const size_t bsize);
 void jsonifyClockSync(const unsigned long value, //
