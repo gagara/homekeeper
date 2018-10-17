@@ -33,11 +33,7 @@ void readSensors();
 int8_t getSensorValue(uint8_t sensor);
 
 void reportStatus();
-void reportSensorStatus(const uint8_t id, const uint8_t value);
 void reportConfiguration();
-void reportSensorCfConfig(const uint8_t id);
-void reportNumberConfig(const char* key, const int value);
-void reportStringConfig(const char* key, const char* value);
 
 void processSerialMsg();
 void processWifiMsg();

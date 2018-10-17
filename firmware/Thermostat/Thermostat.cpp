@@ -8,6 +8,7 @@
 
 #include <debug.h>
 #include <ESP8266.h>
+#include <jsoner.h>
 
 #define __DEBUG__
 
@@ -38,24 +39,7 @@ const unsigned long STATUS_REPORTING_PERIOD_SEC = 15; // 15s //disabled in LowPo
 const unsigned long SENSORS_READ_INTERVAL_SEC = 15; // 15s //disabled in LowPower mode
 const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
 
-// JSON
-const char MSG_TYPE_KEY[] = "m";
-const char ID_KEY[] = "id";
-const char SENSORS_KEY[] = "s";
-const char VALUE_KEY[] = "v";
-const char CALIBRATION_FACTOR_KEY[] = "cf";
-
-const char MSG_CURRENT_STATUS_REPORT[] = "csr";
-const char MSG_CONFIGURATION[] = "cfg";
-const char WIFI_REMOTE_AP_KEY[] = "rap";
-const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
-const char SERVER_IP_KEY[] = "sip";
-const char SERVER_PORT_KEY[] = "sp";
-const char LOCAL_IP_KEY[] = "lip";
-const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
-
 const uint8_t JSON_MAX_SIZE = 64;
-const uint8_t JSON_MAX_BUFFER_SIZE = 128;
 
 /*============================= Global variables ============================*/
 
@@ -233,17 +217,20 @@ int8_t getSensorValue(const uint8_t sensor) {
 /*============================ Reporting ====================================*/
 
 void reportStatus() {
+    char json[JSON_MAX_SIZE];
     if (nextEntryReport == 0) {
         // start reporting
         nextEntryReport = SENSOR_TEMP;
     }
     switch (nextEntryReport) {
     case SENSOR_TEMP:
-        reportSensorStatus(SENSOR_TEMP, tempRoom);
+        jsonifySensorValue(SENSOR_TEMP, tempRoom, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_HUM;
         break;
     case SENSOR_HUM:
-        reportSensorStatus(SENSOR_HUM, humRoom);
+        jsonifySensorValue(SENSOR_HUM, humRoom, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = 0;
         break;
     default:
@@ -251,76 +238,27 @@ void reportStatus() {
     }
 }
 
-void reportSensorStatus(const uint8_t id, const uint8_t value) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
-
-    JsonObject& sens = jsonBuffer.createObject();
-    sens[ID_KEY] = id;
-    sens[VALUE_KEY] = value;
-
-    root[SENSORS_KEY] = sens;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    broadcastMsg(json);
-}
-
 void reportConfiguration() {
+    char json[JSON_MAX_SIZE];
     char ip[16];
-    reportSensorCfConfig(SENSOR_TEMP);
-    reportSensorCfConfig(SENSOR_HUM);
-    reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
-    reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
+
+    jsonifySensorConfig(SENSOR_TEMP, F("cf"), readSensorCF(SENSOR_TEMP), json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifySensorConfig(SENSOR_HUM, F("cf"), readSensorCF(SENSOR_HUM), json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifyConfig(F("rap"), WIFI_REMOTE_AP, json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifyConfig(F("rpw"), WIFI_REMOTE_PW, json, JSON_MAX_SIZE);
+    serial->println(json);
     sprintf(ip, "%d.%d.%d.%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2], SERVER_IP[3]);
-    reportStringConfig(SERVER_IP_KEY, ip);
-    reportNumberConfig(SERVER_PORT_KEY, SERVER_PORT);
+    jsonifyConfig(F("sip"), ip, json, JSON_MAX_SIZE);
+    serial->println(json);
+    jsonifyConfig(F("sp"), SERVER_PORT, json, JSON_MAX_SIZE);
+    serial->println(json);
     sprintf(ip, "%d.%d.%d.%d", WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
-    reportStringConfig(LOCAL_IP_KEY, ip);
+    jsonifyConfig(F("lip"), ip, json, JSON_MAX_SIZE);
+    serial->println(json);
     dbgf(debug, F(":EEPROM:written:%d bytes\n"), eepromWriteCount);
-}
-
-void reportSensorCfConfig(const uint8_t id) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-
-    JsonObject& sens = jsonBuffer.createObject();
-    sens[ID_KEY] = id;
-    sens[CALIBRATION_FACTOR_KEY] = readSensorCF(id);
-
-    root[SENSORS_KEY] = sens;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    serial->println(json);
-}
-
-void reportNumberConfig(const char* key, const int value) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-    root[key] = value;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    serial->println(json);
-}
-
-void reportStringConfig(const char* key, const char* value) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-    root[key] = value;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    serial->println(json);
 }
 
 /*========================= Communication ===================================*/
@@ -359,38 +297,37 @@ bool parseCommand(char* command) {
         return true;
     }
 
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    DynamicJsonBuffer jsonBuffer(JSON_MAX_SIZE * 2);
     JsonObject& root = jsonBuffer.parseObject(command);
 
     if (root.success()) {
-        const char* msgType = root[MSG_TYPE_KEY];
-        if (strcmp(msgType, MSG_CURRENT_STATUS_REPORT) == 0) {
+        if (root[F("m")] == F("csr")) {
             // CSR
             tsLastStatusReport = tsCurr - STATUS_REPORTING_PERIOD_SEC;
-        } else if (strcmp(msgType, MSG_CONFIGURATION) == 0) {
+        } else if (root[F("m")] == F("cfg")) {
             // CFG
-            JsonObject& sensor = root[SENSORS_KEY].asObject();
-            if (sensor.containsKey(ID_KEY) && sensor.containsKey(CALIBRATION_FACTOR_KEY)) {
-                uint8_t id = sensor[ID_KEY].as<uint8_t>();
-                double cf = sensor[CALIBRATION_FACTOR_KEY].as<double>();
+            JsonObject& sensor = root[F("s")].asObject();
+            if (sensor.containsKey(F("id")) && sensor.containsKey(F("cf"))) {
+                uint8_t id = sensor[F("id")].as<uint8_t>();
+                double cf = sensor[F("cf")].as<double>();
                 saveSensorCF(id, cf);
-            } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {
-                sprintf(WIFI_REMOTE_AP, "%s", root[WIFI_REMOTE_AP_KEY].asString());
+            } else if (root.containsKey(F("rap"))) {
+                sprintf(WIFI_REMOTE_AP, "%s", root[F("rap")].asString());
                 eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP,
                         sizeof(WIFI_REMOTE_AP));
-            } else if (root.containsKey(WIFI_REMOTE_PASSWORD_KEY)) {
-                sprintf(WIFI_REMOTE_PW, "%s", root[WIFI_REMOTE_PASSWORD_KEY].asString());
+            } else if (root.containsKey(F("rpw"))) {
+                sprintf(WIFI_REMOTE_PW, "%s", root[F("rpw")].asString());
                 eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW,
                         sizeof(WIFI_REMOTE_PW));
-            } else if (root.containsKey(SERVER_IP_KEY)) {
-                sscanf(root[SERVER_IP_KEY], "%d.%d.%d.%d", (int*) &SERVER_IP[0], (int*) &SERVER_IP[1],
-                        (int*) &SERVER_IP[2], (int*) &SERVER_IP[3]);
+            } else if (root.containsKey(F("sip"))) {
+                sscanf(root[F("sip")], "%d.%d.%d.%d", (int*) &SERVER_IP[0], (int*) &SERVER_IP[1], (int*) &SERVER_IP[2],
+                        (int*) &SERVER_IP[3]);
                 eepromWriteCount += EEPROM.updateBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
-            } else if (root.containsKey(SERVER_PORT_KEY)) {
-                SERVER_PORT = root[SERVER_PORT_KEY].as<int>();
+            } else if (root.containsKey(F("sp"))) {
+                SERVER_PORT = root[F("sp")].as<int>();
                 eepromWriteCount += EEPROM.updateInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
-            } else if (root.containsKey(DEBUG_SERIAL_PORT_KEY)) {
-                int sp = root[DEBUG_SERIAL_PORT_KEY].as<int>();
+            } else if (root.containsKey(F("dsp"))) {
+                int sp = root[F("dsp")].as<int>();
                 if (sp == -1) {
                     debug = NULL;
                 } else if (sp == 1) {
