@@ -52,7 +52,7 @@ void EEPROMClassEx::setMemPool(int base, int memSize) {
 	//Base can only be adjusted if no addresses have already been issued
 	if (_nextAvailableaddress == _base) 
 		_base = base;
-		_nextAvailableaddress=_base;
+	_nextAvailableaddress=_base;
 	
 	//Ceiling can only be adjusted if not below issued addresses
 	if (memSize >= _nextAvailableaddress ) 
