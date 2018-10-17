@@ -25,7 +25,7 @@
 							<builder buildPath="${workspace_loc:/CentralUnit}/Release" id="de.innot.avreclipse.target.builder.winavr.app.release.1535391591" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="AVR GNU Make Builder" superClass="de.innot.avreclipse.target.builder.winavr.app.release"/>
 							<tool id="de.innot.avreclipse.tool.assembler.winavr.app.release.659809971" name="AVR Assembler" superClass="de.innot.avreclipse.tool.assembler.winavr.app.release">
 								<option id="de.innot.avreclipse.assembler.option.debug.level.1764522265" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level" value="de.innot.avreclipse.assembler.option.debug.level.none" valueType="enumerated"/>
-								<option id="de.innot.avreclipse.asm.option.include.paths.598793590" superClass="de.innot.avreclipse.asm.option.include.paths" valueType="includePath">
+								<option id="de.innot.avreclipse.asm.option.include.paths.598793590" name="#include paths for preprocessor(-I)" superClass="de.innot.avreclipse.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CentralUnit/arduino}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CentralUnit/mega}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CentralUnit/libs/ArduinoJson}&quot;"/>
@@ -43,15 +43,15 @@
 							<tool id="de.innot.avreclipse.tool.compiler.winavr.app.release.47150338" name="AVR Compiler" superClass="de.innot.avreclipse.tool.compiler.winavr.app.release">
 								<option id="de.innot.avreclipse.compiler.option.debug.level.231213620" name="Generate Debugging Info" superClass="de.innot.avreclipse.compiler.option.debug.level" value="de.innot.avreclipse.compiler.option.debug.level.g2" valueType="enumerated"/>
 								<option id="de.innot.avreclipse.compiler.option.optimize.1896768406" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
-								<option id="de.innot.avreclipse.compiler.option.def.773784778" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
+								<option id="de.innot.avreclipse.compiler.option.def.773784778" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
 								</option>
-								<option id="de.innot.avreclipse.compiler.option.optimize.packstruct.2078205248" superClass="de.innot.avreclipse.compiler.option.optimize.packstruct" value="false" valueType="boolean"/>
-								<option id="de.innot.avreclipse.compiler.option.optimize.shortenums.1625812967" superClass="de.innot.avreclipse.compiler.option.optimize.shortenums" value="false" valueType="boolean"/>
-								<option id="de.innot.avreclipse.compiler.option.optimize.other.1763823269" superClass="de.innot.avreclipse.compiler.option.optimize.other" value="-std=gnu++11 -fpermissive -flto -fno-threadsafe-statics" valueType="string"/>
-								<option id="de.innot.avreclipse.compiler.option.language.uchar.681766146" superClass="de.innot.avreclipse.compiler.option.language.uchar" value="false" valueType="boolean"/>
-								<option id="de.innot.avreclipse.compiler.option.language.ubitfields.1571767824" superClass="de.innot.avreclipse.compiler.option.language.ubitfields" value="false" valueType="boolean"/>
-								<option id="de.innot.avreclipse.compiler.option.incpath.1215683063" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+								<option id="de.innot.avreclipse.compiler.option.optimize.packstruct.2078205248" name="Pack structs (-fpack-struct)" superClass="de.innot.avreclipse.compiler.option.optimize.packstruct" value="false" valueType="boolean"/>
+								<option id="de.innot.avreclipse.compiler.option.optimize.shortenums.1625812967" name="Short enums (-fshort-enums)" superClass="de.innot.avreclipse.compiler.option.optimize.shortenums" value="false" valueType="boolean"/>
+								<option id="de.innot.avreclipse.compiler.option.optimize.other.1763823269" name="Other Optimization Flags" superClass="de.innot.avreclipse.compiler.option.optimize.other" value="-flto" valueType="string"/>
+								<option id="de.innot.avreclipse.compiler.option.language.uchar.681766146" name="char is unsigned (-funsigned-char)" superClass="de.innot.avreclipse.compiler.option.language.uchar" value="false" valueType="boolean"/>
+								<option id="de.innot.avreclipse.compiler.option.language.ubitfields.1571767824" name="bitfields are unsigned (-funsigned-bitfields)" superClass="de.innot.avreclipse.compiler.option.language.ubitfields" value="false" valueType="boolean"/>
+								<option id="de.innot.avreclipse.compiler.option.incpath.1215683063" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CentralUnit/arduino}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CentralUnit/mega}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CentralUnit/libs/ArduinoJson}&quot;"/>
@@ -69,15 +69,15 @@
 							<tool id="de.innot.avreclipse.tool.cppcompiler.app.release.830105385" name="AVR C++ Compiler" superClass="de.innot.avreclipse.tool.cppcompiler.app.release">
 								<option id="de.innot.avreclipse.cppcompiler.option.debug.level.1442698999" name="Generate Debugging Info" superClass="de.innot.avreclipse.cppcompiler.option.debug.level" value="de.innot.avreclipse.cppcompiler.option.debug.level.g2" valueType="enumerated"/>
 								<option id="de.innot.avreclipse.cppcompiler.option.optimize.701883835" name="Optimization Level" superClass="de.innot.avreclipse.cppcompiler.option.optimize" value="de.innot.avreclipse.cppcompiler.optimize.size" valueType="enumerated"/>
-								<option id="de.innot.avreclipse.cppcompiler.option.def.620999843" superClass="de.innot.avreclipse.cppcompiler.option.def" valueType="definedSymbols">
+								<option id="de.innot.avreclipse.cppcompiler.option.def.620999843" name="Define Syms (-D)" superClass="de.innot.avreclipse.cppcompiler.option.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
 								</option>
-								<option id="de.innot.avreclipse.cppcompiler.option.optimize.packstruct.522289410" superClass="de.innot.avreclipse.cppcompiler.option.optimize.packstruct" value="false" valueType="boolean"/>
-								<option id="de.innot.avreclipse.cppcompiler.option.optimize.shortenums.452133079" superClass="de.innot.avreclipse.cppcompiler.option.optimize.shortenums" value="false" valueType="boolean"/>
-								<option id="de.innot.avreclipse.cppcompiler.option.optimize.other.323846354" superClass="de.innot.avreclipse.cppcompiler.option.optimize.other" value="-std=gnu++11 -fpermissive -flto -fno-threadsafe-statics" valueType="string"/>
-								<option id="de.innot.avreclipse.cppcompiler.option.language.uchar.1711034708" superClass="de.innot.avreclipse.cppcompiler.option.language.uchar" value="false" valueType="boolean"/>
-								<option id="de.innot.avreclipse.cppcompiler.option.language.ubitfields.1058922645" superClass="de.innot.avreclipse.cppcompiler.option.language.ubitfields" value="false" valueType="boolean"/>
-								<option id="de.innot.avreclipse.cppcompiler.option.incpath.813883688" superClass="de.innot.avreclipse.cppcompiler.option.incpath" valueType="includePath">
+								<option id="de.innot.avreclipse.cppcompiler.option.optimize.packstruct.522289410" name="Pack structs (-fpack-struct)" superClass="de.innot.avreclipse.cppcompiler.option.optimize.packstruct" value="false" valueType="boolean"/>
+								<option id="de.innot.avreclipse.cppcompiler.option.optimize.shortenums.452133079" name="Short enums (-fshort-enums)" superClass="de.innot.avreclipse.cppcompiler.option.optimize.shortenums" value="false" valueType="boolean"/>
+								<option id="de.innot.avreclipse.cppcompiler.option.optimize.other.323846354" name="Other Optimization Flags" superClass="de.innot.avreclipse.cppcompiler.option.optimize.other" value="-std=gnu++11 -fpermissive -flto -fno-threadsafe-statics" valueType="string"/>
+								<option id="de.innot.avreclipse.cppcompiler.option.language.uchar.1711034708" name="char is unsigned (-funsigned-char)" superClass="de.innot.avreclipse.cppcompiler.option.language.uchar" value="false" valueType="boolean"/>
+								<option id="de.innot.avreclipse.cppcompiler.option.language.ubitfields.1058922645" name="bitfields are unsigned (-funsigned-bitfields)" superClass="de.innot.avreclipse.cppcompiler.option.language.ubitfields" value="false" valueType="boolean"/>
+								<option id="de.innot.avreclipse.cppcompiler.option.incpath.813883688" name="Include Paths (-I)" superClass="de.innot.avreclipse.cppcompiler.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CentralUnit/arduino}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CentralUnit/mega}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CentralUnit/libs/ArduinoJson}&quot;"/>

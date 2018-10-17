@@ -50,7 +50,7 @@
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.optimize.packstruct.2022997874" name="Pack structs (-fpack-struct)" superClass="de.innot.avreclipse.compiler.option.optimize.packstruct" value="false" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.optimize.shortenums.1221482632" name="Short enums (-fshort-enums)" superClass="de.innot.avreclipse.compiler.option.optimize.shortenums" value="false" valueType="boolean"/>
-								<option id="de.innot.avreclipse.compiler.option.optimize.other.1782239764" name="Other Optimization Flags" superClass="de.innot.avreclipse.compiler.option.optimize.other" value="-std=gnu++11 -fpermissive -flto -fno-threadsafe-statics" valueType="string"/>
+								<option id="de.innot.avreclipse.compiler.option.optimize.other.1782239764" name="Other Optimization Flags" superClass="de.innot.avreclipse.compiler.option.optimize.other" value="-flto" valueType="string"/>
 								<option id="de.innot.avreclipse.compiler.option.language.ubitfields.68430092" name="bitfields are unsigned (-funsigned-bitfields)" superClass="de.innot.avreclipse.compiler.option.language.ubitfields" value="false" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.language.uchar.2129845202" name="char is unsigned (-funsigned-char)" superClass="de.innot.avreclipse.compiler.option.language.uchar" value="false" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.incpath.1485979637" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
