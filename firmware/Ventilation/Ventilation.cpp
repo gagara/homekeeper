@@ -444,13 +444,13 @@ void reportConfiguration() {
     char json[JSON_MAX_SIZE];
     char ip[16];
 
-    jsonifySensorConfigCf(SENSOR_TEMP_IN, readSensorCF(SENSOR_TEMP_IN), json, JSON_MAX_SIZE);
+    jsonifySensorConfig(SENSOR_TEMP_IN, F("cf"), readSensorCF(SENSOR_TEMP_IN), json, JSON_MAX_SIZE);
     serial->println(json);
-    jsonifySensorConfigCf(SENSOR_HUM_IN, readSensorCF(SENSOR_HUM_IN), json, JSON_MAX_SIZE);
+    jsonifySensorConfig(SENSOR_HUM_IN, F("cf"), readSensorCF(SENSOR_HUM_IN), json, JSON_MAX_SIZE);
     serial->println(json);
-    jsonifySensorConfigCf(SENSOR_TEMP_OUT, readSensorCF(SENSOR_TEMP_OUT), json, JSON_MAX_SIZE);
+    jsonifySensorConfig(SENSOR_TEMP_OUT, F("cf"), readSensorCF(SENSOR_TEMP_OUT), json, JSON_MAX_SIZE);
     serial->println(json);
-    jsonifySensorConfigCf(SENSOR_HUM_OUT, readSensorCF(SENSOR_HUM_OUT), json, JSON_MAX_SIZE);
+    jsonifySensorConfig(SENSOR_HUM_OUT, F("cf"), readSensorCF(SENSOR_HUM_OUT), json, JSON_MAX_SIZE);
     serial->println(json);
     jsonifyConfig(F("rap"), WIFI_REMOTE_AP, json, JSON_MAX_SIZE);
     serial->println(json);
