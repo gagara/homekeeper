@@ -8,6 +8,7 @@
 
 #include <debug.h>
 #include <ESP8266.h>
+#include <jsoner.h>
 
 #define __DEBUG__
 
@@ -123,34 +124,34 @@ const unsigned long SENSORS_READ_INTERVAL_SEC = 5; // 5s
 const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 300; // 5 minutes
 
 // JSON
-const char MSG_TYPE_KEY[] = "m";
-const char ID_KEY[] = "id";
-const char STATE_KEY[] = "ns";
-const char FORCE_FLAG_KEY[] = "ff";
-const char TIMESTAMP_KEY[] = "ts";
-const char FORCE_TIMESTAMP_KEY[] = "ft";
-const char CALIBRATION_FACTOR_KEY[] = "cf";
-const char NODES_KEY[] = "n";
-const char SENSORS_KEY[] = "s";
-const char VALUE_KEY[] = "v";
-const char UID_KEY[] = "uid";
-
-const char MSG_CURRENT_STATUS_REPORT[] = "csr";
-const char MSG_NODE_STATE_CHANGED[] = "nsc";
-const char MSG_CLOCK_SYNC[] = "cls";
-const char MSG_CONFIGURATION[] = "cfg";
-
-const char WIFI_REMOTE_AP_KEY[] = "rap";
-const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
-const char WIFI_LOCAL_AP_KEY[] = "lap";
-const char WIFI_LOCAL_PASSWORD_KEY[] = "lpw";
-const char SERVER_IP_KEY[] = "sip";
-const char SERVER_PORT_KEY[] = "sp";
-const char LOCAL_IP_KEY[] = "lip";
-const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
+//const char MSG_TYPE_KEY[] = "m";
+//const char ID_KEY[] = "id";
+//const char STATE_KEY[] = "ns";
+//const char FORCE_FLAG_KEY[] = "ff";
+//const char TIMESTAMP_KEY[] = "ts";
+//const char FORCE_TIMESTAMP_KEY[] = "ft";
+//const char CALIBRATION_FACTOR_KEY[] = "cf";
+//const char NODES_KEY[] = "n";
+//const char SENSORS_KEY[] = "s";
+//const char VALUE_KEY[] = "v";
+//const char UID_KEY[] = "uid";
+//
+//const char MSG_CURRENT_STATUS_REPORT[] = "csr";
+//const char MSG_NODE_STATE_CHANGED[] = "nsc";
+//const char MSG_CLOCK_SYNC[] = "cls";
+//const char MSG_CONFIGURATION[] = "cfg";
+//
+//const char WIFI_REMOTE_AP_KEY[] = "rap";
+//const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
+//const char WIFI_LOCAL_AP_KEY[] = "lap";
+//const char WIFI_LOCAL_PASSWORD_KEY[] = "lpw";
+//const char SERVER_IP_KEY[] = "sip";
+//const char SERVER_PORT_KEY[] = "sp";
+//const char LOCAL_IP_KEY[] = "lip";
+//const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
 
 const uint8_t JSON_MAX_SIZE = 128;
-const uint8_t JSON_MAX_BUFFER_SIZE = 255;
+//const uint8_t JSON_MAX_BUFFER_SIZE = 255;
 
 /*============================= Global variables ============================*/
 
@@ -390,7 +391,10 @@ void processSupplyCircuit() {
         return;
     }
     if (wasForceMode) {
-        reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_SUPPLY, NODE_STATE_FLAGS & NODE_SUPPLY_BIT, tsNodeSupply,
+                NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT, tsForcedNodeSupply, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeSupply) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_REVERSE };
@@ -443,7 +447,10 @@ void processHeatingCircuit() {
         return;
     }
     if (wasForceMode) {
-        reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_HEATING, NODE_STATE_FLAGS & NODE_HEATING_BIT, tsNodeHeating,
+                NODE_FORCED_MODE_FLAGS & NODE_HEATING_BIT, tsForcedNodeHeating, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeHeating) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
@@ -523,7 +530,10 @@ void processFloorCircuit() {
         return;
     }
     if (wasForceMode) {
-        reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_FLOOR, NODE_STATE_FLAGS & NODE_FLOOR_BIT, tsNodeFloor,
+                NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT, tsForcedNodeFloor, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeFloor) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
@@ -597,7 +607,10 @@ void processHeatingValve() {
         return;
     }
     if (wasForceMode) {
-        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve, tsForcedNodeHeatingValve);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_HEATING_VALVE, NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
+                NODE_FORCED_MODE_FLAGS & NODE_HEATING_VALVE_BIT, tsForcedNodeHeatingValve, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeHeatingValve) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK };
@@ -675,7 +688,10 @@ void processHotWaterCircuit() {
         return;
     }
     if (wasForceMode) {
-        reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_HOTWATER, NODE_STATE_FLAGS & NODE_HOTWATER_BIT, tsNodeHotwater,
+                NODE_FORCED_MODE_FLAGS & NODE_HOTWATER_BIT, tsForcedNodeHotwater, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeHotwater) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_BOILER };
@@ -754,7 +770,10 @@ void processCirculationCircuit() {
         return;
     }
     if (wasForceMode) {
-        reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_CIRCULATION, NODE_STATE_FLAGS & NODE_CIRCULATION_BIT, tsNodeCirculation,
+                NODE_FORCED_MODE_FLAGS & NODE_CIRCULATION_BIT, tsForcedNodeCirculation, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeCirculation) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_BOILER, SENSOR_TANK };
@@ -877,7 +896,10 @@ void processSolarPrimary() {
         return;
     }
     if (wasForceMode) {
-        reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_SOLAR_PRIMARY, NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary,
+                NODE_FORCED_MODE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsForcedNodeSolarPrimary, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeSolarPrimary) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_SOLAR_PRIMARY, SENSOR_BOILER };
@@ -942,8 +964,10 @@ void processSolarSecondary() {
         return;
     }
     if (wasForceMode) {
-        reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
-                tsForcedNodeSolarSecondary);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_SOLAR_SECONDARY, NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
+                NODE_FORCED_MODE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsForcedNodeSolarSecondary, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeSolarSecondary) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_SOLAR_SECONDARY, SENSOR_BOILER };
@@ -989,7 +1013,10 @@ void processStandbyHeater() {
         return;
     }
     if (wasForceMode) {
-        reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_SB_HEATER, NODE_STATE_FLAGS & NODE_SB_HEATER_BIT, tsNodeSbHeater,
+                NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT, tsForcedNodeSbHeater, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeSbHeater) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TANK, SENSOR_TEMP_ROOM_1 };
@@ -1102,61 +1129,60 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
         *ts = getTimestamp();
 
         // report state change
-        StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-        JsonObject& root = jsonBuffer.createObject();
-        root[MSG_TYPE_KEY] = MSG_NODE_STATE_CHANGED;
-        root[ID_KEY] = id;
-        root[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
-        root[TIMESTAMP_KEY] = *ts;
-        root[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
-        if (NODE_FORCED_MODE_FLAGS & bit) {
-            root[FORCE_TIMESTAMP_KEY] = *tsf;
-        }
-
-        JsonArray& sensors = root.createNestedArray(SENSORS_KEY);
-        for (unsigned int i = 0; i < sensCnt; i++) {
-            JsonObject& sens = jsonBuffer.createObject();
-            sens[ID_KEY] = sensId[i];
-            sens[VALUE_KEY] = sensVal[i];
-            sensors.add(sens);
-        }
-
         char json[JSON_MAX_SIZE];
-        root.printTo(json, JSON_MAX_SIZE);
-
+        jsonifyNodeStateChange(id, NODE_STATE_FLAGS & bit, *ts, NODE_FORCED_MODE_FLAGS & bit, *tsf, sensId, sensVal,
+                sensCnt, json, JSON_MAX_SIZE);
         broadcastMsg(json);
     }
 }
 
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
+    char json[JSON_MAX_SIZE];
     if (NODE_SUPPLY == id) {
         forceNodeState(NODE_SUPPLY, NODE_SUPPLY_BIT, state, tsForcedNodeSupply, ts);
-        reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
+        jsonifyNodeStatus(NODE_SUPPLY, NODE_STATE_FLAGS & NODE_SUPPLY_BIT, tsNodeSupply,
+                NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT, tsForcedNodeSupply, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_HEATING == id) {
         forceNodeState(NODE_HEATING, NODE_HEATING_BIT, state, tsForcedNodeHeating, ts);
-        reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
+        jsonifyNodeStatus(NODE_HEATING, NODE_STATE_FLAGS & NODE_HEATING_BIT, tsNodeHeating,
+                NODE_FORCED_MODE_FLAGS & NODE_HEATING_BIT, tsForcedNodeHeating, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_FLOOR == id) {
         forceNodeState(NODE_FLOOR, NODE_FLOOR_BIT, state, tsForcedNodeFloor, ts);
-        reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
+        jsonifyNodeStatus(NODE_FLOOR, NODE_STATE_FLAGS & NODE_FLOOR_BIT, tsNodeFloor,
+                NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT, tsForcedNodeFloor, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_HOTWATER == id) {
         forceNodeState(NODE_HOTWATER, NODE_HOTWATER_BIT, state, tsForcedNodeHotwater, ts);
-        reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
+        jsonifyNodeStatus(NODE_HOTWATER, NODE_STATE_FLAGS & NODE_HOTWATER_BIT, tsNodeHotwater,
+                NODE_FORCED_MODE_FLAGS & NODE_HOTWATER_BIT, tsForcedNodeHotwater, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_CIRCULATION == id) {
         forceNodeState(NODE_CIRCULATION, NODE_CIRCULATION_BIT, state, tsForcedNodeCirculation, ts);
-        reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
+        jsonifyNodeStatus(NODE_CIRCULATION, NODE_STATE_FLAGS & NODE_CIRCULATION_BIT, tsNodeCirculation,
+                NODE_FORCED_MODE_FLAGS & NODE_CIRCULATION_BIT, tsForcedNodeCirculation, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_SB_HEATER == id) {
         forceNodeState(NODE_SB_HEATER, NODE_SB_HEATER_BIT, state, tsForcedNodeSbHeater, ts);
-        reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
+        jsonifyNodeStatus(NODE_SB_HEATER, NODE_STATE_FLAGS & NODE_SB_HEATER_BIT, tsNodeSbHeater,
+                NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT, tsForcedNodeSbHeater, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_SOLAR_PRIMARY == id) {
         forceNodeState(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, state, tsForcedNodeSolarPrimary, ts);
-        reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
+        jsonifyNodeStatus(NODE_SOLAR_PRIMARY, NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary,
+                NODE_FORCED_MODE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsForcedNodeSolarPrimary, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_SOLAR_SECONDARY == id) {
         forceNodeState(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, state, tsForcedNodeSolarSecondary, ts);
-        reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
-                tsForcedNodeSolarSecondary);
+        jsonifyNodeStatus(NODE_SOLAR_SECONDARY, NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
+                NODE_FORCED_MODE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsForcedNodeSolarSecondary, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_HEATING_VALVE == id) {
         forceNodeState(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, state, tsForcedNodeHeatingValve, ts);
-        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve, tsForcedNodeHeatingValve);
+        jsonifyNodeStatus(NODE_HEATING_VALVE, NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
+                NODE_FORCED_MODE_FLAGS & NODE_HEATING_VALVE_BIT, tsForcedNodeHeatingValve, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     // update node modes in EEPROM if forced permanently
     if (ts == 0) {
@@ -1185,44 +1211,62 @@ void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &node
 }
 
 void unForceNodeState(uint8_t id) {
+    char json[JSON_MAX_SIZE];
     uint16_t prevPermanentlyForcedModeFlags = NODE_PERMANENTLY_FORCED_MODE_FLAGS;
     if (NODE_SUPPLY == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SUPPLY_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SUPPLY_BIT;
-        reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
+        jsonifyNodeStatus(NODE_SUPPLY, NODE_STATE_FLAGS & NODE_SUPPLY_BIT, tsNodeSupply,
+                NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT, tsForcedNodeSupply, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_HEATING == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_HEATING_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_HEATING_BIT;
-        reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
+        jsonifyNodeStatus(NODE_HEATING, NODE_STATE_FLAGS & NODE_HEATING_BIT, tsNodeHeating,
+                NODE_FORCED_MODE_FLAGS & NODE_HEATING_BIT, tsForcedNodeHeating, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_FLOOR == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_FLOOR_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_FLOOR_BIT;
-        reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
+        jsonifyNodeStatus(NODE_FLOOR, NODE_STATE_FLAGS & NODE_FLOOR_BIT, tsNodeFloor,
+                NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT, tsForcedNodeFloor, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_HOTWATER == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_HOTWATER_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_HOTWATER_BIT;
-        reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
+        jsonifyNodeStatus(NODE_HOTWATER, NODE_STATE_FLAGS & NODE_HOTWATER_BIT, tsNodeHotwater,
+                NODE_FORCED_MODE_FLAGS & NODE_HOTWATER_BIT, tsForcedNodeHotwater, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_CIRCULATION == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_CIRCULATION_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_CIRCULATION_BIT;
-        reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
+        jsonifyNodeStatus(NODE_CIRCULATION, NODE_STATE_FLAGS & NODE_CIRCULATION_BIT, tsNodeCirculation,
+                NODE_FORCED_MODE_FLAGS & NODE_CIRCULATION_BIT, tsForcedNodeCirculation, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_SB_HEATER == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SB_HEATER_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SB_HEATER_BIT;
-        reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
+        jsonifyNodeStatus(NODE_SB_HEATER, NODE_STATE_FLAGS & NODE_SB_HEATER_BIT, tsNodeSbHeater,
+                NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT, tsForcedNodeSbHeater, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_SOLAR_PRIMARY == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SOLAR_PRIMARY_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SOLAR_PRIMARY_BIT;
-        reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
+        jsonifyNodeStatus(NODE_SOLAR_PRIMARY, NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary,
+                NODE_FORCED_MODE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsForcedNodeSolarPrimary, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_SOLAR_SECONDARY == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SOLAR_SECONDARY_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SOLAR_SECONDARY_BIT;
-        reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
-                tsForcedNodeSolarSecondary);
+        jsonifyNodeStatus(NODE_SOLAR_SECONDARY, NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
+                NODE_FORCED_MODE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsForcedNodeSolarSecondary, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     } else if (NODE_HEATING_VALVE == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_HEATING_VALVE_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_HEATING_VALVE_BIT;
-        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve, tsForcedNodeHeatingValve);
+        jsonifyNodeStatus(NODE_HEATING_VALVE, NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
+                NODE_FORCED_MODE_FLAGS & NODE_HEATING_VALVE_BIT, tsForcedNodeHeatingValve, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     // update node modes in EEPROM if unforced from permanent
     if (prevPermanentlyForcedModeFlags != NODE_PERMANENTLY_FORCED_MODE_FLAGS) {
@@ -1472,92 +1516,125 @@ bool validSensorValues(const int16_t values[], const uint8_t size) {
 /*============================ Reporting ====================================*/
 
 void reportStatus() {
+    char json[JSON_MAX_SIZE];
     if (nextEntryReport == 0) {
         // start reporting
         nextEntryReport = SENSOR_SUPPLY;
     }
     switch (nextEntryReport) {
     case SENSOR_SUPPLY:
-        reportSensorStatus(SENSOR_SUPPLY, tempSupply);
+        jsonifySensorValue(SENSOR_SUPPLY, tempSupply, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_REVERSE;
         break;
     case SENSOR_REVERSE:
-        reportSensorStatus(SENSOR_REVERSE, tempReverse);
+        jsonifySensorValue(SENSOR_REVERSE, tempReverse, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_TANK;
         break;
     case SENSOR_TANK:
-        reportSensorStatus(SENSOR_TANK, tempTank);
+        jsonifySensorValue(SENSOR_TANK, tempTank, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_MIX;
         break;
     case SENSOR_MIX:
-        reportSensorStatus(SENSOR_MIX, tempMix);
+        jsonifySensorValue(SENSOR_MIX, tempMix, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_SB_HEATER;
         break;
     case SENSOR_SB_HEATER:
-        reportSensorStatus(SENSOR_SB_HEATER, tempSbHeater);
+        jsonifySensorValue(SENSOR_SB_HEATER, tempSbHeater, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_BOILER;
         break;
     case SENSOR_BOILER:
-        reportSensorStatus(SENSOR_BOILER, tempBoiler);
+        jsonifySensorValue(SENSOR_BOILER, tempBoiler, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_TEMP_ROOM_1;
         break;
     case SENSOR_TEMP_ROOM_1:
-        reportSensorStatus(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1);
+        jsonifySensorValue(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_HUM_ROOM_1;
         break;
     case SENSOR_HUM_ROOM_1:
-        reportSensorStatus(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1);
+        jsonifySensorValue(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_BOILER_POWER;
         break;
     case SENSOR_BOILER_POWER:
-        reportSensorStatus(SENSOR_BOILER_POWER, sensorBoilerPowerState, tsSensorBoilerPower);
+        jsonifySensorValue(SENSOR_BOILER_POWER, sensorBoilerPowerState, tsSensorBoilerPower, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_SOLAR_PRIMARY;
         break;
     case SENSOR_SOLAR_PRIMARY:
-        reportSensorStatus(SENSOR_SOLAR_PRIMARY, tempSolarPrimary);
+        jsonifySensorValue(SENSOR_SOLAR_PRIMARY, tempSolarPrimary, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = SENSOR_SOLAR_SECONDARY;
         break;
     case SENSOR_SOLAR_SECONDARY:
-        reportSensorStatus(SENSOR_SOLAR_SECONDARY, tempSolarSecondary);
+        jsonifySensorValue(SENSOR_SOLAR_SECONDARY, tempSolarSecondary, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = NODE_SUPPLY;
         break;
     case NODE_SUPPLY:
-        reportNodeStatus(NODE_SUPPLY, NODE_SUPPLY_BIT, tsNodeSupply, tsForcedNodeSupply);
+        jsonifyNodeStatus(NODE_SUPPLY, NODE_STATE_FLAGS & NODE_SUPPLY_BIT, tsNodeSupply,
+                NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT, tsForcedNodeSupply, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = NODE_HEATING;
         break;
     case NODE_HEATING:
-        reportNodeStatus(NODE_HEATING, NODE_HEATING_BIT, tsNodeHeating, tsForcedNodeHeating);
-        reportSensorThStatus(SENSOR_TH_ROOM1_PRIMARY_HEATER);
+        jsonifyNodeStatus(NODE_HEATING, NODE_STATE_FLAGS & NODE_HEATING_BIT, tsNodeHeating,
+                NODE_FORCED_MODE_FLAGS & NODE_HEATING_BIT, tsForcedNodeHeating, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
+        jsonifySensorConfig(SENSOR_TH_ROOM1_PRIMARY_HEATER, F("v"), readSensorTH(SENSOR_TH_ROOM1_PRIMARY_HEATER), json,
+                JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = NODE_FLOOR;
         break;
     case NODE_FLOOR:
-        reportNodeStatus(NODE_FLOOR, NODE_FLOOR_BIT, tsNodeFloor, tsForcedNodeFloor);
+        jsonifyNodeStatus(NODE_FLOOR, NODE_STATE_FLAGS & NODE_FLOOR_BIT, tsNodeFloor,
+                NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT, tsForcedNodeFloor, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = NODE_SB_HEATER;
         break;
     case NODE_SB_HEATER:
-        reportNodeStatus(NODE_SB_HEATER, NODE_SB_HEATER_BIT, tsNodeSbHeater, tsForcedNodeSbHeater);
-        reportSensorThStatus(SENSOR_TH_ROOM1_SB_HEATER);
+        jsonifyNodeStatus(NODE_SB_HEATER, NODE_STATE_FLAGS & NODE_SB_HEATER_BIT, tsNodeSbHeater,
+                NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT, tsForcedNodeSbHeater, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
+        jsonifySensorConfig(SENSOR_TH_ROOM1_SB_HEATER, F("v"), readSensorTH(SENSOR_TH_ROOM1_SB_HEATER), json,
+                JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = NODE_HOTWATER;
         break;
     case NODE_HOTWATER:
-        reportNodeStatus(NODE_HOTWATER, NODE_HOTWATER_BIT, tsNodeHotwater, tsForcedNodeHotwater);
+        jsonifyNodeStatus(NODE_HOTWATER, NODE_STATE_FLAGS & NODE_HOTWATER_BIT, tsNodeHotwater,
+                NODE_FORCED_MODE_FLAGS & NODE_HOTWATER_BIT, tsForcedNodeHotwater, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = NODE_CIRCULATION;
         break;
     case NODE_CIRCULATION:
-        reportNodeStatus(NODE_CIRCULATION, NODE_CIRCULATION_BIT, tsNodeCirculation, tsForcedNodeCirculation);
+        jsonifyNodeStatus(NODE_CIRCULATION, NODE_STATE_FLAGS & NODE_CIRCULATION_BIT, tsNodeCirculation,
+                NODE_FORCED_MODE_FLAGS & NODE_CIRCULATION_BIT, tsForcedNodeCirculation, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = NODE_SOLAR_PRIMARY;
         break;
     case NODE_SOLAR_PRIMARY:
-        reportNodeStatus(NODE_SOLAR_PRIMARY, NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary, tsForcedNodeSolarPrimary);
+        jsonifyNodeStatus(NODE_SOLAR_PRIMARY, NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary,
+                NODE_FORCED_MODE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsForcedNodeSolarPrimary, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = NODE_SOLAR_SECONDARY;
         break;
     case NODE_SOLAR_SECONDARY:
-        reportNodeStatus(NODE_SOLAR_SECONDARY, NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
-                tsForcedNodeSolarSecondary);
+        jsonifyNodeStatus(NODE_SOLAR_SECONDARY, NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
+                NODE_FORCED_MODE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsForcedNodeSolarSecondary, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = NODE_HEATING_VALVE;
         break;
     case NODE_HEATING_VALVE:
-        reportNodeStatus(NODE_HEATING_VALVE, NODE_HEATING_VALVE_BIT, tsNodeHeatingValve, tsForcedNodeHeatingValve);
+        jsonifyNodeStatus(NODE_HEATING_VALVE, NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
+                NODE_FORCED_MODE_FLAGS & NODE_HEATING_VALVE_BIT, tsForcedNodeHeatingValve, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
         nextEntryReport = 0;
         break;
     default:
@@ -1565,194 +1642,241 @@ void reportStatus() {
     }
 }
 
-void reportNodeStatus(uint8_t id, uint16_t bit, unsigned long ts, unsigned long tsf) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
+//void reportNodeStatus(uint8_t id, uint16_t bit, unsigned long ts, unsigned long tsf) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
+//
+//    JsonObject& node = jsonBuffer.createObject();
+//    node[ID_KEY] = id;
+//    node[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
+//    node[TIMESTAMP_KEY] = ts;
+//    node[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
+//    if (NODE_FORCED_MODE_FLAGS & bit) {
+//        node[FORCE_TIMESTAMP_KEY] = tsf;
+//    }
+//
+//    root[NODES_KEY] = node;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    broadcastMsg(json);
+//}
 
-    JsonObject& node = jsonBuffer.createObject();
-    node[ID_KEY] = id;
-    node[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
-    node[TIMESTAMP_KEY] = ts;
-    node[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
-    if (NODE_FORCED_MODE_FLAGS & bit) {
-        node[FORCE_TIMESTAMP_KEY] = tsf;
-    }
-
-    root[NODES_KEY] = node;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    broadcastMsg(json);
-}
-
-void reportSensorStatus(const uint8_t id, const int16_t value, const unsigned long ts) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
-
-    JsonObject& sens = jsonBuffer.createObject();
-    sens[ID_KEY] = id;
-    sens[VALUE_KEY] = value;
-    if (ts != 0) {
-        sens[TIMESTAMP_KEY] = ts;
-    }
-
-    root[SENSORS_KEY] = sens;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    broadcastMsg(json);
-}
-
-void reportSensorThStatus(const uint8_t id) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-
-    JsonObject& sens = jsonBuffer.createObject();
-    sens[ID_KEY] = id;
-    sens[VALUE_KEY] = readSensorTH(id);
-
-    root[SENSORS_KEY] = sens;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    broadcastMsg(json);
-}
-
-void reportTimestamp() {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CLOCK_SYNC;
-    root[TIMESTAMP_KEY] = getTimestamp();
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    broadcastMsg(json);
-}
+//void reportSensorStatus(const uint8_t id, const int16_t value, const unsigned long ts) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
+//
+//    JsonObject& sens = jsonBuffer.createObject();
+//    sens[ID_KEY] = id;
+//    sens[VALUE_KEY] = value;
+//    if (ts != 0) {
+//        sens[TIMESTAMP_KEY] = ts;
+//    }
+//
+//    root[SENSORS_KEY] = sens;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    broadcastMsg(json);
+//}
 
 void reportConfiguration() {
+    char json[JSON_MAX_SIZE];
     char ip[16];
-    reportSensorCfConfig(SENSOR_SUPPLY);
-    reportSensorCfConfig(SENSOR_REVERSE);
-    reportSensorCfConfig(SENSOR_TANK);
-    reportSensorCfConfig(SENSOR_BOILER);
-    reportSensorCfConfig(SENSOR_MIX);
-    reportSensorCfConfig(SENSOR_SB_HEATER);
-    reportSensorCfConfig(SENSOR_SOLAR_PRIMARY);
-    reportSensorCfConfig(SENSOR_SOLAR_SECONDARY);
 
-    reportSensorUidConfig(SENSOR_SUPPLY);
-    reportSensorUidConfig(SENSOR_REVERSE);
-    reportSensorUidConfig(SENSOR_TANK);
-    reportSensorUidConfig(SENSOR_BOILER);
-    reportSensorUidConfig(SENSOR_MIX);
-    reportSensorUidConfig(SENSOR_SB_HEATER);
-    reportSensorUidConfig(SENSOR_SOLAR_SECONDARY);
+    jsonifySensorConfig(SENSOR_SUPPLY, F("cf"), readSensorCF(SENSOR_SUPPLY), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_REVERSE, F("cf"), readSensorCF(SENSOR_REVERSE), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_TANK, F("cf"), readSensorCF(SENSOR_TANK), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_BOILER, F("cf"), readSensorCF(SENSOR_BOILER), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_MIX, F("cf"), readSensorCF(SENSOR_MIX), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_SB_HEATER, F("cf"), readSensorCF(SENSOR_SB_HEATER), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_SOLAR_PRIMARY, F("cf"), readSensorCF(SENSOR_SOLAR_PRIMARY), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_SOLAR_SECONDARY, F("cf"), readSensorCF(SENSOR_SOLAR_SECONDARY), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
 
-    reportSensorThConfig(SENSOR_TH_ROOM1_SB_HEATER);
-    reportSensorThConfig(SENSOR_TH_ROOM1_PRIMARY_HEATER);
+    jsonifySensorConfig(SENSOR_SUPPLY, F("uid"), readSensorCF(SENSOR_SUPPLY), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_REVERSE, F("uid"), readSensorCF(SENSOR_REVERSE), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_TANK, F("uid"), readSensorCF(SENSOR_TANK), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_BOILER, F("uid"), readSensorCF(SENSOR_BOILER), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_MIX, F("uid"), readSensorCF(SENSOR_MIX), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_SB_HEATER, F("uid"), readSensorCF(SENSOR_SB_HEATER), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_SOLAR_SECONDARY, F("uid"), readSensorCF(SENSOR_SOLAR_SECONDARY), json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
 
-    reportStringConfig(WIFI_REMOTE_AP_KEY, WIFI_REMOTE_AP);
-    reportStringConfig(WIFI_REMOTE_PASSWORD_KEY, WIFI_REMOTE_PW);
-    reportStringConfig(WIFI_LOCAL_AP_KEY, WIFI_LOCAL_AP);
-    reportStringConfig(WIFI_LOCAL_PASSWORD_KEY, WIFI_LOCAL_PW);
+    jsonifySensorConfig(SENSOR_TH_ROOM1_PRIMARY_HEATER, F("v"), readSensorTH(SENSOR_TH_ROOM1_PRIMARY_HEATER), json,
+            JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySensorConfig(SENSOR_TH_ROOM1_SB_HEATER, F("v"), readSensorTH(SENSOR_TH_ROOM1_SB_HEATER), json,
+            JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+
+    jsonifyConfig(F("rap"), WIFI_REMOTE_AP, json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifyConfig(F("rpw"), WIFI_REMOTE_PW, json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifyConfig(F("lap"), WIFI_LOCAL_AP, json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifyConfig(F("lpw"), WIFI_LOCAL_PW, json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+
     sprintf(ip, "%d.%d.%d.%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2], SERVER_IP[3]);
-    reportStringConfig(SERVER_IP_KEY, ip);
-    reportNumberConfig(SERVER_PORT_KEY, SERVER_PORT);
+    jsonifyConfig(F("sip"), ip, json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifyConfig(F("sp"), SERVER_PORT, json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
     sprintf(ip, "%d.%d.%d.%d", WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
-    reportStringConfig(LOCAL_IP_KEY, ip);
+    jsonifyConfig(F("lip"), ip, json, JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
     dbgf(debug, F(":EEPROM:written:%d bytes\n"), eepromWriteCount);
 }
 
-void reportSensorCfConfig(const uint8_t id) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-
-    JsonObject& sens = jsonBuffer.createObject();
-    sens[ID_KEY] = id;
-    sens[CALIBRATION_FACTOR_KEY] = readSensorCF(id);
-
-    root[SENSORS_KEY] = sens;
-
+void reportTimestamp() {
     char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    serial->println(json);
-    bt->println(json);
+    jsonifyClockSync(getTimestamp(), json, JSON_MAX_SIZE);
+    broadcastMsg(json);
 }
 
-void reportSensorUidConfig(const uint8_t id) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+//void reportSensorCfConfig(const uint8_t id) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+//
+//    JsonObject& sens = jsonBuffer.createObject();
+//    sens[ID_KEY] = id;
+//    sens[CALIBRATION_FACTOR_KEY] = readSensorCF(id);
+//
+//    root[SENSORS_KEY] = sens;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    serial->println(json);
+//    bt->println(json);
+//}
 
-    JsonObject& sens = jsonBuffer.createObject();
-    sens[ID_KEY] = id;
-    DeviceAddress uid;
-    readSensorUID(id, uid);
-    char uidStr[16];
-    uid2str(uid, uidStr);
-    sens[UID_KEY] = uidStr;
+//void reportSensorUidConfig(const uint8_t id) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+//
+//    JsonObject& sens = jsonBuffer.createObject();
+//    sens[ID_KEY] = id;
+//    DeviceAddress uid;
+//    readSensorUID(id, uid);
+//    char uidStr[16];
+//    uid2str(uid, uidStr);
+//    sens[UID_KEY] = uidStr;
+//
+//    root[SENSORS_KEY] = sens;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    serial->println(json);
+//    bt->println(json);
+//}
 
-    root[SENSORS_KEY] = sens;
+//void reportSensorThConfig(const uint8_t id) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+//
+//    JsonObject& sens = jsonBuffer.createObject();
+//    sens[ID_KEY] = id;
+//    sens[VALUE_KEY] = readSensorTH(id);
+//
+//    root[SENSORS_KEY] = sens;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    serial->println(json);
+//    bt->println(json);
+//}
 
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
+//void reportSensorThStatus(const uint8_t id) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+//
+//    JsonObject& sens = jsonBuffer.createObject();
+//    sens[ID_KEY] = id;
+//    sens[VALUE_KEY] = readSensorTH(id);
+//
+//    root[SENSORS_KEY] = sens;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    broadcastMsg(json);
+//}
 
-    serial->println(json);
-    bt->println(json);
-}
-
-void reportSensorThConfig(const uint8_t id) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-
-    JsonObject& sens = jsonBuffer.createObject();
-    sens[ID_KEY] = id;
-    sens[VALUE_KEY] = readSensorTH(id);
-
-    root[SENSORS_KEY] = sens;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    serial->println(json);
-    bt->println(json);
-}
-
-void reportStringConfig(const char* key, const char* value) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-    root[key] = value;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    serial->println(json);
-    bt->println(json);
-}
-
-void reportNumberConfig(const char* key, const int value) {
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-    JsonObject& root = jsonBuffer.createObject();
-    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-    root[key] = value;
-
-    char json[JSON_MAX_SIZE];
-    root.printTo(json, JSON_MAX_SIZE);
-
-    serial->println(json);
-    bt->println(json);
-}
+//void reportStringConfig(const char* key, const char* value) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+//    root[key] = value;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    serial->println(json);
+//    bt->println(json);
+//}
+//
+//void reportNumberConfig(const char* key, const int value) {
+//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+//    JsonObject& root = jsonBuffer.createObject();
+//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
+//    root[key] = value;
+//
+//    char json[JSON_MAX_SIZE];
+//    root.printTo(json, JSON_MAX_SIZE);
+//
+//    serial->println(json);
+//    bt->println(json);
+//}
 
 /*========================= Communication ===================================*/
 
@@ -1802,20 +1926,19 @@ bool parseCommand(char* command) {
         return true;
     }
 
-    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
+    DynamicJsonBuffer jsonBuffer(JSON_MAX_SIZE * 2);
     JsonObject& root = jsonBuffer.parseObject(command);
 
     if (root.success()) {
-        const char* msgType = root[MSG_TYPE_KEY];
-        if (strcmp(msgType, MSG_CLOCK_SYNC) == 0) {
+        if (root[F("m")] == F("cls")) {
             // SYNC
             reportTimestamp();
-        } else if (strcmp(msgType, MSG_CURRENT_STATUS_REPORT) == 0) {
+        } else if (root[F("m")] == F("csr")) {
             // CSR
-            if (root.containsKey(SENSORS_KEY)) {
-                JsonObject& sensor = root[SENSORS_KEY];
-                uint8_t id = sensor[ID_KEY].as<uint8_t>();
-                int8_t val = sensor[VALUE_KEY].as<int8_t>();
+            if (root.containsKey(F("s"))) {
+                JsonObject& sensor = root[F("s")];
+                uint8_t id = sensor[F("id")].as<uint8_t>();
+                int8_t val = sensor[F("v")].as<int8_t>();
                 // find sensor
                 if (id == SENSOR_TEMP_ROOM_1) {
                     tempRoom1 = val;
@@ -1827,16 +1950,16 @@ bool parseCommand(char* command) {
             } else {
                 tsLastStatusReport = tsCurr - STATUS_REPORTING_PERIOD_SEC;
             }
-        } else if (strcmp(msgType, MSG_NODE_STATE_CHANGED) == 0) {
+        } else if (root[F("m")] == F("nsc")) {
             // NSC
-            if (root.containsKey(ID_KEY)) {
-                uint8_t id = root[ID_KEY].as<uint8_t>();
-                if (root.containsKey(STATE_KEY)) {
-                    uint8_t state = root[STATE_KEY].as<uint8_t>();
+            if (root.containsKey(F("id"))) {
+                uint8_t id = root[F("id")].as<uint8_t>();
+                if (root.containsKey(F("ns"))) {
+                    uint8_t state = root[F("ns")].as<uint8_t>();
                     if (state == 0 || state == 1) {
                         unsigned long ts;
-                        if (root.containsKey(FORCE_TIMESTAMP_KEY)) {
-                            ts = root[FORCE_TIMESTAMP_KEY].as<unsigned long>();
+                        if (root.containsKey(F("ft"))) {
+                            ts = root[F("ft")].as<unsigned long>();
                             ts += tsCurr;
                         } else {
                             ts = 0;
@@ -1847,48 +1970,50 @@ bool parseCommand(char* command) {
                     unForceNodeState(id);
                 }
             }
-        } else if (strcmp(msgType, MSG_CONFIGURATION) == 0) {
+        } else if (root[F("m")] == F("cfg")) {
             // CFG
-            if (root.containsKey(SENSORS_KEY)) {
-                JsonObject& sensor = root[SENSORS_KEY].asObject();
-                if (sensor.containsKey(ID_KEY) && sensor.containsKey(CALIBRATION_FACTOR_KEY)) {
-                    uint8_t id = sensor[ID_KEY].as<uint8_t>();
-                    double cf = sensor[CALIBRATION_FACTOR_KEY].as<double>();
+            if (root.containsKey(F("s"))) {
+                JsonObject& sensor = root[F("s")].asObject();
+                if (sensor.containsKey(F("id")) && sensor.containsKey(F("cf"))) {
+                    uint8_t id = sensor[F("id")].as<uint8_t>();
+                    double cf = sensor[F("cf")].as<double>();
                     saveSensorCF(id, cf);
-                } else if (sensor.containsKey(ID_KEY) && sensor.containsKey(UID_KEY)) {
-                    uint8_t id = sensor[ID_KEY].as<uint8_t>();
+                } else if (sensor.containsKey(F("id")) && sensor.containsKey(F("uid"))) {
+                    uint8_t id = sensor[F("id")].as<uint8_t>();
                     DeviceAddress uid;
-                    str2uid(sensor[UID_KEY].asString(), uid);
+                    str2uid(sensor[F("uid")].asString(), uid);
                     saveSensorUID(id, uid);
-                } else if (sensor.containsKey(ID_KEY) && sensor.containsKey(VALUE_KEY)) {
-                    uint8_t id = sensor[ID_KEY].as<uint8_t>();
-                    int16_t val = sensor[VALUE_KEY].as<int16_t>();
+                } else if (sensor.containsKey(F("id")) && sensor.containsKey(F("v"))) {
+                    uint8_t id = sensor[F("id")].as<uint8_t>();
+                    int16_t val = sensor[F("v")].as<int16_t>();
                     saveSensorTH(id, val);
-                    reportSensorStatus(id, readSensorTH(id));
+                    char json[JSON_MAX_SIZE];
+                    jsonifySensorConfig(id, F("v"), readSensorTH(id), json, JSON_MAX_SIZE);
+                    broadcastMsg(json);
                 }
-            } else if (root.containsKey(WIFI_REMOTE_AP_KEY)) {
-                sprintf(WIFI_REMOTE_AP, "%s", root[WIFI_REMOTE_AP_KEY].asString());
+            } else if (root.containsKey(F("rap"))) {
+                sprintf(WIFI_REMOTE_AP, "%s", root[F("rap")].asString());
                 eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP,
                         sizeof(WIFI_REMOTE_AP));
-            } else if (root.containsKey(WIFI_REMOTE_PASSWORD_KEY)) {
-                sprintf(WIFI_REMOTE_PW, "%s", root[WIFI_REMOTE_PASSWORD_KEY].asString());
+            } else if (root.containsKey(F("rpw"))) {
+                sprintf(WIFI_REMOTE_PW, "%s", root[F("rpw")].asString());
                 eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW,
                         sizeof(WIFI_REMOTE_PW));
-            } else if (root.containsKey(WIFI_LOCAL_AP_KEY)) {
-                sprintf(WIFI_LOCAL_AP, "%s", root[WIFI_LOCAL_AP_KEY].asString());
+            } else if (root.containsKey(F("lap"))) {
+                sprintf(WIFI_LOCAL_AP, "%s", root[F("lap")].asString());
                 eepromWriteCount += EEPROM.updateBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
-            } else if (root.containsKey(WIFI_LOCAL_PASSWORD_KEY)) {
-                sprintf(WIFI_LOCAL_PW, "%s", root[WIFI_LOCAL_PASSWORD_KEY].asString());
+            } else if (root.containsKey(F("lpw"))) {
+                sprintf(WIFI_LOCAL_PW, "%s", root[F("lpw")].asString());
                 eepromWriteCount += EEPROM.updateBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
-            } else if (root.containsKey(SERVER_IP_KEY)) {
-                sscanf(root[SERVER_IP_KEY], "%d.%d.%d.%d", (int*) &SERVER_IP[0], (int*) &SERVER_IP[1],
-                        (int*) &SERVER_IP[2], (int*) &SERVER_IP[3]);
+            } else if (root.containsKey(F("sip"))) {
+                sscanf(root[F("sip")], "%d.%d.%d.%d", (int*) &SERVER_IP[0], (int*) &SERVER_IP[1], (int*) &SERVER_IP[2],
+                        (int*) &SERVER_IP[3]);
                 eepromWriteCount += EEPROM.updateBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
-            } else if (root.containsKey(SERVER_PORT_KEY)) {
-                SERVER_PORT = root[SERVER_PORT_KEY].as<int>();
+            } else if (root.containsKey(F("sp"))) {
+                SERVER_PORT = root[F("sp")].as<int>();
                 eepromWriteCount += EEPROM.updateInt(SERVER_PORT_EEPROM_ADDR, SERVER_PORT);
-            } else if (root.containsKey(DEBUG_SERIAL_PORT_KEY)) {
-                int sp = root[DEBUG_SERIAL_PORT_KEY].as<int>();
+            } else if (root.containsKey(F("dsp"))) {
+                int sp = root[F("dsp")].as<int>();
                 if (sp == -1) {
                     debug = NULL;
                 } else if (sp == 0) {

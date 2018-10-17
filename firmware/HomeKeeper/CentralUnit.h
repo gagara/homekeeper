@@ -63,16 +63,8 @@ int8_t getSensorBoilerPowerState();
 bool validSensorValues(const int16_t values[], const uint8_t size);
 
 void reportStatus();
-void reportNodeStatus(uint8_t nodeId, uint16_t nodeBit, unsigned long ts, unsigned long tsf);
-void reportSensorStatus(const uint8_t id, const int16_t value, const unsigned long ts = 0);
-void reportSensorThStatus(const uint8_t id);
-void reportTimestamp();
 void reportConfiguration();
-void reportSensorCfConfig(const uint8_t id);
-void reportSensorUidConfig(const uint8_t id);
-void reportSensorThConfig(const uint8_t id);
-void reportStringConfig(const char* key, const char* value);
-void reportNumberConfig(const char* key, const int value);
+void reportTimestamp();
 
 void processSerialMsg();
 void processBtMsg();
