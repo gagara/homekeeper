@@ -3,9 +3,9 @@
 #include <ArduinoJson.h>
 
 void jsonifyNodeStatus(const uint8_t id, //
-        const uint8_t ns, //
+        const uint16_t ns, //
         const unsigned long ts, //
-        const uint8_t ff, //
+        const uint16_t ff, //
         const unsigned long tsf, //
         char *buffer, //
         const size_t bsize) {
@@ -15,9 +15,9 @@ void jsonifyNodeStatus(const uint8_t id, //
 
     JsonObject& node = jsonBuffer.createObject();
     node[F("id")] = id;
-    node[F("ns")] = ns;
+    node[F("ns")] = (ns == 0) ? 0 : 1;
     node[F("ts")] = ts;
-    node[F("ff")] = ff;
+    node[F("ff")] = (ff == 0) ? 0 : 1;
     if (ff) {
         node[F("ft")] = tsf;
     }
@@ -28,9 +28,9 @@ void jsonifyNodeStatus(const uint8_t id, //
 }
 
 void jsonifyNodeStateChange(const uint8_t id, //
-        const uint8_t ns, //
+        const uint16_t ns, //
         const unsigned long ts, //
-        const uint8_t ff, //
+        const uint16_t ff, //
         const unsigned long tsf, //
         const uint8_t sensId[], //
         const int16_t sensVal[], //
@@ -41,9 +41,9 @@ void jsonifyNodeStateChange(const uint8_t id, //
     JsonObject& root = jsonBuffer.createObject();
     root[F("m")] = F("nsc");
     root[F("id")] = id;
-    root[F("ns")] = ns;
+    root[F("ns")] = (ns == 0) ? 0 : 1;
     root[F("ts")] = ts;
-    root[F("ff")] = ff;
+    root[F("ff")] = (ff == 0) ? 0 : 1;
     if (ff) {
         root[F("ft")] = tsf;
     }

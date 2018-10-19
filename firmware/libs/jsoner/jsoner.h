@@ -4,16 +4,16 @@
 #include <Arduino.h>
 
 void jsonifyNodeStatus(const uint8_t id, //
-        const uint8_t ns, //
+        const uint16_t ns, //
         const unsigned long ts, //
-        const uint8_t ff, //
+        const uint16_t ff, //
         const unsigned long tsf, //
         char *buffer, //
         const size_t bsize);
 void jsonifyNodeStateChange(const uint8_t id, //
-        const uint8_t ns, //
+        const uint16_t ns, //
         const unsigned long ts, //
-        const uint8_t ff, //
+        const uint16_t ff, //
         const unsigned long tsf, //
         const uint8_t sensId[], //
         const int16_t sensVal[], //
