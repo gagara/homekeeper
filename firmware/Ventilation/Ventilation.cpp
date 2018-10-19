@@ -153,7 +153,7 @@ void setup() {
     digitalWrite(HEARTBEAT_LED, LOW);
 
     // init motor
-    motor.setSpeed(200);
+    motor.setSpeed(500);
 
     // init esp8266 hw reset pin. N/A
     //pinMode(WIFI_RST_PIN, OUTPUT);
@@ -332,10 +332,10 @@ void unForceNodeState(uint8_t id) {
 void switchVentilationValve() {
     if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
         // OPENED
-        motor.step(-MOTOR_STEPS_PER_REVOLUTION); //close
+        motor.step(-MOTOR_STEPS_PER_REVOLUTION * 3); //close
     } else {
         // CLOSED
-        motor.step(MOTOR_STEPS_PER_REVOLUTION); //open
+        motor.step(MOTOR_STEPS_PER_REVOLUTION * 3); //open
     }
 }
 
