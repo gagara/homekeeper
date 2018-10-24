@@ -34,6 +34,7 @@ void switchVentilationValve();
 double readSensorCF(const uint8_t sensor);
 void saveSensorCF(const uint8_t sensor, const double value);
 int sensorCfOffset(const uint8_t sensor);
+void restoreNodesState();
 void loadWifiConfig();
 void validateStringParam(char* str, int maxSize);
 
@@ -42,13 +43,8 @@ int8_t getSensorValue(uint8_t sensor);
 bool validSensorValues(const int16_t values[], const uint8_t size);
 
 void reportStatus();
-//void reportNodeStatus(uint8_t id, uint16_t bit, unsigned long ts, unsigned long tsf);
-//void reportSensorStatus(const uint8_t id, const uint8_t value);
 void reportConfiguration();
 void reportTimestamp();
-//void reportSensorCfConfig(const uint8_t id);
-//void reportNumberConfig(const char* key, const int value);
-//void reportStringConfig(const char* key, const char* value);
 
 void processSerialMsg();
 void processWifiMsg();

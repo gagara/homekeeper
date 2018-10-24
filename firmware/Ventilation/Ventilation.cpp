@@ -33,6 +33,7 @@ const uint8_t MOTOR_PIN_3 = 10;
 const uint8_t MOTOR_PIN_4 = 11;
 const uint8_t MOTOR_STEPS = 32;
 const uint16_t MOTOR_STEPS_PER_REVOLUTION = 2048;
+const uint8_t REVOLUTION_COUNT = 15; // max 15
 
 const uint8_t SENSORS_ADDR_CFG[] = { SENSOR_TEMP_IN, SENSOR_HUM_IN, SENSOR_TEMP_OUT, SENSOR_HUM_OUT };
 
@@ -153,7 +154,18 @@ void setup() {
     digitalWrite(HEARTBEAT_LED, LOW);
 
     // init motor
-    motor.setSpeed(500);
+    motor.setSpeed(800);
+    // default: closed state
+    motor.step(MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT); //close
+
+    // restore forced node state flags from EEPROM
+    // default node state -- OFF
+    restoreNodesState();
+
+    // open ventilation valve if needed
+    if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
+        motor.step(-MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT);
+    }
 
     // init esp8266 hw reset pin. N/A
     //pinMode(WIFI_RST_PIN, OUTPUT);
@@ -332,10 +344,10 @@ void unForceNodeState(uint8_t id) {
 void switchVentilationValve() {
     if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
         // OPENED
-        motor.step(-MOTOR_STEPS_PER_REVOLUTION * 3); //close
+        motor.step(MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT); //close
     } else {
         // CLOSED
-        motor.step(MOTOR_STEPS_PER_REVOLUTION * 3); //open
+        motor.step(-MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT); //open
     }
 }
 
@@ -367,6 +379,13 @@ int sensorCfOffset(uint8_t sensor) {
         offset += sizeof(double);
     }
     return -1;
+}
+
+void restoreNodesState() {
+    NODE_STATE_FLAGS = EEPROM.readInt(NODE_STATE_FLAGS_EEPROM_ADDR);
+    NODE_FORCED_MODE_FLAGS = EEPROM.readInt(NODE_FORCED_MODE_FLAGS_EEPROM_ADDR);
+    NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS;
+    NODE_STATE_FLAGS = NODE_STATE_FLAGS & NODE_PERMANENTLY_FORCED_MODE_FLAGS;
 }
 
 void loadWifiConfig() {
