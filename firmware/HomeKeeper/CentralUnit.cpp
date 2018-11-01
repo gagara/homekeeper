@@ -123,35 +123,7 @@ const unsigned long STATUS_REPORTING_PERIOD_SEC = 5; // 5s
 const unsigned long SENSORS_READ_INTERVAL_SEC = 5; // 5s
 const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 300; // 5 minutes
 
-// JSON
-//const char MSG_TYPE_KEY[] = "m";
-//const char ID_KEY[] = "id";
-//const char STATE_KEY[] = "ns";
-//const char FORCE_FLAG_KEY[] = "ff";
-//const char TIMESTAMP_KEY[] = "ts";
-//const char FORCE_TIMESTAMP_KEY[] = "ft";
-//const char CALIBRATION_FACTOR_KEY[] = "cf";
-//const char NODES_KEY[] = "n";
-//const char SENSORS_KEY[] = "s";
-//const char VALUE_KEY[] = "v";
-//const char UID_KEY[] = "uid";
-//
-//const char MSG_CURRENT_STATUS_REPORT[] = "csr";
-//const char MSG_NODE_STATE_CHANGED[] = "nsc";
-//const char MSG_CLOCK_SYNC[] = "cls";
-//const char MSG_CONFIGURATION[] = "cfg";
-//
-//const char WIFI_REMOTE_AP_KEY[] = "rap";
-//const char WIFI_REMOTE_PASSWORD_KEY[] = "rpw";
-//const char WIFI_LOCAL_AP_KEY[] = "lap";
-//const char WIFI_LOCAL_PASSWORD_KEY[] = "lpw";
-//const char SERVER_IP_KEY[] = "sip";
-//const char SERVER_PORT_KEY[] = "sp";
-//const char LOCAL_IP_KEY[] = "lip";
-//const char DEBUG_SERIAL_PORT_KEY[] = "dsp";
-
 const uint8_t JSON_MAX_SIZE = 128;
-//const uint8_t JSON_MAX_BUFFER_SIZE = 255;
 
 /*============================= Global variables ============================*/
 
@@ -1642,48 +1614,6 @@ void reportStatus() {
     }
 }
 
-//void reportNodeStatus(uint8_t id, uint16_t bit, unsigned long ts, unsigned long tsf) {
-//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-//    JsonObject& root = jsonBuffer.createObject();
-//    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
-//
-//    JsonObject& node = jsonBuffer.createObject();
-//    node[ID_KEY] = id;
-//    node[STATE_KEY] = NODE_STATE_FLAGS & bit ? 1 : 0;
-//    node[TIMESTAMP_KEY] = ts;
-//    node[FORCE_FLAG_KEY] = NODE_FORCED_MODE_FLAGS & bit ? 1 : 0;
-//    if (NODE_FORCED_MODE_FLAGS & bit) {
-//        node[FORCE_TIMESTAMP_KEY] = tsf;
-//    }
-//
-//    root[NODES_KEY] = node;
-//
-//    char json[JSON_MAX_SIZE];
-//    root.printTo(json, JSON_MAX_SIZE);
-//
-//    broadcastMsg(json);
-//}
-
-//void reportSensorStatus(const uint8_t id, const int16_t value, const unsigned long ts) {
-//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-//    JsonObject& root = jsonBuffer.createObject();
-//    root[MSG_TYPE_KEY] = MSG_CURRENT_STATUS_REPORT;
-//
-//    JsonObject& sens = jsonBuffer.createObject();
-//    sens[ID_KEY] = id;
-//    sens[VALUE_KEY] = value;
-//    if (ts != 0) {
-//        sens[TIMESTAMP_KEY] = ts;
-//    }
-//
-//    root[SENSORS_KEY] = sens;
-//
-//    char json[JSON_MAX_SIZE];
-//    root.printTo(json, JSON_MAX_SIZE);
-//
-//    broadcastMsg(json);
-//}
-
 void reportConfiguration() {
     char json[JSON_MAX_SIZE];
     char ip[16];
@@ -1776,107 +1706,6 @@ void reportTimestamp() {
     jsonifyClockSync(getTimestamp(), json, JSON_MAX_SIZE);
     broadcastMsg(json);
 }
-
-//void reportSensorCfConfig(const uint8_t id) {
-//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-//    JsonObject& root = jsonBuffer.createObject();
-//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-//
-//    JsonObject& sens = jsonBuffer.createObject();
-//    sens[ID_KEY] = id;
-//    sens[CALIBRATION_FACTOR_KEY] = readSensorCF(id);
-//
-//    root[SENSORS_KEY] = sens;
-//
-//    char json[JSON_MAX_SIZE];
-//    root.printTo(json, JSON_MAX_SIZE);
-//
-//    serial->println(json);
-//    bt->println(json);
-//}
-
-//void reportSensorUidConfig(const uint8_t id) {
-//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-//    JsonObject& root = jsonBuffer.createObject();
-//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-//
-//    JsonObject& sens = jsonBuffer.createObject();
-//    sens[ID_KEY] = id;
-//    DeviceAddress uid;
-//    readSensorUID(id, uid);
-//    char uidStr[16];
-//    uid2str(uid, uidStr);
-//    sens[UID_KEY] = uidStr;
-//
-//    root[SENSORS_KEY] = sens;
-//
-//    char json[JSON_MAX_SIZE];
-//    root.printTo(json, JSON_MAX_SIZE);
-//
-//    serial->println(json);
-//    bt->println(json);
-//}
-
-//void reportSensorThConfig(const uint8_t id) {
-//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-//    JsonObject& root = jsonBuffer.createObject();
-//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-//
-//    JsonObject& sens = jsonBuffer.createObject();
-//    sens[ID_KEY] = id;
-//    sens[VALUE_KEY] = readSensorTH(id);
-//
-//    root[SENSORS_KEY] = sens;
-//
-//    char json[JSON_MAX_SIZE];
-//    root.printTo(json, JSON_MAX_SIZE);
-//
-//    serial->println(json);
-//    bt->println(json);
-//}
-
-//void reportSensorThStatus(const uint8_t id) {
-//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-//    JsonObject& root = jsonBuffer.createObject();
-//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-//
-//    JsonObject& sens = jsonBuffer.createObject();
-//    sens[ID_KEY] = id;
-//    sens[VALUE_KEY] = readSensorTH(id);
-//
-//    root[SENSORS_KEY] = sens;
-//
-//    char json[JSON_MAX_SIZE];
-//    root.printTo(json, JSON_MAX_SIZE);
-//
-//    broadcastMsg(json);
-//}
-
-//void reportStringConfig(const char* key, const char* value) {
-//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-//    JsonObject& root = jsonBuffer.createObject();
-//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-//    root[key] = value;
-//
-//    char json[JSON_MAX_SIZE];
-//    root.printTo(json, JSON_MAX_SIZE);
-//
-//    serial->println(json);
-//    bt->println(json);
-//}
-//
-//void reportNumberConfig(const char* key, const int value) {
-//    StaticJsonBuffer<JSON_MAX_BUFFER_SIZE> jsonBuffer;
-//    JsonObject& root = jsonBuffer.createObject();
-//    root[MSG_TYPE_KEY] = MSG_CONFIGURATION;
-//    root[key] = value;
-//
-//    char json[JSON_MAX_SIZE];
-//    root.printTo(json, JSON_MAX_SIZE);
-//
-//    serial->println(json);
-//    bt->println(json);
-//}
 
 /*========================= Communication ===================================*/
 
