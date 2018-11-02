@@ -107,7 +107,7 @@ esp_config_t WIFI_LOCAL_PW;
 esp_ip_t SERVER_IP = { 0, 0, 0, 0 };
 uint16_t SERVER_PORT = 80;
 esp_ip_t WIFI_STA_IP = { 0, 0, 0, 0 };
-uint16_t TCP_SERVER_PORT = 80;
+uint16_t TCP_SERVER_PORT = 8084;
 
 // EEPROM addresses
 const int NODE_STATE_FLAGS_EEPROM_ADDR = 0;
@@ -178,6 +178,7 @@ void setup() {
     dbgf(debug, F(":setup wifi:R_AP:%s\n"), &WIFI_REMOTE_AP);
     esp8266.init(wifi, MODE_STA, WIFI_RST_PIN, WIFI_FAILURE_GRACE_PERIOD_SEC);
     esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
+    esp8266.startTcpServer(TCP_SERVER_PORT);
     esp8266.getStaIP(WIFI_STA_IP);
     dbgf(debug, F("STA IP: %d.%d.%d.%d\n"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
 }
