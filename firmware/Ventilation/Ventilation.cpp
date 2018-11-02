@@ -27,10 +27,11 @@ const uint8_t SENSOR_HUM_OUT = (54 + 16) + (4 * 2) + 3;
 const uint8_t NODE_VENTILATION = 44;
 
 // Stepper pins
-const uint8_t MOTOR_PIN_1 = 8;
+const uint8_t MOTOR_PIN_1 = 8; // blue
 const uint8_t MOTOR_PIN_2 = 9;
 const uint8_t MOTOR_PIN_3 = 10;
 const uint8_t MOTOR_PIN_4 = 11;
+const uint8_t MOTOR_PIN_5 = 12; // red
 const uint8_t MOTOR_STEPS = 32;
 const uint16_t MOTOR_STEPS_PER_REVOLUTION = 2048;
 const uint8_t REVOLUTION_COUNT = 15; // max 15
@@ -124,7 +125,7 @@ int eepromWriteCount = 0;
 
 // DHT sensors
 DHT dhtIn(DHT_IN_PIN, DHT11);
-DHT dhtOut(DHT_OUT_PIN, DHT11);
+DHT dhtOut(DHT_OUT_PIN, DHT22);
 
 // Stepper
 Stepper motor(MOTOR_STEPS, MOTOR_PIN_1, MOTOR_PIN_3, MOTOR_PIN_2, MOTOR_PIN_4);
@@ -154,6 +155,8 @@ void setup() {
     digitalWrite(HEARTBEAT_LED, LOW);
 
     // init motor
+    pinMode(MOTOR_PIN_5, OUTPUT);
+    digitalWrite(MOTOR_PIN_5, HIGH);
     motor.setSpeed(800);
     // default: closed state
     motor.step(MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT); //close
