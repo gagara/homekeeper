@@ -226,7 +226,9 @@ void processVentilationValve() {
     if (diffTimestamps(tsCurr, tsNodeVentilation) >= NODE_SWITCH_SAFE_TIME_SEC) {
         uint8_t sensIds[] = { SENSOR_TEMP_IN, SENSOR_TEMP_OUT };
         int16_t sensVals[] = { tempIn, tempOut };
-        uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        // disabled due to lack of space in JSON buffer
+        //uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
+        uint8_t sensCnt = 0;
         if (!validSensorValues(sensVals, sensCnt)) {
             return;
         }
