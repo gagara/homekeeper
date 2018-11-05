@@ -22,7 +22,7 @@ public class ServiceTitleModelView extends AbstractInfoModelView<ServiceTitleMod
     @Override
     public void render() {
         TextView view = (TextView) this.view;
-        if (model.getMode() != null && model.getName() != null) {
+        if (model.getName() != null) {
             view.setText(String.format(resources.getString(R.string.service_title),
                     model.getName() != null ? model.getName() : resources.getString(R.string.unknown_service_provider)));
         } else {

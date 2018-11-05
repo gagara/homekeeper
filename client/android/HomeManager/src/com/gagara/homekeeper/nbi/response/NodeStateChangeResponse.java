@@ -32,8 +32,8 @@ public class NodeStateChangeResponse extends NodeStatusResponse implements Respo
         }
     };
 
-    public NodeStateChangeResponse(long clocksDelta) {
-        super(clocksDelta);
+    public NodeStateChangeResponse() {
+        super();
     }
 
     public NodeStateChangeResponse(Parcel in) {

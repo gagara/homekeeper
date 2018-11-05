@@ -4,8 +4,6 @@ import static com.android.volley.Request.Method.POST;
 import static com.gagara.homekeeper.common.Constants.MESSAGE_KEY;
 import static com.gagara.homekeeper.common.Constants.TIMESTAMP_KEY;
 import static com.gagara.homekeeper.nbi.service.ServiceState.ACTIVE;
-import static com.gagara.homekeeper.nbi.service.ServiceState.ERROR;
-import static com.gagara.homekeeper.nbi.service.ServiceState.INIT;
 import static com.gagara.homekeeper.nbi.service.ServiceState.SHUTDOWN;
 
 import java.io.UnsupportedEncodingException;
@@ -44,26 +42,23 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
-import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.common.Constants;
-import com.gagara.homekeeper.common.ControllerConfig;
-import com.gagara.homekeeper.common.Proxy;
+import com.gagara.homekeeper.common.Gateway;
 import com.gagara.homekeeper.nbi.https.HttpsTrustManager;
-import com.gagara.homekeeper.nbi.request.FastClockSyncRequest;
 import com.gagara.homekeeper.nbi.request.LogRequest;
 import com.gagara.homekeeper.nbi.request.Request;
 import com.gagara.homekeeper.utils.HomeKeeperConfig;
 
-public class ProxyNbiService extends AbstractNbiService {
+public class GatewayNbiService extends AbstractNbiService {
 
-    private static final String TAG = ProxyNbiService.class.getName();
+    private static final String TAG = GatewayNbiService.class.getName();
 
     private static final int HTTP_CONNECTION_TIMEOUT = 30000; // 30 seconds
 
-    private static final String PROXY_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    private static final DateFormat df = new SimpleDateFormat(PROXY_DATE_FORMAT, Locale.getDefault());
+    private static final String GATEWAY_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    private static final DateFormat df = new SimpleDateFormat(GATEWAY_DATE_FORMAT, Locale.getDefault());
 
-    private Proxy proxy = null;
+    private Gateway gateway = null;
     private RequestQueue httpRequestQueue = null;
 
     private ScheduledExecutorService logMonitorExecutor = null;
@@ -74,8 +69,8 @@ public class ProxyNbiService extends AbstractNbiService {
 
     @Override
     public String getServiceProviderName() {
-        if (proxy != null) {
-            return proxy.getHost() + ":" + proxy.getPort();
+        if (gateway != null) {
+            return gateway.getHost() + ":" + gateway.getPort();
         } else {
             return null;
         }
@@ -84,7 +79,7 @@ public class ProxyNbiService extends AbstractNbiService {
     @Override
     public void onCreate() {
         super.onCreate();
-        proxy = HomeKeeperConfig.getNbiProxy(ProxyNbiService.this);
+        gateway = HomeKeeperConfig.getNbiGateway(GatewayNbiService.this);
         logMonitorExecutor = Executors.newSingleThreadScheduledExecutor();
         httpRequestQueue = Volley.newRequestQueue(this);
         httpRequestQueue.start();
@@ -117,7 +112,7 @@ public class ProxyNbiService extends AbstractNbiService {
     @Override
     public void send(Request request) {
         if (state != SHUTDOWN) {
-            JsonRequest<JSONArray> req = new ProxyRequest(request);
+            JsonRequest<JSONArray> req = new GatewayRequest(request);
             req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             httpRequestQueue.add(req);
@@ -129,32 +124,8 @@ public class ProxyNbiService extends AbstractNbiService {
                 new IntentFilter(Constants.CONTROLLER_CONTROL_COMMAND_ACTION));
 
         lastMessageTimestamp = new Date();
-        state = INIT;
         startLogMonitor();
-
-        while (true) {
-            if (state == INIT || state == ERROR) {
-                synchronized (serviceExecutor) {
-                    if (state != ACTIVE) {
-                        state = INIT;
-                        if (clocksDelta == null && clockSyncExecutor == null) {
-                            if (estimatedClocksDelta == null) {
-                                // try fast synchronization
-                                send(new FastClockSyncRequest());
-                            }
-                            // schedule normal synchronization
-                            clockSyncExecutor = Executors.newSingleThreadScheduledExecutor();
-                            clockSyncExecutor.scheduleAtFixedRate(new SyncClockRequest(), 0L,
-                                    proxy.getPullPeriod() * 5, TimeUnit.SECONDS);
-                        }
-                        notifyStatusChange(getText(R.string.service_sync_clocks_status));
-                    }
-                }
-            }
-            synchronized (serviceExecutor) {
-                serviceExecutor.wait();
-            }
-        }
+        state = ACTIVE;
     }
 
     private void startLogMonitor() {
@@ -164,36 +135,34 @@ public class ProxyNbiService extends AbstractNbiService {
                 public void run() {
                     if (state != SHUTDOWN) {
                         try {
-                            JsonRequest<JSONArray> req = new ProxyRequest(new LogRequest(lastMessageTimestamp));
+                            JsonRequest<JSONArray> req = new GatewayRequest(new LogRequest(lastMessageTimestamp));
                             req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT,
                                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                             httpRequestQueue.add(req);
                         } catch (Exception e) {
                             Log.e(TAG, e.getMessage(), e);
-                            state = ERROR;
                             notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
                             synchronized (serviceExecutor) {
-                                clocksDelta = null;
                                 serviceExecutor.notifyAll();
                             }
                         }
                     }
                 }
-            }, 0L, proxy.getPullPeriod(), TimeUnit.SECONDS);
+            }, 0L, gateway.getPullPeriod(), TimeUnit.SECONDS);
         }
     }
 
     private Map<String, String> addAuthHeaders(Map<String, String> headers) {
-        String creds = String.format("%s:%s", proxy.getUsername(), proxy.getPassword());
+        String creds = String.format("%s:%s", gateway.getUsername(), gateway.getPassword());
         String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
         headers.put("Authorization", auth);
         return headers;
     }
 
-    private class ProxyRequest extends JsonRequest<JSONArray> {
+    private class GatewayRequest extends JsonRequest<JSONArray> {
 
-        public ProxyRequest(final Request request) {
-            super(POST, proxy.asUrl(), request.toJson().toString(), new Response.Listener<JSONArray>() {
+        public GatewayRequest(final Request request) {
+            super(POST, gateway.asUrl(), request.toJson().toString(), new Response.Listener<JSONArray>() {
 
                 @Override
                 public void onResponse(JSONArray response) {
@@ -202,18 +171,6 @@ public class ProxyNbiService extends AbstractNbiService {
                             JSONObject log = response.getJSONObject(i);
                             Date timestamp = df.parse(log.getString(TIMESTAMP_KEY));
                             JSONObject message = (JSONObject) new JSONTokener(log.getString(MESSAGE_KEY)).nextValue();
-                            if (request instanceof FastClockSyncRequest) {
-                                ControllerConfig.MessageType msgType = ControllerConfig.MessageType.forCode(message
-                                        .getString(ControllerConfig.MSG_TYPE_KEY));
-                                if (msgType == ControllerConfig.MessageType.CLOCK_SYNC) {
-                                    message.put(ControllerConfig.MSG_TYPE_KEY,
-                                            ControllerConfig.MessageType.FAST_CLOCK_SYNC.code());
-                                } else {
-                                    lastMessageTimestamp = timestamp;
-                                }
-                            } else {
-                                lastMessageTimestamp = timestamp;
-                            }
                             processMessage(message, timestamp);
                         } catch (Exception e) {
                             Log.e(TAG, "failed to process [" + response + "]: " + e.getMessage(), e);
@@ -234,7 +191,7 @@ public class ProxyNbiService extends AbstractNbiService {
             });
         }
 
-        public ProxyRequest(int method, String url, String requestBody, Listener<JSONArray> listener,
+        public GatewayRequest(int method, String url, String requestBody, Listener<JSONArray> listener,
                 ErrorListener errorListener) {
             super(method, url, requestBody, listener, errorListener);
         }

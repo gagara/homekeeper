@@ -34,9 +34,8 @@ public class ConfigurationResponse extends MessageHeader implements Response, Pa
         }
     };
 
-    public ConfigurationResponse(long clocksDelta) {
+    public ConfigurationResponse() {
         super();
-        this.clocksDelta = clocksDelta;
     }
 
     public ConfigurationResponse(Parcel in) {
@@ -48,7 +47,7 @@ public class ConfigurationResponse extends MessageHeader implements Response, Pa
         if (ControllerConfig.MessageType.CONFIGURATION == ControllerConfig.MessageType.forCode(json.get(
                 ControllerConfig.MSG_TYPE_KEY).toString())) {
             if (json.has(SENSOR_KEY) && json.getJSONObject(SENSOR_KEY).has(VALUE_KEY)) {
-                ConfigurationResponse response = new SensorThresholdConfigurationResponse(clocksDelta);
+                ConfigurationResponse response = new SensorThresholdConfigurationResponse();
                 return response.fromJson(json);
             }
         }

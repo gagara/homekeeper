@@ -42,8 +42,8 @@ public class SensorThresholdConfigurationResponse extends ConfigurationResponse 
         }
     };
 
-    public SensorThresholdConfigurationResponse(long clocksDelta) {
-        super(clocksDelta);
+    public SensorThresholdConfigurationResponse() {
+        super();
     }
 
     public SensorThresholdConfigurationResponse(Parcel in) {

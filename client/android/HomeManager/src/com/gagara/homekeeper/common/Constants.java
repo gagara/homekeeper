@@ -15,7 +15,6 @@ public class Constants {
     public static final int DEFAULT_REMOTE_CONTROL_PULL_INTERVAL = 10;
     public static final int DEFAULT_SLAVE_REFRESH_INTERVAL = 30;
 
-    public static final int REQUEST_ENABLE_BT = 306;
     public static final int REQUEST_ENABLE_NETWORK = 506;
     public static final int CONTROLLER_SERVICE_ONGOING_NOTIFICATION_ID = 1006;
     public static final int CONTROLLER_SERVICE_PENDING_INTENT_ID = 2206;
@@ -37,17 +36,14 @@ public class Constants {
 
     public static final String DATA_KEY = "DATA";
     public static final String COMMAND_KEY = "COMMAND";
-    public static final String SERVICE_STATUS_KEY = "STATUS";
     public static final String SERVICE_STATUS_DETAILS_KEY = "STATUS_DETAILS";
     public static final String SERVICE_TITLE_KEY = "TITLE";
 
-    public static final String CFG_MODE = "mode";
-    public static final String CFG_BT_DEV = "bt_dev";
-    public static final String CFG_PROXY_HOST = "proxy_host";
-    public static final String CFG_PROXY_PORT = "proxy_port";
-    public static final String CFG_PROXY_USER = "proxy_user";
-    public static final String CFG_PROXY_PASSWORD = "proxy_password";
-    public static final String CFG_PROXY_PULL_PERIOD = "proxy_pull_period";
+    public static final String CFG_GATEWAY_HOST = "gateway_host";
+    public static final String CFG_GATEWAY_PORT = "gateway_port";
+    public static final String CFG_GATEWAY_USER = "gateway_user";
+    public static final String CFG_GATEWAY_PASSWORD = "gateway_password";
+    public static final String CFG_GATEWAY_PULL_PERIOD = "gateway_pull_period";
 
     public static final String MESSAGE_KEY = "message";
     public static final String TIMESTAMP_KEY = "@timestamp";

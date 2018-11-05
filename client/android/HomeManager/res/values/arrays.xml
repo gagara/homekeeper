@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="mode_entries">
-        <item>Direct</item>
-        <item>Proxy</item>
-    </string-array>
-    <string-array name="mode_entry_values">
-        <item>DIRECT</item>
-        <item>PROXY</item>
-    </string-array>
-
-    <string-array name="pref_proxy_pull_period_entries">
+    <string-array name="pref_gateway_pull_period_entries">
         <item>2 seconds</item>
         <item>5 seconds</item>
         <item>10 seconds</item>
         <item>30 seconds</item>
         <item>1 minute</item>
     </string-array>
-    <string-array name="pref_proxy_pull_period_entry_values">
+    <string-array name="pref_gateway_pull_period_entry_values">
         <item>2</item>
         <item>5</item>
         <item>10</item>

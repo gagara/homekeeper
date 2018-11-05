@@ -36,14 +36,6 @@ public class ServiceLogModelView extends AbstractInfoModelView<ServiceLogModel> 
             } else {
                 logStr.append(String.format(resources.getString(R.string.service_status_timestamp), UNKNOWN_TIME));
             }
-            if (status.getMode() != null) {
-                logStr.append(String.format(resources.getString(R.string.service_status_mode), status.getMode()
-                        .toString()));
-            }
-            if (status.getState() != null) {
-                logStr.append(String.format(resources.getString(R.string.service_status_state),
-                        resources.getString(status.getState().toStringResource())));
-            }
             if (status.getDetails() != null) {
                 logStr.append(String.format(resources.getString(R.string.service_status_details), status.getDetails()));
             }

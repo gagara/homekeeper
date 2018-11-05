@@ -46,9 +46,8 @@ public class StateSensorStatusResponse extends MessageHeader implements Response
         }
     };
 
-    public StateSensorStatusResponse(long clocksDelta) {
+    public StateSensorStatusResponse() {
         super();
-        this.clocksDelta = clocksDelta;
     }
 
     public StateSensorStatusResponse(Parcel in) {
@@ -70,7 +69,7 @@ public class StateSensorStatusResponse extends MessageHeader implements Response
         data = new StateSensorModel(json.getInt(ID_KEY));
         data.setState(json.getInt(VALUE_KEY) == 1 ? true : false);
         if (json.getLong(TIMESTAMP_KEY) != 0) {
-            data.setSwitchTimestamp(new Date((json.getLong(TIMESTAMP_KEY) + clocksDelta) * 1000));
+            data.setSwitchTimestamp(new Date(json.getLong(TIMESTAMP_KEY)));
         }
         return this;
     }

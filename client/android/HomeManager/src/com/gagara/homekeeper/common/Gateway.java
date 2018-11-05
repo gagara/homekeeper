@@ -1,16 +1,16 @@
 package com.gagara.homekeeper.common;
 
-public class Proxy {
+public class Gateway {
     private String host = null;
     private Integer port = null;
     private String username = "";
     private String password = "";
     private Integer pullPeriod = null;
 
-    public Proxy() {
+    public Gateway() {
     }
 
-    public Proxy(String host, Integer port, String username, String password, Integer pullPeriod) {
+    public Gateway(String host, Integer port, String username, String password, Integer pullPeriod) {
         super();
         if (host != null && host.length() > 0) {
             this.host = host;
@@ -98,7 +98,7 @@ public class Proxy {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Proxy other = (Proxy) obj;
+        Gateway other = (Gateway) obj;
         if (host == null) {
             if (other.host != null)
                 return false;

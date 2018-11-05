@@ -58,9 +58,8 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
         }
     };
 
-    public NodeStatusResponse(long clocksDelta) {
+    public NodeStatusResponse() {
         super();
-        this.clocksDelta = clocksDelta;
     }
 
     public NodeStatusResponse(Parcel in) {
@@ -90,17 +89,14 @@ public class NodeStatusResponse extends MessageHeader implements Response, Parce
 
     @Override
     public NodeStatusResponse fromJson(JSONObject json) throws JSONException {
-        if (clocksDelta == Long.MIN_VALUE) {
-            throw new IllegalStateException("'clocksDelta' is not initialized");
-        }
         data = new NodeModel(json.getInt(ID_KEY));
         data.setState(json.getInt(STATE_KEY) == 1 ? true : false);
         if (json.getLong(TIMESTAMP_KEY) != 0) {
-            data.setSwitchTimestamp(new Date((json.getLong(TIMESTAMP_KEY) + clocksDelta) * 1000));
+            data.setSwitchTimestamp(new Date(json.getLong(TIMESTAMP_KEY)));
         }
         data.setForcedMode(json.getInt(FORCE_FLAG_KEY) == 1 ? true : false);
         if (json.has(FORCE_TIMESTAMP_KEY) && json.getLong(FORCE_TIMESTAMP_KEY) != 0) {
-            data.setForcedModeTimestamp(new Date((json.getLong(FORCE_TIMESTAMP_KEY) + clocksDelta) * 1000));
+            data.setForcedModeTimestamp(new Date(json.getLong(FORCE_TIMESTAMP_KEY)));
         }
         if (json.has(SENSOR_KEY)) {
             JSONArray sensorsJson = json.getJSONArray(SENSOR_KEY);

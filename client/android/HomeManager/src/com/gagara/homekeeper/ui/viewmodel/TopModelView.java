@@ -139,7 +139,7 @@ public class TopModelView implements ModelView<Model> {
                 s.setValueView((TextView) ctx.findViewById(ViewUtils.getSensorValueViewId(id)));
                 s.setDetailsView((TextView) ctx.findViewById(ViewUtils.getSensorDetailsViewId(id)));
                 s.setResources(ctx.getResources());
-                if (SENSOR_ROOM1_HUM_ID == id) {
+                if (SENSOR_ROOM1_HUM_ID == id || SENSOR_BASEMENT_HUM_ID == id || SENSOR_OUTDOOR_HUM_ID == id) {
                     ((ValueSensorModel) s.getModel()).setType(SensorType.HUMIDITY);
                 }
                 sensors.put(id, s);
@@ -234,53 +234,5 @@ public class TopModelView implements ModelView<Model> {
 
     public NodeModelView getNode(int id) {
         return nodes.get(id);
-    }
-
-    public ValueSensorModelView getSensorSupply() {
-        return (ValueSensorModelView) sensors.get(SENSOR_SUPPLY_ID);
-    }
-
-    public ValueSensorModelView getSensorReverse() {
-        return (ValueSensorModelView) sensors.get(SENSOR_REVERSE_ID);
-    }
-
-    public ValueSensorModelView getSensorTank() {
-        return (ValueSensorModelView) sensors.get(SENSOR_TANK_ID);
-    }
-
-    public ValueSensorModelView getSensorBoiler() {
-        return (ValueSensorModelView) sensors.get(SENSOR_BOILER_ID);
-    }
-
-    public ValueSensorModelView getSensorMix() {
-        return (ValueSensorModelView) sensors.get(SENSOR_MIX_ID);
-    }
-
-    public ValueSensorModelView getSensorSbHeater() {
-        return (ValueSensorModelView) sensors.get(SENSOR_SB_HEATER_ID);
-    }
-
-    public StateSensorModelView getSensorBoilerPower() {
-        return (StateSensorModelView) sensors.get(SENSOR_BOILER_POWER_ID);
-    }
-
-    public NodeModelView getNodeHeaterToTank() {
-        return nodes.get(NODE_SUPPLY_ID);
-    }
-
-    public NodeModelView getNodeTankToSystem() {
-        return nodes.get(NODE_HEATING_ID);
-    }
-
-    public NodeModelView getNodeTankToBoiler() {
-        return nodes.get(NODE_HOTWATER_ID);
-    }
-
-    public NodeModelView getNodeCirculation() {
-        return nodes.get(NODE_CIRCULATION_ID);
-    }
-
-    public NodeModelView getNodeSbHeater() {
-        return nodes.get(NODE_SB_HEATER_ID);
     }
 }

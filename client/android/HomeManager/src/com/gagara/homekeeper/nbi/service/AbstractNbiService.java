@@ -5,10 +5,8 @@ import static com.gagara.homekeeper.common.Constants.CONTROLLER_CONTROL_COMMAND_
 import static com.gagara.homekeeper.common.Constants.CONTROLLER_SERVICE_ONGOING_NOTIFICATION_ID;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
-import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
-import static com.gagara.homekeeper.nbi.service.ServiceState.ACTIVE;
 import static com.gagara.homekeeper.nbi.service.ServiceState.INIT;
 import static com.gagara.homekeeper.nbi.service.ServiceState.SHUTDOWN;
 
@@ -17,7 +15,6 @@ import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +34,6 @@ import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.activity.MainActivity;
 import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.common.ControllerConfig;
-import com.gagara.homekeeper.nbi.request.ClockSyncRequest;
 import com.gagara.homekeeper.nbi.request.Request;
 import com.gagara.homekeeper.nbi.response.ConfigurationResponse;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
@@ -57,14 +53,11 @@ public abstract class AbstractNbiService extends Service {
     protected int startId;
 
     protected volatile Date lastMessageTimestamp = new Date(0);
-    protected Long clocksDelta = null;
-    protected Long estimatedClocksDelta = null;
 
     private NotificationCompat.Builder serviceNotification;
 
     protected ExecutorService serviceExecutor = null;
     protected BroadcastReceiver controllerCommandReceiver = null;
-    protected ScheduledExecutorService clockSyncExecutor = null;
 
     private Future<?> currentTask = null;
 
@@ -122,9 +115,6 @@ public abstract class AbstractNbiService extends Service {
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(SERVICE_TITLE_CHANGE_ACTION));
         serviceExecutor.shutdownNow();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(controllerCommandReceiver);
-        if (clockSyncExecutor != null) {
-            clockSyncExecutor.shutdownNow();
-        }
     }
 
     protected void initOngoingNotification() {
@@ -133,7 +123,7 @@ public abstract class AbstractNbiService extends Service {
         serviceNotification = new NotificationCompat.Builder(this).setContentTitle(getText(R.string.app_name))
                 .setSmallIcon(R.drawable.ic_launcher);
         if (getServiceProviderName() != null) {
-            serviceNotification.setContentText(getServiceProviderName() + ": " + getText(state.toStringResource()));
+            serviceNotification.setContentText(getServiceProviderName());
         } else {
             serviceNotification.setContentText(getText(R.string.unknown_service_provider));
         }
@@ -144,119 +134,86 @@ public abstract class AbstractNbiService extends Service {
     protected void processMessage(JSONObject message, Date timestamp) throws JSONException, IOException {
         ControllerConfig.MessageType msgType = ControllerConfig.MessageType.forCode(message
                 .getString(ControllerConfig.MSG_TYPE_KEY));
-        if (msgType == ControllerConfig.MessageType.CLOCK_SYNC) {
-            synchronized (serviceExecutor) {
-                if (clockSyncExecutor != null) {
-                    clockSyncExecutor.shutdownNow();
+        Intent intent = new Intent();
+        intent.setAction(Constants.CONTROLLER_DATA_TRANSFER_ACTION);
+        if (msgType == ControllerConfig.MessageType.CURRENT_STATUS_REPORT) {
+            CurrentStatusResponse stats = new CurrentStatusResponse().fromJson(message);
+            if (stats != null) {
+                intent.putExtra(Constants.DATA_KEY, stats);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+                String title = null;
+                String name = null;
+                if (stats.getNode() != null) {
+                    title = getResources().getString(R.string.node_title);
+                    if (ViewUtils.validNode(stats.getNode().getData())) {
+                        name = getResources().getString(TopModelView.NODES.get(stats.getNode().getData().getId()));
+                    } else {
+                        name = stats.getNode().getData().getId() + "";
+                    }
+                } else if (stats.getValueSensor() != null) {
+                    title = getResources().getString(R.string.sensor_title);
+                    if (ViewUtils.validSensor(stats.getValueSensor().getData())) {
+                        name = getResources().getString(
+                                TopModelView.SENSORS.get(stats.getValueSensor().getData().getId()));
+                    } else {
+                        name = stats.getValueSensor().getData().getId() + "";
+                    }
+                } else if (stats.getStateSensor() != null) {
+                    title = getResources().getString(R.string.sensor_title);
+                    if (ViewUtils.validSensor(stats.getStateSensor().getData())) {
+                        name = getResources().getString(
+                                TopModelView.SENSORS.get(stats.getStateSensor().getData().getId()));
+                    } else {
+                        name = stats.getStateSensor().getData().getId() + "";
+                    }
                 }
-                clockSyncExecutor = null;
-                long controllerTimestampSeconds = message.getLong(ControllerConfig.TIMESTAMP_KEY);
-                long delta = (timestamp.getTime() / 1000) - controllerTimestampSeconds;
-                if (clocksDelta == null) {
-                    // initial sync: request for status
-                    // not required with current reporting model
-                    // CurrentStatusRequest csr = new CurrentStatusRequest();
-                    // send(csr);
-                }
-                clocksDelta = delta;
-                state = ACTIVE;
-                notifyStatusChange(getText(R.string.service_listening_status));
+
+                notifyStatusChange(String.format(getResources().getString(R.string.service_csr_message_status), title,
+                        name));
             }
-        } else if (msgType == ControllerConfig.MessageType.FAST_CLOCK_SYNC) {
-            long controllerTimestamp = message.getLong(ControllerConfig.TIMESTAMP_KEY);
-            long delta = (timestamp.getTime() / 1000) - controllerTimestamp;
-            estimatedClocksDelta = delta;
-        } else {
-            if (clocksDelta != null || estimatedClocksDelta != null) {
-                Intent intent = new Intent();
-                intent.setAction(Constants.CONTROLLER_DATA_TRANSFER_ACTION);
-                if (msgType == ControllerConfig.MessageType.CURRENT_STATUS_REPORT) {
-                    CurrentStatusResponse stats = new CurrentStatusResponse(clocksDelta != null ? clocksDelta
-                            : estimatedClocksDelta).fromJson(message);
-                    if (stats != null) {
-                        intent.putExtra(Constants.DATA_KEY, stats);
-                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        } else if (msgType == ControllerConfig.MessageType.NODE_STATE_CHANGED) {
+            NodeStateChangeResponse nodeState = new NodeStateChangeResponse().fromJson(message);
+            if (nodeState != null) {
+                intent.putExtra(Constants.DATA_KEY, nodeState);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
-                        String title = null;
-                        String name = null;
-                        if (stats.getNode() != null) {
-                            title = getResources().getString(R.string.node_title);
-                            if (ViewUtils.validNode(stats.getNode().getData())) {
-                                name = getResources().getString(
-                                        TopModelView.NODES.get(stats.getNode().getData().getId()));
-                            } else {
-                                name = stats.getNode().getData().getId() + "";
-                            }
-                        } else if (stats.getValueSensor() != null) {
-                            title = getResources().getString(R.string.sensor_title);
-                            if (ViewUtils.validSensor(stats.getValueSensor().getData())) {
-                                name = getResources().getString(
-                                        TopModelView.SENSORS.get(stats.getValueSensor().getData().getId()));
-                            } else {
-                                name = stats.getValueSensor().getData().getId() + "";
-                            }
-                        } else if (stats.getStateSensor() != null) {
-                            title = getResources().getString(R.string.sensor_title);
-                            if (ViewUtils.validSensor(stats.getStateSensor().getData())) {
-                                name = getResources().getString(
-                                        TopModelView.SENSORS.get(stats.getStateSensor().getData().getId()));
-                            } else {
-                                name = stats.getStateSensor().getData().getId() + "";
-                            }
-                        }
-
-                        notifyStatusChange(String.format(getResources().getString(R.string.service_csr_message_status),
-                                title, name));
-                    }
-                } else if (msgType == ControllerConfig.MessageType.NODE_STATE_CHANGED) {
-                    NodeStateChangeResponse nodeState = new NodeStateChangeResponse(clocksDelta != null ? clocksDelta
-                            : estimatedClocksDelta).fromJson(message);
-                    if (nodeState != null) {
-                        intent.putExtra(Constants.DATA_KEY, nodeState);
-                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-
-                        String title = null;
-                        String name = null;
-                        title = getResources().getString(R.string.node_title);
-                        if (ViewUtils.validNode(nodeState.getData())) {
-                            name = getResources().getString(TopModelView.NODES.get(nodeState.getData().getId()));
-                        } else {
-                            name = nodeState.getData().getId() + "";
-                        }
-
-                        notifyStatusChange(String.format(getResources().getString(R.string.service_nsc_message_status),
-                                title, name));
-                    }
-                } else if (msgType == ControllerConfig.MessageType.CONFIGURATION) {
-                    ConfigurationResponse conf = new ConfigurationResponse(clocksDelta != null ? clocksDelta
-                            : estimatedClocksDelta).fromJson(message);
-                    if (conf != null) {
-                        if (conf instanceof SensorThresholdConfigurationResponse) {
-                            SensorThresholdConfigurationResponse sensorConf = (SensorThresholdConfigurationResponse) conf;
-                            intent.putExtra(Constants.DATA_KEY, sensorConf);
-                            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-
-                            String title = null;
-                            String name = null;
-                            title = getResources().getString(R.string.sensor_title);
-                            if (ViewUtils.validSensor(sensorConf.getData())) {
-                                name = getResources().getString(
-                                        TopModelView.SENSORS_THRESHOLDS.get(sensorConf.getData().getId()));
-                            } else {
-                                name = sensorConf.getData().getId() + "";
-                            }
-                            notifyStatusChange(String.format(
-                                    getResources().getString(R.string.service_cfg_message_status), title, name));
-                        }
-                    }
+                String title = null;
+                String name = null;
+                title = getResources().getString(R.string.node_title);
+                if (ViewUtils.validNode(nodeState.getData())) {
+                    name = getResources().getString(TopModelView.NODES.get(nodeState.getData().getId()));
                 } else {
-                    // unknown message
-                    Log.w(TAG, "ignore message type:" + msgType);
+                    name = nodeState.getData().getId() + "";
                 }
-            } else {
-                // ignore any message until clocks not synchronized
-                Log.w(TAG, "clocks not synchronized. ignoring message: " + message.toString());
+
+                notifyStatusChange(String.format(getResources().getString(R.string.service_nsc_message_status), title,
+                        name));
             }
+        } else if (msgType == ControllerConfig.MessageType.CONFIGURATION) {
+            ConfigurationResponse conf = new ConfigurationResponse().fromJson(message);
+            if (conf != null) {
+                if (conf instanceof SensorThresholdConfigurationResponse) {
+                    SensorThresholdConfigurationResponse sensorConf = (SensorThresholdConfigurationResponse) conf;
+                    intent.putExtra(Constants.DATA_KEY, sensorConf);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+                    String title = null;
+                    String name = null;
+                    title = getResources().getString(R.string.sensor_title);
+                    if (ViewUtils.validSensor(sensorConf.getData())) {
+                        name = getResources().getString(
+                                TopModelView.SENSORS_THRESHOLDS.get(sensorConf.getData().getId()));
+                    } else {
+                        name = sensorConf.getData().getId() + "";
+                    }
+                    notifyStatusChange(String.format(getResources().getString(R.string.service_cfg_message_status),
+                            title, name));
+                }
+            }
+        } else {
+            // unknown message
+            Log.w(TAG, "ignore message type:" + msgType);
         }
     }
 
@@ -264,7 +221,7 @@ public abstract class AbstractNbiService extends Service {
         if (serviceNotification != null) {
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (getServiceProviderName() != null) {
-                serviceNotification.setContentText(getServiceProviderName() + ": " + getText(state.toStringResource()));
+                serviceNotification.setContentText(getServiceProviderName());
             } else {
                 serviceNotification.setContentText(getText(R.string.unknown_service_provider));
             }
@@ -272,7 +229,6 @@ public abstract class AbstractNbiService extends Service {
         }
         Intent intent = new Intent();
         intent.setAction(SERVICE_STATUS_CHANGE_ACTION);
-        intent.putExtra(SERVICE_STATUS_KEY, state.toString());
         if (details != null) {
             intent.putExtra(SERVICE_STATUS_DETAILS_KEY, details);
         }
@@ -289,17 +245,4 @@ public abstract class AbstractNbiService extends Service {
             }
         }
     }
-
-    protected class SyncClockRequest implements Runnable {
-        @Override
-        public void run() {
-            try {
-                ClockSyncRequest req = new ClockSyncRequest();
-                send(req);
-            } catch (Exception e) {
-                Log.e(TAG, "failed to sync clocks: " + e.getMessage(), e);
-            }
-        }
-    }
-
 }

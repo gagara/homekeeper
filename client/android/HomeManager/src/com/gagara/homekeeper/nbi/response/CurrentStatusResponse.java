@@ -64,9 +64,8 @@ public class CurrentStatusResponse extends MessageHeader implements Response, Pa
         }
     };
 
-    public CurrentStatusResponse(long clocksDelta) {
+    public CurrentStatusResponse() {
         super();
-        this.clocksDelta = clocksDelta;
     }
 
     public CurrentStatusResponse(Parcel in) {
@@ -86,24 +85,21 @@ public class CurrentStatusResponse extends MessageHeader implements Response, Pa
 
     @Override
     public CurrentStatusResponse fromJson(JSONObject json) throws JSONException {
-        if (clocksDelta == Long.MIN_VALUE) {
-            throw new IllegalStateException("'clocksDelta' is not initialized");
-        }
         if (ControllerConfig.MessageType.CURRENT_STATUS_REPORT == ControllerConfig.MessageType.forCode(json.get(
                 MSG_TYPE_KEY).toString())) {
             if (json.has(NODE_KEY)) {
                 JSONObject nodeJson = json.getJSONObject(NODE_KEY);
-                node = new NodeStatusResponse(clocksDelta);
+                node = new NodeStatusResponse();
                 node.fromJson(nodeJson);
             }
             if (json.has(SENSOR_KEY)) {
                 JSONObject sensorJson = json.getJSONObject(SENSOR_KEY);
                 int id = sensorJson.getInt(ID_KEY);
                 if (ViewUtils.validValueSensorId(id)) {
-                    valueSensor = new ValueSensorStatusResponse(clocksDelta);
+                    valueSensor = new ValueSensorStatusResponse();
                     valueSensor.fromJson(sensorJson);
                 } else {
-                    stateSensor = new StateSensorStatusResponse(clocksDelta);
+                    stateSensor = new StateSensorStatusResponse();
                     stateSensor.fromJson(sensorJson);
                 }
             }

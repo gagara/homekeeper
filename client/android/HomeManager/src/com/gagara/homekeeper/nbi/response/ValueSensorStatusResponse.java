@@ -47,9 +47,8 @@ public class ValueSensorStatusResponse extends MessageHeader implements Response
         }
     };
 
-    public ValueSensorStatusResponse(long clocksDelta) {
+    public ValueSensorStatusResponse() {
         super();
-        this.clocksDelta = clocksDelta;
     }
 
     public ValueSensorStatusResponse(Parcel in) {
@@ -68,7 +67,7 @@ public class ValueSensorStatusResponse extends MessageHeader implements Response
         int value = json.getInt(VALUE_KEY);
         Date ts = UNDEFINED_DATE;
         if (json.has(TIMESTAMP_KEY) && json.getLong(TIMESTAMP_KEY) != 0) {
-            ts = new Date((json.getLong(TIMESTAMP_KEY) + clocksDelta) * 1000);
+            ts = new Date(json.getLong(TIMESTAMP_KEY));
         }
         data = new ValueSensorModel(id);
         data.setValue(value);
