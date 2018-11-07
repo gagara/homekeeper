@@ -37,9 +37,9 @@ services:
     depends_on:
       - elasticsearch
 
-  proxy:
+  gateway:
     build:
-      context: ./proxy
+      context: ./gateway
     tty: true
     restart: unless-stopped
     ports:

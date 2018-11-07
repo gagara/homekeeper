@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route("/", methods=['POST'])
 def post_request():
     print('REQUEST: %s: %s' % (request.headers, request.data))
-    time.sleep(3)
+#    time.sleep(3)
     return ('ok', 200)
 
 if __name__ == "__main__":
