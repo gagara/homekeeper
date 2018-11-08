@@ -120,17 +120,21 @@ def process_logs(logs):
                 ccd[log['host']]['timestamp'] = log['@timestamp']
                 ccd[log['host']]['value'] = log['@timestamp'] - log['message']['ts']
             # update timesatmps
-            delta = ccd.get(log['host'])
+            delta = None
+            if ccd.get(log['host']) and ccd.get(log['host'])['timestamp'] > 0:
+                delta = ccd.get(log['host'])['value']
             if 'ts' in log['message'] :
-                log['message']['ts'] = int(int(log['message']['ts']) + delta['value']) if delta else 0
+                log['message']['ts'] = int(int(log['message']['ts']) + delta) if delta else 0
+            if 'ft' in log['message'] :
+                log['message']['ft'] = int(int(log['message']['ft']) + delta) if delta else 0
             if 'n' in log['message'] and 'ts' in log['message']['n'] :
-                logs['message']['n']['ts'] = int(int(log['message']['n']['ts']) + delta['value']) if delta else 0
+                log['message']['n']['ts'] = int(int(log['message']['n']['ts']) + delta) if delta else 0
             if 'n' in log['message'] and 'ft' in log['message']['n'] :
-                logs['message']['n']['ft'] = int(int(log['message']['n']['ft']) + delta['value']) if delta else 0
+                log['message']['n']['ft'] = int(int(log['message']['n']['ft']) + delta) if delta else 0
             if 's' in log['message'] and 'ts' in log['message']['s'] :
-                logs['message']['s']['ts'] = int(int(log['message']['s']['ts']) + delta['value']) if delta else 0
+                log['message']['s']['ts'] = int(int(log['message']['s']['ts']) + delta) if delta else 0
             if 's' in log['message'] and 'ft' in log['message']['s'] :
-                logs['message']['s']['ft'] = int(int(log['message']['s']['ft']) + delta['value']) if delta else 0
+                log['message']['s']['ft'] = int(int(log['message']['s']['ft']) + delta) if delta else 0
             log.pop('host', None)
             if log['message']['m'] in ['csr', 'nsc', 'cfg']:
                 result.append(log)
