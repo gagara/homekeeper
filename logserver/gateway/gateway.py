@@ -80,18 +80,21 @@ def query_es(query):
     return logs
 
 def init_controller_clock_delta(conf, req_ts):
-    if (time() - ccd[conf['host']]['timestamp']) > (60 * 60):
-        cls = query_es({"query": {"bool": {"filter": [
-            {"term": {"headers.http_user_agent": "ESP8266"}},
-            {"term": {"host": conf['host']}},
-            {"term": {"m": "cls"}}
-            ]}}, "sort": {"@timestamp": "desc"}, "size": 1})
-        if len(cls) > 0 and 'ts' in cls[0]['message']:
-            ccd[conf['host']]['value'] = cls[0]['@timestamp'] - cls[0]['message']['ts']
-            ccd[conf['host']]['timestamp'] = cls[0]['@timestamp']
-    # if current 'cls' is too old (>60m) || requested long period (>5m) then trigger 'cls' request
-    if (time() - ccd[conf['host']]['timestamp']) > (60 * 60) or (time() - req_ts) >= (5 * 60):
-        controller_send(conf, {'m': 'cls'})
+    try:
+        if (time() - ccd[conf['host']]['timestamp']) > (60 * 60):
+            cls = query_es({"query": {"bool": {"filter": [
+                {"term": {"headers.http_user_agent": "ESP8266"}},
+                {"term": {"host": conf['host']}},
+                {"term": {"m": "cls"}}
+                ]}}, "sort": {"@timestamp": "desc"}, "size": 1})
+            if len(cls) > 0 and 'ts' in cls[0]['message']:
+                ccd[conf['host']]['value'] = cls[0]['@timestamp'] - cls[0]['message']['ts']
+                ccd[conf['host']]['timestamp'] = cls[0]['@timestamp']
+        # if current 'cls' is too old (>60m) || requested long period (>5m) then trigger 'cls' request
+        if (time() - ccd[conf['host']]['timestamp']) > (60 * 60) or (time() - req_ts) >= (5 * 60):
+            controller_send(conf, {'m': 'cls'})
+    except Exception as e:
+        if app.debug : print(e)
 
 def identify_target_controller(msg):
     if 'id' in msg:
@@ -141,11 +144,8 @@ def process_logs(logs):
     return result
 
 def query_logs(timestamp):
-    try:
-        init_controller_clock_delta(app.config['HUC'], timestamp)
-        init_controller_clock_delta(app.config['VUC'], timestamp)
-    except Exception as e:
-        if app.debug : print(e)
+    init_controller_clock_delta(app.config['HUC'], timestamp)
+    init_controller_clock_delta(app.config['VUC'], timestamp)
 
     return process_logs(query_es({"query": {"bool": {"filter": [
         {"term": {"headers.http_user_agent": "ESP8266"}},

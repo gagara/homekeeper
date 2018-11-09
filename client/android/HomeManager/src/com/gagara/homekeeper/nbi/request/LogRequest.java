@@ -59,7 +59,7 @@ public class LogRequest extends MessageHeader implements Request, Parcelable {
         JSONObject json = new JSONObject();
         try {
             json.put(ControllerConfig.MSG_TYPE_KEY, ControllerConfig.MessageType.LOG.code());
-            json.put(ControllerConfig.TIMESTAMP_KEY, timestamp.getTime());
+            json.put(ControllerConfig.TIMESTAMP_KEY, timestamp.getTime() / 1000);
         } catch (JSONException e) {
             Log.e(TAG, "failed to serialize to JSON: " + this.toString() + ": " + e.getMessage(), e);
             return null;

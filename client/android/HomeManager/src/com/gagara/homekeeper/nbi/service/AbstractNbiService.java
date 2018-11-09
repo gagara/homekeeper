@@ -2,36 +2,27 @@ package com.gagara.homekeeper.nbi.service;
 
 import static com.gagara.homekeeper.common.Constants.COMMAND_KEY;
 import static com.gagara.homekeeper.common.Constants.CONTROLLER_CONTROL_COMMAND_ACTION;
-import static com.gagara.homekeeper.common.Constants.CONTROLLER_SERVICE_ONGOING_NOTIFICATION_ID;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
-import static com.gagara.homekeeper.nbi.service.ServiceState.INIT;
-import static com.gagara.homekeeper.nbi.service.ServiceState.SHUTDOWN;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.gagara.homekeeper.R;
-import com.gagara.homekeeper.activity.MainActivity;
+import com.gagara.homekeeper.activity.Main;
 import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.common.ControllerConfig;
 import com.gagara.homekeeper.nbi.request.Request;
@@ -41,94 +32,61 @@ import com.gagara.homekeeper.nbi.response.NodeStateChangeResponse;
 import com.gagara.homekeeper.nbi.response.SensorThresholdConfigurationResponse;
 import com.gagara.homekeeper.ui.view.ViewUtils;
 import com.gagara.homekeeper.ui.viewmodel.TopModelView;
+import com.gagara.homekeeper.utils.NetworkUtils;
 
-public abstract class AbstractNbiService extends Service {
+public abstract class AbstractNbiService {
 
     private static final String TAG = AbstractNbiService.class.getName();
 
     protected static final long INITIAL_CLOCK_SYNC_INTERVAL_SEC = 10;
 
-    protected volatile ServiceState state;
-
-    protected int startId;
-
     protected volatile Date lastMessageTimestamp = new Date(0);
 
-    private NotificationCompat.Builder serviceNotification;
-
-    protected ExecutorService serviceExecutor = null;
     protected BroadcastReceiver controllerCommandReceiver = null;
 
-    private Future<?> currentTask = null;
+    private BroadcastReceiver networkStateChangedReceiver;
 
     abstract void send(Request request);
 
     abstract String getServiceProviderName();
 
-    abstract void setupService();
-
-    @Override
-    public void onCreate() {
-        state = INIT;
-        startId = 0;
-        serviceExecutor = Executors.newSingleThreadExecutor();
-        controllerCommandReceiver = new ControllerCommandsReceiver();
+    public void init() {
+        networkStateChangedReceiver = new NetworkStateChangedReceiver();
+        Main.getAppContext().registerReceiver(networkStateChangedReceiver,
+                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, final int startId) {
-        if ((currentTask == null || currentTask.isDone()) && !serviceExecutor.isTerminated()) {
-            currentTask = serviceExecutor.submit(new Runnable() {
-                @Override
-                public void run() {
-                    setupService();
-                }
-            });
-            this.startId = startId;
-            Log.i(TAG, "started with ID: " + this.startId);
-        }
-
-        // update title
-        Intent titleUpdate = new Intent(SERVICE_TITLE_CHANGE_ACTION);
-        titleUpdate.putExtra(SERVICE_TITLE_KEY, getServiceProviderName());
-        LocalBroadcastManager.getInstance(this).sendBroadcast(titleUpdate);
-
-        // update status
-        notifyStatusChange(null);
-
-        return START_STICKY;
+    public void destroy() {
+        Main.getAppContext().unregisterReceiver(networkStateChangedReceiver);
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    public void onDestroy() {
-        serviceNotification = null;
-        startId = 0;
-        state = SHUTDOWN;
-        // update status
-        notifyStatusChange(null);
-        // update title
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(SERVICE_TITLE_CHANGE_ACTION));
-        serviceExecutor.shutdownNow();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(controllerCommandReceiver);
-    }
-
-    protected void initOngoingNotification() {
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, Constants.CONTROLLER_SERVICE_PENDING_INTENT_ID,
-                new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-        serviceNotification = new NotificationCompat.Builder(this).setContentTitle(getText(R.string.app_name))
-                .setSmallIcon(R.drawable.ic_launcher);
-        if (getServiceProviderName() != null) {
-            serviceNotification.setContentText(getServiceProviderName());
+    protected boolean start() {
+        if (NetworkUtils.isEnabled(Main.getAppContext())) {
+            Log.i(TAG, "starting");
+            // update title
+            Intent titleUpdate = new Intent(SERVICE_TITLE_CHANGE_ACTION);
+            titleUpdate.putExtra(SERVICE_TITLE_KEY, getServiceProviderName());
+            LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(titleUpdate);
+            return true;
         } else {
-            serviceNotification.setContentText(getText(R.string.unknown_service_provider));
+            Intent intent = new Intent(SERVICE_STATUS_CHANGE_ACTION);
+            intent.putExtra(SERVICE_STATUS_DETAILS_KEY,
+                    Main.getAppContext().getResources().getString(R.string.networks_disabled_error));
+            LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(intent);
+            return false;
         }
-        serviceNotification.setContentIntent(pendingIntent);
-        startForeground(CONTROLLER_SERVICE_ONGOING_NOTIFICATION_ID, serviceNotification.build());
+    }
+
+    public boolean stop() {
+        Log.i(TAG, "stopping");
+        // update title
+        LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(new Intent(SERVICE_TITLE_CHANGE_ACTION));
+        LocalBroadcastManager.getInstance(Main.getAppContext()).unregisterReceiver(controllerCommandReceiver);
+        return true;
+    }
+
+    public boolean pause() {
+        return false;
     }
 
     protected void processMessage(JSONObject message, Date timestamp) throws JSONException, IOException {
@@ -140,55 +98,59 @@ public abstract class AbstractNbiService extends Service {
             CurrentStatusResponse stats = new CurrentStatusResponse().fromJson(message);
             if (stats != null) {
                 intent.putExtra(Constants.DATA_KEY, stats);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(intent);
 
                 String title = null;
                 String name = null;
                 if (stats.getNode() != null) {
-                    title = getResources().getString(R.string.node_title);
+                    title = Main.getAppContext().getResources().getString(R.string.node_title);
                     if (ViewUtils.validNode(stats.getNode().getData())) {
-                        name = getResources().getString(TopModelView.NODES.get(stats.getNode().getData().getId()));
+                        name = Main.getAppContext().getResources()
+                                .getString(TopModelView.NODES.get(stats.getNode().getData().getId()));
                     } else {
                         name = stats.getNode().getData().getId() + "";
                     }
                 } else if (stats.getValueSensor() != null) {
-                    title = getResources().getString(R.string.sensor_title);
+                    title = Main.getAppContext().getResources().getString(R.string.sensor_title);
                     if (ViewUtils.validSensor(stats.getValueSensor().getData())) {
-                        name = getResources().getString(
-                                TopModelView.SENSORS.get(stats.getValueSensor().getData().getId()));
+                        name = Main.getAppContext().getResources()
+                                .getString(TopModelView.SENSORS.get(stats.getValueSensor().getData().getId()));
                     } else {
                         name = stats.getValueSensor().getData().getId() + "";
                     }
                 } else if (stats.getStateSensor() != null) {
-                    title = getResources().getString(R.string.sensor_title);
+                    title = Main.getAppContext().getResources().getString(R.string.sensor_title);
                     if (ViewUtils.validSensor(stats.getStateSensor().getData())) {
-                        name = getResources().getString(
-                                TopModelView.SENSORS.get(stats.getStateSensor().getData().getId()));
+                        name = Main.getAppContext().getResources()
+                                .getString(TopModelView.SENSORS.get(stats.getStateSensor().getData().getId()));
                     } else {
                         name = stats.getStateSensor().getData().getId() + "";
                     }
                 }
 
-                notifyStatusChange(String.format(getResources().getString(R.string.service_csr_message_status), title,
-                        name));
+                notifyStatusChange(String
+                        .format(Main.getAppContext().getResources().getString(R.string.service_csr_message_status),
+                                title, name));
             }
         } else if (msgType == ControllerConfig.MessageType.NODE_STATE_CHANGED) {
             NodeStateChangeResponse nodeState = new NodeStateChangeResponse().fromJson(message);
             if (nodeState != null) {
                 intent.putExtra(Constants.DATA_KEY, nodeState);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(intent);
 
                 String title = null;
                 String name = null;
-                title = getResources().getString(R.string.node_title);
+                title = Main.getAppContext().getResources().getString(R.string.node_title);
                 if (ViewUtils.validNode(nodeState.getData())) {
-                    name = getResources().getString(TopModelView.NODES.get(nodeState.getData().getId()));
+                    name = Main.getAppContext().getResources()
+                            .getString(TopModelView.NODES.get(nodeState.getData().getId()));
                 } else {
                     name = nodeState.getData().getId() + "";
                 }
 
-                notifyStatusChange(String.format(getResources().getString(R.string.service_nsc_message_status), title,
-                        name));
+                notifyStatusChange(String
+                        .format(Main.getAppContext().getResources().getString(R.string.service_nsc_message_status),
+                                title, name));
             }
         } else if (msgType == ControllerConfig.MessageType.CONFIGURATION) {
             ConfigurationResponse conf = new ConfigurationResponse().fromJson(message);
@@ -196,19 +158,20 @@ public abstract class AbstractNbiService extends Service {
                 if (conf instanceof SensorThresholdConfigurationResponse) {
                     SensorThresholdConfigurationResponse sensorConf = (SensorThresholdConfigurationResponse) conf;
                     intent.putExtra(Constants.DATA_KEY, sensorConf);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                    LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(intent);
 
                     String title = null;
                     String name = null;
-                    title = getResources().getString(R.string.sensor_title);
+                    title = Main.getAppContext().getResources().getString(R.string.sensor_title);
                     if (ViewUtils.validSensor(sensorConf.getData())) {
-                        name = getResources().getString(
-                                TopModelView.SENSORS_THRESHOLDS.get(sensorConf.getData().getId()));
+                        name = Main.getAppContext().getResources()
+                                .getString(TopModelView.SENSORS_THRESHOLDS.get(sensorConf.getData().getId()));
                     } else {
                         name = sensorConf.getData().getId() + "";
                     }
-                    notifyStatusChange(String.format(getResources().getString(R.string.service_cfg_message_status),
-                            title, name));
+                    notifyStatusChange(String.format(
+                            Main.getAppContext().getResources().getString(R.string.service_cfg_message_status), title,
+                            name));
                 }
             }
         } else {
@@ -218,21 +181,12 @@ public abstract class AbstractNbiService extends Service {
     }
 
     protected final void notifyStatusChange(CharSequence details) {
-        if (serviceNotification != null) {
-            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            if (getServiceProviderName() != null) {
-                serviceNotification.setContentText(getServiceProviderName());
-            } else {
-                serviceNotification.setContentText(getText(R.string.unknown_service_provider));
-            }
-            manager.notify(CONTROLLER_SERVICE_ONGOING_NOTIFICATION_ID, serviceNotification.build());
-        }
         Intent intent = new Intent();
         intent.setAction(SERVICE_STATUS_CHANGE_ACTION);
         if (details != null) {
             intent.putExtra(SERVICE_STATUS_DETAILS_KEY, details);
         }
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(intent);
     }
 
     public class ControllerCommandsReceiver extends BroadcastReceiver {
@@ -245,4 +199,18 @@ public abstract class AbstractNbiService extends Service {
             }
         }
     }
+
+    private class NetworkStateChangedReceiver extends BroadcastReceiver {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
+                if (NetworkUtils.isEnabled(context)) {
+                    start();
+                } else {
+                    stop();
+                }
+            }
+        }
+    }
+
 }

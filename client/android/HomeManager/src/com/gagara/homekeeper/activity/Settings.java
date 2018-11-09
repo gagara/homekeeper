@@ -24,7 +24,7 @@ import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.utils.HomeKeeperConfig;
 import com.gagara.homekeeper.utils.NetworkUtils;
 
-public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class Settings extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
     private EditTextPreference gatewayHost;
     private EditTextPreference gatewayPort;

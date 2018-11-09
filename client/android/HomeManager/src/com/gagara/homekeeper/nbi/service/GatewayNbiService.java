@@ -2,9 +2,9 @@ package com.gagara.homekeeper.nbi.service;
 
 import static com.android.volley.Request.Method.POST;
 import static com.gagara.homekeeper.common.Constants.MESSAGE_KEY;
+import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_CHANGE_ACTION;
+import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
 import static com.gagara.homekeeper.common.Constants.TIMESTAMP_KEY;
-import static com.gagara.homekeeper.nbi.service.ServiceState.ACTIVE;
-import static com.gagara.homekeeper.nbi.service.ServiceState.SHUTDOWN;
 
 import java.io.UnsupportedEncodingException;
 import java.security.KeyManagementException;
@@ -25,7 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import android.content.IntentFilter;
+import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
 import android.util.Log;
@@ -42,7 +42,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
-import com.gagara.homekeeper.common.Constants;
+import com.gagara.homekeeper.R;
+import com.gagara.homekeeper.activity.Main;
 import com.gagara.homekeeper.common.Gateway;
 import com.gagara.homekeeper.nbi.https.HttpsTrustManager;
 import com.gagara.homekeeper.nbi.request.LogRequest;
@@ -58,7 +59,7 @@ public class GatewayNbiService extends AbstractNbiService {
     private static final String GATEWAY_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     private static final DateFormat df = new SimpleDateFormat(GATEWAY_DATE_FORMAT, Locale.getDefault());
 
-    private Gateway gateway = null;
+    private Gateway config = null;
     private RequestQueue httpRequestQueue = null;
 
     private ScheduledExecutorService logMonitorExecutor = null;
@@ -67,51 +68,89 @@ public class GatewayNbiService extends AbstractNbiService {
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
+    public void setConfig(Gateway config) {
+        this.config = config;
+    }
+
     @Override
     public String getServiceProviderName() {
-        if (gateway != null) {
-            return gateway.getHost() + ":" + gateway.getPort();
+        if (config != null) {
+            return config.getHost() + ":" + config.getPort();
         } else {
             return null;
         }
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        gateway = HomeKeeperConfig.getNbiGateway(GatewayNbiService.this);
-        logMonitorExecutor = Executors.newSingleThreadScheduledExecutor();
-        httpRequestQueue = Volley.newRequestQueue(this);
-        httpRequestQueue.start();
-        try {
-            HttpsTrustManager.allowAllSSL();
-        } catch (KeyManagementException e) {
-            Log.e(TAG, e.getMessage(), e);
-        } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, e.getMessage(), e);
+    public void init() {
+        super.init();
+        if (httpRequestQueue == null) {
+            httpRequestQueue = Volley.newRequestQueue(Main.getAppContext());
+            httpRequestQueue.start();
         }
     }
 
     @Override
-    public void setupService() {
-        try {
-            initOngoingNotification();
-            runService();
-        } catch (InterruptedException e) {
-            // just terminating
+    public void destroy() {
+        super.destroy();
+        if (httpRequestQueue != null) {
+            httpRequestQueue.stop();
+            httpRequestQueue = null;
         }
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        logMonitorExecutor.shutdownNow();
-        httpRequestQueue.stop();
+    public boolean start() {
+        setConfig(HomeKeeperConfig.getNbiGateway(Main.getAppContext()));
+        if (config != null && config.valid()) {
+            if (logMonitorExecutor == null || logMonitorExecutor.isTerminated()) {
+                if (super.start()) {
+                    Log.i(TAG, "starting");
+                    logMonitorExecutor = Executors.newSingleThreadScheduledExecutor();
+                    lastMessageTimestamp = new Date();
+                    startLogMonitor();
+                    notifyStatusChange(String.format(
+                            Main.getAppContext().getResources().getString(R.string.service_pulling_gateway_status),
+                            config.getHost(), config.getPort()));
+                    try {
+                        HttpsTrustManager.allowAllSSL();
+                    } catch (KeyManagementException e) {
+                        Log.e(TAG, e.getMessage(), e);
+                    } catch (NoSuchAlgorithmException e) {
+                        Log.e(TAG, e.getMessage(), e);
+                    }
+                    return true;
+                }
+            }
+        } else {
+            Intent intent = new Intent(SERVICE_STATUS_CHANGE_ACTION);
+            intent.putExtra(SERVICE_STATUS_DETAILS_KEY,
+                    Main.getAppContext().getResources().getString(R.string.gateway_not_configured_error));
+            LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(intent);
+            stop();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean stop() {
+        if (logMonitorExecutor != null) {
+            Log.i(TAG, "stopping");
+            logMonitorExecutor.shutdownNow();
+            logMonitorExecutor = null;
+            return super.stop();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean pause() {
+        return false;
     }
 
     @Override
     public void send(Request request) {
-        if (state != SHUTDOWN) {
+        if (httpRequestQueue != null) {
             JsonRequest<JSONArray> req = new GatewayRequest(request);
             req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -119,41 +158,27 @@ public class GatewayNbiService extends AbstractNbiService {
         }
     }
 
-    private void runService() throws InterruptedException {
-        LocalBroadcastManager.getInstance(this).registerReceiver(controllerCommandReceiver,
-                new IntentFilter(Constants.CONTROLLER_CONTROL_COMMAND_ACTION));
-
-        lastMessageTimestamp = new Date();
-        startLogMonitor();
-        state = ACTIVE;
-    }
-
     private void startLogMonitor() {
         if (!logMonitorExecutor.isShutdown()) {
             logMonitorExecutor.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    if (state != SHUTDOWN) {
-                        try {
-                            JsonRequest<JSONArray> req = new GatewayRequest(new LogRequest(lastMessageTimestamp));
-                            req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT,
-                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                            httpRequestQueue.add(req);
-                        } catch (Exception e) {
-                            Log.e(TAG, e.getMessage(), e);
-                            notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
-                            synchronized (serviceExecutor) {
-                                serviceExecutor.notifyAll();
-                            }
-                        }
+                    try {
+                        JsonRequest<JSONArray> req = new GatewayRequest(new LogRequest(lastMessageTimestamp));
+                        req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                        httpRequestQueue.add(req);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage(), e);
+                        notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
                     }
                 }
-            }, 0L, gateway.getPullPeriod(), TimeUnit.SECONDS);
+            }, 0L, config.getPullPeriod(), TimeUnit.SECONDS);
         }
     }
 
     private Map<String, String> addAuthHeaders(Map<String, String> headers) {
-        String creds = String.format("%s:%s", gateway.getUsername(), gateway.getPassword());
+        String creds = String.format("%s:%s", config.getUsername(), config.getPassword());
         String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
         headers.put("Authorization", auth);
         return headers;
@@ -162,7 +187,7 @@ public class GatewayNbiService extends AbstractNbiService {
     private class GatewayRequest extends JsonRequest<JSONArray> {
 
         public GatewayRequest(final Request request) {
-            super(POST, gateway.asUrl(), request.toJson().toString(), new Response.Listener<JSONArray>() {
+            super(POST, config.asUrl(), request.toJson().toString(), new Response.Listener<JSONArray>() {
 
                 @Override
                 public void onResponse(JSONArray response) {

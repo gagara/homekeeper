@@ -5,7 +5,6 @@ import static com.gagara.homekeeper.common.Constants.COMMAND_KEY;
 import static com.gagara.homekeeper.common.Constants.CONTROLLER_CONTROL_COMMAND_ACTION;
 import static com.gagara.homekeeper.common.Constants.DEFAULT_SWITCH_OFF_PERIOD_SEC;
 import static com.gagara.homekeeper.common.Constants.DEFAULT_SWITCH_ON_PERIOD_SEC;
-import static com.gagara.homekeeper.common.Constants.REQUEST_ENABLE_NETWORK;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
@@ -27,7 +26,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -50,7 +48,6 @@ import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.activity.ConfigureNodeDialog.ConfigureNodeListener;
 import com.gagara.homekeeper.activity.ManageNodeStateDialog.SwitchNodeStateListener;
 import com.gagara.homekeeper.common.Constants;
-import com.gagara.homekeeper.common.Gateway;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.ServiceStatusModel;
 import com.gagara.homekeeper.model.StateSensorModel;
@@ -67,22 +64,29 @@ import com.gagara.homekeeper.ui.viewmodel.NodeModelView;
 import com.gagara.homekeeper.ui.viewmodel.StateSensorModelView;
 import com.gagara.homekeeper.ui.viewmodel.TopModelView;
 import com.gagara.homekeeper.ui.viewmodel.ValueSensorModelView;
-import com.gagara.homekeeper.utils.HomeKeeperConfig;
-import com.gagara.homekeeper.utils.NetworkUtils;
 
-public class MainActivity extends ActionBarActivity implements SwitchNodeStateListener, ConfigureNodeListener {
+public class Main extends ActionBarActivity implements SwitchNodeStateListener, ConfigureNodeListener {
 
-    private BroadcastReceiver gatewayStateChangedReceiver;
+    private static Context context;
+
+//    private BroadcastReceiver networkStateChangedReceiver;
     private BroadcastReceiver dataReceiver;
     private BroadcastReceiver serviceTitleReceiver;
     private BroadcastReceiver serviceStatusReceiver;
 
+    private GatewayNbiService gatewayService;
+
     private TopModelView modelView;
+
+    public static Context getAppContext() {
+        return context;
+    }
 
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
         setContentView(R.layout.activity_main);
 
         ViewGroup contentRoot = (ViewGroup) this.findViewById(R.id.contentRootNode);
@@ -247,36 +251,47 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         modelView = new TopModelView(this);
         modelView.render();
 
-        gatewayStateChangedReceiver = new NetworkStateChangedReceiver();
         dataReceiver = new NbiServiceDataReceiver();
         serviceTitleReceiver = new NbiServiceTitleReceiver();
         serviceStatusReceiver = new NbiServiceStatusReceiver();
+
+        gatewayService = new GatewayNbiService();
+        gatewayService.init();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        registerReceiver(gatewayStateChangedReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
+//        registerReceiver(networkStateChangedReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(dataReceiver,
                 new IntentFilter(Constants.CONTROLLER_DATA_TRANSFER_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceTitleReceiver,
                 new IntentFilter(SERVICE_TITLE_CHANGE_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceStatusReceiver,
                 new IntentFilter(SERVICE_STATUS_CHANGE_ACTION));
-
-        NetworkUtils.enableNetwork(this);
-
-        startGatewayNbiService();
+        gatewayService.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(gatewayStateChangedReceiver);
+//        unregisterReceiver(networkStateChangedReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(dataReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceTitleReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceStatusReceiver);
+        gatewayService.pause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        gatewayService.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gatewayService.destroy();
     }
 
     @Override
@@ -289,8 +304,7 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            stopGatewayNbiService();
-            Intent intent = new Intent(this, SettingsActivity.class);
+            Intent intent = new Intent(this, Settings.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_refresh) {
@@ -298,10 +312,6 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
             intent.setAction(CONTROLLER_CONTROL_COMMAND_ACTION);
             intent.putExtra(COMMAND_KEY, new CurrentStatusRequest());
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-            return true;
-        } else if (id == R.id.action_exit) {
-            stopGatewayNbiService();
-            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -393,37 +403,6 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
         // do nothing
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (REQUEST_ENABLE_NETWORK == requestCode) {
-            startGatewayNbiService();
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    private synchronized void startGatewayNbiService() {
-        Gateway proxy = HomeKeeperConfig.getNbiGateway(this);
-        if (NetworkUtils.isEnabled(this)) {
-            if (proxy != null && proxy.valid()) {
-                startService(new Intent(this, GatewayNbiService.class));
-            } else {
-                Intent intent = new Intent(SERVICE_STATUS_CHANGE_ACTION);
-                intent.putExtra(SERVICE_STATUS_DETAILS_KEY,
-                        getResources().getString(R.string.gateway_not_configured_error));
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-            }
-        } else {
-            Intent intent = new Intent(SERVICE_STATUS_CHANGE_ACTION);
-            intent.putExtra(SERVICE_STATUS_DETAILS_KEY, getResources().getString(R.string.networks_disabled_error));
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        }
-    }
-
-    private void stopGatewayNbiService() {
-        stopService(new Intent(this, GatewayNbiService.class));
-    }
-
     public class NbiServiceDataReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -460,7 +439,6 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                             latestTimestamp = stats.getTimestamp();
                         }
                     }
-
                 } else if (data instanceof NodeStateChangeResponse) {
                     // node
                     NodeStateChangeResponse stats = (NodeStateChangeResponse) data;
@@ -485,7 +463,7 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                             msg = String.format(getResources().getString(R.string.switch_state_off_message,
                                     getResources().getString(TopModelView.NODES.get(node.getId()))));
                         }
-                        Toast.makeText(MainActivity.this, msg, LENGTH_LONG).show();
+                        Toast.makeText(Main.this, msg, LENGTH_LONG).show();
                     }
                 } else if (data instanceof SensorThresholdConfigurationResponse) {
                     SensorThresholdConfigurationResponse cfg = (SensorThresholdConfigurationResponse) data;
@@ -538,19 +516,6 @@ public class MainActivity extends ActionBarActivity implements SwitchNodeStateLi
                         .setAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_bottom));
 
                 modelView.getLog().render();
-            }
-        }
-    }
-
-    private class NetworkStateChangedReceiver extends BroadcastReceiver {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
-                if (NetworkUtils.isEnabled(context)) {
-                    startGatewayNbiService();
-                } else {
-                    stopGatewayNbiService();
-                }
             }
         }
     }
