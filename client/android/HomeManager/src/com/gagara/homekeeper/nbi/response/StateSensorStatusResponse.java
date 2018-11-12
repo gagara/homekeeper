@@ -69,7 +69,7 @@ public class StateSensorStatusResponse extends MessageHeader implements Response
         data = new StateSensorModel(json.getInt(ID_KEY));
         data.setState(json.getInt(VALUE_KEY) == 1 ? true : false);
         if (json.getLong(TIMESTAMP_KEY) != 0) {
-            data.setSwitchTimestamp(new Date(json.getLong(TIMESTAMP_KEY)));
+            data.setSwitchTimestamp(new Date(json.getLong(TIMESTAMP_KEY) * 1000));
         }
         return this;
     }

@@ -14,6 +14,7 @@ public class Constants {
 
     public static final int DEFAULT_REMOTE_CONTROL_PULL_INTERVAL = 10;
     public static final int DEFAULT_SLAVE_REFRESH_INTERVAL = 30;
+    public static final int DEFAULT_REFRESH_PERIOD = 10 * 60;
 
     public static final int REQUEST_ENABLE_NETWORK = 506;
     public static final int CONTROLLER_SERVICE_ONGOING_NOTIFICATION_ID = 1006;
@@ -39,6 +40,8 @@ public class Constants {
     public static final String SERVICE_STATUS_DETAILS_KEY = "STATUS_DETAILS";
     public static final String SERVICE_TITLE_KEY = "TITLE";
 
+    public static final String CFG_GATEWAY_CATEGORY = "pref_gateway_category";
+    public static final String CFG_ADD_GATEWAY = "pref_add_gateway";
     public static final String CFG_GATEWAY_HOST = "gateway_host";
     public static final String CFG_GATEWAY_PORT = "gateway_port";
     public static final String CFG_GATEWAY_USER = "gateway_user";

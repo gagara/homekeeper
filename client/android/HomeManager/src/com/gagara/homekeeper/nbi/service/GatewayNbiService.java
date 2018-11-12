@@ -9,13 +9,9 @@ import static com.gagara.homekeeper.common.Constants.TIMESTAMP_KEY;
 import java.io.UnsupportedEncodingException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -44,6 +40,7 @@ import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.activity.Main;
+import com.gagara.homekeeper.common.Constants;
 import com.gagara.homekeeper.common.Gateway;
 import com.gagara.homekeeper.nbi.https.HttpsTrustManager;
 import com.gagara.homekeeper.nbi.request.LogRequest;
@@ -56,17 +53,12 @@ public class GatewayNbiService extends AbstractNbiService {
 
     private static final int HTTP_CONNECTION_TIMEOUT = 30000; // 30 seconds
 
-    private static final String GATEWAY_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    private static final DateFormat df = new SimpleDateFormat(GATEWAY_DATE_FORMAT, Locale.getDefault());
-
     private Gateway config = null;
     private RequestQueue httpRequestQueue = null;
+    private volatile Date lastMessageTimestamp = null;
+
 
     private ScheduledExecutorService logMonitorExecutor = null;
-
-    static {
-        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
 
     public void setConfig(Gateway config) {
         this.config = config;
@@ -97,6 +89,7 @@ public class GatewayNbiService extends AbstractNbiService {
             httpRequestQueue.stop();
             httpRequestQueue = null;
         }
+        lastMessageTimestamp = null;
     }
 
     @Override
@@ -106,8 +99,13 @@ public class GatewayNbiService extends AbstractNbiService {
             if (logMonitorExecutor == null || logMonitorExecutor.isTerminated()) {
                 if (super.start()) {
                     Log.i(TAG, "starting");
+                    if (lastMessageTimestamp == null) {
+                        lastMessageTimestamp = new Date(
+                                (new Date().getTime() / 1000 - Constants.DEFAULT_REFRESH_PERIOD) * 1000);
+                    } else {
+                        lastMessageTimestamp = new Date();
+                    }
                     logMonitorExecutor = Executors.newSingleThreadScheduledExecutor();
-                    lastMessageTimestamp = new Date();
                     startLogMonitor();
                     notifyStatusChange(String.format(
                             Main.getAppContext().getResources().getString(R.string.service_pulling_gateway_status),
@@ -148,6 +146,10 @@ public class GatewayNbiService extends AbstractNbiService {
         return false;
     }
 
+    public void refresh() {
+        lastMessageTimestamp = new Date((new Date().getTime() / 1000 - Constants.DEFAULT_REFRESH_PERIOD) * 1000);
+    }
+
     @Override
     public void send(Request request) {
         if (httpRequestQueue != null) {
@@ -168,6 +170,7 @@ public class GatewayNbiService extends AbstractNbiService {
                         req.setRetryPolicy(new DefaultRetryPolicy(HTTP_CONNECTION_TIMEOUT,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                         httpRequestQueue.add(req);
+                        lastMessageTimestamp = new Date();
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage(), e);
                         notifyStatusChange(e.getClass().getSimpleName() + ": " + e.getMessage());
@@ -191,15 +194,20 @@ public class GatewayNbiService extends AbstractNbiService {
 
                 @Override
                 public void onResponse(JSONArray response) {
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            JSONObject log = response.getJSONObject(i);
-                            Date timestamp = df.parse(log.getString(TIMESTAMP_KEY));
-                            JSONObject message = (JSONObject) new JSONTokener(log.getString(MESSAGE_KEY)).nextValue();
-                            processMessage(message, timestamp);
-                        } catch (Exception e) {
-                            Log.e(TAG, "failed to process [" + response + "]: " + e.getMessage(), e);
+                    if (response.length() > 0) {
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject log = response.getJSONObject(i);
+                                Date timestamp = new Date(log.getLong(TIMESTAMP_KEY) * 1000);
+                                JSONObject message = (JSONObject) new JSONTokener(log.getString(MESSAGE_KEY))
+                                        .nextValue();
+                                processMessage(message, timestamp);
+                            } catch (Exception e) {
+                                Log.e(TAG, "failed to process [" + response + "]: " + e.getMessage(), e);
+                            }
                         }
+                    } else {
+                        notifyStatusChange("-");
                     }
                 }
             }, new Response.ErrorListener() {

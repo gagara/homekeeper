@@ -6,7 +6,8 @@
     <string name="settings_activity_name">Settings</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_exit">Exit</string>
-    <string name="pref_gateway_category_title">Gateway</string>
+    <string name="pref_gateway_category_title">Gateways</string>
+    <string name="pref_add_gateway_title">New</string>
     <string name="pref_gateway_host_title">Host</string>
     <string name="pref_gateway_host_default_summary">[unknown]</string>
     <string name="pref_gateway_port_title">Port</string>

@@ -53,7 +53,6 @@ import com.gagara.homekeeper.model.ServiceStatusModel;
 import com.gagara.homekeeper.model.StateSensorModel;
 import com.gagara.homekeeper.model.ValueSensorModel;
 import com.gagara.homekeeper.nbi.request.ConfigurationRequest;
-import com.gagara.homekeeper.nbi.request.CurrentStatusRequest;
 import com.gagara.homekeeper.nbi.request.NodeStateChangeRequest;
 import com.gagara.homekeeper.nbi.response.CurrentStatusResponse;
 import com.gagara.homekeeper.nbi.response.NodeStateChangeResponse;
@@ -69,7 +68,6 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
 
     private static Context context;
 
-//    private BroadcastReceiver networkStateChangedReceiver;
     private BroadcastReceiver dataReceiver;
     private BroadcastReceiver serviceTitleReceiver;
     private BroadcastReceiver serviceStatusReceiver;
@@ -262,7 +260,6 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
     @Override
     protected void onResume() {
         super.onResume();
-//        registerReceiver(networkStateChangedReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(dataReceiver,
                 new IntentFilter(Constants.CONTROLLER_DATA_TRANSFER_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceTitleReceiver,
@@ -275,7 +272,6 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
     @Override
     protected void onPause() {
         super.onPause();
-//        unregisterReceiver(networkStateChangedReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(dataReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceTitleReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceStatusReceiver);
@@ -308,10 +304,7 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
             startActivity(intent);
             return true;
         } else if (id == R.id.action_refresh) {
-            Intent intent = new Intent();
-            intent.setAction(CONTROLLER_CONTROL_COMMAND_ACTION);
-            intent.putExtra(COMMAND_KEY, new CurrentStatusRequest());
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            gatewayService.refresh();
             return true;
         }
         return super.onOptionsItemSelected(item);

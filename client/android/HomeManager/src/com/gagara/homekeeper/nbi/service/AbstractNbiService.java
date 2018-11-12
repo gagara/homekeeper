@@ -40,8 +40,6 @@ public abstract class AbstractNbiService {
 
     protected static final long INITIAL_CLOCK_SYNC_INTERVAL_SEC = 10;
 
-    protected volatile Date lastMessageTimestamp = new Date(0);
-
     protected BroadcastReceiver controllerCommandReceiver = null;
 
     private BroadcastReceiver networkStateChangedReceiver;
@@ -61,12 +59,12 @@ public abstract class AbstractNbiService {
     }
 
     protected boolean start() {
+        // update title
+        Intent titleUpdate = new Intent(SERVICE_TITLE_CHANGE_ACTION);
+        titleUpdate.putExtra(SERVICE_TITLE_KEY, getServiceProviderName());
+        LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(titleUpdate);
         if (NetworkUtils.isEnabled(Main.getAppContext())) {
             Log.i(TAG, "starting");
-            // update title
-            Intent titleUpdate = new Intent(SERVICE_TITLE_CHANGE_ACTION);
-            titleUpdate.putExtra(SERVICE_TITLE_KEY, getServiceProviderName());
-            LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(titleUpdate);
             return true;
         } else {
             Intent intent = new Intent(SERVICE_STATUS_CHANGE_ACTION);

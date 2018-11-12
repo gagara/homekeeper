@@ -3,6 +3,7 @@
     <PreferenceCategory
         android:key="pref_gateway_category"
         android:title="@string/pref_gateway_category_title" >
+<!-- 
         <EditTextPreference
             android:key="gateway_host"
             android:title="@string/pref_gateway_host_title"
@@ -29,5 +30,6 @@
             android:entries="@array/pref_gateway_pull_period_entries"
             android:entryValues="@array/pref_gateway_pull_period_entry_values"
             android:defaultValue="5" />
+             -->
     </PreferenceCategory>
 </PreferenceScreen>

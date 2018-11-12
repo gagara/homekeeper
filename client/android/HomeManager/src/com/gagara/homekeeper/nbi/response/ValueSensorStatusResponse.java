@@ -67,7 +67,7 @@ public class ValueSensorStatusResponse extends MessageHeader implements Response
         int value = json.getInt(VALUE_KEY);
         Date ts = UNDEFINED_DATE;
         if (json.has(TIMESTAMP_KEY) && json.getLong(TIMESTAMP_KEY) != 0) {
-            ts = new Date(json.getLong(TIMESTAMP_KEY));
+            ts = new Date(json.getLong(TIMESTAMP_KEY) * 1000);
         }
         data = new ValueSensorModel(id);
         data.setValue(value);
