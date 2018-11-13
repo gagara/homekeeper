@@ -1,0 +1,8716 @@
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","s":{"id":54,"v":17}}␊
+␊
+{"m":"csr","s":{"id":55,"v":16}}␊
+␊
+{"m":"csr","s":{"id":56,"v":21}}␊
+␊
+{"m":"csr","s":{"id":58,"v":21}}␊
+␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+{"m":"csr","s":{"id":57,"v":46}}␍␊
+{"m":"csr","s":{"id":74,"v":20,"ts":23702}}␍␊
+{"m":"csr","s":{"id":75,"v":38,"ts":23746}}␍␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␍␊
+{"m":"csr","s":{"id":61,"v":48}}␍␊
+{"m":"csr","s":{"id":62,"v":18}}␍␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","s":{"id":54,"v":17}}␍␊
+{"m":"csr","s":{"id":55,"v":16}}␍␊
+{"m":"csr","s":{"id":56,"v":21}}␍␊
+{"m":"csr","s":{"id":58,"v":21}}␍␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+{"m":"csr","s":{"id":57,"v":46}}␍␊
+{"m":"csr","s":{"id":74,"v":20,"ts":23821}}␍␊
+{"m":"csr","s":{"id":75,"v":38,"ts":23836}}␍␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␍␊
+{"m":"csr","s":{"id":61,"v":49}}␍␊
+{"m":"csr","s":{"id":62,"v":18}}␍␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","s":{"id":54,"v":17}}␍␊
+{"m":"csr","s":{"id":55,"v":16}}␍␊
+{"m":"csr","s":{"id":56,"v":21}}␍␊
+{"m":"csr","s":{"id":58,"v":21}}␍␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+{"m":"csr","s":{"id":57,"v":46}}␍␊
+{"m":"csr","s":{"id":74,"v":20,"ts":23941}}␍␊
+{"m":"csr","s":{"id":62,"v":18}}␊
+␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"cfg","s":{"id":202,"v":23}}␊
+␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"cfg","s":{"id":201,"v":20}}␊
+␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","s":{"id":54,"v":17}}␊
+␊
+{"m":"csr","s":{"id":55,"v":16}}␊
+␊
+{"m":"csr","s":{"id":56,"v":21}}␊
+␊
+{"m":"csr","s":{"id":58,"v":21}}␊
+␊
+{"m":"csr","s":{"id":59,"v":20}}␊
+␊
+{"m":"csr","s":{"id":57,"v":46}}␍␊
+{"m":"csr","s":{"id":74,"v":20,"ts":24001}}␍␊
+sr","s":{"id":75,"v":38,"ts":24647}}␊
+␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␊
+␊
+{"m":"csr","s":{"id":61,"v":32}}␊
+␊
+{"m":"csr","s":{"id":62,"v":32}}␊
+␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"cfg","s":{"id":202,"v":23}}␊
+␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"cfg","s":{"id":201,"v":20}}␊
+␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":36,"ns":1,"ts":24572,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","s":{"id":54,"v":17}}␊
+␊
+{"m":"csr","s":{"id":55,"v":16}}␊
+␊
+{"m":"csr","s":{"id":56,"v":21}}␊
+␊
+{"m":"csr","s":{"id":58,"v":21}}␊
+␊
+{"m":"csr","s":{"id":59,"v":20}}␊
+␊
+{"m":"csr","s":{"id":57,"v":46}}␊
+␊
+{"m":"csr","s":{"id":74,"v":20,"ts":24001}}␊
+␊
+{"m":"csr","s":{"id":75,"v":38,"ts":24647}}␊
+␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␊
+␊
+{"m":"csr","s":{"id":61,"v":34}}␊
+␊
+{"m":"csr","s":{"id":62,"v":34}}␊
+␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"cfg","s":{"id":202,"v":23}}␊
+␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"cfg","s":{"id":201,"v":20}}␊
+␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":36,"ns":1,"ts":24572,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+␊
+{"m":"csr","s":{"id":54,"v":17}}␊
+␊
+{"m":"csr","s":{"id":55,"v":16}}␊
+␊
+{"m":"csr","s":{"id":56,"v":21}}␊
+␊
+{"m":"csr","s":{"id":58,"v":21}}␊
+␊
+{"m":"csr","s":{"id":59,"v":20}}␊
+␊
+{"m":"csr","s":{"id":57,"v":45}}␊
+␊
+{"m":"csr","s":{"id":74,"v":20,"ts":24001}}␊
+␊
+{"m":"csr","s":{"id":75,"v":38,"ts":24647}}␊
+␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␊
+␊
+{"m":"csr","s":{"id":61,"v":35}}␍␊
+{"m":"csr","s":{"id":62,"v":35}}␍␊
+{"m":"nsc","id":36,"ns":0,"ts":25174,"ff":0,"s":[{"id":61,"v":36},{"id":57,"v":45}]}␍␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+{"m":"cfg","s":{"id":54,"cf":1.00}}␍␊
+{"m":"cfg","s":{"id":55,"cf":1.00}}␍␊
+{"m":"cfg","s":{"id":56,"cf":0.95}}␍␊
+{"m":"cfg","s":{"id":57,"cf":1.10}}␍␊
+{"m":"cfg","s":{"id":58,"cf":1.00}}␍␊
+{"m":"cfg","s":{"id":59,"cf":1.00}}␍␊
+{"m":"cfg","s":{"id":61,"cf":1.00}}␍␊
+{"m":"cfg","s":{"id":62,"cf":1.00}}␍␊
+{"m":"cfg","s":{"id":54,"uid":1.00}}␍␊
+{"m":"cfg","s":{"id":55,"uid":1.00}}␍␊
+{"m":"cfg","s":{"id":56,"uid":0.95}}␍␊
+{"m":"cfg","s":{"id":57,"uid":1.10}}␍␊
+{"m":"cfg","s":{"id":58,"uid":1.00}}␍␊
+{"m":"cfg","s":{"id":59,"uid":1.00}}␍␊
+{"m":"cfg","s":{"id":62,"uid":1.00}}␍␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+{"m":"cfg","rap":"point39"}␍␊
+{"m":"cfg","rpw":"87654321"}␍␊
+{"m":"cfg","lap":"HKCU"}␍␊
+{"m":"cfg","lpw":"CentralUnit"}␍␊
+{"m":"cfg","sip":"192.168.1.116"}␍␊
+{"m":"cfg","sp":8085}␍␊
+{"m":"cfg","lip":"192.168.1.233"}␍␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 50␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 174 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25205490:[6064]:wifi:send:200:{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"f...␊
+25205495:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25206498:[6087]:wifi:receive:-1:␊
+25209262:[6049]:SolarPrimary:454/-3864Ohm/17124C␊
+25209431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25209489:[6064]:wifi:send:200:{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+25209494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25210497:[6087]:wifi:receive:-1:␊
+25214348:[6049]:SolarPrimary:454/-3864Ohm/17124C␊
+25214516:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25214574:[6064]:wifi:send:200:{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+25214579:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25215582:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25217002:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25217004:[6085]:HTTP:receive:32 bytes:[797 msec]␊
+25217007:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25219336:[6049]:SolarPrimary:453/-9852Ohm/17125C␊
+25219504:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":54,"v":17}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":54,"v":17}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25219559:[6064]:wifi:send:200:{"m":"csr","s":{"id":54,"v":17}}␊
+25219564:[6062]:HTTP:send:200:[56 msec]␊
+wifi:<<[␍␊
+]␊
+25220567:[6087]:wifi:receive:-1:␊
+25224261:[6049]:SolarPrimary:453/-9852Ohm/17125C␊
+25224430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":55,"v":16}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":55,"v":16}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25224492:[6064]:wifi:send:200:{"m":"csr","s":{"id":55,"v":16}}␊
+25224494:[6062]:HTTP:send:200:[62 msec]␊
+wifi:<<[␍␊
+]␊
+25225497:[6087]:wifi:receive:-1:␊
+25229347:[6049]:SolarPrimary:453/-9852Ohm/17125C␊
+25229515:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":56,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":56,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25229572:[6064]:wifi:send:200:{"m":"csr","s":{"id":56,"v":21}}␊
+25229576:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25230579:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25231998:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25232001:[6085]:HTTP:receive:32 bytes:[803 msec]␊
+25232004:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25234348:[6049]:SolarPrimary:452/-15578Ohm/17126C␊
+25234515:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":58,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":58,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25234574:[6064]:wifi:send:200:{"m":"csr","s":{"id":58,"v":21}}␊
+25234577:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25235580:[6087]:wifi:receive:-1:␊
+25239335:[6049]:SolarPrimary:452/-15578Ohm/17126C␊
+25239503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":59,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25239561:[6064]:wifi:send:200:{"m":"csr","s":{"id":59,"v":20}}␊
+25239564:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25240567:[6087]:wifi:receive:-1:␊
+25244262:[6049]:SolarPrimary:452/-15578Ohm/17126C␊
+25244431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":57,"v":45}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":57,"v":45}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25244486:[6064]:wifi:send:200:{"m":"csr","s":{"id":57,"v":45}}␊
+25244491:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25245494:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25246946:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25246947:[6085]:HTTP:receive:32 bytes:[760 msec]␊
+25246951:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25249262:[6049]:SolarPrimary:452/-15578Ohm/17126C␊
+25249430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":74,"v":20,"ts":25231}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":74,"v":20,"ts":25231}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25249487:[6064]:wifi:send:200:{"m":"csr","s":{"id":74,"v":20,"ts":25231}}␊
+25249492:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25250496:[6087]:wifi:receive:-1:␊
+25254262:[6049]:SolarPrimary:452/-15578Ohm/17126C␊
+25254430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":75,"v":38,"ts":25246}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":75,"v":38,"ts":25246}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25254489:[6064]:wifi:send:200:{"m":"csr","s":{"id":75,"v":38,"ts":25246}}␊
+25254494:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25255497:[6087]:wifi:receive:-1:␊
+25259262:[6049]:SolarPrimary:452/-15578Ohm/17126C␊
+25259430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 42␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":60,"v":0,"ts":21247}}wifi:>>\0wifi:<<[ ␍␊
+Recv 166 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25259488:[6064]:wifi:send:200:{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␊
+25259493:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25260496:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25262043:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25262044:[6085]:HTTP:receive:32 bytes:[866 msec]␊
+25262048:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25264263:[6049]:SolarPrimary:452/-15578Ohm/17126C␊
+25264431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":61,"v":39}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":61,"v":39}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25264487:[6064]:wifi:send:200:{"m":"csr","s":{"id":61,"v":39}}␊
+25264492:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25265495:[6087]:wifi:receive:-1:␊
+25269348:[6049]:SolarPrimary:452/-15578Ohm/17126C␊
+25269516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":62,"v":34}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":62,"v":34}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25269573:[6064]:wifi:send:200:{"m":"csr","s":{"id":62,"v":34}}␊
+25269576:[6062]:HTTP:send:200:[56 msec]␊
+wifi:<<[␍␊
+]␊
+25270579:[6087]:wifi:receive:-1:␊
+25274336:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25274504:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25274563:[6064]:wifi:send:200:{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␊
+25274567:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25275570:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25276991:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25276992:[6085]:HTTP:receive:32 bytes:[816 msec]␊
+25276995:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25279261:[6049]:SolarPrimary:452/-15578Ohm/17126C␊
+25279430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25279490:[6064]:wifi:send:200:{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␊
+25279494:[6062]:HTTP:send:200:[61 msec]␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":202,"v":23}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25279554:[6064]:wifi:send:200:{"m":"cfg","s":{"id":202,"v":23}}␊
+25279560:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25280563:[6087]:wifi:receive:-1:␊
+25284335:[6049]:SolarPrimary:452/-15578Ohm/17126C␊
+25284503:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25284561:[6064]:wifi:send:200:{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␊
+25284567:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25285570:[6087]:wifi:receive:-1:␊
+25289263:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25289431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25289489:[6064]:wifi:send:200:{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␊
+25289494:[6062]:HTTP:send:200:[60 msec]␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":201,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25289555:[6064]:wifi:send:200:{"m":"cfg","s":{"id":201,"v":20}}␊
+25289561:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25290564:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25291986:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25291988:[6085]:HTTP:receive:32 bytes:[826 msec]␊
+25291992:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25294263:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25294431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25294490:[6064]:wifi:send:200:{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␊
+25294494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25295497:[6087]:wifi:receive:-1:␊
+25299262:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25299431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25299488:[6064]:wifi:send:200:{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+25299494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25300497:[6087]:wifi:receive:-1:␊
+25304261:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25304430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 50␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 174 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25304488:[6064]:wifi:send:200:{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"f...␊
+25304494:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25305497:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25306957:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25306959:[6085]:HTTP:receive:32 bytes:[806 msec]␊
+25306962:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25309262:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25309430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25309489:[6064]:wifi:send:200:{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+25309494:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25310497:[6087]:wifi:receive:-1:␊
+25314262:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25314430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25314492:[6064]:wifi:send:200:{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+25314496:[6062]:HTTP:send:200:[62 msec]␊
+wifi:<<[␍␊
+]␊
+25315499:[6087]:wifi:receive:-1:␊
+25319335:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25319503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":54,"v":17}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":54,"v":17}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25319559:[6064]:wifi:send:200:{"m":"csr","s":{"id":54,"v":17}}␊
+25319564:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25320567:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25321931:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25321933:[6085]:HTTP:receive:32 bytes:[787 msec]␊
+25321936:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25324262:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25324431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":55,"v":16}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":55,"v":16}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25324486:[6064]:wifi:send:200:{"m":"csr","s":{"id":55,"v":16}}␊
+25324490:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25325493:[6087]:wifi:receive:-1:␊
+25329335:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25329503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":56,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":56,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25329560:[6064]:wifi:send:200:{"m":"csr","s":{"id":56,"v":21}}␊
+25329563:[6062]:HTTP:send:200:[56 msec]␊
+wifi:<<[␍␊
+]␊
+25330566:[6087]:wifi:receive:-1:␊
+25334261:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25334430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":58,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":58,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25334488:[6064]:wifi:send:200:{"m":"csr","s":{"id":58,"v":21}}␊
+25334491:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25335494:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25337052:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25337053:[6085]:HTTP:receive:32 bytes:[919 msec]␊
+25337057:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25339262:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25339430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":59,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25339485:[6064]:wifi:send:200:{"m":"csr","s":{"id":59,"v":20}}␊
+25339490:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25340493:[6087]:wifi:receive:-1:␊
+25344262:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25344431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":57,"v":45}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":57,"v":45}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25344485:[6064]:wifi:send:200:{"m":"csr","s":{"id":57,"v":45}}␊
+25344490:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25345494:[6087]:wifi:receive:-1:␊
+25349348:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25349516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":74,"v":20,"ts":25321}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":74,"v":20,"ts":25321}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25349574:[6064]:wifi:send:200:{"m":"csr","s":{"id":74,"v":20,"ts":25321}}␊
+25349578:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25350582:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25351998:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25352000:[6085]:HTTP:receive:32 bytes:[873 msec]␊
+25352003:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25354336:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25354504:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":75,"v":38,"ts":25336}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":75,"v":38,"ts":25336}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25354562:[6064]:wifi:send:200:{"m":"csr","s":{"id":75,"v":38,"ts":25336}}␊
+25354567:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25355570:[6087]:wifi:receive:-1:␊
+25359262:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25359430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 42␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":60,"v":0,"ts":21247}}wifi:>>\0wifi:<<[ ␍␊
+Recv 166 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25359486:[6064]:wifi:send:200:{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␊
+25359493:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25360496:[6087]:wifi:receive:-1:␊
+25364261:[6049]:SolarPrimary:451/-21036Ohm/17127C␊
+25364430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":61,"v":41}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":61,"v":41}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25364491:[6064]:wifi:send:200:{"m":"csr","s":{"id":61,"v":41}}␊
+25364493:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25365496:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25366970:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25366972:[6085]:HTTP:receive:32 bytes:[855 msec]␊
+25366975:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25369335:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25369503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":62,"v":34}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":62,"v":34}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25369562:[6064]:wifi:send:200:{"m":"csr","s":{"id":62,"v":34}}␊
+25369564:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25370567:[6087]:wifi:receive:-1:␊
+25374262:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25374431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25374489:[6064]:wifi:send:200:{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␊
+25374494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25375497:[6087]:wifi:receive:-1:␊
+25379262:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25379431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25379489:[6064]:wifi:send:200:{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␊
+25379494:[6062]:HTTP:send:200:[60 msec]␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":202,"v":23}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25379558:[6064]:wifi:send:200:{"m":"cfg","s":{"id":202,"v":23}}␊
+25379561:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25380564:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25381942:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25381943:[6085]:HTTP:receive:32 bytes:[836 msec]␊
+25381947:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25384262:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25384430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25384487:[6064]:wifi:send:200:{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␊
+25384494:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25385497:[6087]:wifi:receive:-1:␊
+25389261:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25389430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25389489:[6064]:wifi:send:200:{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␊
+25389494:[6062]:HTTP:send:200:[61 msec]␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":201,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25389555:[6064]:wifi:send:200:{"m":"cfg","s":{"id":201,"v":20}}␊
+25389560:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25390563:[6087]:wifi:receive:-1:␊
+25394262:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25394430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25394490:[6064]:wifi:send:200:{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␊
+25394494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25395497:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25396813:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25396815:[6085]:HTTP:receive:32 bytes:[716 msec]␊
+25396818:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25399335:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25399503:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25399565:[6064]:wifi:send:200:{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+25399568:[6062]:HTTP:send:200:[62 msec]␊
+wifi:<<[␍␊
+]␊
+25400571:[6087]:wifi:receive:-1:␊
+25404263:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25404431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 50␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 174 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25404489:[6064]:wifi:send:200:{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"f...␊
+25404494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25405497:[6087]:wifi:receive:-1:␊
+25409261:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25409430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25409488:[6064]:wifi:send:200:{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+25409494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25410497:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25411960:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25411961:[6085]:HTTP:receive:32 bytes:[873 msec]␊
+25411965:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25414261:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25414430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25414489:[6064]:wifi:send:200:{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+25414494:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25415497:[6087]:wifi:receive:-1:␊
+25419262:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25419430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":54,"v":17}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":54,"v":17}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25419485:[6064]:wifi:send:200:{"m":"csr","s":{"id":54,"v":17}}␊
+25419490:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25420493:[6087]:wifi:receive:-1:␊
+25424262:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25424431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":55,"v":16}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":55,"v":16}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25424485:[6064]:wifi:send:200:{"m":"csr","s":{"id":55,"v":16}}␊
+25424490:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25425494:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25426882:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25426884:[6085]:HTTP:receive:32 bytes:[802 msec]␊
+25426887:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25429336:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25429504:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":56,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":56,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25429559:[6064]:wifi:send:200:{"m":"csr","s":{"id":56,"v":21}}␊
+25429564:[6062]:HTTP:send:200:[56 msec]␊
+wifi:<<[␍␊
+]␊
+25430567:[6087]:wifi:receive:-1:␊
+25434263:[6049]:SolarPrimary:450/-26228Ohm/17128C␊
+25434431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":58,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":58,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25434485:[6064]:wifi:send:200:{"m":"csr","s":{"id":58,"v":21}}␊
+25434490:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25435493:[6087]:wifi:receive:-1:␊
+25439261:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25439430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":59,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25439488:[6064]:wifi:send:200:{"m":"csr","s":{"id":59,"v":20}}␊
+25439491:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25440494:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25441881:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25441882:[6085]:HTTP:receive:32 bytes:[811 msec]␊
+25441885:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25444262:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25444430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":57,"v":45}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":57,"v":45}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25444487:[6064]:wifi:send:200:{"m":"csr","s":{"id":57,"v":45}}␊
+25444490:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25445493:[6087]:wifi:receive:-1:␊
+25449263:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25449431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":74,"v":20,"ts":25441}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":74,"v":20,"ts":25441}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25449490:[6064]:wifi:send:200:{"m":"csr","s":{"id":74,"v":20,"ts":25441}}␊
+25449493:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25450496:[6087]:wifi:receive:-1:␊
+25454348:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25454516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":75,"v":38,"ts":25426}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":75,"v":38,"ts":25426}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25454575:[6064]:wifi:send:200:{"m":"csr","s":{"id":75,"v":38,"ts":25426}}␊
+25454578:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25455582:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25456801:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25456802:[6085]:HTTP:receive:32 bytes:[739 msec]␊
+25456806:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25459348:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25459516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 42␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":60,"v":0,"ts":21247}}wifi:>>\0wifi:<<[ ␍␊
+Recv 166 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25459582:[6064]:wifi:send:200:{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␊
+25459586:[6062]:HTTP:send:200:[67 msec]␊
+wifi:<<[␍␊
+]␊
+25460589:[6087]:wifi:receive:-1:␊
+25464347:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25464515:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":61,"v":43}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":61,"v":43}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25464613:[6064]:wifi:send:200:{"m":"csr","s":{"id":61,"v":43}}␊
+25464615:[6062]:HTTP:send:200:[98 msec]␊
+wifi:<<[␍␊
+]␊
+25465620:[6087]:wifi:receive:-1:␊
+25469335:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25469503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":62,"v":33}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":62,"v":33}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25469558:[6064]:wifi:send:200:{"m":"csr","s":{"id":62,"v":33}}␊
+25469563:[6062]:HTTP:send:200:[56 msec]␊
+wifi:<<[␍␊
+]␊
+25470566:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25471773:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25471774:[6085]:HTTP:receive:32 bytes:[722 msec]␊
+25471778:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25474263:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25474430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25474489:[6064]:wifi:send:200:{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␊
+25474494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25475497:[6087]:wifi:receive:-1:␊
+25479335:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25479503:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25479566:[6064]:wifi:send:200:{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␊
+25479570:[6062]:HTTP:send:200:[63 msec]␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":202,"v":23}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25479655:[6064]:wifi:send:200:{"m":"cfg","s":{"id":202,"v":23}}␊
+25479658:[6062]:HTTP:send:200:[81 msec]␊
+wifi:<<[␍␊
+]␊
+25480662:[6087]:wifi:receive:-1:␊
+25484262:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25484431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25484489:[6064]:wifi:send:200:{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␊
+25484494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25485497:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25486969:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25486971:[6085]:HTTP:receive:32 bytes:[927 msec]␊
+25486974:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25489261:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25489430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25489487:[6064]:wifi:send:200:{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␊
+25489494:[6062]:HTTP:send:200:[60 msec]␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":201,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25489555:[6064]:wifi:send:200:{"m":"cfg","s":{"id":201,"v":20}}␊
+25489560:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25490563:[6087]:wifi:receive:-1:␊
+25494262:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25494430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25494491:[6064]:wifi:send:200:{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␊
+25494494:[6062]:HTTP:send:200:[62 msec]␊
+wifi:<<[␍␊
+]␊
+25495497:[6087]:wifi:receive:-1:␊
+25499261:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25499430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25499488:[6064]:wifi:send:200:{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+25499494:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25500497:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25501842:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25501843:[6085]:HTTP:receive:32 bytes:[808 msec]␊
+25501847:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25504263:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25504431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 50␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 174 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25504490:[6064]:wifi:send:200:{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"f...␊
+25504494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25505497:[6087]:wifi:receive:-1:␊
+25509262:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25509431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25509489:[6064]:wifi:send:200:{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+25509494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25510497:[6087]:wifi:receive:-1:␊
+25514262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25514431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25514489:[6064]:wifi:send:200:{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+25514494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25515498:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25516838:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25516839:[6085]:HTTP:receive:32 bytes:[814 msec]␊
+25516844:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25519262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25519430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":54,"v":17}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":54,"v":17}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25519484:[6064]:wifi:send:200:{"m":"csr","s":{"id":54,"v":17}}␊
+25519490:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25520493:[6087]:wifi:receive:-1:␊
+25524335:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25524503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":55,"v":16}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":55,"v":16}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25524558:[6064]:wifi:send:200:{"m":"csr","s":{"id":55,"v":16}}␊
+25524563:[6062]:HTTP:send:200:[56 msec]␊
+wifi:<<[␍␊
+]␊
+25525567:[6087]:wifi:receive:-1:␊
+25529263:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25529431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":56,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":56,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25529485:[6064]:wifi:send:200:{"m":"csr","s":{"id":56,"v":21}}␊
+25529490:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25530493:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25531787:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25531788:[6085]:HTTP:receive:32 bytes:[771 msec]␊
+25531792:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25534262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25534431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":58,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":58,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25534486:[6064]:wifi:send:200:{"m":"csr","s":{"id":58,"v":21}}␊
+25534490:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25535493:[6087]:wifi:receive:-1:␊
+25539262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25539431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":59,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25539485:[6064]:wifi:send:200:{"m":"csr","s":{"id":59,"v":20}}␊
+25539490:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25540493:[6087]:wifi:receive:-1:␊
+25544261:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25544515:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":57,"v":45}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":57,"v":45}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25544637:[6064]:wifi:send:200:{"m":"csr","s":{"id":57,"v":45}}␊
+25544640:[6062]:HTTP:send:200:[121 msec]␊
+wifi:<<[␍␊
+]␊
+25545643:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25546682:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25546684:[6085]:HTTP:receive:32 bytes:[678 msec]␊
+25546687:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25549335:[6049]:SolarPrimary:449/-31152Ohm/17129C␊
+25549589:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":74,"v":20,"ts":25531}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":74,"v":20,"ts":25531}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25549726:[6064]:wifi:send:200:{"m":"csr","s":{"id":74,"v":20,"ts":25531}}␊
+25549730:[6062]:HTTP:send:200:[137 msec]␊
+wifi:<<[␍␊
+]␊
+25550733:[6087]:wifi:receive:-1:␊
+25554263:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25554516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":75,"v":38,"ts":25546}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":75,"v":38,"ts":25546}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25554629:[6064]:wifi:send:200:{"m":"csr","s":{"id":75,"v":38,"ts":25546}}␊
+25554632:[6062]:HTTP:send:200:[113 msec]␊
+wifi:<<[␍␊
+]␊
+25555635:[6087]:wifi:receive:-1:␊
+25559262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25559516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 42␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":60,"v":0,"ts":21247}}wifi:>>\0wifi:<<[ ␍␊
+Recv 166 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25559574:[6064]:wifi:send:200:{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␊
+25559578:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25560582:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25561853:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25561856:[6085]:HTTP:receive:32 bytes:[856 msec]␊
+25561859:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25564262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25564516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":61,"v":44}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":61,"v":44}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25564571:[6064]:wifi:send:200:{"m":"csr","s":{"id":61,"v":44}}␊
+25564576:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25565579:[6087]:wifi:receive:-1:␊
+25569261:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25569515:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":62,"v":32}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":62,"v":32}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25569573:[6064]:wifi:send:200:{"m":"csr","s":{"id":62,"v":32}}␊
+25569575:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25570579:[6087]:wifi:receive:-1:␊
+25574262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25574516:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25574577:[6064]:wifi:send:200:{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␊
+25574580:[6062]:HTTP:send:200:[62 msec]␊
+wifi:<<[␍␊
+]␊
+25575583:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25576825:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25576827:[6085]:HTTP:receive:32 bytes:[837 msec]␊
+25576830:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25579335:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25579589:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25579648:[6064]:wifi:send:200:{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␊
+25579653:[6062]:HTTP:send:200:[61 msec]␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":202,"v":23}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25579714:[6064]:wifi:send:200:{"m":"cfg","s":{"id":202,"v":23}}␊
+25579719:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25580722:[6087]:wifi:receive:-1:␊
+25584262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25584517:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25584578:[6064]:wifi:send:200:{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␊
+25584581:[6062]:HTTP:send:200:[62 msec]␊
+wifi:<<[␍␊
+]␊
+25585585:[6087]:wifi:receive:-1:␊
+25589348:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25589602:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25589660:[6064]:wifi:send:200:{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␊
+25589665:[6062]:HTTP:send:200:[60 msec]␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":201,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25589727:[6064]:wifi:send:200:{"m":"cfg","s":{"id":201,"v":20}}␊
+25589732:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25590735:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25591823:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25591825:[6085]:HTTP:receive:32 bytes:[844 msec]␊
+25591828:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25594336:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25594590:[6087]:BoilerPower:6/0␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25594648:[6064]:wifi:send:200:{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␊
+25594653:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25595656:[6087]:wifi:receive:-1:␊
+25599262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25599516:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25599574:[6064]:wifi:send:200:{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+25599579:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25600583:[6087]:wifi:receive:-1:␊
+25604262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25604516:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 50␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 174 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25604575:[6064]:wifi:send:200:{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"f...␊
+25604580:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25605583:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25606769:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25606771:[6085]:HTTP:receive:32 bytes:[800 msec]␊
+25606774:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25609262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25609516:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25609575:[6064]:wifi:send:200:{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+25609579:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25610582:[6087]:wifi:receive:-1:␊
+25614262:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25614516:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25614577:[6064]:wifi:send:200:{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+25614580:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25615583:[6087]:wifi:receive:-1:␊
+25619336:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25619590:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":54,"v":17}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":54,"v":17}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25619646:[6064]:wifi:send:200:{"m":"csr","s":{"id":54,"v":17}}␊
+25619650:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25620653:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25621892:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25621893:[6085]:HTTP:receive:32 bytes:[931 msec]␊
+25621897:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25624261:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25624515:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":55,"v":16}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":55,"v":16}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25624570:[6064]:wifi:send:200:{"m":"csr","s":{"id":55,"v":16}}␊
+25624576:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25625579:[6087]:wifi:receive:-1:␊
+25629335:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25629589:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":56,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":56,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25629643:[6064]:wifi:send:200:{"m":"csr","s":{"id":56,"v":21}}␊
+25629649:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25630652:[6087]:wifi:receive:-1:␊
+25634263:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25634516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":58,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":58,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25634576:[6064]:wifi:send:200:{"m":"csr","s":{"id":58,"v":21}}␊
+25634578:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25635581:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25636889:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25636890:[6085]:HTTP:receive:32 bytes:[936 msec]␊
+25636893:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25639335:[6049]:SolarPrimary:448/29732Ohm/17130C␊
+25639589:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":59,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25639645:[6064]:wifi:send:200:{"m":"csr","s":{"id":59,"v":20}}␊
+25639650:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25640653:[6087]:wifi:receive:-1:␊
+25644262:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25644516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":57,"v":45}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":57,"v":45}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25644571:[6064]:wifi:send:200:{"m":"csr","s":{"id":57,"v":45}}␊
+25644576:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25645579:[6087]:wifi:receive:-1:␊
+25649261:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25649515:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":74,"v":20,"ts":25620}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":74,"v":20,"ts":25620}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25649573:[6064]:wifi:send:200:{"m":"csr","s":{"id":74,"v":20,"ts":25620}}␊
+25649579:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25650582:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25651810:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25651812:[6085]:HTTP:receive:32 bytes:[866 msec]␊
+25651815:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25654335:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25654503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":75,"v":38,"ts":25635}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":75,"v":38,"ts":25635}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25654561:[6064]:wifi:send:200:{"m":"csr","s":{"id":75,"v":38,"ts":25635}}␊
+25654565:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25655569:[6087]:wifi:receive:-1:␊
+25659261:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25659430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 42␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":60,"v":0,"ts":21247}}wifi:>>\0wifi:<<[ ␍␊
+Recv 166 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25659488:[6064]:wifi:send:200:{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␊
+25659493:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25660496:[6087]:wifi:receive:-1:␊
+25664335:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25664503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":61,"v":45}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":61,"v":45}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25664559:[6064]:wifi:send:200:{"m":"csr","s":{"id":61,"v":45}}␊
+25664564:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25665567:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25666782:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25666784:[6085]:HTTP:receive:32 bytes:[845 msec]␊
+25666787:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25669262:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25669431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":62,"v":32}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":62,"v":32}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25669486:[6064]:wifi:send:200:{"m":"csr","s":{"id":62,"v":32}}␊
+25669490:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25670493:[6087]:wifi:receive:-1:␊
+25674336:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25674504:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25674562:[6064]:wifi:send:200:{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␊
+25674567:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25675570:[6087]:wifi:receive:-1:␊
+25679262:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25679430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25679488:[6064]:wifi:send:200:{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␊
+25679494:[6062]:HTTP:send:200:[61 msec]␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":202,"v":23}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25679555:[6064]:wifi:send:200:{"m":"cfg","s":{"id":202,"v":23}}␊
+25679560:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25680563:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25681629:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25681630:[6085]:HTTP:receive:32 bytes:[705 msec]␊
+25681634:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25684347:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25684515:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25684575:[6064]:wifi:send:200:{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␊
+25684579:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25685582:[6087]:wifi:receive:-1:␊
+25689335:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25689503:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25689562:[6064]:wifi:send:200:{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␊
+25689567:[6062]:HTTP:send:200:[61 msec]␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":201,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25689628:[6064]:wifi:send:200:{"m":"cfg","s":{"id":201,"v":20}}␊
+25689633:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25690636:[6087]:wifi:receive:-1:␊
+25694263:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25694431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25694489:[6064]:wifi:send:200:{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␊
+25694494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25695497:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25696876:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25696877:[6085]:HTTP:receive:32 bytes:[960 msec]␊
+25696881:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25699336:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25699504:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25699673:[6064]:wifi:send:200:{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+25699676:[6062]:HTTP:send:200:[169 msec]␊
+wifi:<<[␍␊
+]␊
+25700679:[6087]:wifi:receive:-1:␊
+25704261:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25704430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 50␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 174 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25704493:[6064]:wifi:send:200:{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"f...␊
+25704497:[6062]:HTTP:send:200:[63 msec]␊
+wifi:<<[␍␊
+]␊
+25705500:[6087]:wifi:receive:-1:␊
+25709335:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25709503:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25709562:[6064]:wifi:send:200:{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+25709566:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25710570:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25711822:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25711824:[6085]:HTTP:receive:32 bytes:[915 msec]␊
+25711827:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25714262:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25714430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25714489:[6064]:wifi:send:200:{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+25714494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25715497:[6087]:wifi:receive:-1:␊
+25719348:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25719516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":54,"v":17}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":54,"v":17}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25719571:[6064]:wifi:send:200:{"m":"csr","s":{"id":54,"v":17}}␊
+25719576:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25720579:[6087]:wifi:receive:-1:␊
+25724336:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25724504:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":55,"v":16}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":55,"v":16}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25724559:[6064]:wifi:send:200:{"m":"csr","s":{"id":55,"v":16}}␊
+25724564:[6062]:HTTP:send:200:[56 msec]␊
+wifi:<<[␍␊
+]␊
+25725568:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25726694:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25726696:[6085]:HTTP:receive:32 bytes:[797 msec]␊
+25726699:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25729261:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25729430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":56,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":56,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25729485:[6064]:wifi:send:200:{"m":"csr","s":{"id":56,"v":21}}␊
+25729489:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25730492:[6087]:wifi:receive:-1:␊
+25734335:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25734503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":58,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":58,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25734563:[6064]:wifi:send:200:{"m":"csr","s":{"id":58,"v":21}}␊
+25734565:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25735568:[6087]:wifi:receive:-1:␊
+25739262:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25739430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":59,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25739485:[6064]:wifi:send:200:{"m":"csr","s":{"id":59,"v":20}}␊
+25739490:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25740493:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25741617:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25741618:[6085]:HTTP:receive:32 bytes:[728 msec]␊
+25741621:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25744262:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25744431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":57,"v":45}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":57,"v":45}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25744486:[6064]:wifi:send:200:{"m":"csr","s":{"id":57,"v":45}}␊
+25744490:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25745494:[6087]:wifi:receive:-1:␊
+25749263:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25749431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":74,"v":20,"ts":25740}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":74,"v":20,"ts":25740}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25749488:[6064]:wifi:send:200:{"m":"csr","s":{"id":74,"v":20,"ts":25740}}␊
+25749493:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25750496:[6087]:wifi:receive:-1:␊
+25754348:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25754516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":75,"v":38,"ts":25725}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":75,"v":38,"ts":25725}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25754573:[6064]:wifi:send:200:{"m":"csr","s":{"id":75,"v":38,"ts":25725}}␊
+25754578:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25755582:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25756615:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25756616:[6085]:HTTP:receive:32 bytes:[736 msec]␊
+25756620:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25759335:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25759503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 42␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":60,"v":0,"ts":21247}}wifi:>>\0wifi:<<[ ␍␊
+Recv 166 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25759562:[6064]:wifi:send:200:{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␊
+25759565:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25760569:[6087]:wifi:receive:-1:␊
+25764261:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25764430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":61,"v":47}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":61,"v":47}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25764487:[6064]:wifi:send:200:{"m":"csr","s":{"id":61,"v":47}}␊
+25764490:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25765493:[6087]:wifi:receive:-1:␊
+25769348:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25769516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":62,"v":32}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":62,"v":32}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25769592:[6064]:wifi:send:200:{"m":"csr","s":{"id":62,"v":32}}␊
+25769596:[6062]:HTTP:send:200:[78 msec]␊
+wifi:<<[␍␊
+]␊
+25770601:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25771710:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25771711:[6085]:HTTP:receive:32 bytes:[839 msec]␊
+25771715:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25774336:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25774503:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25774562:[6064]:wifi:send:200:{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␊
+25774567:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25775570:[6087]:wifi:receive:-1:␊
+25779263:[6049]:SolarPrimary:447/25350Ohm/17131C␊
+25779431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25779489:[6064]:wifi:send:200:{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␊
+25779494:[6062]:HTTP:send:200:[60 msec]␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":202,"v":23}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25779557:[6064]:wifi:send:200:{"m":"cfg","s":{"id":202,"v":23}}␊
+25779561:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25780564:[6087]:wifi:receive:-1:␊
+25784262:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25784430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25784488:[6064]:wifi:send:200:{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␊
+25784494:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25785497:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25786683:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25786684:[6085]:HTTP:receive:32 bytes:[821 msec]␊
+25786688:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25789335:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25789503:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25789564:[6064]:wifi:send:200:{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␊
+25789568:[6062]:HTTP:send:200:[62 msec]␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":201,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25789666:[6064]:wifi:send:200:{"m":"cfg","s":{"id":201,"v":20}}␊
+25789669:[6062]:HTTP:send:200:[95 msec]␊
+wifi:<<[␍␊
+]␊
+25790672:[6087]:wifi:receive:-1:␊
+25794263:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25794430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25794541:[6064]:wifi:send:200:{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␊
+25794544:[6062]:HTTP:send:200:[111 msec]␊
+wifi:<<[␍␊
+]␊
+25795547:[6087]:wifi:receive:-1:␊
+25799262:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25799431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25799497:[6064]:wifi:send:200:{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+25799501:[6062]:HTTP:send:200:[68 msec]␊
+wifi:<<[␍␊
+]␊
+25800504:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25801680:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25801681:[6085]:HTTP:receive:32 bytes:[828 msec]␊
+25801686:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25804336:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25804504:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 50␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 174 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25804565:[6064]:wifi:send:200:{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"f...␊
+25804569:[6062]:HTTP:send:200:[62 msec]␊
+wifi:<<[␍␊
+]␊
+25805572:[6087]:wifi:receive:-1:␊
+25809262:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25809430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25809488:[6064]:wifi:send:200:{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+25809494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25810497:[6087]:wifi:receive:-1:␊
+25814261:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25814430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25814490:[6064]:wifi:send:200:{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␊
+25814494:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25815497:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25816651:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25816652:[6085]:HTTP:receive:32 bytes:[808 msec]␊
+25816656:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25819262:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25819430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":54,"v":17}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":54,"v":17}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25819486:[6064]:wifi:send:200:{"m":"csr","s":{"id":54,"v":17}}␊
+25819490:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25820493:[6087]:wifi:receive:-1:␊
+25824335:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25824503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":55,"v":16}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":55,"v":16}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25824559:[6064]:wifi:send:200:{"m":"csr","s":{"id":55,"v":16}}␊
+25824564:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25825567:[6087]:wifi:receive:-1:␊
+25829262:[6049]:SolarPrimary:445/17415Ohm/17133C␊
+25829431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":56,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":56,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25829489:[6064]:wifi:send:200:{"m":"csr","s":{"id":56,"v":21}}␊
+25829491:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25830494:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25831572:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25831574:[6085]:HTTP:receive:32 bytes:[737 msec]␊
+25831577:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25834336:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25834504:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":58,"v":21}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":58,"v":21}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25834560:[6064]:wifi:send:200:{"m":"csr","s":{"id":58,"v":21}}␊
+25834564:[6062]:HTTP:send:200:[56 msec]␊
+wifi:<<[␍␊
+]␊
+25835567:[6087]:wifi:receive:-1:␊
+25839261:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25839430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":59,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25839484:[6064]:wifi:send:200:{"m":"csr","s":{"id":59,"v":20}}␊
+25839490:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25840493:[6087]:wifi:receive:-1:␊
+25844335:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25844503:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":57,"v":45}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":57,"v":45}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25844560:[6064]:wifi:send:200:{"m":"csr","s":{"id":57,"v":45}}␊
+25844563:[6062]:HTTP:send:200:[56 msec]␊
+wifi:<<[␍␊
+]␊
+25845567:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25846694:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25846695:[6085]:HTTP:receive:32 bytes:[869 msec]␊
+25846700:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25849262:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25849431:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":74,"v":20,"ts":25830}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":74,"v":20,"ts":25830}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25849488:[6064]:wifi:send:200:{"m":"csr","s":{"id":74,"v":20,"ts":25830}}␊
+25849493:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25850496:[6087]:wifi:receive:-1:␊
+25854348:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25854516:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":75,"v":38,"ts":25845}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 43␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":75,"v":38,"ts":25845}}wifi:>>\0wifi:<<[ ␍␊
+Recv 167 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25854573:[6064]:wifi:send:200:{"m":"csr","s":{"id":75,"v":38,"ts":25845}}␊
+25854578:[6062]:HTTP:send:200:[59 msec]␊
+wifi:<<[␍␊
+]␊
+25855582:[6087]:wifi:receive:-1:␊
+25859336:[6049]:SolarPrimary:445/17415Ohm/17133C␊
+25859504:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 42␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":60,"v":0,"ts":21247}}wifi:>>\0wifi:<<[ ␍␊
+Recv 166 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25859613:[6064]:wifi:send:200:{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␊
+25859616:[6062]:HTTP:send:200:[109 msec]␊
+wifi:<<[␍␊
+]␊
+25860620:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25861666:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25861667:[6085]:HTTP:receive:32 bytes:[851 msec]␊
+25861671:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25864262:[6049]:SolarPrimary:445/17415Ohm/17133C␊
+25864430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":61,"v":48}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":61,"v":48}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25864485:[6064]:wifi:send:200:{"m":"csr","s":{"id":61,"v":48}}␊
+25864491:[6062]:HTTP:send:200:[57 msec]␊
+wifi:<<[␍␊
+]␊
+25865494:[6087]:wifi:receive:-1:␊
+25869261:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25869430:[6087]:BoilerPower:2/0␊
+{"m":"csr","s":{"id":62,"v":31}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 32␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","s":{"id":62,"v":31}}wifi:>>\0wifi:<<[ ␍␊
+Recv 156 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25869485:[6064]:wifi:send:200:{"m":"csr","s":{"id":62,"v":31}}␊
+25869490:[6062]:HTTP:send:200:[58 msec]␊
+wifi:<<[␍␊
+]␊
+25870493:[6087]:wifi:receive:-1:␊
+25874262:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25874430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25874488:[6064]:wifi:send:200:{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␊
+25874493:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25875497:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25876663:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25876665:[6085]:HTTP:receive:32 bytes:[855 msec]␊
+25876668:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25879262:[6049]:SolarPrimary:445/17415Ohm/17133C␊
+25879431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25879488:[6064]:wifi:send:200:{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␊
+25879494:[6062]:HTTP:send:200:[60 msec]␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":202,"v":23}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25879556:[6064]:wifi:send:200:{"m":"cfg","s":{"id":202,"v":23}}␊
+25879561:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25880564:[6087]:wifi:receive:-1:␊
+25884348:[6049]:SolarPrimary:445/17415Ohm/17133C␊
+25884516:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25884575:[6064]:wifi:send:200:{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␊
+25884579:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25885582:[6087]:wifi:receive:-1:␊
+25889335:[6049]:SolarPrimary:446/21245Ohm/17132C␊
+25889503:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25889562:[6064]:wifi:send:200:{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␊
+25889566:[6062]:HTTP:send:200:[60 msec]␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[␍␊
+]␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 33␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"cfg","s":{"id":201,"v":20}}wifi:>>\0wifi:<<[ ␍␊
+Recv 157 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25889628:[6064]:wifi:send:200:{"m":"cfg","s":{"id":201,"v":20}}␊
+25889633:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25890636:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":74,"v":20}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25891510:[6087]:wifi:receive:200:{"m":"csr","s":{"id":74,"v":20}}␊
+25891511:[6085]:HTTP:receive:32 bytes:[712 msec]␊
+25891515:[5882]:parse cmd:{"m":"csr","s":{"id":74,"v":20}}␊
+25894261:[6049]:SolarPrimary:445/17415Ohm/17133C␊
+25894430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25894489:[6064]:wifi:send:200:{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␊
+25894493:[6062]:HTTP:send:200:[61 msec]␊
+wifi:<<[␍␊
+]␊
+25895497:[6087]:wifi:receive:-1:␊
+25899262:[6049]:SolarPrimary:445/17415Ohm/17133C␊
+25899430:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25899491:[6064]:wifi:send:200:{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␊
+25899494:[6062]:HTTP:send:200:[62 msec]␊
+wifi:<<[␍␊
+]␊
+25900497:[6087]:wifi:receive:-1:␊
+25904262:[6049]:SolarPrimary:445/17415Ohm/17133C␊
+25904431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 50␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 174 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25904489:[6064]:wifi:send:200:{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"f...␊
+25904494:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25905497:[6087]:wifi:receive:-1:␊
+wifi:<<[0,CONNECT␍␊
+␍␊
++IPD,]␊
+wifi:<<[0,156:]␊
+wifi:<<[POST / HTTP/]␊
+wifi:<<[1.1␍␊
+User-Agent: ESP8266␍␊
+Accept: */*␍␊
+Content-Type: application/json␍␊
+Content-Length: 32␍␊
+Connection: close␍␊
+␍␊
+]␊
+wifi:<<[{"m":"csr","s":{"id":75,"v":38}}]␊
+wifi:<<[]␊
+wifi:>>AT+CIPSENDEX=0,2048␍␊
+wifi:<<[AT+CIPSENDEX=0,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>HTTP/1.0 200 OK␍␊
+wifi:>>\0wifi:<<[␍␊
+Recv 17 bytes␍␊
+␍␊
+SEND OK␍␊
+]␊
+wifi:>>AT+CIPCLOSE=0␍␊
+wifi:<<[AT+CIPCLOSE=0␍␊
+0,CLOSED␍␊
+␍␊
+OK␍␊
+]␊
+25906457:[6087]:wifi:receive:200:{"m":"csr","s":{"id":75,"v":38}}␊
+25906458:[6085]:HTTP:receive:32 bytes:[666 msec]␊
+25906461:[5882]:parse cmd:{"m":"csr","s":{"id":75,"v":38}}␊
+25909262:[6049]:SolarPrimary:445/17415Ohm/17133C␊
+25909431:[6087]:BoilerPower:2/0␊
+{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␍␊
+wifi:>>AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+wifi:<<[AT+CIPSTART=4,"TCP","192.168.1.116",8085,0␍␊
+]␊
+wifi:<<[4,CONNECT␍␊
+]␊
+wifi:>>AT+CIPSENDEX=4,2048␍␊
+wifi:<<[AT+CIPSENDEX=4,2048␍␊
+␍␊
+OK␍␊
+>]␊
+wifi:>>POST / HTTP/1.1␍␊
+wifi:>>User-Agent: ESP8266␍␊
+wifi:>>Accept: */*␍␊
+wifi:>>Content-Type: application/json␍␊
+wifi:>>Content-Length: 46␍␊
+wifi:>>Connection: close␍␊
+␍␊
+wifi:>>{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}wifi:>>\0wifi:<<[ ␍␊
+Recv 170 bytes␍␊
+␍␊
+SEND OK]␊
+wifi:<<[␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[83:HTTP/]␊
+wifi:<<[1.1 200 OK␍␊
+]␊
+wifi:<<[Content-Type: text/plain␍␊
+Connection: close␍␊
+Content-Length: 2␍␊
+␍␊
+␍␊
++IPD,4,]␊
+wifi:<<[2:]␊
+wifi:<<[ok]␊
+wifi:<<[4,CLOSED]␊
+25909489:[6064]:wifi:send:200:{"m":"csr","n":{"id":38,"ns":0,"ts":0,"ff":0}}␊
+25909493:[6062]:HTTP:send:200:[60 msec]␊
+wifi:<<[␍␊
+]␊
+25910497:[6087]:wifi:receive:-1:␊
+25914262:[6049]:SolarPrimary:445/17415Ohm/17133C␊
+25914431:[6087]:BoilerPower:2/0␊
+25915432:[5892]:parse cmd:{"m":"cfg","dsp":0}␊
+␊
+{"m":"csr","n":{"id":40,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","s":{"id":54,"v":17}}␍␊
+{"m":"csr","s":{"id":55,"v":16}}␍␊
+{"m":"csr","s":{"id":56,"v":21}}␍␊
+{"m":"csr","s":{"id":58,"v":21}}␍␊
+{"m":"csr","s":{"id":59,"v":20}}␍␊
+{"m":"csr","s":{"id":57,"v":45}}␍␊
+{"m":"csr","s":{"id":74,"v":20,"ts":25920}}␍␊
+{"m":"csr","s":{"id":75,"v":38,"ts":25935}}␍␊
+{"m":"csr","s":{"id":60,"v":0,"ts":21247}}␍␊
+{"m":"csr","s":{"id":61,"v":48}}␍␊
+{"m":"csr","s":{"id":62,"v":31}}␍␊
+{"m":"csr","n":{"id":22,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":24,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"cfg","s":{"id":202,"v":23}}␍␊
+{"m":"csr","n":{"id":26,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":34,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"cfg","s":{"id":201,"v":20}}␍␊
+{"m":"csr","n":{"id":28,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
+{"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}␍␊
