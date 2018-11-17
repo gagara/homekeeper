@@ -1,10 +1,16 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
-import android.content.res.Resources;
-import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.Map;
 
-import com.gagara.homekeeper.R;
+import android.content.res.Resources;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import com.gagara.homekeeper.activity.Main;
+import com.gagara.homekeeper.common.Gateway;
 import com.gagara.homekeeper.model.ServiceTitleModel;
+import com.gagara.homekeeper.utils.HomeKeeperConfig;
 
 public class ServiceTitleModelView extends AbstractInfoModelView<ServiceTitleModel> implements
         ModelView<ServiceTitleModel> {
@@ -13,7 +19,7 @@ public class ServiceTitleModelView extends AbstractInfoModelView<ServiceTitleMod
         this.model = new ServiceTitleModel();
     }
 
-    public ServiceTitleModelView(TextView view, Resources resources) {
+    public ServiceTitleModelView(Spinner view, Resources resources) {
         this.model = new ServiceTitleModel();
         this.view = view;
         this.resources = resources;
@@ -21,12 +27,31 @@ public class ServiceTitleModelView extends AbstractInfoModelView<ServiceTitleMod
 
     @Override
     public void render() {
-        TextView view = (TextView) this.view;
-        if (model.getName() != null) {
-            view.setText(String.format(resources.getString(R.string.service_title),
-                    model.getName() != null ? model.getName() : resources.getString(R.string.unknown_service_provider)));
+        Spinner view = (Spinner) this.view;
+        Map<String, Gateway> gateways = HomeKeeperConfig.getAllNbiGateways(Main.getAppContext());
+        if (gateways.size() > 0) {
+            // update list
+            ArrayList<String> values = new ArrayList<String>(gateways.size());
+            for (Gateway gw : gateways.values()) {
+                values.add(gw.getHost() + ":" + gw.getPort());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(Main.getAppContext(),
+                    android.R.layout.simple_spinner_item, values);
+            view.setAdapter(adapter);
+            if (model.getId() != null) {
+                // select item
+                String[] ids = gateways.keySet().toArray(new String[] {});
+                for (int i = 0; i < gateways.size(); i++) {
+                    if (ids[i].equals(model.getId())) {
+                        view.setSelection(i);
+                        break;
+                    }
+                }
+            } else {
+                // nothing selected
+            }
         } else {
-            view.setText(null);
+            // no gateways configured
         }
     }
 

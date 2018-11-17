@@ -21,15 +21,12 @@
         android:paddingLeft="@dimen/header_padding"
         android:paddingRight="@dimen/header_padding" >
 
-        <TextView
+        <Spinner
             android:id="@+id/headerLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="start"
-            android:text=""
-            android:textColor="@color/header_textColor"
-            android:textSize="@dimen/header_textSize" />
+            android:gravity="start" />
 
         <TextView
             android:id="@+id/headerRight"

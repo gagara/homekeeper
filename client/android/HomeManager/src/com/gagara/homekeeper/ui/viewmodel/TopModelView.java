@@ -31,6 +31,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -122,7 +123,7 @@ public class TopModelView implements ModelView<Model> {
     }
 
     public TopModelView(Activity ctx) {
-        title = new ServiceTitleModelView((TextView) ctx.findViewById(R.id.headerLeft), ctx.getResources());
+        title = new ServiceTitleModelView((Spinner) ctx.findViewById(R.id.headerLeft), ctx.getResources());
         info = new ServiceInfoModelView((TextView) ctx.findViewById(R.id.headerRight), ctx.getResources());
         log = new ServiceLogModelView((TextView) ctx.findViewById(R.id.footerLeft), ctx.getResources());
 

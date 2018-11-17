@@ -4,14 +4,14 @@ import android.os.Bundle;
 
 public class ServiceTitleModel implements Model {
 
-    private String name = null;
+    private String id = null;
 
     public ServiceTitleModel() {
     }
 
-    public ServiceTitleModel(String name) {
+    public ServiceTitleModel(String id) {
         super();
-        this.name = name;
+        this.id = id;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class ServiceTitleModel implements Model {
 
     @Override
     public void saveState(Bundle bundle, String prefix) {
-        bundle.putString(prefix + "service_state_name", name);
+        bundle.putString(prefix + "selected_gw_id", id);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ServiceTitleModel implements Model {
 
     @Override
     public void restoreState(Bundle bundle, String prefix) {
-        name = bundle.getString(prefix + "service_state_name");
+        id = bundle.getString(prefix + "selected_gw_id");
     }
 
     @Override
@@ -39,11 +39,11 @@ public class ServiceTitleModel implements Model {
         return true;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 }

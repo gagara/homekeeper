@@ -1,14 +1,13 @@
 package com.gagara.homekeeper.activity;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static com.gagara.homekeeper.common.Constants.CFG_SELECTED_GATEWAY_ID;
 import static com.gagara.homekeeper.common.Constants.COMMAND_KEY;
 import static com.gagara.homekeeper.common.Constants.CONTROLLER_CONTROL_COMMAND_ACTION;
 import static com.gagara.homekeeper.common.Constants.DEFAULT_SWITCH_OFF_PERIOD_SEC;
 import static com.gagara.homekeeper.common.Constants.DEFAULT_SWITCH_ON_PERIOD_SEC;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
-import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
-import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_HEATING_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_SB_HEATER_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_PRIMARY_HEATER_ID;
@@ -19,15 +18,18 @@ import static com.gagara.homekeeper.ui.viewmodel.TopModelView.SENSORS;
 import static com.gagara.homekeeper.ui.viewmodel.TopModelView.SENSORS_VIEW_LIST;
 
 import java.util.Date;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseIntArray;
@@ -37,8 +39,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +53,7 @@ import com.gagara.homekeeper.R;
 import com.gagara.homekeeper.activity.ConfigureNodeDialog.ConfigureNodeListener;
 import com.gagara.homekeeper.activity.ManageNodeStateDialog.SwitchNodeStateListener;
 import com.gagara.homekeeper.common.Constants;
+import com.gagara.homekeeper.common.Gateway;
 import com.gagara.homekeeper.model.NodeModel;
 import com.gagara.homekeeper.model.ServiceStatusModel;
 import com.gagara.homekeeper.model.StateSensorModel;
@@ -63,16 +69,17 @@ import com.gagara.homekeeper.ui.viewmodel.NodeModelView;
 import com.gagara.homekeeper.ui.viewmodel.StateSensorModelView;
 import com.gagara.homekeeper.ui.viewmodel.TopModelView;
 import com.gagara.homekeeper.ui.viewmodel.ValueSensorModelView;
+import com.gagara.homekeeper.utils.HomeKeeperConfig;
 
 public class Main extends ActionBarActivity implements SwitchNodeStateListener, ConfigureNodeListener {
 
     private static Context context;
 
     private BroadcastReceiver dataReceiver;
-    private BroadcastReceiver serviceTitleReceiver;
     private BroadcastReceiver serviceStatusReceiver;
 
     private GatewayNbiService gatewayService;
+    private NbiGatewayChangeListener gatewaySelectListener;
 
     private TopModelView modelView;
 
@@ -250,8 +257,10 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
         modelView.render();
 
         dataReceiver = new NbiServiceDataReceiver();
-        serviceTitleReceiver = new NbiServiceTitleReceiver();
         serviceStatusReceiver = new NbiServiceStatusReceiver();
+
+        gatewaySelectListener = new NbiGatewayChangeListener();
+        ((Spinner) modelView.getTitle().getView()).setOnItemSelectedListener(gatewaySelectListener);
 
         gatewayService = new GatewayNbiService();
         gatewayService.init();
@@ -262,10 +271,9 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(dataReceiver,
                 new IntentFilter(Constants.CONTROLLER_DATA_TRANSFER_ACTION));
-        LocalBroadcastManager.getInstance(this).registerReceiver(serviceTitleReceiver,
-                new IntentFilter(SERVICE_TITLE_CHANGE_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceStatusReceiver,
                 new IntentFilter(SERVICE_STATUS_CHANGE_ACTION));
+        modelView.getTitle().render();
         gatewayService.start();
     }
 
@@ -273,7 +281,6 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(dataReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceTitleReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceStatusReceiver);
         gatewayService.pause();
     }
@@ -346,7 +353,7 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
             dialog.setNodeName(getResources().getString(TopModelView.NODES.get(nodeView.getModel().getId())));
             if (nodeView.getModel().getSensorsThresholds().size() > 0) {
                 dialog.setSensorsThresholds(nodeView.getModel().getSensorsThresholds());
-                dialog.show(getSupportFragmentManager(), Constants.SWITCH_NODE_DIALOG_TAG);
+                dialog.show(getSupportFragmentManager(), Constants.CONFIG_NODE_DIALOG_TAG);
                 nodeView.render();
             }
         }
@@ -394,6 +401,30 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
     @Override
     public void doNotConfigure(ConfigureNodeDialog dialog) {
         // do nothing
+    }
+
+    public class NbiGatewayChangeListener implements OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            Map<String, Gateway> gateways = HomeKeeperConfig.getAllNbiGateways(Main.getAppContext());
+            String[] ids = gateways.keySet().toArray(new String[] {});
+            if (position < ids.length) {
+                String prevId = PreferenceManager.getDefaultSharedPreferences(context).getString(
+                        CFG_SELECTED_GATEWAY_ID, "");
+                if (!prevId.equals(ids[position])) {
+                    Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+                    editor.putString(CFG_SELECTED_GATEWAY_ID, ids[position]);
+                    editor.commit();
+                    gatewayService.stop();
+                    gatewayService.start();
+                }
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
     }
 
     public class NbiServiceDataReceiver extends BroadcastReceiver {
@@ -486,16 +517,15 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
         }
     }
 
-    public class NbiServiceTitleReceiver extends BroadcastReceiver {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (SERVICE_TITLE_CHANGE_ACTION.equals(action)) {
-                modelView.getTitle().getModel().setName(intent.getStringExtra(SERVICE_TITLE_KEY));
-
-                modelView.getTitle().render();
-            }
-        }
-    }
+    // public class NbiServiceTitleReceiver extends BroadcastReceiver {
+    // public void onReceive(Context context, Intent intent) {
+    // String action = intent.getAction();
+    // if (SERVICE_TITLE_CHANGE_ACTION.equals(action)) {
+    // modelView.getTitle().getModel().setId(intent.getStringExtra(GATEWAY_ID_KEY));
+    // modelView.getTitle().render();
+    // }
+    // }
+    // }
 
     public class NbiServiceStatusReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {

@@ -2,19 +2,17 @@
 <resources>
 
     <string-array name="pref_gateway_pull_period_entries">
-        <item>2 seconds</item>
         <item>5 seconds</item>
         <item>10 seconds</item>
         <item>30 seconds</item>
         <item>1 minute</item>
     </string-array>
-    <string-array name="pref_gateway_pull_period_entry_values">
-        <item>2</item>
+    <integer-array name="pref_gateway_pull_period_entry_values">
         <item>5</item>
         <item>10</item>
         <item>30</item>
         <item>60</item>
-    </string-array>
+    </integer-array>
 
     <string-array name="node_switch_period_entries">
         <item>5 minutes</item>

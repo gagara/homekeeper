@@ -3,33 +3,5 @@
     <PreferenceCategory
         android:key="pref_gateway_category"
         android:title="@string/pref_gateway_category_title" >
-<!-- 
-        <EditTextPreference
-            android:key="gateway_host"
-            android:title="@string/pref_gateway_host_title"
-            android:summary="@string/pref_gateway_host_default_summary" />
-        <EditTextPreference
-            android:key="gateway_port"
-            android:inputType="number"
-            android:title="@string/pref_gateway_port_title"
-            android:summary="@string/pref_gateway_port_default_summary" />
-        <EditTextPreference
-            android:key="gateway_user"
-            android:title="@string/pref_gateway_user_title"
-            android:summary="@string/pref_gateway_user_default_summary" />
-        <EditTextPreference
-            android:key="gateway_password"
-            android:inputType="textPassword"
-            android:title="@string/pref_gateway_password_title"
-            android:summary="@string/pref_gateway_password_default_summary" />
-        <ListPreference
-            android:key="gateway_pull_period"
-            android:title="@string/pref_gateway_pull_period_title"
-            android:dialogTitle="@string/pref_gateway_pull_period_dialog_title"
-            android:summary="@string/pref_gateway_pull_period_summary"
-            android:entries="@array/pref_gateway_pull_period_entries"
-            android:entryValues="@array/pref_gateway_pull_period_entry_values"
-            android:defaultValue="5" />
-             -->
     </PreferenceCategory>
 </PreferenceScreen>

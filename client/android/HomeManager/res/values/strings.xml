@@ -3,9 +3,12 @@
 
     <string name="app_name">HomeManager</string>
     <string name="action_settings">Settings</string>
+    <string name="action_add">Add</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
     <string name="settings_activity_name">Settings</string>
     <string name="action_refresh">Refresh</string>
-    <string name="action_exit">Exit</string>
     <string name="pref_gateway_category_title">Gateways</string>
     <string name="pref_add_gateway_title">New</string>
     <string name="pref_gateway_host_title">Host</string>
@@ -16,7 +19,6 @@
     <string name="pref_gateway_user_default_summary">[unknown]</string>
     <string name="pref_gateway_password_title">Password</string>
     <string name="pref_gateway_password_default_summary">[empty]</string>
-    <string name="pref_gateway_password_non_empty_summary">********</string>
     <string name="pref_gateway_pull_period_title">Pull period</string>
     <string name="pref_gateway_pull_period_summary">pull period</string>
     <string name="pref_gateway_pull_period_default_summary">[unknown]</string>

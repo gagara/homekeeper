@@ -57,20 +57,10 @@ public class GatewayNbiService extends AbstractNbiService {
     private RequestQueue httpRequestQueue = null;
     private volatile Date lastMessageTimestamp = null;
 
-
     private ScheduledExecutorService logMonitorExecutor = null;
 
     public void setConfig(Gateway config) {
         this.config = config;
-    }
-
-    @Override
-    public String getServiceProviderName() {
-        if (config != null) {
-            return config.getHost() + ":" + config.getPort();
-        } else {
-            return null;
-        }
     }
 
     @Override

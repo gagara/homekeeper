@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/gateway_host_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@+string/pref_gateway_host_title" />
+    <EditText
+        android:id="@+id/gateway_host"
+        android:hint="@+string/pref_gateway_host_default_summary"
+        android:inputType="text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/gateway_port_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@+string/pref_gateway_port_title" />
+    <EditText
+        android:id="@+id/gateway_port"
+        android:hint="@+string/pref_gateway_port_default_summary"
+        android:inputType="number"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/gateway_user_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@+string/pref_gateway_user_title" />
+    <EditText
+        android:id="@+id/gateway_user"
+        android:hint="@+string/pref_gateway_user_default_summary"
+        android:inputType="text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/gateway_password_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@+string/pref_gateway_password_title" />
+    <EditText
+        android:id="@+id/gateway_password"
+        android:hint="@+string/pref_gateway_password_default_summary"
+        android:inputType="textPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/gateway_pull_period_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@+string/pref_gateway_pull_period_dialog_title" />
+    <Spinner
+        android:id="@+id/gateway_pull_period_list"
+        android:entries="@array/pref_gateway_pull_period_entries"
+        android:entryValues="@array/pref_gateway_pull_period_entry_values"
+        android:hint="@+string/pref_gateway_pull_period_default_summary"
+        android:inputType="number"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+
+<!-- 
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <EditTextPreference
+        android:key="gateway_host"
+        android:title="@string/pref_gateway_host_title"
+        android:summary="@string/pref_gateway_host_default_summary" />
+    <EditTextPreference
+        android:key="gateway_port"
+        android:inputType="number"
+        android:title="@string/pref_gateway_port_title"
+        android:summary="@string/pref_gateway_port_default_summary" />
+    <EditTextPreference
+        android:key="gateway_user"
+        android:title="@string/pref_gateway_user_title"
+        android:summary="@string/pref_gateway_user_default_summary" />
+    <EditTextPreference
+        android:key="gateway_password"
+        android:inputType="textPassword"
+        android:title="@string/pref_gateway_password_title"
+        android:summary="@string/pref_gateway_password_default_summary" />
+    <ListPreference
+        android:key="gateway_pull_period"
+        android:title="@string/pref_gateway_pull_period_title"
+        android:dialogTitle="@string/pref_gateway_pull_period_dialog_title"
+        android:summary="@string/pref_gateway_pull_period_summary"
+        android:entries="@array/pref_gateway_pull_period_entries"
+        android:entryValues="@array/pref_gateway_pull_period_entry_values"
+        android:defaultValue="5" />
+</PreferenceScreen>
+ -->

@@ -5,7 +5,6 @@ import static com.gagara.homekeeper.common.Constants.CONTROLLER_CONTROL_COMMAND_
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_CHANGE_ACTION;
-import static com.gagara.homekeeper.common.Constants.SERVICE_TITLE_KEY;
 
 import java.io.IOException;
 import java.util.Date;
@@ -46,7 +45,7 @@ public abstract class AbstractNbiService {
 
     abstract void send(Request request);
 
-    abstract String getServiceProviderName();
+    // abstract String getServiceProviderName();
 
     public void init() {
         networkStateChangedReceiver = new NetworkStateChangedReceiver();
@@ -59,10 +58,6 @@ public abstract class AbstractNbiService {
     }
 
     protected boolean start() {
-        // update title
-        Intent titleUpdate = new Intent(SERVICE_TITLE_CHANGE_ACTION);
-        titleUpdate.putExtra(SERVICE_TITLE_KEY, getServiceProviderName());
-        LocalBroadcastManager.getInstance(Main.getAppContext()).sendBroadcast(titleUpdate);
         if (NetworkUtils.isEnabled(Main.getAppContext())) {
             Log.i(TAG, "starting");
             return true;
