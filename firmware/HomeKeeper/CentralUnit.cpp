@@ -1438,7 +1438,7 @@ int8_t getSensorValue(const uint8_t sensor) {
         float vout = (vin / 1023.0) * v;
         float r1 = (vin / vout - 1) * r2;
 
-        dbgf(debug, F(":SolarPrimary:%d/%dOhm/%dC\n"), v, r1, (r1 - 100) / 0.39);
+        dbgf(debug, F(":SolarPrimary:%d/%dOhm/%dC\n"), v, (int) r1, (int) ((r1 - 100) / 0.39));
 
         if (v > 0) {
             result = (r1 - 100) / 0.39;
@@ -1616,7 +1616,7 @@ void reportStatus() {
 
 void reportConfiguration() {
     char json[JSON_MAX_SIZE];
-    char ip[16];
+    char buf[16];
 
     jsonifySensorConfig(SENSOR_SUPPLY, F("cf"), readSensorCF(SENSOR_SUPPLY), json, JSON_MAX_SIZE);
     serial->println(json);
@@ -1643,25 +1643,40 @@ void reportConfiguration() {
     serial->println(json);
     bt->println(json);
 
-    jsonifySensorConfig(SENSOR_SUPPLY, F("uid"), readSensorCF(SENSOR_SUPPLY), json, JSON_MAX_SIZE);
+    DeviceAddress uid;
+    readSensorUID(SENSOR_SUPPLY, uid);
+    uid2str(uid, buf);
+    jsonifySensorConfig(SENSOR_SUPPLY, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    jsonifySensorConfig(SENSOR_REVERSE, F("uid"), readSensorCF(SENSOR_REVERSE), json, JSON_MAX_SIZE);
+    readSensorUID(SENSOR_REVERSE, uid);
+    uid2str(uid, buf);
+    jsonifySensorConfig(SENSOR_REVERSE, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    jsonifySensorConfig(SENSOR_TANK, F("uid"), readSensorCF(SENSOR_TANK), json, JSON_MAX_SIZE);
+    readSensorUID(SENSOR_TANK, uid);
+    uid2str(uid, buf);
+    jsonifySensorConfig(SENSOR_TANK, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    jsonifySensorConfig(SENSOR_BOILER, F("uid"), readSensorCF(SENSOR_BOILER), json, JSON_MAX_SIZE);
+    readSensorUID(SENSOR_BOILER, uid);
+    uid2str(uid, buf);
+    jsonifySensorConfig(SENSOR_BOILER, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    jsonifySensorConfig(SENSOR_MIX, F("uid"), readSensorCF(SENSOR_MIX), json, JSON_MAX_SIZE);
+    readSensorUID(SENSOR_MIX, uid);
+    uid2str(uid, buf);
+    jsonifySensorConfig(SENSOR_MIX, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    jsonifySensorConfig(SENSOR_SB_HEATER, F("uid"), readSensorCF(SENSOR_SB_HEATER), json, JSON_MAX_SIZE);
+    readSensorUID(SENSOR_SB_HEATER, uid);
+    uid2str(uid, buf);
+    jsonifySensorConfig(SENSOR_SB_HEATER, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    jsonifySensorConfig(SENSOR_SOLAR_SECONDARY, F("uid"), readSensorCF(SENSOR_SOLAR_SECONDARY), json, JSON_MAX_SIZE);
+    readSensorUID(SENSOR_SOLAR_SECONDARY, uid);
+    uid2str(uid, buf);
+    jsonifySensorConfig(SENSOR_SOLAR_SECONDARY, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
 
@@ -1687,15 +1702,15 @@ void reportConfiguration() {
     serial->println(json);
     bt->println(json);
 
-    sprintf(ip, "%d.%d.%d.%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2], SERVER_IP[3]);
-    jsonifyConfig(F("sip"), ip, json, JSON_MAX_SIZE);
+    sprintf(buf, "%d.%d.%d.%d", SERVER_IP[0], SERVER_IP[1], SERVER_IP[2], SERVER_IP[3]);
+    jsonifyConfig(F("sip"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
     jsonifyConfig(F("sp"), SERVER_PORT, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    sprintf(ip, "%d.%d.%d.%d", WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
-    jsonifyConfig(F("lip"), ip, json, JSON_MAX_SIZE);
+    sprintf(buf, "%d.%d.%d.%d", WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
+    jsonifyConfig(F("lip"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
     dbgf(debug, F(":EEPROM:written:%d bytes\n"), eepromWriteCount);
