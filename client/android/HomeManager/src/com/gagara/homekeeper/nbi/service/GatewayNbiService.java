@@ -1,6 +1,7 @@
 package com.gagara.homekeeper.nbi.service;
 
 import static com.android.volley.Request.Method.POST;
+import static com.gagara.homekeeper.common.Constants.DEFAULT_REFRESH_PERIOD;
 import static com.gagara.homekeeper.common.Constants.MESSAGE_KEY;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_CHANGE_ACTION;
 import static com.gagara.homekeeper.common.Constants.SERVICE_STATUS_DETAILS_KEY;
@@ -91,7 +92,7 @@ public class GatewayNbiService extends AbstractNbiService {
                     Log.i(TAG, "starting");
                     if (lastMessageTimestamp == null) {
                         lastMessageTimestamp = new Date(
-                                (new Date().getTime() / 1000 - Constants.DEFAULT_REFRESH_PERIOD) * 1000);
+                                ((new Date().getTime() / 1000) - DEFAULT_REFRESH_PERIOD) * 1000);
                     } else {
                         lastMessageTimestamp = new Date();
                     }

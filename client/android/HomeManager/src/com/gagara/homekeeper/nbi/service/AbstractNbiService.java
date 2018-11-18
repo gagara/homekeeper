@@ -48,6 +48,7 @@ public abstract class AbstractNbiService {
     // abstract String getServiceProviderName();
 
     public void init() {
+        controllerCommandReceiver = new ControllerCommandsReceiver();
         networkStateChangedReceiver = new NetworkStateChangedReceiver();
         Main.getAppContext().registerReceiver(networkStateChangedReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -60,6 +61,8 @@ public abstract class AbstractNbiService {
     protected boolean start() {
         if (NetworkUtils.isEnabled(Main.getAppContext())) {
             Log.i(TAG, "starting");
+            LocalBroadcastManager.getInstance(Main.getAppContext()).registerReceiver(controllerCommandReceiver,
+                    new IntentFilter(CONTROLLER_CONTROL_COMMAND_ACTION));
             return true;
         } else {
             Intent intent = new Intent(SERVICE_STATUS_CHANGE_ACTION);
