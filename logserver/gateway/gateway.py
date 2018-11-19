@@ -23,18 +23,18 @@ app.config.from_pyfile('gateway.conf')
 
 # read env
 app.config['GATEWAY']['host'] = os.environ.get('GATEWAY_HOST', default=app.config['GATEWAY']['host'])
-app.config['GATEWAY']['port'] = os.environ.get('GATEWAY_PORT', default=app.config['GATEWAY']['port'])
+app.config['GATEWAY']['port'] = int(os.environ.get('GATEWAY_PORT', default=app.config['GATEWAY']['port']))
 app.config['GATEWAY']['user'] = os.environ.get('GATEWAY_USER', default=app.config['GATEWAY']['user'])
 app.config['GATEWAY']['password'] = os.environ.get('GATEWAY_PASSWORD', default=app.config['GATEWAY']['password'])
 app.config['DAD']['host'] = os.environ.get('DAD_HOST', default=app.config['DAD']['host'])
-app.config['DAD']['port'] = os.environ.get('DAD_PORT', default=app.config['DAD']['port'])
+app.config['DAD']['port'] = int(os.environ.get('DAD_PORT', default=app.config['DAD']['port']))
 app.config['MOM']['host'] = os.environ.get('MOM_HOST', default=app.config['MOM']['host'])
-app.config['MOM']['port'] = os.environ.get('MOM_PORT', default=app.config['MOM']['port'])
+app.config['MOM']['port'] = int(os.environ.get('MOM_PORT', default=app.config['MOM']['port']))
 app.config['ELASTICSEARCH']['host'] = os.environ.get('ELASTICSEARCH_HOST', default=app.config['ELASTICSEARCH']['host'])
-app.config['ELASTICSEARCH']['port'] = os.environ.get('ELASTICSEARCH_PORT', default=app.config['ELASTICSEARCH']['port'])
+app.config['ELASTICSEARCH']['port'] = int(os.environ.get('ELASTICSEARCH_PORT', default=app.config['ELASTICSEARCH']['port']))
 app.config['ELASTICSEARCH']['index'] = os.environ.get('ELASTICSEARCH_INDEX', default=app.config['ELASTICSEARCH']['index'])
 app.config['LOGSERVER']['host'] = os.environ.get('LOGSERVER_HOST', default=app.config['LOGSERVER']['host'])
-app.config['LOGSERVER']['port'] = os.environ.get('LOGSERVER_PORT', default=app.config['LOGSERVER']['port'])
+app.config['LOGSERVER']['port'] = int(os.environ.get('LOGSERVER_PORT', default=app.config['LOGSERVER']['port']))
 
 ####
 app.debug = True
@@ -90,12 +90,12 @@ def query_es(query):
     logs = []
     if app.debug : print('>>>ELASTICSEARCH: %s' % query)
     res = es.search(index=app.config['ELASTICSEARCH']['index'], body=query)
-    if app.debug : print('<<<ELASTICSEARCH: %d' % res['hits']['total'])
     for hit in res['hits']['hits']:
         if '@timestamp' in hit['_source'] and 'host' in hit['_source'] and 'message' in hit['_source']:
             logs.append({'@timestamp': timegm(datetime.datetime.strptime(hit['_source']['@timestamp'], ES_DATE_FORMAT).timetuple()),
                          'host': hit['_source']['host'],
                          'message': json.loads(hit['_source']['message'])})
+    if app.debug : print('<<<ELASTICSEARCH: %d/%d' % (len(logs), res['hits']['total']))
     return logs
 
 def init_controller_clock_delta(conf, req_ts):
@@ -109,8 +109,8 @@ def init_controller_clock_delta(conf, req_ts):
             if len(cls) > 0 and 'ts' in cls[0]['message']:
                 ccd[conf['host']]['value'] = cls[0]['@timestamp'] - cls[0]['message']['ts']
                 ccd[conf['host']]['timestamp'] = cls[0]['@timestamp']
-        # if current 'cls' is too old (>60m) || requested long period (>5m) then trigger 'cls' request
-        if (time() - ccd[conf['host']]['timestamp']) > (60 * 60) or (time() - req_ts) >= (5 * 60):
+        # if current 'cls' is too old (>60m) || requested long period (>=3m) then trigger 'cls' request
+        if (time() - ccd[conf['host']]['timestamp']) > (60 * 60) or (time() - req_ts) >= (3 * 60):
             controller_send(conf, {'m': 'cls'})
     except Exception as e:
         if app.debug : print(e)
@@ -176,7 +176,7 @@ def query_logs(timestamp):
     return process_logs(query_es({"query": {"bool": {"filter": [
         {"term": {"headers.http_user_agent": "ESP8266"}},
         {"range": {"@timestamp": {"gt": timestamp * 1000}}}
-        ]}}, "sort": {"@timestamp": "asc"}}))
+        ]}}, "sort": {"@timestamp": "asc"}, "size": 50}))
 
 @app.route("/", methods=['POST'])
 @requires_auth

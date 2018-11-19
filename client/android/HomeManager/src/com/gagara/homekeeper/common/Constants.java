@@ -14,7 +14,7 @@ public class Constants {
 
     public static final int DEFAULT_REMOTE_CONTROL_PULL_INTERVAL = 10;
     public static final int DEFAULT_SLAVE_REFRESH_INTERVAL = 30;
-    public static final int DEFAULT_REFRESH_PERIOD = 10 * 60;
+    public static final int DEFAULT_REFRESH_PERIOD = 5 * 60;
 
     public static final int REQUEST_ENABLE_NETWORK = 506;
     
