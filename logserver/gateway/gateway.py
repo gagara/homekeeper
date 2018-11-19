@@ -111,6 +111,13 @@ def identify_target_controller(msg):
             return app.config['VUC']
         else:
             return None
+    elif 's' in msg and 'id' in msg['s']:
+        if msg['s']['id'] in app.config['HUC']['managed_nodes']:
+            return app.config['HUC']
+        elif msg['s']['id'] in app.config['VUC']['managed_nodes']:
+            return app.config['VUC']
+        else:
+            return None
     else:
         return None
 
