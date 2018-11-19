@@ -1,5 +1,7 @@
 from functools import wraps
 
+import os
+
 from elasticsearch import Elasticsearch
 import requests
 import json
@@ -15,7 +17,24 @@ import datetime
 ES_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
 app = Flask(__name__)
+
+# read config file
 app.config.from_pyfile('gateway.conf')
+
+# read env
+app.config['GATEWAY']['host'] = os.environ.get('GATEWAY_HOST', default=app.config['GATEWAY']['host'])
+app.config['GATEWAY']['port'] = os.environ.get('GATEWAY_PORT', default=app.config['GATEWAY']['port'])
+app.config['GATEWAY']['user'] = os.environ.get('GATEWAY_USER', default=app.config['GATEWAY']['user'])
+app.config['GATEWAY']['password'] = os.environ.get('GATEWAY_PASSWORD', default=app.config['GATEWAY']['password'])
+app.config['DAD']['host'] = os.environ.get('DAD_HOST', default=app.config['DAD']['host'])
+app.config['DAD']['port'] = os.environ.get('DAD_PORT', default=app.config['DAD']['port'])
+app.config['MOM']['host'] = os.environ.get('MOM_HOST', default=app.config['MOM']['host'])
+app.config['MOM']['port'] = os.environ.get('MOM_PORT', default=app.config['MOM']['port'])
+app.config['ELASTICSEARCH']['host'] = os.environ.get('ELASTICSEARCH_HOST', default=app.config['ELASTICSEARCH']['host'])
+app.config['ELASTICSEARCH']['port'] = os.environ.get('ELASTICSEARCH_PORT', default=app.config['ELASTICSEARCH']['port'])
+app.config['ELASTICSEARCH']['index'] = os.environ.get('ELASTICSEARCH_INDEX', default=app.config['ELASTICSEARCH']['index'])
+app.config['LOGSERVER']['host'] = os.environ.get('LOGSERVER_HOST', default=app.config['LOGSERVER']['host'])
+app.config['LOGSERVER']['port'] = os.environ.get('LOGSERVER_PORT', default=app.config['LOGSERVER']['port'])
 
 ####
 app.debug = True
@@ -23,11 +42,11 @@ app.debug = True
 
 es = Elasticsearch(hosts=[app.config['ELASTICSEARCH']['host']], port=app.config['ELASTICSEARCH']['port'])
 
-ccd = {app.config['HUC']['host']: {'timestamp': 0, 'value': 0}, app.config['VUC']['host']: {'timestamp': 0, 'value': 0}}
+ccd = {app.config['DAD']['host']: {'timestamp': 0, 'value': 0}, app.config['MOM']['host']: {'timestamp': 0, 'value': 0}}
 
 ####### Auth decorator #########
 def check_auth(username, password):
-    return username == app.config['AUTH']['user'] and password == app.config['AUTH']['password']
+    return username == app.config['GATEWAY']['user'] and password == app.config['GATEWAY']['password']
 
 def authenticate():
     return Response(
@@ -98,24 +117,24 @@ def init_controller_clock_delta(conf, req_ts):
 
 def identify_target_controller(msg):
     if 'id' in msg:
-        if msg['id'] in app.config['HUC']['managed_nodes']:
-            return app.config['HUC']
-        elif msg['id'] in app.config['VUC']['managed_nodes']:
-            return app.config['VUC']
+        if msg['id'] in app.config['DAD']['managed_nodes']:
+            return app.config['DAD']
+        elif msg['id'] in app.config['MOM']['managed_nodes']:
+            return app.config['MOM']
         else:
             return None
     elif 'n' in msg and 'id' in msg['n']:
-        if msg['n']['id'] in app.config['HUC']['managed_nodes']:
-            return app.config['HUC']
-        elif msg['n']['id'] in app.config['VUC']['managed_nodes']:
-            return app.config['VUC']
+        if msg['n']['id'] in app.config['DAD']['managed_nodes']:
+            return app.config['DAD']
+        elif msg['n']['id'] in app.config['MOM']['managed_nodes']:
+            return app.config['MOM']
         else:
             return None
     elif 's' in msg and 'id' in msg['s']:
-        if msg['s']['id'] in app.config['HUC']['managed_nodes']:
-            return app.config['HUC']
-        elif msg['s']['id'] in app.config['VUC']['managed_nodes']:
-            return app.config['VUC']
+        if msg['s']['id'] in app.config['DAD']['managed_nodes']:
+            return app.config['DAD']
+        elif msg['s']['id'] in app.config['MOM']['managed_nodes']:
+            return app.config['MOM']
         else:
             return None
     else:
@@ -133,17 +152,17 @@ def process_logs(logs):
             delta = None
             if ccd.get(log['host']) and ccd.get(log['host'])['timestamp'] > 0:
                 delta = ccd.get(log['host'])['value']
-            if 'ts' in log['message'] :
+            if 'ts' in log['message'] and int(log['message']['ts']) > 0 :
                 log['message']['ts'] = int(int(log['message']['ts']) + delta) if delta else 0
-            if 'ft' in log['message'] :
+            if 'ft' in log['message'] and int(log['message']['ft']) > 0 :
                 log['message']['ft'] = int(int(log['message']['ft']) + delta) if delta else 0
-            if 'n' in log['message'] and 'ts' in log['message']['n'] :
+            if 'n' in log['message'] and 'ts' in log['message']['n'] and int(log['message']['n']['ts']) > 0 :
                 log['message']['n']['ts'] = int(int(log['message']['n']['ts']) + delta) if delta else 0
-            if 'n' in log['message'] and 'ft' in log['message']['n'] :
+            if 'n' in log['message'] and 'ft' in log['message']['n'] and int(log['message']['n']['ft']) > 0 :
                 log['message']['n']['ft'] = int(int(log['message']['n']['ft']) + delta) if delta else 0
-            if 's' in log['message'] and 'ts' in log['message']['s'] :
+            if 's' in log['message'] and 'ts' in log['message']['s'] and int(log['message']['s']['ts']) > 0 :
                 log['message']['s']['ts'] = int(int(log['message']['s']['ts']) + delta) if delta else 0
-            if 's' in log['message'] and 'ft' in log['message']['s'] :
+            if 's' in log['message'] and 'ft' in log['message']['s'] and int(log['message']['s']['ft']) > 0 :
                 log['message']['s']['ft'] = int(int(log['message']['s']['ft']) + delta) if delta else 0
             log.pop('host', None)
             if log['message']['m'] in ['csr', 'nsc', 'cfg']:
@@ -151,8 +170,8 @@ def process_logs(logs):
     return result
 
 def query_logs(timestamp):
-    init_controller_clock_delta(app.config['HUC'], timestamp)
-    init_controller_clock_delta(app.config['VUC'], timestamp)
+    init_controller_clock_delta(app.config['DAD'], timestamp)
+    init_controller_clock_delta(app.config['MOM'], timestamp)
 
     return process_logs(query_es({"query": {"bool": {"filter": [
         {"term": {"headers.http_user_agent": "ESP8266"}},
@@ -187,5 +206,5 @@ def client_request():
 
 if __name__ == "__main__":
     context = ('.ssl/server.crt', '.ssl/server.key')
-    app.run(host='0.0.0.0', port=8088, ssl_context=context)
+    app.run(host=app.config['GATEWAY']['host'], port=app.config['GATEWAY']['port'], ssl_context=context)
 

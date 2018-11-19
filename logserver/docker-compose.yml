@@ -42,6 +42,12 @@ services:
       context: ./gateway
     tty: true
     restart: unless-stopped
+    environment:
+      - GATEWAY_PORT=8088
+      - GATEWAY_USER=user
+      - GATEWAY_PASSWORD=password
+      - DAD_HOST=localhost
+      - MOM_HOST=localhost
     ports:
       - "8088:8088"
     depends_on:
