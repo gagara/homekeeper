@@ -246,9 +246,9 @@ ESP8266 esp8266;
 
 void setup() {
     // Setup serial ports
-    serial->begin(115200);
-    bt->begin(115200);
-    wifi->begin(115200);
+    serial->begin(57600);
+    bt->begin(57600);
+    wifi->begin(57600);
 
     dbg(debug, F(":STARTING\n"));
 
