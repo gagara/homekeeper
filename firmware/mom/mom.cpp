@@ -281,19 +281,18 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
         bit = NODE_VENTILATION_BIT;
         ts = &tsNodeVentilation;
         tsf = &tsForcedNodeVentilation;
+        if (ts != NULL) {
+            NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
+
+            *ts = getTimestamp();
+
+            // report state change
+            char json[JSON_MAX_SIZE];
+            jsonifyNodeStateChange(id, NODE_STATE_FLAGS & bit, *ts, NODE_FORCED_MODE_FLAGS & bit, *tsf, sensId, sensVal,
+                    sensCnt, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+        }
         switchVentilationValve();
-    }
-
-    if (ts != NULL) {
-        NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
-
-        *ts = getTimestamp();
-
-        // report state change
-        char json[JSON_MAX_SIZE];
-        jsonifyNodeStateChange(id, NODE_STATE_FLAGS & bit, *ts, NODE_FORCED_MODE_FLAGS & bit, *tsf, sensId, sensVal,
-                sensCnt, json, JSON_MAX_SIZE);
-        broadcastMsg(json);
     }
 }
 
