@@ -17,8 +17,6 @@ public class Constants {
     public static final int DEFAULT_REFRESH_PERIOD = 10 * 60;
 
     public static final int REQUEST_ENABLE_NETWORK = 506;
-    public static final int CONTROLLER_SERVICE_ONGOING_NOTIFICATION_ID = 1006;
-    public static final int CONTROLLER_SERVICE_PENDING_INTENT_ID = 2206;
     
     public static final int DEFAULT_SWITCH_OFF_PERIOD_SEC = 0;     // forever
     public static final int DEFAULT_SWITCH_ON_PERIOD_SEC = 330;    // 5 minutes
