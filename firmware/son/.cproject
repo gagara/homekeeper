@@ -22,7 +22,7 @@
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.size.app.release.1711059068" name="Print Size" superClass="de.innot.avreclipse.toolchain.options.toolchain.size.app.release"/>
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release.40077487" name="AVRDude" superClass="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release"/>
 							<targetPlatform id="de.innot.avreclipse.targetplatform.winavr.app.release.1750167991" name="AVR Cross-Target" superClass="de.innot.avreclipse.targetplatform.winavr.app.release"/>
-							<builder buildPath="${workspace_loc:/Thermostat}/Release" id="de.innot.avreclipse.target.builder.winavr.app.release.2136758077" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="AVR GNU Make Builder" superClass="de.innot.avreclipse.target.builder.winavr.app.release">
+							<builder buildPath="${workspace_loc:/son}/Release" id="de.innot.avreclipse.target.builder.winavr.app.release.2136758077" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="AVR GNU Make Builder" superClass="de.innot.avreclipse.target.builder.winavr.app.release">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
 								</outputEntries>
@@ -30,18 +30,18 @@
 							<tool id="de.innot.avreclipse.tool.assembler.winavr.app.release.356626562" name="AVR Assembler" superClass="de.innot.avreclipse.tool.assembler.winavr.app.release">
 								<option id="de.innot.avreclipse.assembler.option.debug.level.653389027" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level" value="de.innot.avreclipse.assembler.option.debug.level.none" valueType="enumerated"/>
 								<option id="de.innot.avreclipse.asm.option.include.paths.62597507" name="#include paths for preprocessor(-I)" superClass="de.innot.avreclipse.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/arduino}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/eightanaloginputs}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/standard}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/ArduinoJson}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/ArduinoJson/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/debug}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/DHT}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/EEPROMEx}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/ESP8266}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/jsoner}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/MemoryFree}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/SoftwareSerial/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/arduino}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/eightanaloginputs}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/standard}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/ArduinoJson}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/ArduinoJson/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/DHT}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/EEPROMEx}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/ESP8266}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/jsoner}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/MemoryFree}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/SoftwareSerial/src}&quot;"/>
 								</option>
 								<inputType id="de.innot.avreclipse.tool.assembler.input.662675365" superClass="de.innot.avreclipse.tool.assembler.input"/>
 							</tool>
@@ -57,18 +57,18 @@
 									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.1330444179" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/arduino}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/eightanaloginputs}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/standard}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/ArduinoJson}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/ArduinoJson/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/debug}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/DHT}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/EEPROMEx}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/ESP8266}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/jsoner}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/MemoryFree}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/SoftwareSerial/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/arduino}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/eightanaloginputs}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/standard}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/ArduinoJson}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/ArduinoJson/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/DHT}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/EEPROMEx}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/ESP8266}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/jsoner}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/MemoryFree}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/SoftwareSerial/src}&quot;"/>
 								</option>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.1325421522" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>
@@ -84,18 +84,18 @@
 								<option id="de.innot.avreclipse.cppcompiler.option.language.uchar.1572561517" name="char is unsigned (-funsigned-char)" superClass="de.innot.avreclipse.cppcompiler.option.language.uchar" value="false" valueType="boolean"/>
 								<option id="de.innot.avreclipse.cppcompiler.option.language.ubitfields.299269410" name="bitfields are unsigned (-funsigned-bitfields)" superClass="de.innot.avreclipse.cppcompiler.option.language.ubitfields" value="false" valueType="boolean"/>
 								<option id="de.innot.avreclipse.cppcompiler.option.incpath.1571940636" name="Include Paths (-I)" superClass="de.innot.avreclipse.cppcompiler.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/arduino}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/eightanaloginputs}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/standard}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/ArduinoJson}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/ArduinoJson/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/debug}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/DHT}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/EEPROMEx}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/ESP8266}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/jsoner}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/MemoryFree}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Thermostat/libs/SoftwareSerial/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/arduino}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/eightanaloginputs}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/standard}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/ArduinoJson}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/ArduinoJson/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/DHT}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/EEPROMEx}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/ESP8266}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/jsoner}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/MemoryFree}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/son/libs/SoftwareSerial/src}&quot;"/>
 								</option>
 								<inputType id="de.innot.avreclipse.cppcompiler.input.62600785" superClass="de.innot.avreclipse.cppcompiler.input"/>
 							</tool>
@@ -127,7 +127,7 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="Thermostat.de.innot.avreclipse.project.winavr.elf_2.1.0.1224671024" name="AVR Cross Target Application" projectType="de.innot.avreclipse.project.winavr.elf_2.1.0"/>
+		<project id="son.de.innot.avreclipse.project.winavr.elf_2.1.0.1224671024" name="AVR Cross Target Application" projectType="de.innot.avreclipse.project.winavr.elf_2.1.0"/>
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>

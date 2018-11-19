@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Ventilation</name>
+	<name>dad</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -32,19 +32,14 @@
 			<locationURI>ARDUINO_HW_HOME/cores/arduino</locationURI>
 		</link>
 		<link>
-			<name>eightanaloginputs</name>
-			<type>2</type>
-			<locationURI>ARDUINO_HW_HOME/variants/eightanaloginputs</locationURI>
-		</link>
-		<link>
 			<name>libs</name>
 			<type>2</type>
 			<locationURI>HOMEKEEPER_LIBS_HOME</locationURI>
 		</link>
 		<link>
-			<name>standard</name>
+			<name>mega</name>
 			<type>2</type>
-			<locationURI>ARDUINO_HW_HOME/variants/standard</locationURI>
+			<locationURI>ARDUINO_HW_HOME/variants/mega</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>CentralUnit</name>
+	<name>son</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -32,14 +32,19 @@
 			<locationURI>ARDUINO_HW_HOME/cores/arduino</locationURI>
 		</link>
 		<link>
+			<name>eightanaloginputs</name>
+			<type>2</type>
+			<locationURI>ARDUINO_HW_HOME/variants/eightanaloginputs</locationURI>
+		</link>
+		<link>
 			<name>libs</name>
 			<type>2</type>
 			<locationURI>HOMEKEEPER_LIBS_HOME</locationURI>
 		</link>
 		<link>
-			<name>mega</name>
+			<name>standard</name>
 			<type>2</type>
-			<locationURI>ARDUINO_HW_HOME/variants/mega</locationURI>
+			<locationURI>ARDUINO_HW_HOME/variants/standard</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
