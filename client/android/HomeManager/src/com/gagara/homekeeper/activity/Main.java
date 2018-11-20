@@ -407,7 +407,7 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Map<String, Gateway> gateways = HomeKeeperConfig.getAllNbiGateways(Main.getAppContext());
+            Map<String, Gateway> gateways = HomeKeeperConfig.getAllNbiGateways(getAppContext());
             String[] ids = gateways.keySet().toArray(new String[] {});
             if (position < ids.length) {
                 String prevId = PreferenceManager.getDefaultSharedPreferences(context).getString(
@@ -416,6 +416,8 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
                     Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
                     editor.putString(CFG_SELECTED_GATEWAY_ID, ids[position]);
                     editor.commit();
+                    modelView = new TopModelView(Main.this);
+                    modelView.render();
                     gatewayService.stop();
                     gatewayService.start();
                 }
@@ -516,16 +518,6 @@ public class Main extends ActionBarActivity implements SwitchNodeStateListener, 
             }
         }
     }
-
-    // public class NbiServiceTitleReceiver extends BroadcastReceiver {
-    // public void onReceive(Context context, Intent intent) {
-    // String action = intent.getAction();
-    // if (SERVICE_TITLE_CHANGE_ACTION.equals(action)) {
-    // modelView.getTitle().getModel().setId(intent.getStringExtra(GATEWAY_ID_KEY));
-    // modelView.getTitle().render();
-    // }
-    // }
-    // }
 
     public class NbiServiceStatusReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {

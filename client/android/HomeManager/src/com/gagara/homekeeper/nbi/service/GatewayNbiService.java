@@ -103,12 +103,12 @@ public class GatewayNbiService extends AbstractNbiService {
                             config.getHost(), config.getPort()));
                     try {
                         HttpsTrustManager.allowAllSSL();
+                        return true;
                     } catch (KeyManagementException e) {
                         Log.e(TAG, e.getMessage(), e);
                     } catch (NoSuchAlgorithmException e) {
                         Log.e(TAG, e.getMessage(), e);
                     }
-                    return true;
                 }
             }
         } else {

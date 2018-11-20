@@ -1,5 +1,6 @@
 package com.gagara.homekeeper.ui.viewmodel;
 
+import static com.gagara.homekeeper.common.Constants.CFG_SELECTED_GATEWAY_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_CIRCULATION_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_FLOOR_ID;
 import static com.gagara.homekeeper.common.ControllerConfig.NODE_HEATING_ID;
@@ -29,6 +30,7 @@ import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_PRIM
 import static com.gagara.homekeeper.common.ControllerConfig.SENSOR_TH_ROOM1_SB_HEATER_ID;
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.widget.Spinner;
@@ -124,6 +126,8 @@ public class TopModelView implements ModelView<Model> {
 
     public TopModelView(Activity ctx) {
         title = new ServiceTitleModelView((Spinner) ctx.findViewById(R.id.headerLeft), ctx.getResources());
+        title.getModel().setId(
+                PreferenceManager.getDefaultSharedPreferences(ctx).getString(CFG_SELECTED_GATEWAY_ID, null));
         info = new ServiceInfoModelView((TextView) ctx.findViewById(R.id.headerRight), ctx.getResources());
         log = new ServiceLogModelView((TextView) ctx.findViewById(R.id.footerLeft), ctx.getResources());
 
