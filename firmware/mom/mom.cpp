@@ -348,11 +348,11 @@ void unForceNodeState(uint8_t id) {
 
 void switchVentilationValve() {
     if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
-        // OPENED
-        motor.step(MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT); //close
-    } else {
-        // CLOSED
+        // was CLOSED
         motor.step(-MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT); //open
+    } else {
+        // was OPENED
+        motor.step(MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT); //close
     }
 }
 
