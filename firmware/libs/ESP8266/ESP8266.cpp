@@ -9,6 +9,7 @@
 //#define __DEBUG__
 
 const uint8_t FAILURE_RECONNECTS_MAX_COUNT = 3;
+const uint8_t RECEIVE_FAILURE_MAX_COUNT = 3;
 const unsigned long STA_RECONNECT_INTERVAL = 60000;
 
 const char* esp_response_str[] { "\r\nOK\r\n", "\r\nSEND OK\r\n", "CONNECT\r\n", "\r\nWIFI CONNECTED\r\n", "\r\n>",
@@ -149,6 +150,7 @@ void ESP8266::startTcpServer(const uint16_t port) {
             dbg(debug, F(":wifi:TCP_SRV:up:FAIL\n"));
         }
     }
+    tcpServerReceiveFailureCount = 0;
 }
 
 void ESP8266::stopTcpServer() {
@@ -355,7 +357,7 @@ int16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const ch
                     }
                 }
                 // close connection if required
-                if (!strstr(inBuff, "4,CLOSED") && !readUntil(inBuff, IN_BUFF_SIZE, F("4,CLOSED"))) {
+                if (!strstr(inBuff, "4,CLOSED") && !readUntil(inBuff, IN_BUFF_SIZE, F("4,CLOSED\r\n"))) {
                     write(F("AT+CIPCLOSE=4\r\n"), EXPECT_OK);
                 }
             }
@@ -398,17 +400,26 @@ int16_t ESP8266::httpReceive(char* message, size_t msize) {
                         }
                         if (!closed) {
                             sendResponse(status = 200, "OK");
+                            tcpServerReceiveFailureCount = 0;
                         }
                     }
                 } else {
                     sendResponse(status = 400, "BAD REQUEST");
+                    // error. broken HTTP request
+                    tcpServerReceiveFailureCount++;
                 }
             } else {
                 sendResponse(status = 404, "NOT FOUND");
+                tcpServerReceiveFailureCount = 0;
             }
             if (!closed) {
                 snprintf(outBuff, OUT_BUFF_SIZE, "AT+CIPCLOSE=%d\r\n", connId);
                 write(outBuff, EXPECT_OK);
+            }
+            if (tcpServerReceiveFailureCount >= RECEIVE_FAILURE_MAX_COUNT) {
+                uint16_t port = tcpServerPort;
+                stopTcpServer();
+                startTcpServer(port);
             }
         } else {
             // connId unknown, don't try to close

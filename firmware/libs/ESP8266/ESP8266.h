@@ -60,7 +60,9 @@ private:
     unsigned long lastSuccessRequestTs = 0;
     esp_ip_t staIp;
     unsigned long connectTs = 0;
-    uint8_t reconnectCount = 0;bool persistDebug = false;
+    uint8_t reconnectCount = 0;
+    uint8_t tcpServerReceiveFailureCount = 0;
+    bool persistDebug = false;
     int readApIp(esp_ip_t ip); //
     int readStaIp(esp_ip_t ip); //
     size_t read(char *buffer, size_t bsize, const char *target, const size_t length, const uint16_t ttl); //
