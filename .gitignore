@@ -2,9 +2,9 @@
 client/**/bin
 client/**/gen
 client/android/*/project.properties
-firmware/*/Libraries
-firmware/*/Release
-firmware/*/arduino
+firmware/*/.cproject
+firmware/*/.project
+firmware/*/.travis.yml
 **/.pyenv
 **/*.pyc
 *.d
