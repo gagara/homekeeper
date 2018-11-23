@@ -45,8 +45,8 @@ services:
     environment:
       - GATEWAY_USER=user
       - GATEWAY_PASSWORD=secret
-      - DAD_HOST=127.0.0.1
-      - DAD_PORT=80
+      - DAD_HOST=192.168.1.229
+      - DAD_PORT=8084
       - MOM_HOST=127.0.0.1
       - MOM_PORT=80
     ports:
