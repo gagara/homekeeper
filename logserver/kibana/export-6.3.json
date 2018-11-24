@@ -32,7 +32,7 @@
       "title": "Dynamics",
       "hits": 0,
       "description": "",
-      "panelsJSON": "[{\"panelIndex\":\"1\",\"gridData\":{\"x\":24,\"y\":0,\"w\":24,\"h\":26,\"i\":\"1\"},\"embeddableConfig\":{\"vis\":{\"colors\":{\"Boiler\":\"#508642\",\"Mix\":\"#0A437C\",\"Reverse\":\"#447EBC\",\"Solar Primary\":\"#C15C17\",\"Solar Secondary\":\"#CCA300\",\"Standby heater\":\"#584477\",\"Supply\":\"#890F02\"},\"legendOpen\":false}},\"id\":\"7c19af90-0ebf-11e7-91d8-c97263d3d6b8\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"2\",\"gridData\":{\"x\":24,\"y\":26,\"w\":24,\"h\":20,\"i\":\"2\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"id\":\"46f3f660-0e77-11e7-91d8-c97263d3d6b8\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":0,\"y\":0,\"w\":24,\"h\":35,\"i\":\"3\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"id\":\"314b55c0-0e76-11e7-91d8-c97263d3d6b8\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"4\",\"gridData\":{\"x\":0,\"y\":35,\"w\":24,\"h\":11,\"i\":\"4\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"id\":\"900f2950-0ebd-11e7-91d8-c97263d3d6b8\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"5\",\"gridData\":{\"x\":0,\"y\":46,\"w\":24,\"h\":16,\"i\":\"5\"},\"id\":\"dcdfdb90-82b1-11e7-85ea-b586910de5f2\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"6\",\"gridData\":{\"x\":0,\"y\":62,\"w\":24,\"h\":15,\"i\":\"6\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"id\":\"6cbadce0-8c09-11e8-b7b1-7f5b5628beb1\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"7\",\"gridData\":{\"x\":24,\"y\":62,\"w\":24,\"h\":15,\"i\":\"7\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"id\":\"ee02c280-8c0a-11e8-b7b1-7f5b5628beb1\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"8\",\"gridData\":{\"x\":24,\"y\":92,\"w\":24,\"h\":15,\"i\":\"8\"},\"embeddableConfig\":{\"vis\":{\"colors\":{\"Voltage_DC_String_1\":\"#1F78C1\",\"Voltage_DC_String_2\":\"#7EB26D\"},\"legendOpen\":false}},\"id\":\"598769a0-8f37-11e8-93db-d58a81716893\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"9\",\"gridData\":{\"x\":24,\"y\":107,\"w\":24,\"h\":15,\"i\":\"9\"},\"embeddableConfig\":{\"vis\":{\"colors\":{\"Current_DC_String_1\":\"#1F78C1\",\"Current_DC_String_2\":\"#7EB26D\"},\"legendOpen\":false}},\"id\":\"7e00b930-8f37-11e8-93db-d58a81716893\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"10\",\"gridData\":{\"x\":0,\"y\":77,\"w\":24,\"h\":15,\"i\":\"10\"},\"embeddableConfig\":{\"vis\":{\"colors\":{\"0\":\"#629E51\",\"567\":\"#BF1B00\",\"GVDPR\":\"#BF1B00\",\"Low PV output\":\"#CCA300\",\"Low PV voltage\":\"#E0752D\",\"OK\":\"#508642\"},\"legendOpen\":true}},\"id\":\"344971e0-8f34-11e8-93db-d58a81716893\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"11\",\"gridData\":{\"x\":0,\"y\":92,\"w\":24,\"h\":15,\"i\":\"11\"},\"embeddableConfig\":{\"vis\":{\"colors\":{\"0\":\"#629E51\",\"7\":\"#629E51\",\"567\":\"#BF1B00\",\"Running\":\"#508642\",\"Startup-2\":\"#6ED0E0\",\"Startup-3\":\"#64B0C8\",\"Startup-5\":\"#2F575E\"},\"legendOpen\":true}},\"id\":\"d3529ed0-8f46-11e8-93db-d58a81716893\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"12\",\"gridData\":{\"x\":24,\"y\":46,\"w\":24,\"h\":16,\"i\":\"12\"},\"embeddableConfig\":{},\"id\":\"b493f570-0fcc-11e7-9d51-398f58efdcd3\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"13\",\"gridData\":{\"x\":0,\"y\":107,\"w\":24,\"h\":15,\"i\":\"13\"},\"embeddableConfig\":{},\"id\":\"7a129830-be20-11e8-93db-d58a81716893\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"14\",\"gridData\":{\"x\":24,\"y\":77,\"w\":24,\"h\":15,\"i\":\"14\"},\"version\":\"6.3.1\",\"type\":\"visualization\",\"id\":\"e94bc790-bef6-11e8-93db-d58a81716893\",\"embeddableConfig\":{}}]",
+      "panelsJSON": "[{\"panelIndex\":\"1\",\"gridData\":{\"x\":24,\"y\":0,\"w\":24,\"h\":26,\"i\":\"1\"},\"embeddableConfig\":{\"vis\":{\"colors\":{\"Boiler\":\"#508642\",\"Mix\":\"#0A437C\",\"Reverse\":\"#447EBC\",\"Solar Primary\":\"#C15C17\",\"Solar Secondary\":\"#CCA300\",\"Standby heater\":\"#584477\",\"Supply\":\"#890F02\"},\"legendOpen\":false}},\"id\":\"7c19af90-0ebf-11e7-91d8-c97263d3d6b8\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":0,\"y\":0,\"w\":24,\"h\":41,\"i\":\"3\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"id\":\"314b55c0-0e76-11e7-91d8-c97263d3d6b8\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"4\",\"gridData\":{\"x\":0,\"y\":41,\"w\":24,\"h\":11,\"i\":\"4\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"id\":\"900f2950-0ebd-11e7-91d8-c97263d3d6b8\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"5\",\"gridData\":{\"x\":24,\"y\":56,\"w\":24,\"h\":13,\"i\":\"5\"},\"id\":\"dcdfdb90-82b1-11e7-85ea-b586910de5f2\",\"type\":\"visualization\",\"version\":\"6.3.1\",\"embeddableConfig\":{\"vis\":{\"colors\":{\"solar\":\"#508642\",\"grid\":\"#BF1B00\"},\"legendOpen\":false}}},{\"panelIndex\":\"6\",\"gridData\":{\"x\":0,\"y\":69,\"w\":24,\"h\":15,\"i\":\"6\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"id\":\"6cbadce0-8c09-11e8-b7b1-7f5b5628beb1\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"7\",\"gridData\":{\"x\":24,\"y\":69,\"w\":24,\"h\":15,\"i\":\"7\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"id\":\"ee02c280-8c0a-11e8-b7b1-7f5b5628beb1\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"8\",\"gridData\":{\"x\":24,\"y\":99,\"w\":24,\"h\":15,\"i\":\"8\"},\"embeddableConfig\":{\"vis\":{\"colors\":{\"Voltage_DC_String_1\":\"#1F78C1\",\"Voltage_DC_String_2\":\"#7EB26D\"},\"legendOpen\":false}},\"id\":\"598769a0-8f37-11e8-93db-d58a81716893\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"9\",\"gridData\":{\"x\":24,\"y\":114,\"w\":24,\"h\":15,\"i\":\"9\"},\"embeddableConfig\":{\"vis\":{\"colors\":{\"Current_DC_String_1\":\"#1F78C1\",\"Current_DC_String_2\":\"#7EB26D\"},\"legendOpen\":false}},\"id\":\"7e00b930-8f37-11e8-93db-d58a81716893\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"10\",\"gridData\":{\"x\":0,\"y\":84,\"w\":24,\"h\":15,\"i\":\"10\"},\"embeddableConfig\":{\"vis\":{\"colors\":{\"0\":\"#629E51\",\"567\":\"#BF1B00\",\"GVDPR\":\"#BF1B00\",\"Low PV output\":\"#CCA300\",\"Low PV voltage\":\"#E0752D\",\"OK\":\"#508642\"},\"legendOpen\":true}},\"id\":\"344971e0-8f34-11e8-93db-d58a81716893\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"11\",\"gridData\":{\"x\":0,\"y\":99,\"w\":24,\"h\":15,\"i\":\"11\"},\"embeddableConfig\":{\"vis\":{\"colors\":{\"0\":\"#629E51\",\"7\":\"#629E51\",\"567\":\"#BF1B00\",\"Running\":\"#508642\",\"Startup-2\":\"#6ED0E0\",\"Startup-3\":\"#64B0C8\",\"Startup-5\":\"#2F575E\"},\"legendOpen\":true}},\"id\":\"d3529ed0-8f46-11e8-93db-d58a81716893\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"12\",\"gridData\":{\"x\":0,\"y\":52,\"w\":24,\"h\":17,\"i\":\"12\"},\"embeddableConfig\":{},\"id\":\"b493f570-0fcc-11e7-9d51-398f58efdcd3\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"13\",\"gridData\":{\"x\":0,\"y\":114,\"w\":24,\"h\":15,\"i\":\"13\"},\"embeddableConfig\":{},\"id\":\"7a129830-be20-11e8-93db-d58a81716893\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"14\",\"gridData\":{\"x\":24,\"y\":84,\"w\":24,\"h\":15,\"i\":\"14\"},\"version\":\"6.3.1\",\"type\":\"visualization\",\"id\":\"e94bc790-bef6-11e8-93db-d58a81716893\",\"embeddableConfig\":{}},{\"panelIndex\":\"15\",\"gridData\":{\"x\":24,\"y\":41,\"w\":24,\"h\":15,\"i\":\"15\"},\"version\":\"6.3.1\",\"type\":\"visualization\",\"id\":\"2260fab0-f024-11e8-b203-796cd753caeb\",\"embeddableConfig\":{}},{\"panelIndex\":\"16\",\"gridData\":{\"x\":24,\"y\":26,\"w\":24,\"h\":15,\"i\":\"16\"},\"version\":\"6.3.1\",\"type\":\"visualization\",\"id\":\"756d7770-f023-11e8-b203-796cd753caeb\",\"embeddableConfig\":{}}]",
       "optionsJSON": "{\"darkTheme\":false,\"useMargins\":false}",
       "version": 1,
       "timeRestore": true,
@@ -69,74 +69,6 @@
     }
   },
   {
-    "_id": "900f2950-0ebd-11e7-91d8-c97263d3d6b8",
-    "_type": "visualization",
-    "_source": {
-      "title": "Sensors State",
-      "visState": "{\"title\":\"Sensors State\",\"type\":\"line\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"showCircles\":true,\"interpolate\":\"step-after\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":true,\"yAxis\":{\"max\":1.1,\"min\":-0.2}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"s.v\",\"customLabel\":\"ON/OFF\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":5,\"orderAgg\":{\"id\":\"3-orderAgg\",\"enabled\":true,\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"s.id\",\"customLabel\":\"\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"state\",\"row\":true}}],\"listeners\":{}}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"ON/OFF\":\"#E0752D\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"csr_type:sensor AND sensor_type:state\"}},\"language\":\"lucene\"},\"filter\":[]}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "49dce1a0-7887-11e7-8edb-11673d3a5fbb",
-    "_type": "visualization",
-    "_source": {
-      "title": "Production: Energy",
-      "visState": "{\"title\":\"Production: Energy\",\"type\":\"area\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"scale\":\"linear\",\"interpolate\":\"cardinal\",\"mode\":\"overlap\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"production_kw\",\"customLabel\":\"kWatt\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"date\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"production_type\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Type\"}}],\"listeners\":{}}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"solar\":\"#508642\",\"grid\":\"#BF1B00\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "314b55c0-0e76-11e7-91d8-c97263d3d6b8",
-    "_type": "visualization",
-    "_source": {
-      "title": "Nodes State",
-      "visState": "{\"title\":\"Nodes State\",\"type\":\"line\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"showCircles\":true,\"interpolate\":\"step-after\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":true,\"yAxis\":{\"max\":1.1,\"min\":-0.1}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"n_ns\",\"customLabel\":\"ON/OFF\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"enabled\":true,\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"n_id\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"state\",\"row\":true}}],\"listeners\":{}}",
-      "uiStateJSON": "{\"spy\":{\"mode\":{\"fill\":false,\"name\":null}},\"vis\":{\"colors\":{\"ON/OFF\":\"#447EBC\"},\"legendOpen\":true}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"m:nsc OR (m:csr AND csr_type:node)\",\"analyze_wildcard\":true}},\"language\":\"lucene\"},\"filter\":[]}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "d3529ed0-8f46-11e8-93db-d58a81716893",
-    "_type": "visualization",
-    "_source": {
-      "title": "Inverter State",
-      "visState": "{\"title\":\"Inverter State\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"legendPosition\":\"top\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"minutes\"},\"drawLinesBetweenPoints\":true,\"mode\":\"stacked\",\"show\":\"true\",\"showCircles\":true,\"type\":\"histogram\",\"valueAxis\":\"ValueAxis-1\"}],\"times\":[],\"type\":\"histogram\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"mode\":\"normal\",\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"minutes\"},\"type\":\"value\"}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{\"customLabel\":\"minutes\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"5m\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"Body.Data.DeviceStatus.StatusCodeDescription\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":10,\"order\":\"asc\",\"orderBy\":\"_term\",\"json\":\"\",\"customLabel\":\"Status\"}}]}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"0\":\"#629E51\",\"7\":\"#629E51\",\"567\":\"#BF1B00\",\"Running\":\"#629E51\",\"Startup-2\":\"#6ED0E0\",\"Startup-3\":\"#64B0C8\",\"Startup-5\":\"#447EBC\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\"}}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
     "_id": "344971e0-8f34-11e8-93db-d58a81716893",
     "_type": "visualization",
     "_source": {
@@ -147,91 +79,6 @@
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\"}}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "7c19af90-0ebf-11e7-91d8-c97263d3d6b8",
-    "_type": "visualization",
-    "_source": {
-      "title": "Temperature",
-      "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{\"customLabel\":\"Value\",\"field\":\"s.v\"},\"schema\":\"metric\",\"type\":\"avg\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customInterval\":\"2h\",\"customLabel\":\"time\",\"extended_bounds\":{},\"field\":\"@timestamp\",\"interval\":\"auto\",\"min_doc_count\":1},\"schema\":\"segment\",\"type\":\"date_histogram\"},{\"enabled\":true,\"id\":\"3\",\"params\":{\"customLabel\":\"Sensor\",\"field\":\"name\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"order\":\"asc\",\"orderAgg\":{\"enabled\":true,\"id\":\"3-orderAgg\",\"params\":{\"field\":\"s.id\"},\"schema\":{\"aggFilter\":[\"!top_hits\",\"!percentiles\",\"!median\",\"!std_dev\",\"!derivative\",\"!moving_avg\",\"!serial_diff\",\"!cumulative_sum\",\"!avg_bucket\",\"!max_bucket\",\"!min_bucket\",\"!sum_bucket\"],\"deprecate\":false,\"editor\":false,\"group\":\"none\",\"hideCustomLabel\":true,\"max\":null,\"min\":0,\"name\":\"orderAgg\",\"params\":[],\"title\":\"Order Agg\"},\"type\":\"max\"},\"orderBy\":\"custom\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"size\":10},\"schema\":\"group\",\"type\":\"terms\"}],\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":false,\"drawLinesBetweenPoints\":true,\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"interpolate\":\"cardinal\",\"legendPosition\":\"top\",\"radiusRatio\":9,\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"Value\"},\"drawLinesBetweenPoints\":true,\"interpolate\":\"cardinal\",\"mode\":\"normal\",\"radiusRatio\":9,\"show\":\"true\",\"showCircles\":true,\"type\":\"line\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":false,\"showCircles\":true,\"times\":[],\"type\":\"line\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"mode\":\"normal\",\"setYExtents\":false,\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"Value\"},\"type\":\"value\"}]},\"title\":\"Temperature\",\"type\":\"line\"}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"Boiler\":\"#7EB26D\",\"Mix\":\"#6ED0E0\",\"Reverse\":\"#1F78C1\",\"Solar Secondary\":\"#F2C96D\",\"Standby heater\":\"#705DA0\",\"Supply\":\"#890F02\",\"Tank\":\"#BA43A9\",\"Solar Primary\":\"#C15C17\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"language\":\"lucene\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"csr_type:sensor AND sensor_type:value AND !s.id:75 AND !s.id:74\",\"default_field\":\"*\"}}},\"filter\":[]}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "46f3f660-0e77-11e7-91d8-c97263d3d6b8",
-    "_type": "visualization",
-    "_source": {
-      "title": "Room",
-      "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{\"customLabel\":\"Value\",\"field\":\"s.v\"},\"schema\":\"metric\",\"type\":\"avg\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customInterval\":\"2h\",\"customLabel\":\"time\",\"extended_bounds\":{},\"field\":\"@timestamp\",\"interval\":\"auto\",\"min_doc_count\":1},\"schema\":\"segment\",\"type\":\"date_histogram\"},{\"enabled\":true,\"id\":\"3\",\"params\":{\"customLabel\":\"Sensor\",\"field\":\"name\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"order\":\"asc\",\"orderAgg\":{\"enabled\":true,\"id\":\"3-orderAgg\",\"params\":{\"customLabel\":\"\",\"field\":\"s.id\"},\"schema\":{\"aggFilter\":[\"!top_hits\",\"!percentiles\",\"!median\",\"!std_dev\",\"!derivative\",\"!moving_avg\",\"!serial_diff\",\"!cumulative_sum\",\"!avg_bucket\",\"!max_bucket\",\"!min_bucket\",\"!sum_bucket\"],\"deprecate\":false,\"editor\":false,\"group\":\"none\",\"hideCustomLabel\":true,\"max\":null,\"min\":0,\"name\":\"orderAgg\",\"params\":[],\"title\":\"Order Agg\"},\"type\":\"max\"},\"orderBy\":\"custom\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"row\":true,\"size\":5},\"schema\":\"split\",\"type\":\"terms\"}],\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":false,\"drawLinesBetweenPoints\":true,\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"interpolate\":\"cardinal\",\"legendPosition\":\"top\",\"radiusRatio\":9,\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"Value\"},\"drawLinesBetweenPoints\":true,\"interpolate\":\"cardinal\",\"mode\":\"normal\",\"radiusRatio\":9,\"show\":\"true\",\"showCircles\":true,\"type\":\"line\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":false,\"showCircles\":true,\"times\":[],\"type\":\"line\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"mode\":\"normal\",\"setYExtents\":false,\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"Value\"},\"type\":\"value\"}]},\"title\":\"Room\",\"type\":\"line\"}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"Value\":\"#629E51\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"csr_type:sensor AND csr_state:actual AND (s.id:74 OR s.id:75) AND NOT s.v:\\\"-127\\\"\",\"analyze_wildcard\":true,\"default_field\":\"*\"}},\"language\":\"lucene\"},\"filter\":[]}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "6cbadce0-8c09-11e8-b7b1-7f5b5628beb1",
-    "_type": "visualization",
-    "_source": {
-      "title": "AC Power",
-      "visState": "{\"title\":\"AC Power\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":true,\"max\":6100,\"min\":0},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Watt\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"area\",\"mode\":\"normal\",\"data\":{\"label\":\"Watt\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.PAC.Value\",\"customLabel\":\"Watt\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}}]}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"Power, W\":\"#962D82\",\"Power, Wh\":\"#962D82\",\"Watt\":\"#962D82\"},\"legendOpen\":true}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\"}}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "1bca7100-8f39-11e8-93db-d58a81716893",
-    "_type": "visualization",
-    "_source": {
-      "title": "Inverter Error Summary",
-      "visState": "{\"title\":\"Inverter Error Summary\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"isDonut\":false,\"labels\":{\"show\":false,\"values\":true,\"last_level\":true,\"truncate\":0}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{\"customLabel\":\"minutes\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"split\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"row\":false}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"Body.Data.DeviceStatus.ErrorCodeDescription\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":10,\"order\":\"asc\",\"orderBy\":\"_term\",\"customLabel\":\"Error\"}}]}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"0\":\"#629E51\",\"567\":\"#BF1B00\",\"OK\":\"#629E51\",\"GVDPR\":\"#BF1B00\"},\"legendOpen\":false}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\"}}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "b493f570-0fcc-11e7-9d51-398f58efdcd3",
-    "_type": "visualization",
-    "_source": {
-      "title": "Nodes Uptime",
-      "visState": "{\"title\":\"Nodes Uptime\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":false,\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"legendPosition\":\"top\",\"mode\":\"grouped\",\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"active time\"},\"mode\":\"normal\",\"show\":\"true\",\"type\":\"histogram\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":false,\"times\":[],\"type\":\"histogram\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"mode\":\"grouped\",\"setYExtents\":false,\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"active time\"},\"type\":\"value\"}],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"period\",\"customLabel\":\"active time\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"date\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"name\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":10,\"orderAgg\":{\"id\":\"3-orderAgg\",\"enabled\":true,\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"n.id\"}},\"order\":\"asc\",\"orderBy\":\"custom\"}}]}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"Boiler Power\":\"#E24D42\",\"Circulation\":\"#629E51\",\"Hot water\":\"#962D82\",\"Solar Primay\":\"#C15C17\",\"Solar Secondary\":\"#EAB839\"},\"legendOpen\":true},\"spy\":{\"mode\":{\"name\":\"table\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"language\":\"lucene\",\"query\":\"((m:csr AND csr_type:node AND csr_state:actual AND state:false AND NOT n.id:32 AND NOT n.id:40) OR (m:csr AND csr_type:sensor AND sensor_type:state AND csr_state:actual AND state:false)) AND period:>0\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -256,40 +103,6 @@
     }
   },
   {
-    "_id": "598769a0-8f37-11e8-93db-d58a81716893",
-    "_type": "visualization",
-    "_source": {
-      "title": "DC Voltage",
-      "visState": "{\"title\":\"DC Voltage\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Volt\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"Volt\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.inverter/1.Value\",\"customLabel\":\"Volt\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"Head.RequestArguments.Channel.keyword\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"asc\",\"orderBy\":\"_term\",\"customLabel\":\"String\"}}]}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"Voltage_DC_String_1\":\"#1F78C1\",\"Voltage_DC_String_2\":\"#7EB26D\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"query\":\"Head.RequestArguments.Channel:Voltage_DC_String_* AND Head.Status.Code:0\",\"language\":\"lucene\"}}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "7e00b930-8f37-11e8-93db-d58a81716893",
-    "_type": "visualization",
-    "_source": {
-      "title": "DC Current",
-      "visState": "{\"title\":\"DC Current\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Ampere\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"Ampere\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.inverter/1.Value\",\"customLabel\":\"Ampere\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"Head.RequestArguments.Channel.keyword\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"asc\",\"orderBy\":\"_term\",\"customLabel\":\"String\"}}]}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"Current_DC_String_1\":\"#1F78C1\",\"Current_DC_String_2\":\"#7EB26D\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"query\":\"Head.RequestArguments.Channel:Current_DC_String_* AND Head.Status.Code:0\",\"language\":\"lucene\"}}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
     "_id": "31d95f70-8f38-11e8-93db-d58a81716893",
     "_type": "visualization",
     "_source": {
@@ -300,74 +113,6 @@
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\",\"language\":\"lucene\"}}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "ee02c280-8c0a-11e8-b7b1-7f5b5628beb1",
-    "_type": "visualization",
-    "_source": {
-      "title": "AC Voltage",
-      "visState": "{\"title\":\"AC Voltage\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":true,\"defaultYExtents\":false,\"max\":300,\"min\":200},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Volt\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"Volt\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false,\"radiusRatio\":9},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.UAC.Value\",\"customLabel\":\"Volt\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}}]}",
-      "uiStateJSON": "{}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\",\"language\":\"lucene\"}}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "95fccba0-7444-11e7-8edb-11673d3a5fbb",
-    "_type": "visualization",
-    "_source": {
-      "title": "Hot Water Production Percentage",
-      "visState": "{\n  \"title\": \"Production Percentage\",\n  \"type\": \"pie\",\n  \"params\": {\n    \"addTooltip\": true,\n    \"addLegend\": true,\n    \"legendPosition\": \"top\",\n    \"isDonut\": false,\n    \"type\": \"pie\",\n    \"labels\": {\n      \"show\": false,\n      \"values\": true,\n      \"last_level\": true,\n      \"truncate\": 100\n    }\n  },\n  \"aggs\": [\n    {\n      \"id\": \"1\",\n      \"enabled\": true,\n      \"type\": \"sum\",\n      \"schema\": \"metric\",\n      \"params\": {\n        \"field\": \"production\",\n        \"json\": \"{\\n  \\\"script\\\": {\\n    \\\"inline\\\": \\\"(doc['production'].value * 120 * 1.5) / 1000\\\",\\n    \\\"lang\\\": \\\"painless\\\"\\n  }\\n}\",\n        \"customLabel\": \"Production (kWh)\"\n      }\n    },\n    {\n      \"id\": \"3\",\n      \"enabled\": true,\n      \"type\": \"date_histogram\",\n      \"schema\": \"split\",\n      \"params\": {\n        \"field\": \"@timestamp\",\n        \"interval\": \"d\",\n        \"customInterval\": \"2h\",\n        \"min_doc_count\": 1,\n        \"extended_bounds\": {},\n        \"customLabel\": \"Date\",\n        \"row\": false\n      }\n    },\n    {\n      \"id\": \"2\",\n      \"enabled\": true,\n      \"type\": \"terms\",\n      \"schema\": \"segment\",\n      \"params\": {\n        \"field\": \"production_type\",\n        \"otherBucket\": false,\n        \"otherBucketLabel\": \"Other\",\n        \"missingBucket\": false,\n        \"missingBucketLabel\": \"Missing\",\n        \"size\": 5,\n        \"order\": \"desc\",\n        \"orderBy\": \"1\",\n        \"customLabel\": \"Type\"\n      }\n    }\n  ]\n}",
-      "uiStateJSON": "{\n  \"vis\": {\n    \"colors\": {\n      \"solar\": \"#629E51\",\n      \"grid\": \"#447EBC\"\n    }\n  }\n}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\n  \"index\": \"e870f310-87ef-11e8-93db-d58a81716893\",\n  \"query\": {\n    \"query\": {\n      \"query_string\": {\n        \"query\": \"*\",\n        \"analyze_wildcard\": true,\n        \"default_field\": \"*\"\n      }\n    },\n    \"language\": \"lucene\"\n  },\n  \"filter\": []\n}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "dcdfdb90-82b1-11e7-85ea-b586910de5f2",
-    "_type": "visualization",
-    "_source": {
-      "title": "Hot Water Production Velocity",
-      "visState": "{\"title\":\"Hot Water Production Velocity\",\"type\":\"line\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"showCircles\":true,\"interpolate\":\"cardinal\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"type\":\"line\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":true,\"defaultYExtents\":false,\"min\":0,\"max\":10},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"t°C\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"t°C\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\",\"radiusRatio\":9}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"production\",\"customLabel\":\"t°C\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"production_type\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"type\"}}]}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"solar\":\"#508642\",\"grid\":\"#BF1B00\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true,\"default_field\":\"*\"}},\"language\":\"lucene\"},\"filter\":[]}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "0e2941d0-786e-11e7-8edb-11673d3a5fbb",
-    "_type": "visualization",
-    "_source": {
-      "title": "Hot Water Production Velocity",
-      "visState": "{\"title\":\"Hot Water Production Velocity\",\"type\":\"area\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":true,\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"interpolate\":\"cardinal\",\"legendPosition\":\"top\",\"mode\":\"stacked\",\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"Production velocity\"},\"interpolate\":\"cardinal\",\"mode\":\"stacked\",\"show\":\"true\",\"type\":\"area\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":false,\"times\":[],\"type\":\"area\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"mode\":\"normal\",\"setYExtents\":true,\"type\":\"linear\",\"max\":10,\"min\":0},\"show\":true,\"style\":{},\"title\":{\"text\":\"Production velocity\"},\"type\":\"value\"}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"production\",\"customLabel\":\"Production velocity\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"production_type\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Type\"}}]}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"solar\":\"#629E51\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"language\":\"lucene\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\",\"default_field\":\"*\"}}},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -392,16 +137,16 @@
     }
   },
   {
-    "_id": "fec151c0-7b28-11e7-8edb-11673d3a5fbb",
+    "_id": "314b55c0-0e76-11e7-91d8-c97263d3d6b8",
     "_type": "visualization",
     "_source": {
-      "title": "Hot Water Temperature Delta",
-      "visState": "{\n  \"title\": \"Temperature Delta\",\n  \"type\": \"line\",\n  \"params\": {\n    \"addTooltip\": true,\n    \"addLegend\": true,\n    \"legendPosition\": \"top\",\n    \"showCircles\": true,\n    \"interpolate\": \"step-after\",\n    \"scale\": \"linear\",\n    \"drawLinesBetweenPoints\": true,\n    \"radiusRatio\": \"49\",\n    \"times\": [],\n    \"addTimeMarker\": false,\n    \"defaultYExtents\": false,\n    \"setYExtents\": false\n  },\n  \"aggs\": [\n    {\n      \"id\": \"1\",\n      \"enabled\": true,\n      \"type\": \"min\",\n      \"schema\": \"metric\",\n      \"params\": {\n        \"field\": \"s_v\",\n        \"customLabel\": \"Min\"\n      }\n    },\n    {\n      \"id\": \"3\",\n      \"enabled\": true,\n      \"type\": \"date_histogram\",\n      \"schema\": \"segment\",\n      \"params\": {\n        \"field\": \"@timestamp\",\n        \"interval\": \"d\",\n        \"customInterval\": \"2h\",\n        \"min_doc_count\": 1,\n        \"extended_bounds\": {},\n        \"customLabel\": \"date\"\n      }\n    },\n    {\n      \"id\": \"5\",\n      \"enabled\": true,\n      \"type\": \"max\",\n      \"schema\": \"metric\",\n      \"params\": {\n        \"field\": \"s_v\",\n        \"customLabel\": \"Max\"\n      }\n    },\n    {\n      \"id\": \"6\",\n      \"enabled\": true,\n      \"type\": \"terms\",\n      \"schema\": \"split\",\n      \"params\": {\n        \"field\": \"name\",\n        \"size\": 5,\n        \"order\": \"asc\",\n        \"orderBy\": \"_term\",\n        \"customLabel\": \"source\",\n        \"row\": true\n      }\n    }\n  ],\n  \"listeners\": {}\n}",
-      "uiStateJSON": "{\n  \"vis\": {\n    \"colors\": {\n      \"Max\": \"#BF1B00\",\n      \"Min\": \"#447EBC\"\n    }\n  }\n}",
+      "title": "Nodes State",
+      "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{\"customLabel\":\"state\",\"field\":\"n_ns\"},\"schema\":\"metric\",\"type\":\"max\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customInterval\":\"2h\",\"customLabel\":\"time\",\"extended_bounds\":{},\"field\":\"@timestamp\",\"interval\":\"auto\",\"min_doc_count\":1},\"schema\":\"segment\",\"type\":\"date_histogram\"},{\"enabled\":true,\"id\":\"3\",\"params\":{\"customLabel\":\"node\",\"field\":\"name\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"order\":\"asc\",\"orderAgg\":{\"enabled\":true,\"id\":\"3-orderAgg\",\"params\":{\"field\":\"n_id\"},\"schema\":{\"aggFilter\":[\"!top_hits\",\"!percentiles\",\"!median\",\"!std_dev\",\"!derivative\",\"!moving_avg\",\"!serial_diff\",\"!cumulative_sum\",\"!avg_bucket\",\"!max_bucket\",\"!min_bucket\",\"!sum_bucket\"],\"deprecate\":false,\"editor\":false,\"group\":\"none\",\"hideCustomLabel\":true,\"max\":null,\"min\":0,\"name\":\"orderAgg\",\"params\":[],\"title\":\"Order Agg\"},\"type\":\"max\"},\"orderBy\":\"custom\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"row\":true,\"size\":10},\"schema\":\"split\",\"type\":\"terms\"}],\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":false,\"drawLinesBetweenPoints\":true,\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"interpolate\":\"step-after\",\"legendPosition\":\"top\",\"radiusRatio\":9,\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"state\"},\"drawLinesBetweenPoints\":true,\"interpolate\":\"step-after\",\"mode\":\"normal\",\"radiusRatio\":9,\"show\":\"true\",\"showCircles\":true,\"type\":\"line\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":true,\"showCircles\":true,\"times\":[],\"type\":\"line\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"max\":1.1,\"min\":-0.1,\"mode\":\"normal\",\"setYExtents\":true,\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"state\"},\"type\":\"value\"}],\"yAxis\":{\"max\":1.1,\"min\":-0.1}},\"title\":\"Nodes State\",\"type\":\"line\"}",
+      "uiStateJSON": "{\"spy\":{\"mode\":{\"fill\":false,\"name\":null}},\"vis\":{\"colors\":{\"ON/OFF\":\"#447EBC\"},\"legendOpen\":true}}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\n  \"index\": \"e870f310-87ef-11e8-93db-d58a81716893\",\n  \"query\": {\n    \"query\": {\n      \"query_string\": {\n        \"query\": \"s_id:56 OR s_id:57\",\n        \"analyze_wildcard\": true\n      }\n    },\n    \"language\": \"lucene\"\n  },\n  \"filter\": []\n}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"m:nsc OR (m:csr AND csr_type:node)\",\"analyze_wildcard\":true,\"default_field\":\"*\"}},\"language\":\"lucene\"},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -409,33 +154,16 @@
     }
   },
   {
-    "_id": "046a4180-7887-11e7-8edb-11673d3a5fbb",
+    "_id": "900f2950-0ebd-11e7-91d8-c97263d3d6b8",
     "_type": "visualization",
     "_source": {
-      "title": "Hot Water Temperatures Delta",
-      "visState": "{\n  \"title\": \"Production: Temperature\",\n  \"type\": \"area\",\n  \"params\": {\n    \"addTooltip\": true,\n    \"addLegend\": true,\n    \"legendPosition\": \"top\",\n    \"scale\": \"linear\",\n    \"interpolate\": \"cardinal\",\n    \"mode\": \"overlap\",\n    \"times\": [],\n    \"addTimeMarker\": false,\n    \"defaultYExtents\": false,\n    \"setYExtents\": false\n  },\n  \"aggs\": [\n    {\n      \"id\": \"1\",\n      \"enabled\": true,\n      \"type\": \"sum\",\n      \"schema\": \"metric\",\n      \"params\": {\n        \"field\": \"production\",\n        \"customLabel\": \"t°C\"\n      }\n    },\n    {\n      \"id\": \"3\",\n      \"enabled\": true,\n      \"type\": \"date_histogram\",\n      \"schema\": \"segment\",\n      \"params\": {\n        \"field\": \"@timestamp\",\n        \"interval\": \"d\",\n        \"customInterval\": \"2h\",\n        \"min_doc_count\": 1,\n        \"extended_bounds\": {},\n        \"customLabel\": \"date\"\n      }\n    },\n    {\n      \"id\": \"4\",\n      \"enabled\": true,\n      \"type\": \"terms\",\n      \"schema\": \"group\",\n      \"params\": {\n        \"field\": \"production_type\",\n        \"size\": 5,\n        \"order\": \"desc\",\n        \"orderBy\": \"1\",\n        \"customLabel\": \"Type\"\n      }\n    }\n  ],\n  \"listeners\": {}\n}",
-      "uiStateJSON": "{\n  \"vis\": {\n    \"colors\": {\n      \"solar\": \"#508642\",\n      \"grid\": \"#BF1B00\"\n    }\n  }\n}",
+      "title": "Sensors State",
+      "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{\"customLabel\":\"state\",\"field\":\"s.v\"},\"schema\":\"metric\",\"type\":\"max\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customInterval\":\"2h\",\"customLabel\":\"time\",\"extended_bounds\":{},\"field\":\"@timestamp\",\"interval\":\"auto\",\"min_doc_count\":1},\"schema\":\"segment\",\"type\":\"date_histogram\"},{\"enabled\":true,\"id\":\"3\",\"params\":{\"customLabel\":\"sensor\",\"field\":\"name\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"order\":\"asc\",\"orderAgg\":{\"enabled\":true,\"id\":\"3-orderAgg\",\"params\":{\"customLabel\":\"\",\"field\":\"s.id\"},\"schema\":{\"aggFilter\":[\"!top_hits\",\"!percentiles\",\"!median\",\"!std_dev\",\"!derivative\",\"!moving_avg\",\"!serial_diff\",\"!cumulative_sum\",\"!avg_bucket\",\"!max_bucket\",\"!min_bucket\",\"!sum_bucket\"],\"deprecate\":false,\"editor\":false,\"group\":\"none\",\"hideCustomLabel\":true,\"max\":null,\"min\":0,\"name\":\"orderAgg\",\"params\":[],\"title\":\"Order Agg\"},\"type\":\"max\"},\"orderBy\":\"custom\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"row\":true,\"size\":5},\"schema\":\"split\",\"type\":\"terms\"}],\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":false,\"drawLinesBetweenPoints\":true,\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"interpolate\":\"step-after\",\"legendPosition\":\"top\",\"radiusRatio\":9,\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"state\"},\"drawLinesBetweenPoints\":true,\"interpolate\":\"step-after\",\"mode\":\"normal\",\"radiusRatio\":9,\"show\":\"true\",\"showCircles\":true,\"type\":\"line\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":true,\"showCircles\":true,\"times\":[],\"type\":\"line\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"max\":1.1,\"min\":-0.2,\"mode\":\"normal\",\"setYExtents\":true,\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"state\"},\"type\":\"value\"}],\"yAxis\":{\"max\":1.1,\"min\":-0.2}},\"title\":\"Sensors State\",\"type\":\"line\"}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"ON/OFF\":\"#E0752D\"}}}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\n  \"index\": \"e870f310-87ef-11e8-93db-d58a81716893\",\n  \"query\": {\n    \"query\": {\n      \"query_string\": {\n        \"query\": \"*\",\n        \"analyze_wildcard\": true\n      }\n    },\n    \"language\": \"lucene\"\n  },\n  \"filter\": []\n}"
-      }
-    },
-    "_meta": {
-      "savedObjectVersion": 2
-    }
-  },
-  {
-    "_id": "45edb060-7445-11e7-8edb-11673d3a5fbb",
-    "_type": "visualization",
-    "_source": {
-      "title": "Hot Water Production Percentage Summary",
-      "visState": "{\"title\":\"Hot Water Production Percentage Summary\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"isDonut\":false,\"type\":\"pie\",\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"production\",\"json\":\"{\\n  \\\"script\\\": {\\n    \\\"inline\\\": \\\"(doc['production'].value * 120 * 1.5) / 1000\\\",\\n    \\\"lang\\\": \\\"painless\\\"\\n  }\\n}\",\"customLabel\":\"Production (kWh)\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"production_type\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Type\"}}]}",
-      "uiStateJSON": "{\"vis\":{\"colors\":{\"solar\":\"#508642\",\"grid\":\"#BF1B00\"}}}",
-      "description": "",
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true,\"default_field\":\"*\"}},\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"language\":\"lucene\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"default_field\":\"*\",\"query\":\"csr_type:sensor AND sensor_type:state\"}}},\"filter\":[]}"
       }
     },
     "_meta": {
@@ -447,7 +175,7 @@
     "_type": "visualization",
     "_source": {
       "title": "Inverter Temperature",
-      "visState": "{\"title\":\"Inverter Temperature\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"°C\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"°C\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.inverter/1.Value\",\"customLabel\":\"°C\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}}]}",
+      "visState": "{\"title\":\"Inverter Temperature\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"t°C\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"t°C\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.inverter/1.Value\",\"customLabel\":\"t°C\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}}]}",
       "uiStateJSON": "{\"vis\":{\"colors\":{\"Current_DC_String_1\":\"#1F78C1\",\"Current_DC_String_2\":\"#7EB26D\",\"°C\":\"#64B0C8\"}}}",
       "description": "",
       "version": 1,
@@ -477,16 +205,288 @@
     }
   },
   {
+    "_id": "b493f570-0fcc-11e7-9d51-398f58efdcd3",
+    "_type": "visualization",
+    "_source": {
+      "title": "Nodes Uptime",
+      "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{\"customLabel\":\"active time\",\"field\":\"period\"},\"schema\":\"metric\",\"type\":\"sum\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customInterval\":\"2h\",\"customLabel\":\"date\",\"extended_bounds\":{},\"field\":\"@timestamp\",\"interval\":\"d\",\"min_doc_count\":1},\"schema\":\"segment\",\"type\":\"date_histogram\"},{\"enabled\":true,\"id\":\"3\",\"params\":{\"customLabel\":\"node\",\"field\":\"name\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"order\":\"asc\",\"orderAgg\":{\"enabled\":true,\"id\":\"3-orderAgg\",\"params\":{\"field\":\"n.id\"},\"schema\":{\"aggFilter\":[\"!top_hits\",\"!percentiles\",\"!median\",\"!std_dev\",\"!derivative\",\"!moving_avg\",\"!serial_diff\",\"!cumulative_sum\",\"!avg_bucket\",\"!max_bucket\",\"!min_bucket\",\"!sum_bucket\"],\"deprecate\":false,\"editor\":false,\"group\":\"none\",\"hideCustomLabel\":true,\"max\":null,\"min\":0,\"name\":\"orderAgg\",\"params\":[],\"title\":\"Order Agg\"},\"type\":\"max\"},\"orderBy\":\"custom\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"size\":10},\"schema\":\"group\",\"type\":\"terms\"}],\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":false,\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"legendPosition\":\"top\",\"mode\":\"grouped\",\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"active time\"},\"mode\":\"normal\",\"show\":\"true\",\"type\":\"histogram\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":false,\"times\":[],\"type\":\"histogram\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"mode\":\"grouped\",\"setYExtents\":false,\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"active time\"},\"type\":\"value\"}],\"yAxis\":{}},\"title\":\"Nodes Uptime\",\"type\":\"histogram\"}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Boiler Power\":\"#E24D42\",\"Circulation\":\"#629E51\",\"Hot water\":\"#962D82\",\"Solar Primay\":\"#C15C17\",\"Solar Secondary\":\"#EAB839\"},\"legendOpen\":true},\"spy\":null}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"language\":\"lucene\",\"query\":\"((m:csr AND csr_type:node AND csr_state:actual AND state:false AND NOT n.id:32 AND NOT n.id:40) OR (m:csr AND csr_type:sensor AND sensor_type:state AND csr_state:actual AND state:false)) AND period:>0\"},\"filter\":[]}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "dcdfdb90-82b1-11e7-85ea-b586910de5f2",
+    "_type": "visualization",
+    "_source": {
+      "title": "Hot Water Production Velocity",
+      "visState": "{\"title\":\"Hot Water Production Velocity\",\"type\":\"line\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"showCircles\":true,\"interpolate\":\"cardinal\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"type\":\"line\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":true,\"defaultYExtents\":false,\"min\":0,\"max\":10},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Δt°C\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"Δt°C\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\",\"radiusRatio\":9}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"production\",\"customLabel\":\"Δt°C\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"production_type\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"type\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"solar\":\"#508642\",\"grid\":\"#BF1B00\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true,\"default_field\":\"*\"}},\"language\":\"lucene\"},\"filter\":[]}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "7e00b930-8f37-11e8-93db-d58a81716893",
+    "_type": "visualization",
+    "_source": {
+      "title": "DC Current",
+      "visState": "{\"title\":\"DC Current\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"ampere\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"ampere\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.inverter/1.Value\",\"customLabel\":\"ampere\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"Head.RequestArguments.Channel.keyword\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"asc\",\"orderBy\":\"_term\",\"customLabel\":\"source\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Current_DC_String_1\":\"#1F78C1\",\"Current_DC_String_2\":\"#7EB26D\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"query\":\"Head.RequestArguments.Channel:Current_DC_String_* AND Head.Status.Code:0\",\"language\":\"lucene\"}}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "0e2941d0-786e-11e7-8edb-11673d3a5fbb",
+    "_type": "visualization",
+    "_source": {
+      "title": "Hot Water Production Velocity",
+      "visState": "{\"title\":\"Hot Water Production Velocity\",\"type\":\"area\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":true,\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"interpolate\":\"cardinal\",\"legendPosition\":\"top\",\"mode\":\"stacked\",\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"Δt°C\"},\"interpolate\":\"cardinal\",\"mode\":\"stacked\",\"show\":\"true\",\"type\":\"area\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":false,\"times\":[],\"type\":\"area\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"mode\":\"normal\",\"setYExtents\":true,\"type\":\"linear\",\"max\":10,\"min\":0},\"show\":true,\"style\":{},\"title\":{\"text\":\"Δt°C\"},\"type\":\"value\"}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"production\",\"customLabel\":\"Δt°C\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"production_type\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Type\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"solar\":\"#629E51\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"language\":\"lucene\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\",\"default_field\":\"*\"}}},\"filter\":[]}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "6cbadce0-8c09-11e8-b7b1-7f5b5628beb1",
+    "_type": "visualization",
+    "_source": {
+      "title": "AC Power",
+      "visState": "{\"title\":\"AC Power\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":true,\"max\":6100,\"min\":0},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"watt\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"area\",\"mode\":\"normal\",\"data\":{\"label\":\"watt\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.PAC.Value\",\"customLabel\":\"watt\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Power, W\":\"#962D82\",\"Power, Wh\":\"#962D82\",\"Watt\":\"#962D82\"},\"legendOpen\":true}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\"}}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
     "_id": "e94bc790-bef6-11e8-93db-d58a81716893",
     "_type": "visualization",
     "_source": {
       "title": "AC Current",
-      "visState": "{\"title\":\"AC Current\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":true,\"defaultYExtents\":false,\"max\":40,\"min\":0},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Ampere\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"Ampere\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false,\"radiusRatio\":9},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.IAC.Value\",\"customLabel\":\"Ampere\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}}]}",
+      "visState": "{\"title\":\"AC Current\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":true,\"defaultYExtents\":false,\"max\":40,\"min\":0},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"ampere\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"ampere\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false,\"radiusRatio\":9},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.IAC.Value\",\"customLabel\":\"ampere\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}}]}",
       "uiStateJSON": "{\"vis\":{\"colors\":{\"Ampere\":\"#BF1B00\"}}}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\"}}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "ee02c280-8c0a-11e8-b7b1-7f5b5628beb1",
+    "_type": "visualization",
+    "_source": {
+      "title": "AC Voltage",
+      "visState": "{\"title\":\"AC Voltage\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":true,\"defaultYExtents\":false,\"max\":300,\"min\":200},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"volt\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"volt\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false,\"radiusRatio\":9},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.UAC.Value\",\"customLabel\":\"volt\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}}]}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\",\"language\":\"lucene\"}}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "fec151c0-7b28-11e7-8edb-11673d3a5fbb",
+    "_type": "visualization",
+    "_source": {
+      "title": "Hot Water Temperature Delta",
+      "visState": "{\"title\":\"Hot Water Temperature Delta\",\"type\":\"line\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"showCircles\":true,\"interpolate\":\"step-after\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":\"49\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"type\":\"line\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":false,\"defaultYExtents\":false},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Count\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"min t°C\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"step-after\",\"radiusRatio\":\"49\"},{\"show\":true,\"mode\":\"normal\",\"type\":\"line\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"step-after\",\"data\":{\"id\":\"5\",\"label\":\"max t°C\"},\"valueAxis\":\"ValueAxis-1\"}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"min\",\"schema\":\"metric\",\"params\":{\"field\":\"s_v\",\"customLabel\":\"min t°C\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"date\"}},{\"id\":\"5\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"s_v\",\"customLabel\":\"max t°C\"}},{\"id\":\"6\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"name\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"asc\",\"orderBy\":\"_term\",\"customLabel\":\"source\",\"row\":true}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Max\":\"#BF1B00\",\"Min\":\"#447EBC\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"s_id:56 OR s_id:57\",\"analyze_wildcard\":true,\"default_field\":\"*\"}},\"language\":\"lucene\"},\"filter\":[]}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "d3529ed0-8f46-11e8-93db-d58a81716893",
+    "_type": "visualization",
+    "_source": {
+      "title": "Inverter State",
+      "visState": "{\"title\":\"Inverter State\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"legendPosition\":\"top\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"minutes\"},\"drawLinesBetweenPoints\":true,\"mode\":\"stacked\",\"show\":\"true\",\"showCircles\":true,\"type\":\"histogram\",\"valueAxis\":\"ValueAxis-1\"}],\"times\":[],\"type\":\"histogram\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"mode\":\"normal\",\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"minutes\"},\"type\":\"value\"}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{\"customLabel\":\"minutes\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"5m\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"Body.Data.DeviceStatus.StatusCodeDescription\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":10,\"order\":\"asc\",\"orderBy\":\"_term\",\"json\":\"\",\"customLabel\":\"status\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"0\":\"#629E51\",\"7\":\"#629E51\",\"567\":\"#BF1B00\",\"Running\":\"#629E51\",\"Startup-2\":\"#6ED0E0\",\"Startup-3\":\"#64B0C8\",\"Startup-5\":\"#447EBC\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\"}}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "598769a0-8f37-11e8-93db-d58a81716893",
+    "_type": "visualization",
+    "_source": {
+      "title": "DC Voltage",
+      "visState": "{\"title\":\"DC Voltage\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"volt\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"volt\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"cardinal\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"Body.Data.inverter/1.Value\",\"customLabel\":\"volt\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"Head.RequestArguments.Channel.keyword\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"asc\",\"orderBy\":\"_term\",\"customLabel\":\"source\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Voltage_DC_String_1\":\"#1F78C1\",\"Voltage_DC_String_2\":\"#7EB26D\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"query\":\"Head.RequestArguments.Channel:Voltage_DC_String_* AND Head.Status.Code:0\",\"language\":\"lucene\"}}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "046a4180-7887-11e7-8edb-11673d3a5fbb",
+    "_type": "visualization",
+    "_source": {
+      "title": "Hot Water Temperatures Delta",
+      "visState": "{\"title\":\"Hot Water Temperatures Delta\",\"type\":\"area\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"scale\":\"linear\",\"interpolate\":\"cardinal\",\"mode\":\"overlap\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"type\":\"area\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":false,\"defaultYExtents\":false},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"t°C\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"area\",\"mode\":\"normal\",\"data\":{\"label\":\"t°C\",\"id\":\"1\"},\"interpolate\":\"cardinal\",\"valueAxis\":\"ValueAxis-1\"}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"production\",\"customLabel\":\"t°C\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"date\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"production_type\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"source\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"solar\":\"#508642\",\"grid\":\"#BF1B00\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true,\"default_field\":\"*\"}},\"language\":\"lucene\"},\"filter\":[]}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "95fccba0-7444-11e7-8edb-11673d3a5fbb",
+    "_type": "visualization",
+    "_source": {
+      "title": "Hot Water Production Percentage",
+      "visState": "{\"title\":\"Hot Water Production Percentage\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"isDonut\":false,\"type\":\"pie\",\"labels\":{\"show\":false,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"production\",\"json\":\"{\\n  \\\"script\\\": {\\n    \\\"inline\\\": \\\"(doc['production'].value * 120 * 1.5) / 1000\\\",\\n    \\\"lang\\\": \\\"painless\\\"\\n  }\\n}\",\"customLabel\":\"kWh\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"split\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"Date\",\"row\":false}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"production_type\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"source\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"solar\":\"#629E51\",\"grid\":\"#447EBC\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true,\"default_field\":\"*\"}},\"language\":\"lucene\"},\"filter\":[]}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "1bca7100-8f39-11e8-93db-d58a81716893",
+    "_type": "visualization",
+    "_source": {
+      "title": "Inverter Error Summary",
+      "visState": "{\"title\":\"Inverter Error Summary\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"isDonut\":false,\"labels\":{\"show\":false,\"values\":true,\"last_level\":true,\"truncate\":0}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{\"customLabel\":\"minutes\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"split\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"d\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"date\",\"row\":false}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"Body.Data.DeviceStatus.ErrorCodeDescription\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":10,\"order\":\"asc\",\"orderBy\":\"_term\",\"customLabel\":\"error\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"0\":\"#629E51\",\"567\":\"#BF1B00\",\"OK\":\"#629E51\",\"GVDPR\":\"#BF1B00\"},\"legendOpen\":false}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"97ad8bb0-8f32-11e8-93db-d58a81716893\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"Head.RequestArguments.DataCollection:CommonInverterData AND Head.Status.Code:0\"}}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "45edb060-7445-11e7-8edb-11673d3a5fbb",
+    "_type": "visualization",
+    "_source": {
+      "title": "Hot Water Production Percentage Summary",
+      "visState": "{\"title\":\"Hot Water Production Percentage Summary\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"isDonut\":false,\"type\":\"pie\",\"labels\":{\"show\":true,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"production\",\"json\":\"{\\n  \\\"script\\\": {\\n    \\\"inline\\\": \\\"(doc['production'].value * 120 * 1.5) / 1000\\\",\\n    \\\"lang\\\": \\\"painless\\\"\\n  }\\n}\",\"customLabel\":\"kWh\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"production_type\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"source\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"solar\":\"#508642\",\"grid\":\"#BF1B00\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true,\"default_field\":\"*\"}},\"language\":\"lucene\"},\"filter\":[]}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "7c19af90-0ebf-11e7-91d8-c97263d3d6b8",
+    "_type": "visualization",
+    "_source": {
+      "title": "Temperature",
+      "visState": "{\"title\":\"Temperature\",\"type\":\"line\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":false,\"drawLinesBetweenPoints\":true,\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"interpolate\":\"cardinal\",\"legendPosition\":\"top\",\"radiusRatio\":9,\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"t°C\"},\"drawLinesBetweenPoints\":true,\"interpolate\":\"cardinal\",\"mode\":\"normal\",\"radiusRatio\":9,\"show\":\"true\",\"showCircles\":true,\"type\":\"line\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":false,\"showCircles\":true,\"times\":[],\"type\":\"line\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"mode\":\"normal\",\"setYExtents\":false,\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"t°C\"},\"type\":\"value\"}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"s.v\",\"customLabel\":\"t°C\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"time\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"name\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":15,\"orderAgg\":{\"id\":\"3-orderAgg\",\"enabled\":true,\"type\":\"max\",\"schema\":\"orderAgg\",\"params\":{\"field\":\"s.id\"}},\"order\":\"asc\",\"orderBy\":\"custom\",\"customLabel\":\"sensor\"}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Boiler\":\"#7EB26D\",\"Mix\":\"#6ED0E0\",\"Reverse\":\"#1F78C1\",\"Solar Secondary\":\"#F2C96D\",\"Standby heater\":\"#705DA0\",\"Supply\":\"#890F02\",\"Tank\":\"#BA43A9\",\"Solar Primary\":\"#C15C17\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"language\":\"lucene\",\"query\":\"csr_type:sensor AND sensor_type:value AND !s.id:75 AND !s.id:74 AND !s.id:78 AND !s.id:79 AND !s.id:80 AND !s.id:81\"},\"filter\":[]}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "2260fab0-f024-11e8-b203-796cd753caeb",
+    "_type": "visualization",
+    "_source": {
+      "title": "Ambient Humidity",
+      "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{\"customLabel\":\"value\",\"field\":\"s.v\"},\"schema\":\"metric\",\"type\":\"avg\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customInterval\":\"2h\",\"customLabel\":\"time\",\"extended_bounds\":{},\"field\":\"@timestamp\",\"interval\":\"auto\",\"min_doc_count\":1},\"schema\":\"segment\",\"type\":\"date_histogram\"},{\"enabled\":true,\"id\":\"3\",\"params\":{\"customLabel\":\"sensor\",\"field\":\"name\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"order\":\"asc\",\"orderAgg\":{\"enabled\":true,\"id\":\"3-orderAgg\",\"params\":{\"field\":\"s_id\"},\"schema\":{\"aggFilter\":[\"!top_hits\",\"!percentiles\",\"!median\",\"!std_dev\",\"!derivative\",\"!moving_avg\",\"!serial_diff\",\"!cumulative_sum\",\"!avg_bucket\",\"!max_bucket\",\"!min_bucket\",\"!sum_bucket\"],\"deprecate\":false,\"editor\":false,\"group\":\"none\",\"hideCustomLabel\":true,\"max\":null,\"min\":0,\"name\":\"orderAgg\",\"params\":[],\"title\":\"Order Agg\"},\"type\":\"max\"},\"orderBy\":\"custom\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"size\":5},\"schema\":\"group\",\"type\":\"terms\"}],\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":false,\"drawLinesBetweenPoints\":true,\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"interpolate\":\"cardinal\",\"legendPosition\":\"top\",\"radiusRatio\":9,\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"value\"},\"drawLinesBetweenPoints\":true,\"interpolate\":\"cardinal\",\"mode\":\"normal\",\"radiusRatio\":9,\"show\":\"true\",\"showCircles\":true,\"type\":\"line\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":false,\"showCircles\":true,\"times\":[],\"type\":\"line\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"max\":110,\"min\":0,\"mode\":\"normal\",\"setYExtents\":true,\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"value\"},\"type\":\"value\"}]},\"title\":\"Ambient Humidity\",\"type\":\"line\"}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Basement Humidity\":\"#962D82\",\"Basement Temperature\":\"#962D82\",\"Outdoor Humidity\":\"#629E51\",\"Outdoor Temperature\":\"#629E51\",\"Room Humidity\":\"#64B0C8\",\"Room Temperature\":\"#64B0C8\",\"Value\":\"#629E51\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"language\":\"lucene\",\"query\":\"csr_type:sensor AND csr_state:actual AND (s.id:75 OR s.id:79 OR s.id:81) AND NOT s.v:\\\"-127\\\"\"},\"filter\":[]}"
+      }
+    },
+    "_meta": {
+      "savedObjectVersion": 2
+    }
+  },
+  {
+    "_id": "756d7770-f023-11e8-b203-796cd753caeb",
+    "_type": "visualization",
+    "_source": {
+      "title": "Ambient Temperature",
+      "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{\"customLabel\":\"value\",\"field\":\"s.v\"},\"schema\":\"metric\",\"type\":\"avg\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customInterval\":\"2h\",\"customLabel\":\"time\",\"extended_bounds\":{},\"field\":\"@timestamp\",\"interval\":\"auto\",\"min_doc_count\":1},\"schema\":\"segment\",\"type\":\"date_histogram\"},{\"enabled\":true,\"id\":\"3\",\"params\":{\"customLabel\":\"sensor\",\"field\":\"name\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"order\":\"asc\",\"orderAgg\":{\"enabled\":true,\"id\":\"3-orderAgg\",\"params\":{\"field\":\"s_id\"},\"schema\":{\"aggFilter\":[\"!top_hits\",\"!percentiles\",\"!median\",\"!std_dev\",\"!derivative\",\"!moving_avg\",\"!serial_diff\",\"!cumulative_sum\",\"!avg_bucket\",\"!max_bucket\",\"!min_bucket\",\"!sum_bucket\"],\"deprecate\":false,\"editor\":false,\"group\":\"none\",\"hideCustomLabel\":true,\"max\":null,\"min\":0,\"name\":\"orderAgg\",\"params\":[],\"title\":\"Order Agg\"},\"type\":\"max\"},\"orderBy\":\"custom\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"size\":5},\"schema\":\"group\",\"type\":\"terms\"}],\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"defaultYExtents\":false,\"drawLinesBetweenPoints\":true,\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"interpolate\":\"cardinal\",\"legendPosition\":\"top\",\"radiusRatio\":9,\"scale\":\"linear\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"value\"},\"drawLinesBetweenPoints\":true,\"interpolate\":\"cardinal\",\"mode\":\"normal\",\"radiusRatio\":9,\"show\":\"true\",\"showCircles\":true,\"type\":\"line\",\"valueAxis\":\"ValueAxis-1\"}],\"setYExtents\":false,\"showCircles\":true,\"times\":[],\"type\":\"line\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"defaultYExtents\":false,\"max\":30,\"min\":-30,\"mode\":\"normal\",\"setYExtents\":true,\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"value\"},\"type\":\"value\"}]},\"title\":\"Ambient Temperature\",\"type\":\"line\"}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Value\":\"#629E51\",\"Basement Temperature\":\"#962D82\",\"Outdoor Temperature\":\"#629E51\",\"Room Temperature\":\"#64B0C8\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"e870f310-87ef-11e8-93db-d58a81716893\",\"query\":{\"language\":\"lucene\",\"query\":\"csr_type:sensor AND csr_state:actual AND (s.id:74 OR s.id:78 OR s.id:80) AND NOT s.v:\\\"-127\\\"\"},\"filter\":[]}"
       }
     },
     "_meta": {
