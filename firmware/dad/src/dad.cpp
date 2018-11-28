@@ -1006,7 +1006,7 @@ void processStandbyHeater() {
                 switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
             } else {
                 // primary heater is off
-                if (tempTank > readSensorTH(SENSOR_TH_ROOM1_SB_HEATER) && room1TempReachedMinThreshold()) {
+                if (tempTank >= (TANK_MIN_TEMP_THRESHOLD + TANK_MIN_TEMP_HIST) && room1TempReachedMinThreshold()) {
                     // temp in (tank && room1) is high enough
                     // turn heater OFF
                     switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
