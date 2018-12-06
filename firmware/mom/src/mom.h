@@ -31,9 +31,6 @@ void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &node
 void unForceNodeState(uint8_t id);
 void switchVentilationValve();
 
-double readSensorCF(const uint8_t sensor);
-void saveSensorCF(const uint8_t sensor, const double value);
-int sensorCfOffset(const uint8_t sensor);
 void restoreNodesState();
 void loadWifiConfig();
 void validateStringParam(char* str, int maxSize);

@@ -6,6 +6,7 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 #include <Stepper.h>
+#include <EmonLib.h>
 
 #include <debug.h>
 #include <ESP8266.h>
@@ -18,10 +19,13 @@
 // Sensor pin
 const uint8_t DHT_IN_PIN = 5;
 const uint8_t DHT_OUT_PIN = 6;
+const uint8_t SENSOR_ENERGY_BALANCE_PIN = A0;
+
 const uint8_t SENSOR_TEMP_IN = (54 + 16) + (4 * 2) + 0;
 const uint8_t SENSOR_HUM_IN = (54 + 16) + (4 * 2) + 1;
 const uint8_t SENSOR_TEMP_OUT = (54 + 16) + (4 * 2) + 2;
 const uint8_t SENSOR_HUM_OUT = (54 + 16) + (4 * 2) + 3;
+const uint8_t SENSOR_ENERGY_BALANCE = (54 + 16) + (4 * 3) + 0;
 
 // Node id
 const uint8_t NODE_VENTILATION = 44;
@@ -35,8 +39,6 @@ const uint8_t MOTOR_PIN_5 = 12; // red
 const uint8_t MOTOR_STEPS = 32;
 const uint16_t MOTOR_STEPS_PER_REVOLUTION = 2048;
 const uint8_t REVOLUTION_COUNT = 15; // max 15
-
-const uint8_t SENSORS_ADDR_CFG[] = { SENSOR_TEMP_IN, SENSOR_HUM_IN, SENSOR_TEMP_OUT, SENSOR_HUM_OUT };
 
 // WiFi pins
 const uint8_t WIFI_RST_PIN = 0; // n/a
@@ -73,6 +75,7 @@ int8_t tempIn = 0;
 int8_t humIn = 0;
 int8_t tempOut = 0;
 int8_t humOut = 0;
+int8_t energyBalance = 0;
 
 //// Nodes
 
@@ -112,9 +115,7 @@ uint16_t TCP_SERVER_PORT = 8084;
 // EEPROM addresses
 const int NODE_STATE_FLAGS_EEPROM_ADDR = 0;
 const int NODE_FORCED_MODE_FLAGS_EEPROM_ADDR = NODE_STATE_FLAGS_EEPROM_ADDR + sizeof(NODE_STATE_FLAGS);
-const int SENSORS_FACTORS_EEPROM_ADDR = NODE_FORCED_MODE_FLAGS_EEPROM_ADDR + sizeof(NODE_FORCED_MODE_FLAGS);
-const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR
-        + sizeof(double) * sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]);
+const int WIFI_REMOTE_AP_EEPROM_ADDR = NODE_FORCED_MODE_FLAGS_EEPROM_ADDR + sizeof(NODE_FORCED_MODE_FLAGS);
 const int WIFI_REMOTE_PW_EEPROM_ADDR = WIFI_REMOTE_AP_EEPROM_ADDR + sizeof(WIFI_REMOTE_AP);
 const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + sizeof(WIFI_REMOTE_PW);
 const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + sizeof(SERVER_IP);
@@ -153,6 +154,9 @@ void setup() {
     // init heartbeat led
     pinMode(HEARTBEAT_LED, OUTPUT);
     digitalWrite(HEARTBEAT_LED, LOW);
+
+    // init energy_balance analog input
+    pinMode(SENSOR_ENERGY_BALANCE_PIN, INPUT);
 
     // init motor
     pinMode(MOTOR_PIN_5, OUTPUT);
@@ -358,34 +362,6 @@ void switchVentilationValve() {
 
 /*====================== Load/Save configuration in EEPROM ==================*/
 
-double readSensorCF(uint8_t sensor) {
-    double f = 0;
-    if (sensorCfOffset(sensor) >= 0) {
-        f = EEPROM.readDouble(SENSORS_FACTORS_EEPROM_ADDR + sensorCfOffset(sensor));
-        if (isnan(f) || f <= 0) {
-            f = 1;
-        }
-    }
-    return f;
-}
-
-void saveSensorCF(uint8_t sensor, double value) {
-    if (sensorCfOffset(sensor) >= 0) {
-        eepromWriteCount += EEPROM.updateDouble(SENSORS_FACTORS_EEPROM_ADDR + sensorCfOffset(sensor), value);
-    }
-}
-
-int sensorCfOffset(uint8_t sensor) {
-    int offset = 0;
-    for (uint8_t i = 0; i < sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]); i++) {
-        if (SENSORS_ADDR_CFG[i] == sensor) {
-            return offset;
-        }
-        offset += sizeof(double);
-    }
-    return -1;
-}
-
 void restoreNodesState() {
     NODE_STATE_FLAGS = EEPROM.readInt(NODE_STATE_FLAGS_EEPROM_ADDR);
     NODE_FORCED_MODE_FLAGS = EEPROM.readInt(NODE_FORCED_MODE_FLAGS_EEPROM_ADDR);
@@ -419,20 +395,24 @@ void readSensors() {
     humIn = getSensorValue(SENSOR_HUM_IN);
     tempOut = getSensorValue(SENSOR_TEMP_OUT);
     humOut = getSensorValue(SENSOR_HUM_OUT);
+    energyBalance = getSensorValue(SENSOR_ENERGY_BALANCE);
 }
 
 int8_t getSensorValue(const uint8_t sensor) {
     float result = UNKNOWN_SENSOR_VALUE;
     if (SENSOR_TEMP_IN == sensor) {
-        result = dhtIn.readTemperature() * readSensorCF(SENSOR_TEMP_IN);
+        result = dhtIn.readTemperature();
     } else if (SENSOR_HUM_IN == sensor) {
-        result = dhtIn.readHumidity() * readSensorCF(SENSOR_HUM_IN);
+        result = dhtIn.readHumidity();
     } else if (SENSOR_TEMP_OUT == sensor) {
-        result = dhtOut.readTemperature() * readSensorCF(SENSOR_TEMP_OUT);
+        result = dhtOut.readTemperature();
     } else if (SENSOR_HUM_OUT == sensor) {
-        result = dhtOut.readHumidity() * readSensorCF(SENSOR_HUM_OUT);
+        result = dhtOut.readHumidity();
+    } else if (SENSOR_ENERGY_BALANCE == sensor) {
+        int rawVal = analogRead(SENSOR_ENERGY_BALANCE_PIN);
+        //TODO: read and calculate energy balance
+        energyBalance = rawVal;
     }
-
     result = (result > 0) ? result + 0.5 : result - 0.5;
     return int8_t(result);
 }
@@ -459,6 +439,8 @@ void reportStatus() {
     broadcastMsg(json);
     jsonifySensorValue(SENSOR_HUM_OUT, humOut, json, JSON_MAX_SIZE);
     broadcastMsg(json);
+    jsonifySensorValue(SENSOR_ENERGY_BALANCE, energyBalance, json, JSON_MAX_SIZE);
+    broadcastMsg(json);
     jsonifyNodeStatus(NODE_VENTILATION, NODE_STATE_FLAGS & NODE_VENTILATION_BIT, tsNodeVentilation,
             NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
     broadcastMsg(json);
@@ -468,14 +450,6 @@ void reportConfiguration() {
     char json[JSON_MAX_SIZE];
     char ip[16];
 
-    jsonifySensorConfig(SENSOR_TEMP_IN, F("cf"), readSensorCF(SENSOR_TEMP_IN), json, JSON_MAX_SIZE);
-    serial->println(json);
-    jsonifySensorConfig(SENSOR_HUM_IN, F("cf"), readSensorCF(SENSOR_HUM_IN), json, JSON_MAX_SIZE);
-    serial->println(json);
-    jsonifySensorConfig(SENSOR_TEMP_OUT, F("cf"), readSensorCF(SENSOR_TEMP_OUT), json, JSON_MAX_SIZE);
-    serial->println(json);
-    jsonifySensorConfig(SENSOR_HUM_OUT, F("cf"), readSensorCF(SENSOR_HUM_OUT), json, JSON_MAX_SIZE);
-    serial->println(json);
     jsonifyConfig(F("rap"), WIFI_REMOTE_AP, json, JSON_MAX_SIZE);
     serial->println(json);
     jsonifyConfig(F("rpw"), WIFI_REMOTE_PW, json, JSON_MAX_SIZE);
@@ -565,12 +539,7 @@ bool parseCommand(char* command) {
             }
         } else if (root[F("m")] == F("cfg")) {
             // CFG
-            JsonObject& sensor = root[F("s")].asObject();
-            if (sensor.containsKey(F("id")) && sensor.containsKey(F("cf"))) {
-                uint8_t id = sensor[F("id")].as<uint8_t>();
-                double cf = sensor[F("cf")].as<double>();
-                saveSensorCF(id, cf);
-            } else if (root.containsKey(F("rap"))) {
+            if (root.containsKey(F("rap"))) {
                 sprintf(WIFI_REMOTE_AP, "%s", root[F("rap")].asString());
                 eepromWriteCount += EEPROM.updateBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP,
                         sizeof(WIFI_REMOTE_AP));
