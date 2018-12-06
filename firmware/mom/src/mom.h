@@ -4,10 +4,10 @@
 // - extern variable definitions
 // In the appropriate section
 
-#ifndef _Ventilation_H_
-#define _Ventilation_H_
+#ifndef _mom_H_
+#define _mom_H_
 #include "Arduino.h"
-//add your includes for the project Ventilation here
+//add your includes for the project mom here
 
 //end of add your includes here
 #ifdef __cplusplus
@@ -36,7 +36,6 @@ void loadWifiConfig();
 void validateStringParam(char* str, int maxSize);
 
 void readSensors();
-int8_t getSensorValue(uint8_t sensor);
 bool validSensorValues(const int16_t values[], const uint8_t size);
 
 void reportStatus();
@@ -52,4 +51,4 @@ unsigned long getTimestamp();
 unsigned long diffTimestamps(unsigned long hi, unsigned long lo);
 
 //Do not add code below this line
-#endif /* _Ventilation_H_ */
+#endif /* _mom_H_ */

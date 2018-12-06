@@ -19,13 +19,17 @@
 // Sensor pin
 const uint8_t DHT_IN_PIN = 5;
 const uint8_t DHT_OUT_PIN = 6;
-const uint8_t SENSOR_ENERGY_BALANCE_PIN = A0;
+const uint8_t SENSOR_CURRENT_METER_PIN = A0;
+const uint8_t SENSOR_VOLTAGE_METER_PIN = A1;
 
 const uint8_t SENSOR_TEMP_IN = (54 + 16) + (4 * 2) + 0;
 const uint8_t SENSOR_HUM_IN = (54 + 16) + (4 * 2) + 1;
 const uint8_t SENSOR_TEMP_OUT = (54 + 16) + (4 * 2) + 2;
 const uint8_t SENSOR_HUM_OUT = (54 + 16) + (4 * 2) + 3;
-const uint8_t SENSOR_ENERGY_BALANCE = (54 + 16) + (4 * 3) + 0;
+const uint8_t SENSOR_UAC = (54 + 16) + (4 * 3) + 0;
+const uint8_t SENSOR_IAC = (54 + 16) + (4 * 3) + 1;
+const uint8_t SENSOR_PAC = (54 + 16) + (4 * 3) + 2;
+const uint8_t SENSOR_EAC = (54 + 16) + (4 * 3) + 3;
 
 // Node id
 const uint8_t NODE_VENTILATION = 44;
@@ -75,7 +79,10 @@ int8_t tempIn = 0;
 int8_t humIn = 0;
 int8_t tempOut = 0;
 int8_t humOut = 0;
-int8_t energyBalance = 0;
+float uac = 0; // V
+float iac = 0; // A
+float pac = 0; // W
+float eac = 0; // Wh
 
 //// Nodes
 
@@ -128,6 +135,9 @@ int eepromWriteCount = 0;
 DHT dhtIn(DHT_IN_PIN, DHT11);
 DHT dhtOut(DHT_OUT_PIN, DHT22);
 
+// Energy monitor
+EnergyMonitor emon;
+
 // Stepper
 Stepper motor(MOTOR_STEPS, MOTOR_PIN_1, MOTOR_PIN_3, MOTOR_PIN_2, MOTOR_PIN_4);
 
@@ -155,8 +165,9 @@ void setup() {
     pinMode(HEARTBEAT_LED, OUTPUT);
     digitalWrite(HEARTBEAT_LED, LOW);
 
-    // init energy_balance analog input
-    pinMode(SENSOR_ENERGY_BALANCE_PIN, INPUT);
+    // init energy meter
+    emon.current(SENSOR_CURRENT_METER_PIN, 42.55);
+    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 1000, 1.7);
 
     // init motor
     pinMode(MOTOR_PIN_5, OUTPUT);
@@ -391,30 +402,26 @@ void validateStringParam(char* str, int maxSize) {
 /*====================== Sensors processing methods =========================*/
 
 void readSensors() {
-    tempIn = getSensorValue(SENSOR_TEMP_IN);
-    humIn = getSensorValue(SENSOR_HUM_IN);
-    tempOut = getSensorValue(SENSOR_TEMP_OUT);
-    humOut = getSensorValue(SENSOR_HUM_OUT);
-    energyBalance = getSensorValue(SENSOR_ENERGY_BALANCE);
-}
+    float v;
+    v = dhtIn.readTemperature();
+    tempIn = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    v = dhtIn.readHumidity();
+    humIn = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    v = dhtOut.readTemperature();
+    tempOut = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    v = dhtOut.readHumidity();
+    humOut = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
 
-int8_t getSensorValue(const uint8_t sensor) {
-    float result = UNKNOWN_SENSOR_VALUE;
-    if (SENSOR_TEMP_IN == sensor) {
-        result = dhtIn.readTemperature();
-    } else if (SENSOR_HUM_IN == sensor) {
-        result = dhtIn.readHumidity();
-    } else if (SENSOR_TEMP_OUT == sensor) {
-        result = dhtOut.readTemperature();
-    } else if (SENSOR_HUM_OUT == sensor) {
-        result = dhtOut.readHumidity();
-    } else if (SENSOR_ENERGY_BALANCE == sensor) {
-        int rawVal = analogRead(SENSOR_ENERGY_BALANCE_PIN);
-        //TODO: read and calculate energy balance
-        energyBalance = rawVal;
+    emon.calcVI(20, 2000);
+    uac = emon.Vrms;
+    iac = emon.Irms;
+    pac = emon.apparentPower;
+    if (emon.realPower < 0) {
+        // producing
+        iac = iac * (-1);
+        pac = pac * (-1);
     }
-    result = (result > 0) ? result + 0.5 : result - 0.5;
-    return int8_t(result);
+    eac += (pac / (60 * 60)) * SENSORS_READ_INTERVAL_SEC;
 }
 
 bool validSensorValues(const int16_t values[], const uint8_t size) {
@@ -439,8 +446,17 @@ void reportStatus() {
     broadcastMsg(json);
     jsonifySensorValue(SENSOR_HUM_OUT, humOut, json, JSON_MAX_SIZE);
     broadcastMsg(json);
-    jsonifySensorValue(SENSOR_ENERGY_BALANCE, energyBalance, json, JSON_MAX_SIZE);
+
+    jsonifySensorValue(SENSOR_UAC, uac, json, JSON_MAX_SIZE);
     broadcastMsg(json);
+    jsonifySensorValue(SENSOR_UAC, iac, json, JSON_MAX_SIZE);
+    broadcastMsg(json);
+    jsonifySensorValue(SENSOR_UAC, pac, json, JSON_MAX_SIZE);
+    broadcastMsg(json);
+    jsonifySensorValue(SENSOR_UAC, eac, json, JSON_MAX_SIZE);
+    broadcastMsg(json);
+    eac = 0; // reset energy counter
+
     jsonifyNodeStatus(NODE_VENTILATION, NODE_STATE_FLAGS & NODE_VENTILATION_BIT, tsNodeVentilation,
             NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
     broadcastMsg(json);
