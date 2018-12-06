@@ -40,8 +40,8 @@ void reportConfiguration();
 void reportTimestamp();
 
 void processSerialMsg();
-void processWifiMsg();
 void broadcastMsg(const char* msg);
+void printToDisplay(const char* msg);
 bool parseCommand(char* command);
 
 unsigned long getTimestamp();

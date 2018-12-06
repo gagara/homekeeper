@@ -319,7 +319,11 @@ void reportStatus() {
     broadcastMsg(json);
     jsonifySensorValue(SENSOR_HEATER_CURRENT, heaterIac, json, JSON_MAX_SIZE);
     broadcastMsg(json);
-    // TODO: report reboots info
+    jsonifySensorValue(SENSOR_HEATER_CURRENT, heaterIac, json, JSON_MAX_SIZE);
+    broadcastMsg(json);
+    jsonifyNodeStatus(NODE_HEATER_RESET, NODE_STATE_FLAGS & NODE_HEATER_RESET_BIT, tsNodeHeaterReset,
+            NODE_FORCED_MODE_FLAGS & NODE_HEATER_RESET_BIT, tsForcedNodeHeaterReset, json, JSON_MAX_SIZE);
+    broadcastMsg(json);
 }
 
 void reportConfiguration() {
@@ -343,6 +347,11 @@ void processSerialMsg() {
 
 void broadcastMsg(const char* msg) {
     serial->println(msg);
+    printToDisplay(msg);
+}
+
+void printToDisplay(const char* msg) {
+    // TODO
 }
 
 bool parseCommand(char* command) {
