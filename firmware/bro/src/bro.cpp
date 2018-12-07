@@ -5,7 +5,8 @@
 #include <EEPROMex.h>
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
-#include <EmonLib.h>
+#include <ACS712.h>
+#include <LiquidCrystal_I2C.h>
 
 #include <debug.h>
 #include <jsoner.h>
@@ -49,6 +50,7 @@ const int8_t HEATER_RESET_PERIOD_SEC = 10;
 const float HEATER_ACTIVE_MIN_IAC = 0.5;
 
 const uint8_t JSON_MAX_SIZE = 64;
+const uint8_t LCD_LINE_LENGTH = 40;
 
 /*============================= Global variables ============================*/
 
@@ -94,6 +96,12 @@ int eepromWriteCount = 0;
 // DHT sensors
 DHT dht(DHT_PIN, DHT22);
 
+// Current sensor
+ACS712 acs712(ACS712_30A, SENSOR_HEATER_CURRENT_METER_PIN);
+
+// LCD
+LiquidCrystal_I2C lcd(0x27, LCD_LINE_LENGTH, 4);
+
 // Serial port
 SoftwareSerial serialPort(DEBUG_SERIAL_RX_PIN, DEBUG_SERIAL_TX_PIN);
 SoftwareSerial *serial = &serialPort;
@@ -113,8 +121,12 @@ void setup() {
     pinMode(HEARTBEAT_LED, OUTPUT);
     digitalWrite(HEARTBEAT_LED, LOW);
 
-    // init heater current meter
-    pinMode(SENSOR_HEATER_CURRENT_METER_PIN, INPUT);
+    // calibrate heater current meter
+    acs712.setZeroPoint(512);
+
+    // turn on LCD
+    lcd.begin();
+    lcd.backlight();
 
     // restore forced node state flags from EEPROM
     // default node state -- OFF
@@ -295,8 +307,7 @@ void readSensors() {
     roomTemp = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
     v = dht.readHumidity();
     roomHum = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
-
-    // TODO: read IAC
+    heaterIac = acs712.getCurrentAC();
 }
 
 bool validSensorValues(const int16_t values[], const uint8_t size) {
@@ -351,6 +362,22 @@ void broadcastMsg(const char* msg) {
 }
 
 void printToDisplay(const char* msg) {
+    DynamicJsonBuffer jsonBuffer(JSON_MAX_SIZE * 2);
+    JsonObject& root = jsonBuffer.parseObject(msg);
+    if (root.success()) {
+        if (root[F("m")] == F("csr")) {
+            if (root.containsKey(F("id")) && root.containsKey(F("v"))) {
+                uint8_t id = root[F("id")].as<uint8_t>();
+                char str[LCD_LINE_LENGTH + 1];
+                if (id == SENSOR_TEMP && root.containsKey(F("v"))) {
+                    int8_t v = root[F("v")].as<int8_t>();
+                    lcd.setCursor(1, 0);
+                    snprintf(str, LCD_LINE_LENGTH, "Temperature: %d C", v);
+                    lcd.print(str);
+                }
+            }
+        }
+    }
     // TODO
 }
 
