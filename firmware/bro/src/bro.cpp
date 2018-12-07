@@ -24,7 +24,7 @@ const uint8_t SENSOR_HUM = (54 + 16) + (4 * 4) + 1;
 const uint8_t SENSOR_HEATER_CURRENT = (54 + 16) + (4 * 4) + 2;
 
 // Node id
-const uint8_t NODE_HEATER_RESET = 45;
+const uint8_t NODE_HEATER_RESET = 6;
 
 // Nodes State
 const uint16_t NODE_HEATER_RESET_BIT = 1;
@@ -58,7 +58,7 @@ const uint8_t LCD_LINE_LENGTH = 40;
 // Values
 int8_t roomTemp = 0;
 int8_t roomHum = 0;
-float heaterIac = 0; // A
+double heaterIac = 0; // A
 
 //// Nodes
 
@@ -104,9 +104,9 @@ LiquidCrystal_I2C lcd(0x27, LCD_LINE_LENGTH, 4);
 
 // Serial port
 SoftwareSerial serialPort(DEBUG_SERIAL_RX_PIN, DEBUG_SERIAL_TX_PIN);
-SoftwareSerial *serial = &serialPort;
+HardwareSerial *serial = &Serial;
 #ifdef __DEBUG__
-SoftwareSerial *debug = serial;
+SoftwareSerial *debug = &serialPort;
 #else
 SoftwareSerial *debug = NULL;
 #endif
@@ -114,6 +114,9 @@ SoftwareSerial *debug = NULL;
 void setup() {
     // Setup serial ports
     serial->begin(57600);
+    if (debug) {
+        debug->begin(57600);
+    }
 
     dbg(debug, F(":STARTING\n"));
 
@@ -307,7 +310,8 @@ void readSensors() {
     roomTemp = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
     v = dht.readHumidity();
     roomHum = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
-    heaterIac = acs712.getCurrentAC();
+    v = acs712.getCurrentAC();
+    heaterIac = v;
 }
 
 bool validSensorValues(const int16_t values[], const uint8_t size) {
@@ -327,8 +331,6 @@ void reportStatus() {
     jsonifySensorValue(SENSOR_TEMP, roomTemp, json, JSON_MAX_SIZE);
     broadcastMsg(json);
     jsonifySensorValue(SENSOR_HUM, roomHum, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
-    jsonifySensorValue(SENSOR_HEATER_CURRENT, heaterIac, json, JSON_MAX_SIZE);
     broadcastMsg(json);
     jsonifySensorValue(SENSOR_HEATER_CURRENT, heaterIac, json, JSON_MAX_SIZE);
     broadcastMsg(json);
@@ -366,19 +368,44 @@ void printToDisplay(const char* msg) {
     JsonObject& root = jsonBuffer.parseObject(msg);
     if (root.success()) {
         if (root[F("m")] == F("csr")) {
-            if (root.containsKey(F("id")) && root.containsKey(F("v"))) {
-                uint8_t id = root[F("id")].as<uint8_t>();
-                char str[LCD_LINE_LENGTH + 1];
-                if (id == SENSOR_TEMP && root.containsKey(F("v"))) {
-                    int8_t v = root[F("v")].as<int8_t>();
-                    lcd.setCursor(1, 0);
-                    snprintf(str, LCD_LINE_LENGTH, "Temperature: %d C", v);
+            if (root.containsKey(F("s"))) {
+                JsonObject& data = root[F("s")];
+                if (data.containsKey(F("id"))) {
+                    uint8_t id = data[F("id")].as<uint8_t>();
+                    char str[LCD_LINE_LENGTH + 1];
+                    if (id == SENSOR_TEMP && data.containsKey(F("v"))) {
+                        snprintf(str, LCD_LINE_LENGTH, "Temp      :%7d C", data[F("v")].as<int8_t>());
+                        lcd.setCursor(0, 0);
+                    } else if (id == SENSOR_HUM && data.containsKey(F("v"))) {
+                        snprintf(str, LCD_LINE_LENGTH, "Hum       :%7d %%", data[F("v")].as<int8_t>());
+                        lcd.setCursor(0, 1);
+                    } else if (id == SENSOR_HEATER_CURRENT && data.containsKey(F("v"))) {
+                        double v = data[F("v")].as<double>();
+                        snprintf(str, LCD_LINE_LENGTH, "Power[%3s]:%7d W", v >= HEATER_ACTIVE_MIN_IAC ? "ON" : "OFF",
+                                (int8_t) v * 220);
+                        lcd.setCursor(0, 2);
+                    }
+                    lcd.print(str);
+                }
+            } else if (root.containsKey(F("n"))) {
+                JsonObject& data = root[F("n")];
+                if (data.containsKey(F("id"))) {
+                    uint8_t id = data[F("id")].as<uint8_t>();
+                    char str[LCD_LINE_LENGTH + 1];
+                    if (id == NODE_HEATER_RESET && data.containsKey(F("ts"))) {
+                        unsigned long ts = data[F("ts")].as<unsigned long>();
+                        int d, h, m;
+                        d = ts / 60 / 60 / 24;
+                        h = (ts / 60 / 60) % 24;
+                        m = (ts / 60) % 60;
+                        snprintf(str, LCD_LINE_LENGTH, "Last Reset:%03d:%02d:%02d", d, h, m);
+                        lcd.setCursor(0, 3);
+                    }
                     lcd.print(str);
                 }
             }
         }
     }
-    // TODO
 }
 
 bool parseCommand(char* command) {
@@ -421,7 +448,7 @@ bool parseCommand(char* command) {
                 if (sp == -1) {
                     debug = NULL;
                 } else if (sp == 1) {
-                    debug = serial;
+                    debug = &serialPort;
                 }
             } else {
                 reportConfiguration();
