@@ -79,10 +79,10 @@ int8_t tempIn = 0;
 int8_t humIn = 0;
 int8_t tempOut = 0;
 int8_t humOut = 0;
-float uac = 0; // V
-float iac = 0; // A
-float pac = 0; // W
-float eac = 0; // Wh
+double uac = 0; // V
+double iac = 0; // A
+double pac = 0; // W
+double eac = 0; // Wh
 
 //// Nodes
 
@@ -498,19 +498,19 @@ void processSerialMsg() {
 
 void processWifiMsg() {
     char buff[JSON_MAX_SIZE + 1];
-    unsigned long start = millis();
+//    unsigned long start = millis();
     uint8_t l = esp8266.receive(buff, JSON_MAX_SIZE);
     if (l > 0) {
-        dbgf(debug, F(":HTTP:receive:%d bytes:[%d msec]\n"), l, millis() - start);
+//        dbgf(debug, F(":HTTP:receive:%d bytes:[%d msec]\n"), l, millis() - start);
         parseCommand(buff);
     }
 }
 
 void broadcastMsg(const char* msg) {
     serial->println(msg);
-    unsigned long start = millis();
-    int status = esp8266.send(SERVER_IP, SERVER_PORT, msg);
-    dbgf(debug, F(":HTTP:send:%d:[%d msec]\n"), status, millis() - start);
+//    unsigned long start = millis();
+    /*int status = */esp8266.send(SERVER_IP, SERVER_PORT, msg);
+//    dbgf(debug, F(":HTTP:send:%d:[%d msec]\n"), status, millis() - start);
 }
 
 bool parseCommand(char* command) {
@@ -518,7 +518,7 @@ bool parseCommand(char* command) {
 
     if (strstr(command, "AT") == command) {
         // this is AT command for ESP8266
-        dbgf(debug, F(":ESP8266:%s\n"), command);
+//        dbgf(debug, F(":ESP8266:%s\n"), command);
         esp8266.write(command);
         return true;
     }
