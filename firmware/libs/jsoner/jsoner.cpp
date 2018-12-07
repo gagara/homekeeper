@@ -76,6 +76,23 @@ void jsonifySensorValue(const uint8_t id, //
 }
 
 void jsonifySensorValue(const uint8_t id, //
+        const double value, //
+        char *buffer, //
+        const size_t bsize) {
+    DynamicJsonBuffer jsonBuffer(bsize * 2);
+    JsonObject& root = jsonBuffer.createObject();
+    root[F("m")] = F("csr");
+
+    JsonObject& sens = jsonBuffer.createObject();
+    sens[F("id")] = id;
+    sens[F("v")] = value;
+
+    root[F("s")] = sens;
+
+    root.printTo(buffer, bsize);
+}
+
+void jsonifySensorValue(const uint8_t id, //
         const int8_t value, //
         const unsigned long ts, //
         char *buffer, //

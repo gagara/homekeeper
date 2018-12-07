@@ -25,6 +25,10 @@ void jsonifySensorValue(const uint8_t id, //
         char *buffer, //
         const size_t bsize);
 void jsonifySensorValue(const uint8_t id, //
+        const double value, //
+        char *buffer, //
+        const size_t bsize);
+void jsonifySensorValue(const uint8_t id, //
         const int8_t value, //
         const unsigned long ts, //
         char *buffer, //
