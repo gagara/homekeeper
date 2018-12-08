@@ -41,13 +41,14 @@ const int16_t UNKNOWN_SENSOR_VALUE = -127;
 const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 60 * 5;
 
 // reporting
-const unsigned long STATUS_REPORTING_PERIOD_SEC = 30; // 0.5 minute
+const unsigned long STATUS_REPORTING_PERIOD_SEC = 10; // 10 seconds
 const unsigned long SENSORS_READ_INTERVAL_SEC = 10; // 10 seconds
 
 // heater
 const int8_t TEMP_HEATER_RESET_THRESHOLD = 18;
 const int8_t HEATER_RESET_PERIOD_SEC = 10;
 const float HEATER_ACTIVE_MIN_IAC = 0.5;
+const unsigned long HEATER_INACTIVE_MIN_PERIOD_SEC = 15 * 60; // 15 minutes
 
 const uint8_t JSON_MAX_SIZE = 64;
 const uint8_t LCD_LINE_LENGTH = 40;
@@ -78,6 +79,7 @@ unsigned long tsForcedNodeHeaterReset = 0;
 // Timestamps
 unsigned long tsLastStatusReport = 0;
 unsigned long tsLastSensorRead = 0;
+unsigned long tsNodeHeaterActive = 0;
 
 unsigned long tsPrev = 0;
 unsigned long tsPrevRaw = 0;
@@ -94,7 +96,7 @@ int eepromWriteCount = 0;
 /*============================= Connectivity ================================*/
 
 // DHT sensors
-DHT dht(DHT_PIN, DHT22);
+DHT dht(DHT_PIN, DHT11);
 
 // Current sensor
 ACS712 acs712(ACS712_30A, SENSOR_HEATER_CURRENT_METER_PIN);
@@ -134,6 +136,14 @@ void setup() {
     // restore forced node state flags from EEPROM
     // default node state -- OFF
     restoreNodesState();
+
+    // init nodes pins
+    pinMode(NODE_HEATER_RESET, OUTPUT);
+
+    // restore nodes state
+    digitalWrite(NODE_HEATER_RESET, (~NODE_STATE_FLAGS & NODE_HEATER_RESET) ? LOW : HIGH);
+
+    tsLastStatusReport -= STATUS_REPORTING_PERIOD_SEC;
 }
 
 void loop() {
@@ -163,6 +173,11 @@ void loop() {
 /*========================= Node processing methods =========================*/
 
 void processHeaterReset() {
+    // update heater active TS
+    if (heaterIac >= HEATER_ACTIVE_MIN_IAC) {
+        tsNodeHeaterActive = tsCurr;
+    }
+
     uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_HEATER_RESET_BIT;
     if (isInForcedMode(NODE_HEATER_RESET_BIT, tsForcedNodeHeaterReset)) {
         return;
@@ -173,6 +188,7 @@ void processHeaterReset() {
                 NODE_FORCED_MODE_FLAGS & NODE_HEATER_RESET_BIT, tsForcedNodeHeaterReset, json, JSON_MAX_SIZE);
         broadcastMsg(json);
     }
+
     uint8_t sensIds[] = { SENSOR_TEMP };
     int16_t sensVals[] = { roomTemp };
     uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
@@ -183,20 +199,19 @@ void processHeaterReset() {
             // back to normal mode
             switchNodeState(NODE_HEATER_RESET, sensIds, sensVals, sensCnt);
         }
-
     } else {
         // normal mode
         if (diffTimestamps(tsCurr, tsNodeHeaterReset) >= NODE_SWITCH_SAFE_TIME_SEC) {
             if (!validSensorValues(sensVals, sensCnt)) {
                 return;
             }
-
-            if (roomTemp <= TEMP_HEATER_RESET_THRESHOLD && heaterIac < HEATER_ACTIVE_MIN_IAC) {
-                // temp in Room too low && Heater is OFF
+            if (roomTemp <= TEMP_HEATER_RESET_THRESHOLD && heaterIac < HEATER_ACTIVE_MIN_IAC
+                    && diffTimestamps(tsCurr, tsNodeHeaterActive) >= HEATER_INACTIVE_MIN_PERIOD_SEC) {
+                // temp in Room is low && Heater is OFF && OFF period is long enough
                 // start RESET
                 switchNodeState(NODE_HEATER_RESET, sensIds, sensVals, sensCnt);
             } else {
-                // temp in Room is OK || Heater is ON
+                // temp in Room is OK || Heater is ON || Heater is OFF for short period
                 // do nothing
             }
         }
@@ -308,8 +323,12 @@ void readSensors() {
     float v;
     v = dht.readTemperature();
     roomTemp = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    // prevent endless heater reset when sensor disconnected
+    roomTemp = roomTemp == 0 ? UNKNOWN_SENSOR_VALUE : roomTemp;
     v = dht.readHumidity();
     roomHum = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    // prevent endless heater reset when sensor disconnected
+    roomHum = roomHum == 0 ? UNKNOWN_SENSOR_VALUE : roomHum;
     v = acs712.getCurrentAC();
     heaterIac = v;
 }
@@ -394,6 +413,9 @@ void printToDisplay(const char* msg) {
                     char str[LCD_LINE_LENGTH + 1];
                     if (id == NODE_HEATER_RESET && data.containsKey(F("ts"))) {
                         unsigned long ts = data[F("ts")].as<unsigned long>();
+                        if (ts > 0) {
+                            ts = getTimestamp() - ts;
+                        }
                         int d, h, m;
                         d = ts / 60 / 60 / 24;
                         h = (ts / 60 / 60) % 24;
