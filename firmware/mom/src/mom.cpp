@@ -166,7 +166,7 @@ void setup() {
     digitalWrite(HEARTBEAT_LED, LOW);
 
     // init energy meter
-    emon.current(SENSOR_CURRENT_METER_PIN, 42.55);
+    emon.current(SENSOR_CURRENT_METER_PIN, 42.55); // 47 Ohm
     emon.voltage(SENSOR_VOLTAGE_METER_PIN, 1000, 1.7);
 
     // init motor
@@ -417,7 +417,7 @@ void readSensors() {
     iac = emon.Irms;
     pac = emon.apparentPower;
     if (emon.realPower < 0) {
-        // producing
+        // reverse flow (production)
         iac = iac * (-1);
         pac = pac * (-1);
     }
@@ -449,11 +449,11 @@ void reportStatus() {
 
     jsonifySensorValue(SENSOR_UAC, uac, json, JSON_MAX_SIZE);
     broadcastMsg(json);
-    jsonifySensorValue(SENSOR_UAC, iac, json, JSON_MAX_SIZE);
+    jsonifySensorValue(SENSOR_IAC, iac, json, JSON_MAX_SIZE);
     broadcastMsg(json);
-    jsonifySensorValue(SENSOR_UAC, pac, json, JSON_MAX_SIZE);
+    jsonifySensorValue(SENSOR_PAC, pac, json, JSON_MAX_SIZE);
     broadcastMsg(json);
-    jsonifySensorValue(SENSOR_UAC, eac, json, JSON_MAX_SIZE);
+    jsonifySensorValue(SENSOR_EAC, eac, json, JSON_MAX_SIZE);
     broadcastMsg(json);
     eac = 0; // reset energy counter
 
