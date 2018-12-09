@@ -47,7 +47,7 @@ const unsigned long SENSORS_READ_INTERVAL_SEC = 10; // 10 seconds
 // heater
 const int8_t TEMP_HEATER_RESET_THRESHOLD = 18;
 const int8_t HEATER_RESET_PERIOD_SEC = 10;
-const float HEATER_ACTIVE_MIN_IAC = 0.5;
+const float HEATER_ACTIVE_MIN_IAC = 0.3;
 const unsigned long HEATER_INACTIVE_MIN_PERIOD_SEC = 15 * 60; // 15 minutes
 
 const uint8_t JSON_MAX_SIZE = 64;
@@ -127,7 +127,7 @@ void setup() {
     digitalWrite(HEARTBEAT_LED, LOW);
 
     // calibrate heater current meter
-    acs712.setZeroPoint(512);
+    acs712.setZeroPoint(511);
 
     // turn on LCD
     lcd.begin();
@@ -401,7 +401,7 @@ void printToDisplay(const char* msg) {
                     } else if (id == SENSOR_HEATER_CURRENT && data.containsKey(F("v"))) {
                         double v = data[F("v")].as<double>();
                         snprintf(str, LCD_LINE_LENGTH, "Power[%3s]:%7d W", v >= HEATER_ACTIVE_MIN_IAC ? "ON" : "OFF",
-                                (int8_t) v * 220);
+                                (int8_t) (v * 220));
                         lcd.setCursor(0, 2);
                     }
                     lcd.print(str);
