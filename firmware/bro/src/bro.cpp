@@ -47,7 +47,7 @@ const unsigned long SENSORS_READ_INTERVAL_SEC = 10; // 10 seconds
 // heater
 const int8_t TEMP_HEATER_RESET_THRESHOLD = 18;
 const int8_t HEATER_RESET_PERIOD_SEC = 10;
-const float HEATER_ACTIVE_MIN_IAC = 0.3;
+const double HEATER_ACTIVE_MIN_IAC = 0.3;
 const unsigned long HEATER_INACTIVE_MIN_PERIOD_SEC = 15 * 60; // 15 minutes
 
 const uint8_t JSON_MAX_SIZE = 64;
@@ -330,7 +330,7 @@ void readSensors() {
     // prevent endless heater reset when sensor disconnected
     roomHum = roomHum == 0 ? UNKNOWN_SENSOR_VALUE : roomHum;
     v = acs712.getCurrentAC();
-    heaterIac = v;
+    heaterIac = round(v * 100) / 100;
 }
 
 bool validSensorValues(const int16_t values[], const uint8_t size) {
