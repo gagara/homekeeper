@@ -93,6 +93,10 @@ uint16_t NODE_FORCED_MODE_FLAGS = 0;
 // will be stored in EEPROM
 uint16_t NODE_PERMANENTLY_FORCED_MODE_FLAGS = 0;
 
+// Stepper moves
+int motorCurrentMove = 0;
+int motorNextMove = 0;
+
 // Nodes switch timestamps
 unsigned long tsNodeVentilation = 0;
 
@@ -174,7 +178,7 @@ void setup() {
     digitalWrite(MOTOR_PIN_5, HIGH);
     motor.setSpeed(800);
     // default: closed state
-    motor.step(MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT); //close
+    motorCurrentMove = MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
 
     // restore forced node state flags from EEPROM
     // default node state -- OFF
@@ -221,6 +225,8 @@ void loop() {
         reportStatus();
         tsLastStatusReport = tsCurr;
     }
+
+    stepMotor();
 
     tsPrev = tsCurr;
 }
@@ -307,7 +313,11 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
                     sensCnt, json, JSON_MAX_SIZE);
             broadcastMsg(json);
         }
-        switchVentilationValve();
+        if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
+            motorNextMove += -MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
+        } else {
+            motorNextMove += MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
+        }
     }
 }
 
@@ -361,13 +371,17 @@ void unForceNodeState(uint8_t id) {
     }
 }
 
-void switchVentilationValve() {
-    if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
-        // was CLOSED
-        motor.step(-MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT); //open
-    } else {
-        // was OPENED
-        motor.step(MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT); //close
+void stepMotor() {
+    if (motorCurrentMove == 0) {
+        motorCurrentMove = motorNextMove;
+        motorNextMove = 0;
+    }
+    if (motorCurrentMove > 0) {
+        motor.step(1); //close
+        motorCurrentMove--;
+    } else if (motorCurrentMove < 0) {
+        motor.step(-1); //open
+        motorCurrentMove++;
     }
 }
 
@@ -514,7 +528,7 @@ void broadcastMsg(const char* msg) {
 }
 
 bool parseCommand(char* command) {
-    dbgf(debug, F(":parse cmd:%s\n"), command);
+//    dbgf(debug, F(":parse cmd:%s\n"), command);
 
     if (strstr(command, "AT") == command) {
         // this is AT command for ESP8266

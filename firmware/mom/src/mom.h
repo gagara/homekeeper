@@ -29,7 +29,7 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts);
 void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &nodeTs, unsigned long ts);
 void unForceNodeState(uint8_t id);
-void switchVentilationValve();
+void stepMotor();
 
 void restoreNodesState();
 void loadWifiConfig();
