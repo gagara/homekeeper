@@ -10,7 +10,21 @@
         "Header.RequestArguments.Channel" : { "type" : "keyword" },
         "Header.Status.Reason" : { "type" : "keyword" },
         "Body.Data.DeviceStatus.StatusCodeDescription" : { "type" : "keyword" },
-        "Body.Data.DeviceStatus.ErrorCodeDescription" : { "type" : "keyword" }
+        "Body.Data.DeviceStatus.ErrorCodeDescription" : { "type" : "keyword" },
+        "message": { "type": "keyword" },
+        "csr_type": { "type": "keyword" },
+        "csr_state": { "type": "keyword" },
+        "sensor_type": { "type": "keyword" },
+        "name": { "type": "keyword" },
+        "m": { "type": "keyword" },
+        "s" : {
+          "properties" : {
+            "id": { "type": "integer" },
+            "v": { "type": "float" }
+          }
+        },
+        "s_id": { "type": "integer" },
+        "s_v": { "type": "float" }
       }
     }
   }
