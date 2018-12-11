@@ -170,8 +170,8 @@ void setup() {
     digitalWrite(HEARTBEAT_LED, LOW);
 
     // init energy meter
-    emon.current(SENSOR_CURRENT_METER_PIN, 42.55); // 47 Ohm
-    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 1000, 1.7);
+    emon.current(SENSOR_CURRENT_METER_PIN, 42.00); // 47 Ohm - 42.55
+    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 240, 1.7);
 
     // init motor
     pinMode(MOTOR_PIN_5, OUTPUT);
@@ -429,11 +429,10 @@ void readSensors() {
     emon.calcVI(20, 2000);
     uac = emon.Vrms;
     iac = emon.Irms;
-    pac = emon.apparentPower;
-    if (emon.realPower < 0) {
+    pac = emon.realPower;
+    if (pac < 0) {
         // reverse flow (production)
         iac = iac * (-1);
-        pac = pac * (-1);
     }
     eac += (pac / (60 * 60)) * SENSORS_READ_INTERVAL_SEC;
 }
