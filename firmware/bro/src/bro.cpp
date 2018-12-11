@@ -401,7 +401,7 @@ void printToDisplay(const char* msg) {
                     } else if (id == SENSOR_HEATER_CURRENT && data.containsKey(F("v"))) {
                         double v = data[F("v")].as<double>();
                         snprintf(str, LCD_LINE_LENGTH, "Power[%3s]:%7d W", v >= HEATER_ACTIVE_MIN_IAC ? "ON" : "OFF",
-                                (int8_t) (v * 220));
+                                (int16_t) (v * 220));
                         lcd.setCursor(0, 2);
                     }
                     lcd.print(str);
