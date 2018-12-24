@@ -45,7 +45,7 @@ const unsigned long STATUS_REPORTING_PERIOD_SEC = 10; // 10 seconds
 const unsigned long SENSORS_READ_INTERVAL_SEC = 10; // 10 seconds
 
 // heater
-const int8_t TEMP_HEATER_RESET_THRESHOLD = 18;
+const int8_t TEMP_HEATER_RESET_THRESHOLD = 17;
 const int8_t HEATER_RESET_PERIOD_SEC = 10;
 const double HEATER_ACTIVE_MIN_IAC = 0.10;
 const unsigned long HEATER_INACTIVE_MIN_PERIOD_SEC = 15 * 60; // 15 minutes
