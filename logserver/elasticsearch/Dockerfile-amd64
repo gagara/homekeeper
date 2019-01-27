@@ -1,7 +1,6 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.4
 
 VOLUME /usr/share/elasticsearch/data
 
 RUN set -ex; \
     echo "path.repo: [\"/usr/share/elasticsearch/data/backups\"]" >> /usr/share/elasticsearch/config/elasticsearch.yml
-
