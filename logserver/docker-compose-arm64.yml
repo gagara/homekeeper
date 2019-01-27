@@ -1,0 +1,73 @@
+version: '2'
+services:
+
+  elasticsearch:
+    build:
+      context: ./elasticsearch
+      dockerfile: Dockerfile-arm64
+    restart: unless-stopped
+    environment:
+      - cluster.name=homekeeper
+      - node.name=node2
+      - discovery.zen.ping.unicast.hosts="127.0.0.1"
+    ports:
+      - "9200:9200"
+
+  logstash:
+    build:
+      context: ./logstash
+      dockerfile: Dockerfile-arm64
+    restart: unless-stopped
+    environment:
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
+      - HK_PIPELINE_HOST=0.0.0.0
+      - HK_PIPELINE_PORT=8085
+      - FRONIUS_HOST=fronius
+      - FRONIUS_PORT=80
+      - FRONIUS_CURR_RQ_PULL_INTERVAL=60
+      - FRONIUS_ARCH_RQ_PULL_INTERVAL=300
+      - GVDPR_UAC_MAX=265
+      - GVDPR_REDUCTION_RATE=15
+    ports:
+      - "8085:8085"
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    build:
+      context: ./kibana
+      dockerfile: Dockerfile-arm64
+    restart: unless-stopped
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile-arm64
+    tty: true
+    restart: unless-stopped
+    environment:
+      - GATEWAY_USER=user
+      - GATEWAY_PASSWORD=secret
+      - DAD_HOST=127.0.0.1
+      - DAD_PORT=80
+      - MOM_HOST=127.0.0.1
+      - MOM_PORT=80
+    ports:
+      - "8088:5000"
+    depends_on:
+      - elasticsearch
+      - logstash
+
+  curator:
+    build:
+      context: ./curator
+      dockerfile: Dockerfile-arm64
+    restart: unless-stopped
+    depends_on:
+      - elasticsearch
+

@@ -1,0 +1,7 @@
+FROM gagara/elasticsearch-arm64:6.5.4
+
+VOLUME /usr/share/elasticsearch/data
+
+RUN set -ex; \
+    echo "path.repo: [\"/usr/share/elasticsearch/data/backups\"]" >> /usr/share/elasticsearch/config/elasticsearch.yml
+
