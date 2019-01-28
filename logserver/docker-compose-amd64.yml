@@ -53,6 +53,7 @@ services:
     tty: true
     restart: unless-stopped
     environment:
+      - FLASK_DEBUG=false
       - GATEWAY_USER=user
       - GATEWAY_PASSWORD=secret
       - DAD_HOST=127.0.0.1
