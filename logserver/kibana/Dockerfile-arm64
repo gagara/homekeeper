@@ -1,1 +1,1 @@
-FROM gagara/kibana-arm64:6.5.4
+FROM gagara/kibana-arm64:6.6.0
