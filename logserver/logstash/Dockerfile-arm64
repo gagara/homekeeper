@@ -1,4 +1,4 @@
-FROM gagara/logstash-arm64:6.6.0
+FROM gagara/logstash-oss-arm64:6.6.0
 
 RUN set -ex; \
 	/usr/share/logstash/bin/logstash-plugin install logstash-filter-elasticsearch logstash-filter-aggregate

@@ -1,4 +1,4 @@
-FROM gagara/elasticsearch-arm64:6.6.0
+FROM gagara/elasticsearch-oss-arm64:6.6.0
 
 VOLUME /usr/share/elasticsearch/data
 
