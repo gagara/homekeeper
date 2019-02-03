@@ -349,13 +349,14 @@ int16_t ESP8266::httpSend(const esp_ip_t dstIP, const uint16_t dstPort, const ch
                                     && readUntil(inBuff, IN_BUFF_SIZE, F(":"))) {
                                 if (sscanf(&inBuff[0], "%d", &d)) { // body length
                                     readUntil(inBuff, IN_BUFF_SIZE, d);
+                                    readUntil(inBuff, IN_BUFF_SIZE, F("4,CLOSED\r\n"), 100);
                                 }
                             }
                         }
                     }
                 }
                 // close connection if required
-                if (!strstr(inBuff, "4,CLOSED") && !readUntil(inBuff, IN_BUFF_SIZE, F("4,CLOSED\r\n"))) {
+                if (!strstr(inBuff, "4,CLOSED")) {
                     write(F("AT+CIPCLOSE=4\r\n"), EXPECT_OK);
                 }
             }
