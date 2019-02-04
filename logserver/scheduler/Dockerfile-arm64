@@ -1,8 +1,9 @@
-FROM redmatter/cron
+FROM gagara/cron-arm64
 
+# curator
 RUN set -ex; \
     apt-get update; \
-    apt-get install --no-install-recommends -y python-minimal python-pip; \
+    apt-get install --no-install-recommends -y python-minimal python-pip curl; \
     pip install pysocks elasticsearch-curator; \
     apt-get remove -y python-pip; \
     apt-get autoremove -y; \
@@ -14,3 +15,11 @@ COPY config.yml /etc/elasticsearch-curator
 COPY actions.yml /etc/elasticsearch-curator
 COPY backup.yml /etc/elasticsearch-curator
 COPY restore.yml /etc/elasticsearch-curator
+
+# fronius
+RUN mkdir -p /opt/scheduler
+
+COPY fronius_pull_stats.sh /opt/scheduler
+
+RUN chmod 0775 /opt/scheduler/fronius_pull_stats.sh
+

@@ -1,1 +1,2 @@
 0 1 * * *   /usr/local/bin/curator --config /etc/elasticsearch-curator/config.yml /etc/elasticsearch-curator/actions.yml > /proc/$(cat /var/run/crond.pid)/fd/1 2>&1
+*/1 * * * *   /opt/scheduler/fronius_pull_stats.sh > /proc/$(cat /var/run/crond.pid)/fd/1 2>&1
