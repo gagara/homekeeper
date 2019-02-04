@@ -3,7 +3,7 @@ FROM gagara/cron-arm64
 # curator
 RUN set -ex; \
     apt-get update; \
-    apt-get install --no-install-recommends -y python-minimal python-pip curl; \
+    apt-get install --no-install-recommends -y python-minimal python-pip python-setuptools curl; \
     pip install pysocks elasticsearch-curator; \
     apt-get remove -y python-pip; \
     apt-get autoremove -y; \
