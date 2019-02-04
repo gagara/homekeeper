@@ -17,7 +17,7 @@ query_stats() {
             return
         fi
     fi
-    echo "[`date -u +%Y-%m-%dT%H:%M:%S,%3N`][ERROR][$return_code => $http_code] $body"
+    echo "[`date -u +%Y-%m-%dT%H:%M:%S,%3N`][WARN ][$return_code => $http_code] $body"
 }
 
 # delay required to allow inverter prepare archive stats for current timestamp
