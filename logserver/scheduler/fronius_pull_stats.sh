@@ -17,7 +17,9 @@ query_stats() {
             return
         fi
     fi
-    echo "[`date -u +%Y-%m-%dT%H:%M:%S,%3N`][WARN ][$return_code => $http_code] $body"
+    if [ "${FRONIUS_DEBUG}" = "true" ]; then
+        echo "[`date -u +%Y-%m-%dT%H:%M:%S,%3N`][DEBUG][$return_code => $http_code] $body"
+    fi
 }
 
 # delay required to allow inverter prepare archive stats for current timestamp
