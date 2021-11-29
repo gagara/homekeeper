@@ -6,9 +6,8 @@ from elasticsearch import Elasticsearch
 import requests
 import json
 
-from flask import Flask
-from flask import jsonify
-from flask import request, Response
+from flask import Flask, request, Response
+from flask_restplus import Api, Resource, reqparse
 
 from time import time
 from calendar import timegm
@@ -16,7 +15,13 @@ import datetime
 
 ES_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
+
 app = Flask(__name__)
+api = Api(app, version='1.0', title='Homekeeper API Server',
+          description='API server for homekeeper backend')
+
+nodes = api.namespace('control', description='Node controlling API')
+sensors = api.namespace('config', description='Sensor configuration API')
 
 # read config file
 app.config.from_pyfile('gateway.conf')
@@ -78,7 +83,7 @@ def controller_send(conf, req):
                 rcode = 0
             retry = retry + 1
         if rcode != 200:
-            raise Exception()
+            raise Exception("unable to contact controller")
 
 def logserver_send(req):
     headers = {'User-Agent': 'gw', 'Content-Type': 'application/json'}
@@ -150,8 +155,8 @@ def process_logs(logs):
                 ccd[log['host']]['value'] = log['@timestamp'] - log['message']['ts']
             # update timesatmps
             delta = None
-            if ccd.get(log['host']) and ccd.get(log['host'])['timestamp'] > 0:
-                delta = ccd.get(log['host'])['value']
+            if ccd[log['host']] and ccd[log['host']]['timestamp'] > 0:
+                delta = ccd[log['host']]['value']
             if 'ts' in log['message'] and int(log['message']['ts']) > 0 :
                 log['message']['ts'] = int(int(log['message']['ts']) + delta) if delta else 0
             if 'ft' in log['message'] and int(log['message']['ft']) > 0 :
@@ -178,30 +183,95 @@ def query_logs(timestamp):
         {"range": {"@timestamp": {"gt": timestamp * 1000}}}
         ]}}, "sort": {"@timestamp": "asc"}, "size": 50}))
 
-@app.route("/", methods=['POST'])
-@requires_auth
-def client_request():
-    if app.debug : print('REQUEST: %s' % request.json)
-    try:
-        req = request.json
-        if req['m'] == 'log':
-            timestamp = req['ts']
-            try:
-                return (jsonify(query_logs(timestamp)), 200)
-            except Exception as e:
-                if app.debug : print(e)
-                return (str(e), 500)
-        else:
-            try:
-                controller_send(identify_target_controller(req), req)
-                logserver_send(req)
-                return (jsonify([]), 200)
-            except Exception as e:
-                if app.debug : print(e)
-                return (str(e), 500)
-    except Exception as e:
-        if app.debug : print(e)
-        return (str(e), 400)
+
+node_parser = reqparse.RequestParser()
+node_parser.add_argument('node', type=str, help='Node', required=True, choices=list(app.config['NODES'].keys()))
+node_parser.add_argument('mode', type=str, help='Mode', required=True, choices=['manual', 'auto'], default='manual')
+node_parser.add_argument('state', type=str, help='State', required=True, choices=['ON', 'OFF'], default='ON')
+node_parser.add_argument('period', type=int, help='Period (minutes) [0 - forever]', required=True, default=5)
+
+@nodes.route("")
+@api.doc(description='Change node state')
+class NodeControlApi(Resource):
+
+    @api.expect(node_parser)
+    @requires_auth
+    def post(self):
+        args = node_parser.parse_args()
+        if app.debug : print('REQUEST: %s' % args)
+        req = {}
+        req['m'] = 'nsc'
+        req['id'] = app.config['NODES'][args['node']]
+        if args['mode'] == "manual":
+            req['ns'] = 1 if args['state'] == "ON" else 0
+            if args['period'] > 0:
+                req['ft'] = args['period'] * 60
+        try:
+            controller_send(identify_target_controller(req), req)
+            logserver_send(req)
+            return {}, 200
+        except Exception as e:
+            if app.debug : print(e)
+            return str(e), 500
+
+
+sensor_parser = reqparse.RequestParser()
+sensor_parser.add_argument('sensor', type=str, help='Sensor', required=True, choices=list(app.config['SENSORS'].keys()))
+sensor_parser.add_argument('value', type=int, help='Value (\u2103)', required=True, default=20)
+
+@sensors.route("")
+@api.doc(description='Configure sensor thresholds')
+class SensorControlApi(Resource):
+
+    @api.expect(sensor_parser)
+    @requires_auth
+    def post(self):
+        args = sensor_parser.parse_args()
+        if app.debug : print('REQUEST: %s' % args)
+        req = {}
+        req['m'] = 'cfg'
+        req['s'] = {}
+        req['s']['id'] = app.config['SENSORS'][args['sensor']]
+        req['s']['v'] = args['value']
+        try:
+            controller_send(identify_target_controller(req), req)
+            logserver_send(req)
+            return {}, 200
+        except Exception as e:
+            if app.debug : print(e)
+            return str(e), 500
+
+
+raw_req = api.model('request', {})
+
+@api.route("/", doc=False)
+@api.doc(description='API used by Application')
+class ApplicationApi(Resource):
+
+    @requires_auth
+    @api.expect(raw_req)
+    def post(self):
+        if app.debug : print('REQUEST: %s' % request.json)
+        try:
+            req = request.json
+            if req['m'] == 'log':
+                timestamp = req['ts']
+                try:
+                    return query_logs(timestamp), 200
+                except Exception as e:
+                    if app.debug : print(e)
+                    return str(e), 500
+            else:
+                try:
+                    controller_send(identify_target_controller(req), req)
+                    logserver_send(req)
+                    return {}, 200
+                except Exception as e:
+                    if app.debug : print(e)
+                    return str(e), 500
+        except Exception as e:
+            if app.debug : print(e)
+            return str(e), 400
 
 
 if __name__ == "__main__":
