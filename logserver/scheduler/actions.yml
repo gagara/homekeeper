@@ -27,3 +27,31 @@ actions:
       - filtertype: pattern
         kind: prefix
         value: logstash_solar-
+  3:
+    action: delete_indices
+    description: delete old HK indexes
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: years
+        unit_count: 4
+      - filtertype: pattern
+        kind: prefix
+        value: logstash_hk-
+  4:
+    action: delete_indices
+    description: delete old Solar indexes
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: years
+        unit_count: 4
+      - filtertype: pattern
+        kind: prefix
+        value: logstash_solar-
