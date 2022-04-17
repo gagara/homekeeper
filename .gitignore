@@ -1,4 +1,5 @@
 **/.settings
+**/.cache
 client/**/bin
 client/**/gen
 client/android/*/project.properties
@@ -7,6 +8,7 @@ firmware/*/.project
 firmware/*/.travis.yml
 **/.pyenv
 **/*.pyc
+**/compile_commands.json
 *.d
 *.o
 *.eep
@@ -14,3 +16,4 @@ firmware/*/.travis.yml
 *.hex
 *.ar
 *.class
+*.swp
