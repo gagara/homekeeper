@@ -6,6 +6,7 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 #include <Stepper.h>
+#include <Servo.h>
 #include <EmonLib.h>
 
 #include <debug.h>
@@ -17,10 +18,11 @@
 /*============================= Global configuration ========================*/
 
 // Sensor pin
-const uint8_t DHT_IN_PIN = 5;
+const uint8_t DHT_IN_PIN = 7;
 const uint8_t DHT_OUT_PIN = 6;
 const uint8_t SENSOR_CURRENT_METER_PIN = A0;
 const uint8_t SENSOR_VOLTAGE_METER_PIN = A1;
+const uint8_t SENSOR_WATER_PUMP_POWER_PIN = A2;
 
 const uint8_t SENSOR_TEMP_IN = (54 + 16) + (4 * 2) + 0;
 const uint8_t SENSOR_HUM_IN = (54 + 16) + (4 * 2) + 1;
@@ -30,9 +32,11 @@ const uint8_t SENSOR_UAC = (54 + 16) + (4 * 3) + 0;
 const uint8_t SENSOR_IAC = (54 + 16) + (4 * 3) + 1;
 const uint8_t SENSOR_PAC = (54 + 16) + (4 * 3) + 2;
 const uint8_t SENSOR_EAC = (54 + 16) + (4 * 3) + 3;
+const uint8_t SENSOR_WATER_PUMP_POWER = (54 + 16) + (4 * 4) + 0;
 
 // Node id
 const uint8_t NODE_VENTILATION = 44;
+const uint8_t NODE_PV_LOAD_SWITCH = 46; // 0 - Off-grid; 1 - On-grid
 
 // Stepper pins
 const uint8_t MOTOR_PIN_1 = 8; // blue
@@ -44,15 +48,18 @@ const uint8_t MOTOR_STEPS = 32;
 const uint16_t MOTOR_STEPS_PER_REVOLUTION = 2048;
 const uint8_t REVOLUTION_COUNT = 15; // max 15
 
+// Servo pins
+const uint8_t PV_LOAD_SWITCH_ON_GRID_PIN = 5;
+const uint8_t PV_LOAD_SWITCH_OFF_GRID_PIN = 4;
+const uint8_t PV_LOAD_SENSOR_ON_GRID_PIN = 3;
+const uint8_t PV_LOAD_SENSOR_OFF_GRID_PIN = 2;
+
 // WiFi pins
 const uint8_t WIFI_RST_PIN = 0; // n/a
 
 // Nodes State
 const uint16_t NODE_VENTILATION_BIT = 1;
-
-// Debug serial port
-const uint8_t DEBUG_SERIAL_TX_PIN = 2;
-const uint8_t DEBUG_SERIAL_RX_PIN = 3;
+const uint16_t NODE_PV_LOAD_SWITCH_BIT = 2;
 
 const uint8_t HEARTBEAT_LED = 13;
 
@@ -60,6 +67,7 @@ const uint8_t HEARTBEAT_LED = 13;
 const unsigned long MAX_TIMESTAMP = -1;
 const int16_t UNKNOWN_SENSOR_VALUE = -127;
 const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 60;
+const uint8_t NODE_ERROR_STATE = 255;
 
 // reporting
 const unsigned long STATUS_REPORTING_PERIOD_SEC = 60; // 1 minute
@@ -68,6 +76,16 @@ const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
 
 // ventilation
 const int8_t TEMP_IN_OUT_HIST = 3;
+
+// sensor WaterPumpPower
+const int8_t SENSOR_WATER_PUMP_POWER_THERSHOLD = 50;
+
+// min grid voltage
+const uint8_t MIN_UAC_VALUE = 160;
+
+// Servo positions
+const uint8_t SERVO_POSITION_OFF = 0;
+const uint8_t SERVO_POSITION_ON = 90;
 
 const uint8_t JSON_MAX_SIZE = 64;
 
@@ -83,6 +101,7 @@ double uac = 0; // V
 double iac = 0; // A
 double pac = 0; // W
 double eac = 0; // Wh
+int8_t sensorWaterPumpPowerState = 0;
 
 //// Nodes
 
@@ -97,11 +116,20 @@ uint16_t NODE_PERMANENTLY_FORCED_MODE_FLAGS = 0;
 int motorCurrentMove = 0;
 int motorNextMove = 0;
 
+// Servo switch error
+uint8_t pvLoadSwitchError = 0;
+unsigned long tsNodePvLoadSwitchError = 0;
+
 // Nodes switch timestamps
 unsigned long tsNodeVentilation = 0;
+unsigned long tsNodePvLoadSwitch = 0;
 
 // Nodes forced mode timestamps
 unsigned long tsForcedNodeVentilation = 0;
+unsigned long tsForcedNodePvLoadSwitch = 0;
+
+// Sensors switch timestamps
+unsigned long tsSensorWaterPumpPower = 0;
 
 // Timestamps
 unsigned long tsLastStatusReport = 0;
@@ -145,29 +173,38 @@ EnergyMonitor emon;
 // Stepper
 Stepper motor(MOTOR_STEPS, MOTOR_PIN_1, MOTOR_PIN_3, MOTOR_PIN_2, MOTOR_PIN_4);
 
+// Servo
+Servo servo;
+
 // Serial port
-SoftwareSerial serialPort(DEBUG_SERIAL_RX_PIN, DEBUG_SERIAL_TX_PIN);
-SoftwareSerial *serial = &serialPort;
+HardwareSerial *serial = &Serial;
 #ifdef __DEBUG__
-SoftwareSerial *debug = serial;
+HardwareSerial *debug = serial;
 #else
-SoftwareSerial *debug = NULL;
+HardwareSerial *debug = NULL;
 #endif
 
 //WiFi
-HardwareSerial *wifi = &Serial;
+HardwareSerial *wifi = &Serial3;
 ESP8266 esp8266;
 
 void setup() {
     // Setup serial ports
     serial->begin(57600);
-    wifi->begin(57600);
+    //wifi->begin(57600); // initialized in ESP8266 lib
 
-//    dbg(debug, F(":STARTING\n"));
+    dbg(debug, F(":STARTING\n"));
 
     // init heartbeat led
     pinMode(HEARTBEAT_LED, OUTPUT);
     digitalWrite(HEARTBEAT_LED, LOW);
+
+    // init water pump power sensor
+    pinMode(SENSOR_WATER_PUMP_POWER_PIN, INPUT);
+
+    // init PV load switches
+    pinMode(PV_LOAD_SENSOR_ON_GRID_PIN, INPUT);
+    pinMode(PV_LOAD_SENSOR_OFF_GRID_PIN, INPUT);
 
     // init energy meter
     emon.current(SENSOR_CURRENT_METER_PIN, 42.00); // 47 Ohm - 42.55
@@ -186,20 +223,23 @@ void setup() {
 
     // open ventilation valve if needed
     if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
-        motor.step(-MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT);
+//        motor.step(-MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT);
     }
+
+    // sync PV switches in according to desired node state
+    syncPvLoadSwitches();
 
     // init esp8266 hw reset pin. N/A
     //pinMode(WIFI_RST_PIN, OUTPUT);
 
     // setup WiFi
     loadWifiConfig();
-//    dbgf(debug, F(":setup wifi:R_AP:%s\n"), &WIFI_REMOTE_AP);
+    dbgf(debug, F(":setup wifi:R_AP:%s\n"), &WIFI_REMOTE_AP);
     esp8266.init(wifi, MODE_STA, WIFI_RST_PIN, WIFI_FAILURE_GRACE_PERIOD_SEC);
     esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
     esp8266.startTcpServer(TCP_SERVER_PORT);
     esp8266.getStaIP(WIFI_STA_IP);
-//    dbgf(debug, F("STA IP: %d.%d.%d.%d\n"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
+    dbgf(debug, F("STA IP: %d.%d.%d.%d\n"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
 }
 
 void loop() {
@@ -208,10 +248,12 @@ void loop() {
         readSensors();
         tsLastSensorRead = tsCurr;
 
-        digitalWrite(HEARTBEAT_LED, digitalRead(HEARTBEAT_LED) ^ 1);
-
+        // pv load switch
+        processPvLoadSwitch();
         // ventilation valve
         processVentilationValve();
+        
+        digitalWrite(HEARTBEAT_LED, digitalRead(HEARTBEAT_LED) ^ 1);
     }
 
     if (serial->available() > 0) {
@@ -232,6 +274,60 @@ void loop() {
 }
 
 /*========================= Node processing methods =========================*/
+
+void processPvLoadSwitch() {
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT;
+    if (isInForcedMode(NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch)) {
+      // retry sync in case of error
+      if (pvLoadSwitchError) {
+        if (diffTimestamps(tsCurr, tsNodePvLoadSwitchError) >= NODE_SWITCH_SAFE_TIME_SEC) {
+          syncPvLoadSwitches();
+        }
+      }
+      return;
+    }
+    if (wasForceMode) {
+      char json[JSON_MAX_SIZE];
+      jsonifyNodeStatus(NODE_PV_LOAD_SWITCH,
+                        (!pvLoadSwitchError) ? NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT : NODE_ERROR_STATE,
+                        tsNodePvLoadSwitch, NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch,
+                        json, JSON_MAX_SIZE);
+      broadcastMsg(json);
+    }
+    if (diffTimestamps(tsCurr, tsNodePvLoadSwitch) >= NODE_SWITCH_SAFE_TIME_SEC) {
+      uint8_t sensIds[] = {};
+      int16_t sensVals[] = {};
+      uint8_t sensCnt = 0;
+
+      if (NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
+        // on-grid inverter
+        if (uac <= MIN_UAC_VALUE) {
+          // grid voltage is too low/no grid available
+          // switch to off-grid inverter
+          switchNodeState(NODE_PV_LOAD_SWITCH, sensIds, sensVals, sensCnt);
+        } else {
+          // grid voltage is OK
+          // do nothing
+        }
+      } else {
+        // off-grid inverter
+        if (uac > MIN_UAC_VALUE) {
+          // grid voltage is OK
+          // switch to on-grid inverter
+          switchNodeState(NODE_PV_LOAD_SWITCH, sensIds, sensVals, sensCnt);
+        } else {
+          // grid voltage is too low/no grid available
+          // do nothing
+        }
+      }
+    }
+    // retry sync in case of error
+    if (pvLoadSwitchError) {
+        if (diffTimestamps(tsCurr, tsNodePvLoadSwitchError) >= NODE_SWITCH_SAFE_TIME_SEC) {
+            syncPvLoadSwitches();
+        }
+    }
+}
 
 void processVentilationValve() {
     uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT;
@@ -302,22 +398,27 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
         bit = NODE_VENTILATION_BIT;
         ts = &tsNodeVentilation;
         tsf = &tsForcedNodeVentilation;
-        if (ts != NULL) {
-            NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
-
-            *ts = getTimestamp();
-
-            // report state change
-            char json[JSON_MAX_SIZE];
-            jsonifyNodeStateChange(id, NODE_STATE_FLAGS & bit, *ts, NODE_FORCED_MODE_FLAGS & bit, *tsf, sensId, sensVal,
-                    sensCnt, json, JSON_MAX_SIZE);
-            broadcastMsg(json);
-        }
         if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
             motorNextMove += -MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
         } else {
             motorNextMove += MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
         }
+    } else if (NODE_PV_LOAD_SWITCH == id) {
+        bit = NODE_PV_LOAD_SWITCH_BIT;
+        ts = &tsNodePvLoadSwitch;
+        tsf = &tsForcedNodePvLoadSwitch;
+        syncPvLoadSwitches();
+    }
+    if (ts != NULL) {
+        NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
+
+        *ts = getTimestamp();
+
+        // report state change
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStateChange(id, NODE_STATE_FLAGS & bit, *ts, NODE_FORCED_MODE_FLAGS & bit, *tsf, sensId, sensVal,
+                sensCnt, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
 }
 
@@ -385,6 +486,90 @@ void stepMotor() {
     }
 }
 
+void syncPvLoadSwitches() {
+    if (NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
+        // On-grid requested
+        if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == HIGH) {
+            // Off-grid switch is ON
+            // switch it OFF
+            moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_OFF);
+            delay(200);
+            // check state
+            if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == HIGH) {
+                // still ON. Error
+                pvLoadSwitchError = 1;
+                tsNodePvLoadSwitchError = tsCurr;
+                return;
+            }
+            delay(500);
+        } else {
+            // Off-grid switch is OFF
+            // do nothing
+        }
+        if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW) {
+            // On-grid switch is OFF
+            // switch it ON
+            moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_ON);
+            delay(200);
+            // check state
+            if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW) {
+                // still OFF. Error
+                pvLoadSwitchError = 1;
+                tsNodePvLoadSwitchError = tsCurr;
+                return;
+            }
+        } else {
+            // On-grid switch is ON
+            // do nothing
+        }
+    } else {
+        // Off-grid requested
+        if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == HIGH) {
+            // On-grid switch is ON
+            // switch it OFF
+            moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_OFF);
+            delay(200);
+            // check state
+            if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == HIGH) {
+                // still ON. Error
+                pvLoadSwitchError = 1;
+                tsNodePvLoadSwitchError = tsCurr;
+                return;
+            }
+            delay(500);
+        } else {
+            // On-grid switch is OFF
+            // do nothing
+        }
+        if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW) {
+            // Off-grid switch is OFF
+            // switch it ON
+            moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_ON);
+            delay(200);
+            // check state
+            if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW) {
+                // still OFF. Error
+                pvLoadSwitchError = 1;
+                tsNodePvLoadSwitchError = tsCurr;
+                return;
+            }
+        } else {
+            // Off-grid switch is ON
+            // do nothing
+        }
+    }
+    pvLoadSwitchError = 0;
+    tsNodePvLoadSwitchError = 0;
+}
+
+void moveServo(uint8_t servoId, uint8_t pos) {
+    servo.attach(servoId, 560, 2500);
+    delay(100);
+    servo.write(pos);
+    delay(100);
+    servo.detach();
+}
+
 /*====================== Load/Save configuration in EEPROM ==================*/
 
 void restoreNodesState() {
@@ -421,10 +606,12 @@ void readSensors() {
     tempIn = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
     v = dhtIn.readHumidity();
     humIn = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    dbgf(debug, F(":tempIn/humIn:%d/%d\n"), tempIn, humIn);
     v = dhtOut.readTemperature();
     tempOut = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
     v = dhtOut.readHumidity();
     humOut = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    dbgf(debug, F(":tempOut/humOut:%d/%d\n"), tempOut, humOut);
 
     emon.calcVI(20, 2000);
     uac = emon.Vrms;
@@ -435,6 +622,30 @@ void readSensors() {
         iac = iac * (-1);
     }
     eac += (pac / (60 * 60)) * SENSORS_READ_INTERVAL_SEC;
+    dbgf(debug, F(":uac/iac/pac:%d/%d/%d\n"), (int) round(uac), (int) round(iac), (int) round(pac));
+    Serial.println(uac);
+
+    // read sensorWaterPumpPower value
+    int8_t state = getSensorWaterPumpPowerState();
+    if (state != sensorWaterPumpPowerState) {
+        // state changed
+        sensorWaterPumpPowerState = state;
+        tsSensorWaterPumpPower = tsCurr;
+    }
+}
+
+int8_t getSensorWaterPumpPowerState() {
+    uint16_t max = 0;
+    for (uint8_t i = 0; i < 100; i++) {
+        uint16_t v = abs(analogRead(SENSOR_WATER_PUMP_POWER_PIN) - 512);
+        if (v > max && v < 1000) { // filter out error values. correct value should be <1000
+            max = v;
+        }
+        delay(1);
+    }
+    uint8_t state = (max > SENSOR_WATER_PUMP_POWER_THERSHOLD) ? 1 : 0;
+    dbgf(debug, F(":WaterPumpPower:%d/%d\n"), max, state);
+    return state;
 }
 
 bool validSensorValues(const int16_t values[], const uint8_t size) {
@@ -469,9 +680,15 @@ void reportStatus() {
     jsonifySensorValue(SENSOR_EAC, eac, json, JSON_MAX_SIZE);
     broadcastMsg(json);
     eac = 0; // reset energy counter
+    jsonifySensorValue(SENSOR_WATER_PUMP_POWER, sensorWaterPumpPowerState, tsSensorWaterPumpPower, json, JSON_MAX_SIZE);
+    broadcastMsg(json);
 
     jsonifyNodeStatus(NODE_VENTILATION, NODE_STATE_FLAGS & NODE_VENTILATION_BIT, tsNodeVentilation,
-            NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
+                      NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
+    broadcastMsg(json);
+    jsonifyNodeStatus(NODE_PV_LOAD_SWITCH, (!pvLoadSwitchError) ? NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT : 255,
+                      tsNodePvLoadSwitch, NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch, json,
+                      JSON_MAX_SIZE);
     broadcastMsg(json);
 }
 
@@ -491,7 +708,7 @@ void reportConfiguration() {
     sprintf(ip, "%d.%d.%d.%d", WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
     jsonifyConfig(F("lip"), ip, json, JSON_MAX_SIZE);
     serial->println(json);
-//    dbgf(debug, F(":EEPROM:written:%d bytes\n"), eepromWriteCount);
+    dbgf(debug, F(":EEPROM:written:%d bytes\n"), eepromWriteCount);
 }
 
 void reportTimestamp() {
@@ -511,27 +728,27 @@ void processSerialMsg() {
 
 void processWifiMsg() {
     char buff[JSON_MAX_SIZE + 1];
-//    unsigned long start = millis();
+    unsigned long start = millis();
     uint8_t l = esp8266.receive(buff, JSON_MAX_SIZE);
     if (l > 0) {
-//        dbgf(debug, F(":HTTP:receive:%d bytes:[%d msec]\n"), l, millis() - start);
+        dbgf(debug, F(":HTTP:receive:%d bytes:[%d msec]\n"), l, millis() - start);
         parseCommand(buff);
     }
 }
 
 void broadcastMsg(const char* msg) {
     serial->println(msg);
-//    unsigned long start = millis();
-    /*int status = */esp8266.send(SERVER_IP, SERVER_PORT, msg);
-//    dbgf(debug, F(":HTTP:send:%d:[%d msec]\n"), status, millis() - start);
+    unsigned long start = millis();
+    int status = esp8266.send(SERVER_IP, SERVER_PORT, msg);
+    dbgf(debug, F(":HTTP:send:%d:[%d msec]\n"), status, millis() - start);
 }
 
 bool parseCommand(char* command) {
-//    dbgf(debug, F(":parse cmd:%s\n"), command);
+    dbgf(debug, F(":parse cmd:%s\n"), command);
 
     if (strstr(command, "AT") == command) {
         // this is AT command for ESP8266
-//        dbgf(debug, F(":ESP8266:%s\n"), command);
+        dbgf(debug, F(":ESP8266:%s\n"), command);
         esp8266.write(command);
         return true;
     }

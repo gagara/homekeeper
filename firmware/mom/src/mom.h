@@ -23,6 +23,7 @@ void setup();
 void setup();
 void loop();
 
+void processPvLoadSwitch();
 void processVentilationValve();
 bool isInForcedMode(uint16_t bit, unsigned long ts);
 void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t sensCnt);
@@ -30,12 +31,15 @@ void forceNodeState(uint8_t id, uint8_t state, unsigned long ts);
 void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &nodeTs, unsigned long ts);
 void unForceNodeState(uint8_t id);
 void stepMotor();
+void syncPvLoadSwitches();
+void moveServo(uint8_t servoId, uint8_t pos);
 
 void restoreNodesState();
 void loadWifiConfig();
 void validateStringParam(char* str, int maxSize);
 
 void readSensors();
+int8_t getSensorWaterPumpPowerState();
 bool validSensorValues(const int16_t values[], const uint8_t size);
 
 void reportStatus();
