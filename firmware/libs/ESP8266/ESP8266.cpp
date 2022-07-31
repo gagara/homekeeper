@@ -2,7 +2,6 @@
  * ESP8266 to Arduino
  *
  */
-
 #include "ESP8266.h"
 #include <debug.h>
 
@@ -29,7 +28,7 @@ char inBuff[IN_BUFF_SIZE + 1];
 char outBuff[OUT_BUFF_SIZE + 1];
 char tmpBuff[TMP_BUFF_SIZE + 1];
 
-void ESP8266::init(Stream *port, esp_cwmode mode, uint8_t resetPin, uint16_t failureGracePeriodSec) {
+void ESP8266::init(HardwareSerial *port, esp_cwmode mode, uint8_t resetPin, uint16_t failureGracePeriodSec) {
     if (!persistDebug) {
         debug = defaultDebug;
     }
@@ -53,6 +52,11 @@ void ESP8266::init(Stream *port, esp_cwmode mode, uint8_t resetPin, uint16_t fai
         digitalWrite(rstPin, HIGH);
         delay(1000);
     }
+
+    // reset serial port buffers
+    espSerial->end();
+    espSerial->begin(57600);
+
     write(F("AT+RST\r\n"), EXPECT_OK, 300);
     delay(1000);
     write(F("AT+CIPMODE=0\r\n"), EXPECT_OK, 300);

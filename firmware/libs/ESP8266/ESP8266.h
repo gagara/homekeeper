@@ -1,6 +1,7 @@
 #ifndef WIFI_H_
 #define WIFI_H_
 
+#include <HardwareSerial.h>
 #include <Arduino.h>
 
 #define ESP_CONFIG_TYPE_SIZE 32
@@ -25,7 +26,7 @@ typedef uint8_t esp_ip_t[4];
 
 class ESP8266 {
 public:
-    void init(Stream *port, esp_cwmode mode = MODE_STA, uint8_t resetPin = 0, uint16_t failureGracePeriodSec = 0); //
+    void init(HardwareSerial *port, esp_cwmode mode = MODE_STA, uint8_t resetPin = 0, uint16_t failureGracePeriodSec = 0); //
     void setDebug(Stream *port); //
     void startAP(const esp_config_t *ssid, const esp_config_t *password); //
     void connect(const esp_config_t *ssid, const esp_config_t *password); //
@@ -48,7 +49,7 @@ public:
 
 private:
     Stream *debug = NULL;
-    Stream *espSerial = NULL;
+    HardwareSerial *espSerial = NULL;
     uint8_t rstPin = 0;
     esp_cwmode cwMode = MODE_UNKNOWN;
     esp_config_t *apSsid = NULL;
