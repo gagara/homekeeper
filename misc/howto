@@ -122,3 +122,21 @@ curl http://localhost:9200/_snapshot/backups -d '{"type": "fs", "settings": {"co
 {"m":"csr","n":{"id":30,"ns":0,"ts":0,"ff":0}}␍␊
 {"m":"csr","n":{"id":36,"ns":0,"ts":25174,"ff":0}}␍␊
 
+============================
+ESP8266 firmware upgrade
+
+firmware repo (NONOS sdk): https://github.com/espressif/ESP8266_NONOS_SDK/releases
+
+grab blobs from bin/at dir (see readme there which blobs to use)
+
+boot ESP8266 in bootloader mode: GPIO0 -> Gnd
+
+detect flash frequency and size:
+$ esptool.py --port /dev/ttyUSB0 flash_id
+
+flash:
+$ esptool.py --port /dev/ttyUSB0 write_flash --flash_mode dout --flash_freq 26m --flash_size 1MB 0x00000 boot_v1.7.bin 0x01000 user1.1024.new.2.bin 0xfc000 esp_init_data_default_v08.bin 0x7e000 blank.bin 0xfe000 blank.bin
+
+get firmware version: AT+GMR
+change default UART: AT+UART_DEF=57600,8,1,0,1
+
