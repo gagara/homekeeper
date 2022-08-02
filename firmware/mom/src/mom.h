@@ -45,6 +45,7 @@ bool validSensorValues(const int16_t values[], const uint8_t size);
 void reportStatus();
 void reportConfiguration();
 void reportTimestamp();
+uint16_t nodeState(uint16_t nodeBit);
 
 void processSerialMsg();
 void processWifiMsg();

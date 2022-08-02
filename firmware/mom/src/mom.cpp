@@ -18,8 +18,8 @@
 /*============================= Global configuration ========================*/
 
 // Sensor pin
-const uint8_t DHT_IN_PIN = 7;
-const uint8_t DHT_OUT_PIN = 6;
+const uint8_t DHT_IN_PIN = 6;
+const uint8_t DHT_OUT_PIN = 7;
 const uint8_t SENSOR_CURRENT_METER_PIN = A0;
 const uint8_t SENSOR_VOLTAGE_METER_PIN = A1;
 const uint8_t SENSOR_WATER_PUMP_POWER_PIN = A2;
@@ -57,17 +57,19 @@ const uint8_t PV_LOAD_SENSOR_OFF_GRID_PIN = 2;
 // WiFi pins
 const uint8_t WIFI_RST_PIN = 0; // n/a
 
-// Nodes State
-const uint16_t NODE_VENTILATION_BIT = 1;
-const uint16_t NODE_PV_LOAD_SWITCH_BIT = 2;
+// Nodes bits
+const uint16_t NODE_VENTILATION_BIT     = 0b0000000000000001;
+const uint16_t NODE_PV_LOAD_SWITCH_BIT  = 0b0000000000000010;
+// last bit reseverd for errors
+const uint16_t NODE_ERROR_BIT           = 0b1000000000000000;
 
 const uint8_t HEARTBEAT_LED = 13;
 
 // etc
 const unsigned long MAX_TIMESTAMP = -1;
 const int16_t UNKNOWN_SENSOR_VALUE = -127;
-const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 60;
-const uint8_t NODE_ERROR_STATE = 255;
+const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 30;
+const uint8_t NODE_ERROR_STATE = 2;
 
 // reporting
 const unsigned long STATUS_REPORTING_PERIOD_SEC = 60; // 1 minute
@@ -107,6 +109,8 @@ int8_t sensorWaterPumpPowerState = 0;
 
 // Nodes actual state
 uint16_t NODE_STATE_FLAGS = 0;
+// Nodes errors
+uint16_t NODE_ERROR_FLAGS = 0;
 // Nodes forced mode
 uint16_t NODE_FORCED_MODE_FLAGS = 0;
 // will be stored in EEPROM
@@ -116,8 +120,7 @@ uint16_t NODE_PERMANENTLY_FORCED_MODE_FLAGS = 0;
 int motorCurrentMove = 0;
 int motorNextMove = 0;
 
-// Servo switch error
-uint8_t pvLoadSwitchError = 0;
+// Servo switch error timestamp
 unsigned long tsNodePvLoadSwitchError = 0;
 
 // Nodes switch timestamps
@@ -223,7 +226,7 @@ void setup() {
 
     // open ventilation valve if needed
     if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
-//        motor.step(-MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT);
+        motorNextMove = -MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
     }
 
     // sync PV switches in according to desired node state
@@ -278,21 +281,20 @@ void loop() {
 void processPvLoadSwitch() {
     uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT;
     if (isInForcedMode(NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch)) {
-      // retry sync in case of error
-      if (pvLoadSwitchError) {
-        if (diffTimestamps(tsCurr, tsNodePvLoadSwitchError) >= NODE_SWITCH_SAFE_TIME_SEC) {
-          syncPvLoadSwitches();
+        // retry sync in case of error
+        if (NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
+            if (diffTimestamps(tsCurr, tsNodePvLoadSwitchError) >= NODE_SWITCH_SAFE_TIME_SEC) {
+                syncPvLoadSwitches();
+            }
         }
-      }
-      return;
+        return;
     }
     if (wasForceMode) {
-      char json[JSON_MAX_SIZE];
-      jsonifyNodeStatus(NODE_PV_LOAD_SWITCH,
-                        (!pvLoadSwitchError) ? NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT : NODE_ERROR_STATE,
-                        tsNodePvLoadSwitch, NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch,
-                        json, JSON_MAX_SIZE);
-      broadcastMsg(json);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_PV_LOAD_SWITCH, nodeState(NODE_PV_LOAD_SWITCH_BIT), tsNodePvLoadSwitch,
+                          NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch, json,
+                          JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodePvLoadSwitch) >= NODE_SWITCH_SAFE_TIME_SEC) {
       uint8_t sensIds[] = {};
@@ -322,7 +324,7 @@ void processPvLoadSwitch() {
       }
     }
     // retry sync in case of error
-    if (pvLoadSwitchError) {
+    if (NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
         if (diffTimestamps(tsCurr, tsNodePvLoadSwitchError) >= NODE_SWITCH_SAFE_TIME_SEC) {
             syncPvLoadSwitches();
         }
@@ -336,8 +338,8 @@ void processVentilationValve() {
     }
     if (wasForceMode) {
         char json[JSON_MAX_SIZE];
-        jsonifyNodeStatus(NODE_VENTILATION, NODE_STATE_FLAGS & NODE_VENTILATION_BIT, tsNodeVentilation,
-                NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
+        jsonifyNodeStatus(NODE_VENTILATION, nodeState(NODE_VENTILATION_BIT), tsNodeVentilation,
+                          NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
         broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeVentilation) >= NODE_SWITCH_SAFE_TIME_SEC) {
@@ -398,26 +400,34 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
         bit = NODE_VENTILATION_BIT;
         ts = &tsNodeVentilation;
         tsf = &tsForcedNodeVentilation;
+
+        NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
+
         if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
-            motorNextMove += -MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
+            motorNextMove = -MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
         } else {
-            motorNextMove += MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
+            motorNextMove = MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
         }
+
+        *ts = getTimestamp();
+
     } else if (NODE_PV_LOAD_SWITCH == id) {
         bit = NODE_PV_LOAD_SWITCH_BIT;
         ts = &tsNodePvLoadSwitch;
         tsf = &tsForcedNodePvLoadSwitch;
-        syncPvLoadSwitches();
-    }
-    if (ts != NULL) {
+
         NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
 
-        *ts = getTimestamp();
+        syncPvLoadSwitches();
 
-        // report state change
+        *ts = getTimestamp();
+    }
+
+    // report state change
+    if (ts != NULL) {
         char json[JSON_MAX_SIZE];
-        jsonifyNodeStateChange(id, NODE_STATE_FLAGS & bit, *ts, NODE_FORCED_MODE_FLAGS & bit, *tsf, sensId, sensVal,
-                sensCnt, json, JSON_MAX_SIZE);
+        jsonifyNodeStateChange(id, nodeState(bit), *ts, NODE_FORCED_MODE_FLAGS & bit, *tsf, sensId, sensVal, sensCnt,
+                               json, JSON_MAX_SIZE);
         broadcastMsg(json);
     }
 }
@@ -426,9 +436,15 @@ void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
     if (NODE_VENTILATION == id) {
         forceNodeState(NODE_VENTILATION, NODE_VENTILATION_BIT, state, tsForcedNodeVentilation, ts);
         char json[JSON_MAX_SIZE];
-        jsonifyNodeStatus(NODE_VENTILATION, NODE_STATE_FLAGS & NODE_VENTILATION_BIT, tsNodeVentilation,
+        jsonifyNodeStatus(NODE_VENTILATION, nodeState(NODE_VENTILATION_BIT), tsNodeVentilation,
                 NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
         broadcastMsg(json);
+    } else if (NODE_PV_LOAD_SWITCH == id) {
+        forceNodeState(NODE_PV_LOAD_SWITCH, NODE_PV_LOAD_SWITCH_BIT, state, tsForcedNodePvLoadSwitch, ts);
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_PV_LOAD_SWITCH, nodeState(NODE_PV_LOAD_SWITCH_BIT), tsNodePvLoadSwitch,
+                          NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch, json,
+                          JSON_MAX_SIZE);
     }
     // update node modes in EEPROM if forced permanently
     if (ts == 0) {
@@ -462,8 +478,16 @@ void unForceNodeState(uint8_t id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_VENTILATION_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_VENTILATION_BIT;
         char json[JSON_MAX_SIZE];
-        jsonifyNodeStatus(NODE_VENTILATION, NODE_STATE_FLAGS & NODE_VENTILATION_BIT, tsNodeVentilation,
-                NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
+        jsonifyNodeStatus(NODE_VENTILATION, nodeState(NODE_VENTILATION_BIT), tsNodeVentilation,
+                          NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
+        broadcastMsg(json);
+    } else if (NODE_PV_LOAD_SWITCH == id) {
+        NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_PV_LOAD_SWITCH_BIT;
+        NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_PV_LOAD_SWITCH_BIT;
+        char json[JSON_MAX_SIZE];
+        jsonifyNodeStatus(NODE_PV_LOAD_SWITCH, nodeState(NODE_PV_LOAD_SWITCH_BIT), tsNodePvLoadSwitch,
+                          NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch, json,
+                          JSON_MAX_SIZE);
         broadcastMsg(json);
     }
     // update node modes in EEPROM if unforced from permanent
@@ -480,86 +504,97 @@ void stepMotor() {
     if (motorCurrentMove > 0) {
         motor.step(1); //close
         motorCurrentMove--;
+        if (motorNextMove > 0) {
+            // same direction -> cancel
+            motorNextMove = 0;
+        }
     } else if (motorCurrentMove < 0) {
         motor.step(-1); //open
         motorCurrentMove++;
+        if (motorNextMove < 0) {
+            // same direction -> cancel
+            motorNextMove = 0;
+        }
     }
 }
 
 void syncPvLoadSwitches() {
+    // clear error
+    NODE_ERROR_FLAGS = NODE_ERROR_FLAGS & ~NODE_PV_LOAD_SWITCH_BIT;
+    tsNodePvLoadSwitchError = 0;
+
+    dbgf(debug, F(":SyncPvSwitch:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
+         digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
+
     if (NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
         // On-grid requested
-        if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == HIGH) {
+        if (true/*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == HIGH*/ && !(NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT)) {
             // Off-grid switch is ON
             // switch it OFF
             moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_OFF);
-            delay(200);
             // check state
-            if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == HIGH) {
+            if (false/*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == HIGH*/) {
                 // still ON. Error
-                pvLoadSwitchError = 1;
+                NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
                 tsNodePvLoadSwitchError = tsCurr;
-                return;
+            } else {
+                // wait before switiching next switch
+                delay(500);
             }
-            delay(500);
         } else {
-            // Off-grid switch is OFF
+            // Off-grid switch is OFF (or in error state)
             // do nothing
         }
-        if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW) {
+        if (true/*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW*/ && !(NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT)) {
             // On-grid switch is OFF
             // switch it ON
             moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_ON);
-            delay(200);
             // check state
-            if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW) {
+            if (false/*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW*/) {
                 // still OFF. Error
-                pvLoadSwitchError = 1;
+                NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
                 tsNodePvLoadSwitchError = tsCurr;
-                return;
             }
         } else {
-            // On-grid switch is ON
+            // On-grid switch is ON (or in error state)
             // do nothing
         }
     } else {
         // Off-grid requested
-        if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == HIGH) {
+        if (true/*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == HIGH*/ && !(NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT)) {
             // On-grid switch is ON
             // switch it OFF
             moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_OFF);
-            delay(200);
             // check state
-            if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == HIGH) {
+            if (false/*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == HIGH*/) {
                 // still ON. Error
-                pvLoadSwitchError = 1;
+                NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
                 tsNodePvLoadSwitchError = tsCurr;
-                return;
+            } else {
+                delay(500);
             }
-            delay(500);
         } else {
-            // On-grid switch is OFF
+            // On-grid switch is OFF (or in error state)
             // do nothing
         }
-        if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW) {
+        if (true/*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW*/ && !(NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT)) {
             // Off-grid switch is OFF
             // switch it ON
             moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_ON);
-            delay(200);
             // check state
-            if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW) {
+            if (false/*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW*/) {
                 // still OFF. Error
-                pvLoadSwitchError = 1;
+                NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
                 tsNodePvLoadSwitchError = tsCurr;
-                return;
             }
         } else {
-            // Off-grid switch is ON
-            // do nothing
+            // Off-grid switch is ON (or in error state)
+            //  nothing
         }
     }
-    pvLoadSwitchError = 0;
-    tsNodePvLoadSwitchError = 0;
+
+    dbgf(debug, F(":SyncPvSwitch:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
+         digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
 }
 
 void moveServo(uint8_t servoId, uint8_t pos) {
@@ -623,7 +658,6 @@ void readSensors() {
     }
     eac += (pac / (60 * 60)) * SENSORS_READ_INTERVAL_SEC;
     dbgf(debug, F(":uac/iac/pac:%d/%d/%d\n"), (int) round(uac), (int) round(iac), (int) round(pac));
-    Serial.println(uac);
 
     // read sensorWaterPumpPower value
     int8_t state = getSensorWaterPumpPowerState();
@@ -631,6 +665,10 @@ void readSensors() {
         // state changed
         sensorWaterPumpPowerState = state;
         tsSensorWaterPumpPower = tsCurr;
+        char json[JSON_MAX_SIZE];
+        jsonifySensorValue(SENSOR_WATER_PUMP_POWER, sensorWaterPumpPowerState, tsSensorWaterPumpPower, json,
+                           JSON_MAX_SIZE);
+        broadcastMsg(json);
     }
 }
 
@@ -683,12 +721,11 @@ void reportStatus() {
     jsonifySensorValue(SENSOR_WATER_PUMP_POWER, sensorWaterPumpPowerState, tsSensorWaterPumpPower, json, JSON_MAX_SIZE);
     broadcastMsg(json);
 
-    jsonifyNodeStatus(NODE_VENTILATION, NODE_STATE_FLAGS & NODE_VENTILATION_BIT, tsNodeVentilation,
+    jsonifyNodeStatus(NODE_VENTILATION, nodeState(NODE_VENTILATION_BIT), tsNodeVentilation,
                       NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
     broadcastMsg(json);
-    jsonifyNodeStatus(NODE_PV_LOAD_SWITCH, (!pvLoadSwitchError) ? NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT : 255,
-                      tsNodePvLoadSwitch, NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch, json,
-                      JSON_MAX_SIZE);
+    jsonifyNodeStatus(NODE_PV_LOAD_SWITCH, nodeState(NODE_PV_LOAD_SWITCH_BIT), tsNodePvLoadSwitch,
+                      NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch, json, JSON_MAX_SIZE);
     broadcastMsg(json);
 }
 
@@ -715,6 +752,15 @@ void reportTimestamp() {
     char json[JSON_MAX_SIZE];
     jsonifyClockSync(getTimestamp(), json, JSON_MAX_SIZE);
     broadcastMsg(json);
+}
+
+uint16_t nodeState(uint16_t bit) {
+    uint16_t state = NODE_STATE_FLAGS & bit;
+    if (NODE_ERROR_FLAGS & bit) {
+        // node in error state
+        state = state | NODE_ERROR_BIT;
+    }
+    return state;
 }
 
 /*========================= Communication ===================================*/
