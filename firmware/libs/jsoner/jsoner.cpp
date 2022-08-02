@@ -15,7 +15,7 @@ void jsonifyNodeStatus(const uint8_t id, //
 
     JsonObject& node = jsonBuffer.createObject();
     node[F("id")] = id;
-    node[F("ns")] = (ns == 0) ? 0 : 1;
+    node[F("ns")] = (ns == 0) ? 0 : (ns & NODE_STATE_ERROR_BIT) ? -1: 1;
     node[F("ts")] = ts;
     node[F("ff")] = (ff == 0) ? 0 : 1;
     if (ff) {
@@ -41,7 +41,7 @@ void jsonifyNodeStateChange(const uint8_t id, //
     JsonObject& root = jsonBuffer.createObject();
     root[F("m")] = F("nsc");
     root[F("id")] = id;
-    root[F("ns")] = (ns == 0) ? 0 : 1;
+    root[F("ns")] = (ns == 0) ? 0 : (ns & NODE_STATE_ERROR_BIT) ? -1: 1;
     root[F("ts")] = ts;
     root[F("ff")] = (ff == 0) ? 0 : 1;
     if (ff) {

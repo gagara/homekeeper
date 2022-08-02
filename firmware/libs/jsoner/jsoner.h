@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#define NODE_STATE_ERROR_BIT 0b1000000000000000
+
 void jsonifyNodeStatus(const uint8_t id, //
         const uint16_t ns, //
         const unsigned long ts, //
