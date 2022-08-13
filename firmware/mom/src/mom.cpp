@@ -211,7 +211,7 @@ void setup() {
 
     // init energy meter
     emon.current(SENSOR_CURRENT_METER_PIN, 42.00); // 47 Ohm - 42.55
-    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 240, 1.7);
+    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 197, 1.7); // ~ 1024000 / Vcc
 
     // init motor
     pinMode(MOTOR_PIN_5, OUTPUT);
@@ -651,12 +651,12 @@ void readSensors() {
     emon.calcVI(20, 2000);
     uac = emon.Vrms;
     iac = emon.Irms;
-    pac = emon.realPower;
-    if (pac < 0) {
+    if (emon.realPower < 0) {
         // reverse flow (production)
         iac = iac * (-1);
     }
-    eac += (pac / (60 * 60)) * SENSORS_READ_INTERVAL_SEC;
+    pac = uac * iac;
+    eac += (pac / (60 * 60)) * (tsCurr - tsLastSensorRead);
     dbgf(debug, F(":uac/iac/pac:%d/%d/%d\n"), (int) round(uac), (int) round(iac), (int) round(pac));
 
     // read sensorWaterPumpPower value
