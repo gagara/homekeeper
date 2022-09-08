@@ -211,7 +211,7 @@ void setup() {
 
     // init energy meter
     emon.current(SENSOR_CURRENT_METER_PIN, 42.00); // 47 Ohm - 42.55
-    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 195, 1.7); // ~ 1024000 / Vcc
+    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 197, 1.7); // ~ 1024000 / Vcc
 
     // init motor
     pinMode(MOTOR_PIN_5, OUTPUT);
