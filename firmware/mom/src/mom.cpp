@@ -115,6 +115,8 @@ uint16_t NODE_ERROR_FLAGS = 0;
 uint16_t NODE_FORCED_MODE_FLAGS = 0;
 // will be stored in EEPROM
 uint16_t NODE_PERMANENTLY_FORCED_MODE_FLAGS = 0;
+// setup mode for servo (set it to 0)
+uint8_t SERVO_SETUP_MODE = 0;
 
 // Stepper moves
 int motorCurrentMove = 0;
@@ -194,7 +196,7 @@ ESP8266 esp8266;
 void setup() {
     // Setup serial ports
     serial->begin(57600);
-    //wifi->begin(57600); // initialized in ESP8266 lib
+    // wifi->begin(57600); // initialized in ESP8266 lib
 
     dbg(debug, F(":STARTING\n"));
 
@@ -208,9 +210,12 @@ void setup() {
     // init PV load switches
     pinMode(PV_LOAD_SENSOR_ON_GRID_PIN, INPUT);
     pinMode(PV_LOAD_SENSOR_OFF_GRID_PIN, INPUT);
+    // raise error in order to sync state right after setup
+    NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
+    tsNodePvLoadSwitchError = -1;
 
     // init energy meter
-    emon.current(SENSOR_CURRENT_METER_PIN, 42.00); // 47 Ohm - 42.55
+    emon.current(SENSOR_CURRENT_METER_PIN, 42.00);    // 47 Ohm - 42.55
     emon.voltage(SENSOR_VOLTAGE_METER_PIN, 197, 1.7); // ~ 1024000 / Vcc
 
     // init motor
@@ -229,11 +234,8 @@ void setup() {
         motorNextMove = -MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
     }
 
-    // sync PV switches in according to desired node state
-    syncPvLoadSwitches();
-
     // init esp8266 hw reset pin. N/A
-    //pinMode(WIFI_RST_PIN, OUTPUT);
+    // pinMode(WIFI_RST_PIN, OUTPUT);
 
     // setup WiFi
     loadWifiConfig();
@@ -255,7 +257,7 @@ void loop() {
         processPvLoadSwitch();
         // ventilation valve
         processVentilationValve();
-        
+
         digitalWrite(HEARTBEAT_LED, digitalRead(HEARTBEAT_LED) ^ 1);
     }
 
@@ -279,13 +281,18 @@ void loop() {
 /*========================= Node processing methods =========================*/
 
 void processPvLoadSwitch() {
+    if (SERVO_SETUP_MODE) {
+        // servo setup mode. position all servos to OFF
+        moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_OFF);
+        moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_OFF);
+        return;
+    }
     uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT;
     if (isInForcedMode(NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch)) {
         // retry sync in case of error
-        if (NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
-            if (diffTimestamps(tsCurr, tsNodePvLoadSwitchError) >= NODE_SWITCH_SAFE_TIME_SEC) {
-                syncPvLoadSwitches();
-            }
+        if ((NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT) &&
+            diffTimestamps(tsCurr, tsNodePvLoadSwitchError) >= NODE_SWITCH_SAFE_TIME_SEC) {
+            syncPvLoadSwitches();
         }
         return;
     }
@@ -296,36 +303,36 @@ void processPvLoadSwitch() {
                           JSON_MAX_SIZE);
         broadcastMsg(json);
     }
-    if (diffTimestamps(tsCurr, tsNodePvLoadSwitch) >= NODE_SWITCH_SAFE_TIME_SEC) {
-      uint8_t sensIds[] = {};
-      int16_t sensVals[] = {};
-      uint8_t sensCnt = 0;
+    if (diffTimestamps(tsCurr, tsNodePvLoadSwitch) >= NODE_SWITCH_SAFE_TIME_SEC ||
+        diffTimestamps(tsCurr, tsNodePvLoadSwitchError) >= NODE_SWITCH_SAFE_TIME_SEC) {
+        uint8_t sensIds[] = {};
+        int16_t sensVals[] = {};
+        uint8_t sensCnt = 0;
 
-      if (NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
-        // on-grid inverter
-        if (uac <= MIN_UAC_VALUE) {
-          // grid voltage is too low/no grid available
-          // switch to off-grid inverter
-          switchNodeState(NODE_PV_LOAD_SWITCH, sensIds, sensVals, sensCnt);
+        if (NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
+            // on-grid inverter
+            if (uac <= MIN_UAC_VALUE) {
+                // grid voltage is too low/no grid available
+                // switch to off-grid inverter
+                switchNodeState(NODE_PV_LOAD_SWITCH, sensIds, sensVals, sensCnt);
+            } else {
+                // grid voltage is OK
+                // do nothing
+            }
         } else {
-          // grid voltage is OK
-          // do nothing
+            // off-grid inverter
+            if (uac > MIN_UAC_VALUE) {
+                // grid voltage is OK
+                // switch to on-grid inverter
+                switchNodeState(NODE_PV_LOAD_SWITCH, sensIds, sensVals, sensCnt);
+            } else {
+                // grid voltage is too low/no grid available
+                // do nothing
+            }
         }
-      } else {
-        // off-grid inverter
-        if (uac > MIN_UAC_VALUE) {
-          // grid voltage is OK
-          // switch to on-grid inverter
-          switchNodeState(NODE_PV_LOAD_SWITCH, sensIds, sensVals, sensCnt);
-        } else {
-          // grid voltage is too low/no grid available
-          // do nothing
-        }
-      }
-    }
-    // retry sync in case of error
-    if (NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
-        if (diffTimestamps(tsCurr, tsNodePvLoadSwitchError) >= NODE_SWITCH_SAFE_TIME_SEC) {
+
+        // retry sync in case of error
+        if (NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
             syncPvLoadSwitches();
         }
     }
@@ -528,68 +535,43 @@ void syncPvLoadSwitches() {
 
     if (NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
         // On-grid requested
-        if (true/*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == HIGH*/ && !(NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT)) {
-            // Off-grid switch is ON
-            // switch it OFF
-            moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_OFF);
-            // check state
-            if (false/*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == HIGH*/) {
-                // still ON. Error
-                NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
-                tsNodePvLoadSwitchError = tsCurr;
-            } else {
-                // wait before switiching next switch
-                delay(500);
-            }
-        } else {
-            // Off-grid switch is OFF (or in error state)
-            // do nothing
-        }
-        if (true/*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW*/ && !(NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT)) {
-            // On-grid switch is OFF
-            // switch it ON
+        // 1. switch OFF off-grid
+        moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_OFF);
+        // check state
+        if (true /*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW*/) {
+            // step 1 success. continue
+            // 2. switch ON on-grid
             moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_ON);
             // check state
-            if (false/*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW*/) {
-                // still OFF. Error
+            if (false /*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW*/) {
+                // still OFF. Error!
                 NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
                 tsNodePvLoadSwitchError = tsCurr;
             }
         } else {
-            // On-grid switch is ON (or in error state)
-            // do nothing
+            // still ON. Error!
+            NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
+            tsNodePvLoadSwitchError = tsCurr;
         }
     } else {
         // Off-grid requested
-        if (true/*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == HIGH*/ && !(NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT)) {
-            // On-grid switch is ON
-            // switch it OFF
-            moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_OFF);
-            // check state
-            if (false/*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == HIGH*/) {
-                // still ON. Error
-                NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
-                tsNodePvLoadSwitchError = tsCurr;
-            } else {
-                delay(500);
-            }
-        } else {
-            // On-grid switch is OFF (or in error state)
-            // do nothing
-        }
-        if (true/*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW*/ && !(NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT)) {
-            // Off-grid switch is OFF
-            // switch it ON
+        // 1. switch OFF on-grid
+        moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_OFF);
+        // check state
+        if (true /*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW*/) {
+            // step 1 success. continue
+            // 2. switch ON off-grid
             moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_ON);
             // check state
-            if (false/*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW*/) {
+            if (false /*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW*/) {
                 // still OFF. Error
                 NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
                 tsNodePvLoadSwitchError = tsCurr;
             }
         } else {
-            // Off-grid switch is ON (or in error state)
-            //  nothing
+            // still ON. Error
+            NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
+            tsNodePvLoadSwitchError = tsCurr;
         }
     }
 
@@ -598,10 +580,9 @@ void syncPvLoadSwitches() {
 }
 
 void moveServo(uint8_t servoId, uint8_t pos) {
-    servo.attach(servoId, 560, 2500);
-    delay(100);
     servo.write(pos);
-    delay(100);
+    servo.attach(servoId);
+    delay(1000);
     servo.detach();
 }
 
@@ -856,6 +837,11 @@ bool parseCommand(char* command) {
                 esp8266.setDebug(debug);
             } else {
                 reportConfiguration();
+            }
+        } else if (root[F("m")] == F("sstp")) {
+            // servo setup mode
+            if (root.containsKey(F("v"))) {
+                SERVO_SETUP_MODE = root[F("v")].as<int>();
             }
         }
     } else {
