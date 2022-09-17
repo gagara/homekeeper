@@ -1,27 +1,26 @@
-from functools import wraps
-
-import os
-
-from elasticsearch import Elasticsearch
-import requests
-import json
-
-from flask import Flask, request, Response
-from flask_restplus import Api, Resource, reqparse
-
-from time import time
 from calendar import timegm
 import datetime
+from functools import wraps
+import json
+import os
+from time import time
+
+from elasticsearch import Elasticsearch
+from flask import Flask, request
+from flask.wrappers import Response
+from flask_restx import Api, Resource
+import requests
 
 ES_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
-
 app = Flask(__name__)
+app.debug = True
 api = Api(app, version='1.0', title='Homekeeper API Server',
           description='API server for homekeeper backend')
 
 nodes = api.namespace('control', description='Node controlling API')
 sensors = api.namespace('config', description='Sensor configuration API')
+deviceapi = api.namespace('device', description='Device Raw API')
 
 # read config file
 app.config.from_pyfile('gateway.conf')
@@ -41,11 +40,7 @@ app.config['ELASTICSEARCH']['index'] = os.environ.get('ELASTICSEARCH_INDEX', def
 app.config['LOGSERVER']['host'] = os.environ.get('LOGSERVER_HOST', default=app.config['LOGSERVER']['host'])
 app.config['LOGSERVER']['port'] = int(os.environ.get('LOGSERVER_PORT', default=app.config['LOGSERVER']['port']))
 
-####
-app.debug = True
-####
-
-es = Elasticsearch(hosts=[app.config['ELASTICSEARCH']['host']], port=app.config['ELASTICSEARCH']['port'])
+es = Elasticsearch("http://" + app.config['ELASTICSEARCH']['host'] + ":" + str(app.config['ELASTICSEARCH']['port']))
 
 ccd = {app.config['DAD']['host']: {'timestamp': 0, 'value': 0}, app.config['MOM']['host']: {'timestamp': 0, 'value': 0}}
 
@@ -68,16 +63,16 @@ def requires_auth(f):
     return decorated
 ####### #### ######### #########
 
-def controller_send(conf, req):
+def controller_send(conf, body):
     if conf:
         headers = {'User-Agent': 'gw', 'Content-Type': 'application/json', 'Connection': 'close'}
         host = "http://%s:%d" % (conf['host'], conf['port'])
         retry = 0
         rcode = 0
         while retry < conf['conn_max_retry'] and rcode != 200:
-            if app.debug : print('>>>CONTROLLER: %s; %s' % (host, req))
+            if app.debug : print('>>>CONTROLLER: %s; %s' % (host, body))
             try:
-                r = requests.post(host, json=req, headers=headers, timeout=conf['conn_timeout_sec'])
+                r = requests.post(host, json=body, headers=headers, timeout=conf['conn_timeout_sec'])
                 rcode = r.status_code
             except:
                 rcode = 0
@@ -85,16 +80,16 @@ def controller_send(conf, req):
         if rcode != 200:
             raise Exception("unable to contact controller")
 
-def logserver_send(req):
+def logserver_send(body):
     headers = {'User-Agent': 'gw', 'Content-Type': 'application/json'}
     host = "http://%s:%d" % (app.config['LOGSERVER']['host'], app.config['LOGSERVER']['port'])
-    if app.debug : print('>>>LOGSERVER: %s; %s' % (host, req))
-    requests.post(host, json=req, headers=headers, timeout=app.config['LOGSERVER']['conn_timeout_sec'])
+    if app.debug : print('>>>LOGSERVER: %s; %s' % (host, body))
+    requests.post(host, json=body, headers=headers, timeout=app.config['LOGSERVER']['conn_timeout_sec'])
 
 def query_es(query):
     logs = []
     if app.debug : print('>>>ELASTICSEARCH: %s' % query)
-    res = es.search(index=app.config['ELASTICSEARCH']['index'], body=query)
+    res = es.search(index=app.config['ELASTICSEARCH']['index'], query=query)
     for hit in res['hits']['hits']:
         if '@timestamp' in hit['_source'] and 'host' in hit['_source'] and 'message' in hit['_source']:
             logs.append({'@timestamp': timegm(datetime.datetime.strptime(hit['_source']['@timestamp'], ES_DATE_FORMAT).timetuple()),
@@ -184,20 +179,21 @@ def query_logs(timestamp):
         ]}}, "sort": {"@timestamp": "asc"}, "size": 50}))
 
 
-node_parser = reqparse.RequestParser()
-node_parser.add_argument('node', type=str, help='Node', required=True, choices=list(app.config['NODES'].keys()))
-node_parser.add_argument('mode', type=str, help='Mode', required=True, choices=['manual', 'auto'], default='manual')
-node_parser.add_argument('state', type=str, help='State', required=True, choices=['ON', 'OFF'], default='ON')
-node_parser.add_argument('period', type=int, help='Period (minutes) [0 - forever]', required=True, default=5)
+############## Swagger API ##############
+
+node_model = nodes.parser()
+node_model.add_argument('node', type=str, help='Node', required=True, choices=list(app.config['NODES'].keys()), location='form')
+node_model.add_argument('mode', type=str, help='Mode', required=True, choices=['manual', 'auto'], default='manual', location='form')
+node_model.add_argument('state', type=str, help='State', required=True, choices=['ON', 'OFF'], default='ON', location='form')
+node_model.add_argument('period', type=int, help='Period (minutes) [0 - forever]', required=True, default=5, location='form')
 
 @nodes.route("")
-@api.doc(description='Change node state')
+@api.doc(description='Change node state', parser=node_model)
 class NodeControlApi(Resource):
 
-    @api.expect(node_parser)
     @requires_auth
     def post(self):
-        args = node_parser.parse_args()
+        args = node_model.parse_args()
         if app.debug : print('REQUEST: %s' % args)
         req = {}
         req['m'] = 'nsc'
@@ -214,19 +210,19 @@ class NodeControlApi(Resource):
             if app.debug : print(e)
             return str(e), 500
 
+######
 
-sensor_parser = reqparse.RequestParser()
-sensor_parser.add_argument('sensor', type=str, help='Sensor', required=True, choices=list(app.config['SENSORS'].keys()))
-sensor_parser.add_argument('value', type=int, help='Value (\u2103)', required=True, default=20)
+sensors_model = sensors.parser()
+sensors_model.add_argument('sensor', type=str, help='Sensor', required=True, choices=list(app.config['SENSORS'].keys()), location='form')
+sensors_model.add_argument('value', type=int, help='Value (\u2103)', required=True, default=20, location='form')
 
 @sensors.route("")
-@api.doc(description='Configure sensor thresholds')
+@api.doc(description='Configure sensor thresholds', parser=sensors_model)
 class SensorControlApi(Resource):
 
-    @api.expect(sensor_parser)
     @requires_auth
     def post(self):
-        args = sensor_parser.parse_args()
+        args = sensors_model.parse_args()
         if app.debug : print('REQUEST: %s' % args)
         req = {}
         req['m'] = 'cfg'
@@ -241,21 +237,55 @@ class SensorControlApi(Resource):
             if app.debug : print(e)
             return str(e), 500
 
+######
 
-raw_req = api.model('request', {})
+deviceapi_model = deviceapi.parser()
+deviceapi_model.add_argument('name', type=str, help='Controller', required=True, choices=['DAD', 'MOM'])
+deviceapi_model.add_argument('message', type=dict, help='JSON message', required=True)
+
+@deviceapi.route("/<name>")
+@api.doc(description='Send command to controller', parser=deviceapi_model)
+class ControllerRawApi(Resource):
+
+    @requires_auth
+    def post(self, name):
+        if app.debug : print('REQUEST: dev: %s; args: %s' % (name, request.args))
+        if 'message' in request.args:
+            try:
+                msg = json.loads(request.args['message'])
+            except ValueError as e:
+                if app.debug : print(e)
+                return str(e), 400
+            cfg = None
+            if name == 'DAD':
+                cfg = app.config['DAD']
+            elif name == 'MOM':
+                cfg = app.config['MOM']
+            if cfg and type(msg) is dict:
+                try:
+                    controller_send(cfg, msg)
+                    return {}, 200
+                except Exception as e:
+                    if app.debug : print(e)
+                    return str(e), 500
+
+        return {}, 400
+
+######
+
+app_model = api.model('request', {})
 
 @api.route("/", doc=False)
-@api.doc(description='API used by Application')
+@api.doc(description='API used by Application', parser=app_model)
 class ApplicationApi(Resource):
 
     @requires_auth
-    @api.expect(raw_req)
     def post(self):
-        if app.debug : print('REQUEST: %s' % request.json)
+        if app.debug : print('REQUEST: %s' % request.data)
         try:
-            req = request.json
-            if req['m'] == 'log':
-                timestamp = req['ts']
+            body = json.loads(request.data)
+            if 'm' in body and body['m'] == 'log':
+                timestamp = body['ts'] if 'ts' in body else 0
                 try:
                     return query_logs(timestamp), 200
                 except Exception as e:
@@ -263,8 +293,8 @@ class ApplicationApi(Resource):
                     return str(e), 500
             else:
                 try:
-                    controller_send(identify_target_controller(req), req)
-                    logserver_send(req)
+                    controller_send(identify_target_controller(body), body)
+                    logserver_send(body)
                     return {}, 200
                 except Exception as e:
                     if app.debug : print(e)
