@@ -1,5 +1,6 @@
 **/.settings
 **/.cache
+**/.vim
 client/**/bin
 client/**/gen
 client/android/*/project.properties
