@@ -30,10 +30,10 @@ app.config['GATEWAY']['host'] = os.environ.get('GATEWAY_HOST', default=app.confi
 app.config['GATEWAY']['port'] = int(os.environ.get('GATEWAY_PORT', default=app.config['GATEWAY']['port']))
 app.config['GATEWAY']['user'] = os.environ.get('GATEWAY_USER', default=app.config['GATEWAY']['user'])
 app.config['GATEWAY']['password'] = os.environ.get('GATEWAY_PASSWORD', default=app.config['GATEWAY']['password'])
-app.config['DAD']['host'] = os.environ.get('DAD_HOST', default=app.config['DAD']['host'])
-app.config['DAD']['port'] = int(os.environ.get('DAD_PORT', default=app.config['DAD']['port']))
-app.config['MOM']['host'] = os.environ.get('MOM_HOST', default=app.config['MOM']['host'])
-app.config['MOM']['port'] = int(os.environ.get('MOM_PORT', default=app.config['MOM']['port']))
+app.config['CONTROLLERS']['DAD']['host'] = os.environ.get('DAD_HOST', default=app.config['CONTROLLERS']['DAD']['host'])
+app.config['CONTROLLERS']['DAD']['port'] = int(os.environ.get('DAD_PORT', default=app.config['CONTROLLERS']['DAD']['port']))
+app.config['CONTROLLERS']['MOM']['host'] = os.environ.get('MOM_HOST', default=app.config['CONTROLLERS']['MOM']['host'])
+app.config['CONTROLLERS']['MOM']['port'] = int(os.environ.get('MOM_PORT', default=app.config['CONTROLLERS']['MOM']['port']))
 app.config['ELASTICSEARCH']['host'] = os.environ.get('ELASTICSEARCH_HOST', default=app.config['ELASTICSEARCH']['host'])
 app.config['ELASTICSEARCH']['port'] = int(os.environ.get('ELASTICSEARCH_PORT', default=app.config['ELASTICSEARCH']['port']))
 app.config['ELASTICSEARCH']['index'] = os.environ.get('ELASTICSEARCH_INDEX', default=app.config['ELASTICSEARCH']['index'])
@@ -42,7 +42,10 @@ app.config['LOGSERVER']['port'] = int(os.environ.get('LOGSERVER_PORT', default=a
 
 es = Elasticsearch("http://" + app.config['ELASTICSEARCH']['host'] + ":" + str(app.config['ELASTICSEARCH']['port']))
 
-ccd = {app.config['DAD']['host']: {'timestamp': 0, 'value': 0}, app.config['MOM']['host']: {'timestamp': 0, 'value': 0}}
+ccd = {
+    app.config['CONTROLLERS']['DAD']['host']: {'timestamp': 0, 'value': 0},
+    app.config['CONTROLLERS']['MOM']['host']: {'timestamp': 0, 'value': 0}
+}
 
 ####### Auth decorator #########
 def check_auth(username, password):
@@ -79,6 +82,8 @@ def controller_send(conf, body):
             retry = retry + 1
         if rcode != 200:
             raise Exception("unable to contact controller")
+    else:
+        raise ValueError("unknown controller")
 
 def logserver_send(body):
     headers = {'User-Agent': 'gw', 'Content-Type': 'application/json'}
@@ -117,24 +122,24 @@ def init_controller_clock_delta(conf, req_ts):
 
 def identify_target_controller(msg):
     if 'id' in msg:
-        if msg['id'] in app.config['DAD']['managed_nodes']:
-            return app.config['DAD']
-        elif msg['id'] in app.config['MOM']['managed_nodes']:
-            return app.config['MOM']
+        if msg['id'] in app.config['CONTROLLERS']['DAD']['managed_nodes']:
+            return app.config['CONTROLLERS']['DAD']
+        elif msg['id'] in app.config['CONTROLLERS']['MOM']['managed_nodes']:
+            return app.config['CONTROLLERS']['MOM']
         else:
             return None
     elif 'n' in msg and 'id' in msg['n']:
-        if msg['n']['id'] in app.config['DAD']['managed_nodes']:
-            return app.config['DAD']
-        elif msg['n']['id'] in app.config['MOM']['managed_nodes']:
-            return app.config['MOM']
+        if msg['n']['id'] in app.config['CONTROLLERS']['DAD']['managed_nodes']:
+            return app.config['CONTROLLERS']['DAD']
+        elif msg['n']['id'] in app.config['CONTROLLERS']['MOM']['managed_nodes']:
+            return app.config['CONTROLLERS']['MOM']
         else:
             return None
     elif 's' in msg and 'id' in msg['s']:
-        if msg['s']['id'] in app.config['DAD']['managed_nodes']:
-            return app.config['DAD']
-        elif msg['s']['id'] in app.config['MOM']['managed_nodes']:
-            return app.config['MOM']
+        if msg['s']['id'] in app.config['CONTROLLERS']['DAD']['managed_nodes']:
+            return app.config['CONTROLLERS']['DAD']
+        elif msg['s']['id'] in app.config['CONTROLLERS']['MOM']['managed_nodes']:
+            return app.config['CONTROLLERS']['MOM']
         else:
             return None
     else:
@@ -170,8 +175,8 @@ def process_logs(logs):
     return result
 
 def query_logs(timestamp):
-    init_controller_clock_delta(app.config['DAD'], timestamp)
-    init_controller_clock_delta(app.config['MOM'], timestamp)
+    init_controller_clock_delta(app.config['CONTROLLERS']['DAD'], timestamp)
+    init_controller_clock_delta(app.config['CONTROLLERS']['MOM'], timestamp)
 
     return process_logs(query_es({"query": {"bool": {"filter": [
         {"term": {"headers.http_user_agent": "ESP8266"}},
@@ -182,10 +187,14 @@ def query_logs(timestamp):
 ############## Swagger API ##############
 
 node_model = nodes.parser()
-node_model.add_argument('node', type=str, help='Node', required=True, choices=list(app.config['NODES'].keys()), location='form')
-node_model.add_argument('mode', type=str, help='Mode', required=True, choices=['manual', 'auto'], default='manual', location='form')
-node_model.add_argument('state', type=str, help='State', required=True, choices=['ON', 'OFF'], default='ON', location='form')
-node_model.add_argument('period', type=int, help='Period (minutes) [0 - forever]', required=True, default=5, location='form')
+node_model.add_argument(
+    'node', type=str, help='Node', required=True, choices=list(app.config['NODES'].keys()), location='form')
+node_model.add_argument(
+    'mode', type=str, help='Mode', required=True, choices=['manual', 'auto'], default='manual', location='form')
+node_model.add_argument(
+    'state', type=str, help='State', required=True, choices=['ON', 'OFF'], default='ON', location='form')
+node_model.add_argument(
+    'period', type=int, help='Period (minutes) [0 - forever]', required=True, default=5, location='form')
 
 @nodes.route("")
 @api.doc(description='Change node state', parser=node_model)
@@ -205,16 +214,21 @@ class NodeControlApi(Resource):
         try:
             controller_send(identify_target_controller(req), req)
             logserver_send(req)
-            return {}, 200
+            return {"success": "200 OK"}, 200
+        except ValueError as e:
+            if app.debug : print(e)
+            return {"error": str(e)}, 400
         except Exception as e:
             if app.debug : print(e)
-            return str(e), 500
+            return {"error": str(e)}, 500
 
 ######
 
 sensors_model = sensors.parser()
-sensors_model.add_argument('sensor', type=str, help='Sensor', required=True, choices=list(app.config['SENSORS'].keys()), location='form')
-sensors_model.add_argument('value', type=int, help='Value (\u2103)', required=True, default=20, location='form')
+sensors_model.add_argument(
+    'sensor', type=str, help='Sensor', required=True, choices=list(app.config['SENSORS'].keys()), location='form')
+sensors_model.add_argument(
+    'value', type=int, help='Value (\u2103)', required=True, default=20, location='form')
 
 @sensors.route("")
 @api.doc(description='Configure sensor thresholds', parser=sensors_model)
@@ -232,16 +246,21 @@ class SensorControlApi(Resource):
         try:
             controller_send(identify_target_controller(req), req)
             logserver_send(req)
-            return {}, 200
+            return {"success": "200 OK"}, 200
+        except ValueError as e:
+            if app.debug : print(e)
+            return {"error": str(e)}, 400
         except Exception as e:
             if app.debug : print(e)
-            return str(e), 500
+            return {"error": str(e)}, 500
 
 ######
 
 deviceapi_model = deviceapi.parser()
-deviceapi_model.add_argument('name', type=str, help='Controller', required=True, choices=['DAD', 'MOM'])
-deviceapi_model.add_argument('message', type=dict, help='JSON message', required=True)
+deviceapi_model.add_argument(
+    'name', type=str, help='Controller', required=True, choices=list(app.config['CONTROLLERS'].keys()))
+deviceapi_model.add_argument(
+    'message', type=str, help='JSON message', required=True, location='json')
 
 @deviceapi.route("/<name>")
 @api.doc(description='Send command to controller', parser=deviceapi_model)
@@ -249,31 +268,22 @@ class ControllerRawApi(Resource):
 
     @requires_auth
     def post(self, name):
-        if app.debug : print('REQUEST: dev: %s; args: %s' % (name, request.args))
-        if 'message' in request.args:
-            try:
-                msg = json.loads(request.args['message'])
-            except ValueError as e:
-                if app.debug : print(e)
-                return str(e), 400
-            cfg = None
-            if name == 'DAD':
-                cfg = app.config['DAD']
-            elif name == 'MOM':
-                cfg = app.config['MOM']
-            if cfg and type(msg) is dict:
-                try:
-                    controller_send(cfg, msg)
-                    return {}, 200
-                except Exception as e:
-                    if app.debug : print(e)
-                    return str(e), 500
-
-        return {}, 400
+        if app.debug : print('REQUEST: dev: %s; msg: %s' % (name, request.data))
+        try:
+            cfg = app.config['CONTROLLERS'][name] if name in app.config['CONTROLLERS'] else None
+            msg = json.loads(request.data)
+            controller_send(cfg, msg)
+            return {"success": "200 OK"}, 200
+        except ValueError as e:
+            if app.debug : print(e)
+            return {"error": str(e)}, 400
+        except Exception as e:
+            if app.debug : print(e)
+            return {"error": str(e)}, 500
 
 ######
 
-app_model = api.model('request', {})
+app_model = api.model('json', {})
 
 @api.route("/", doc=False)
 @api.doc(description='API used by Application', parser=app_model)
@@ -286,22 +296,17 @@ class ApplicationApi(Resource):
             body = json.loads(request.data)
             if 'm' in body and body['m'] == 'log':
                 timestamp = body['ts'] if 'ts' in body else 0
-                try:
-                    return query_logs(timestamp), 200
-                except Exception as e:
-                    if app.debug : print(e)
-                    return str(e), 500
+                return query_logs(timestamp), 200
             else:
-                try:
-                    controller_send(identify_target_controller(body), body)
-                    logserver_send(body)
-                    return {}, 200
-                except Exception as e:
-                    if app.debug : print(e)
-                    return str(e), 500
+                controller_send(identify_target_controller(body), body)
+                logserver_send(body)
+                return {"success": "200 OK"}, 200
+        except ValueError as e:
+            if app.debug : print(e)
+            return {"error": str(e)}, 400
         except Exception as e:
             if app.debug : print(e)
-            return str(e), 400
+            return {"error": str(e)}, 500
 
 
 if __name__ == "__main__":
