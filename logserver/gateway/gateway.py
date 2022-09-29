@@ -1,5 +1,5 @@
 from calendar import timegm
-import datetime
+from datetime import datetime
 from functools import wraps
 import json
 import os
@@ -94,10 +94,10 @@ def logserver_send(body):
 def query_es(query):
     logs = []
     if app.debug : print('>>>ELASTICSEARCH: %s' % query)
-    res = es.search(index=app.config['ELASTICSEARCH']['index'], query=query)
+    res = es.search(index=app.config['ELASTICSEARCH']['index'], body=query)
     for hit in res['hits']['hits']:
         if '@timestamp' in hit['_source'] and 'host' in hit['_source'] and 'message' in hit['_source']:
-            logs.append({'@timestamp': timegm(datetime.datetime.strptime(hit['_source']['@timestamp'], ES_DATE_FORMAT).timetuple()),
+            logs.append({'@timestamp': timegm(datetime.strptime(hit['_source']['@timestamp'], ES_DATE_FORMAT).timetuple()),
                          'host': hit['_source']['host'],
                          'message': json.loads(hit['_source']['message'])})
     if app.debug : print('<<<ELASTICSEARCH: %d/%d' % (len(logs), res['hits']['total']))
@@ -186,23 +186,27 @@ def query_logs(timestamp):
 
 ############## Swagger API ##############
 
-node_model = nodes.parser()
-node_model.add_argument(
+node_upd_model = nodes.parser()
+node_upd_model.add_argument(
     'node', type=str, help='Node', required=True, choices=list(app.config['NODES'].keys()), location='form')
-node_model.add_argument(
+node_upd_model.add_argument(
     'mode', type=str, help='Mode', required=True, choices=['manual', 'auto'], default='manual', location='form')
-node_model.add_argument(
+node_upd_model.add_argument(
     'state', type=str, help='State', required=True, choices=['ON', 'OFF'], default='ON', location='form')
-node_model.add_argument(
+node_upd_model.add_argument(
     'period', type=int, help='Period (minutes) [0 - forever]', required=True, default=5, location='form')
 
+node_get_model = nodes.parser()
+node_get_model.add_argument(
+    'node', type=str, help='Node', required=True, choices=list(app.config['NODES'].keys()))
+
 @nodes.route("")
-@api.doc(description='Change node state', parser=node_model)
 class NodeControlApi(Resource):
 
     @requires_auth
+    @api.doc(description='Change node state', parser=node_upd_model)
     def post(self):
-        args = node_model.parse_args()
+        args = node_upd_model.parse_args()
         if app.debug : print('REQUEST: %s' % args)
         req = {}
         req['m'] = 'nsc'
@@ -222,21 +226,54 @@ class NodeControlApi(Resource):
             if app.debug : print(e)
             return {"error": str(e)}, 500
 
+    @requires_auth
+    @api.doc(description='Query node state', parser=node_get_model)
+    def get(self):
+        if app.debug: print('REQUEST: %s' % request.args)
+        try:
+            id = app.config['NODES'][request.args['node']]
+            res = query_es({"query": {"bool": {"filter": [
+                {"term": {"headers.http_user_agent": "ESP8266"}},
+                {"term": {"m": "csr"}},
+                {"term": {"id": id}},
+            ]}}, "sort": {"@timestamp": "desc"}, "size": 1})
+            response = {}
+            if len(res) > 0 and res[0]['message'] and res[0]['@timestamp']:
+                response['state'] = \
+                    'ON' if res[0]['message']['n']['ns'] == 1 else \
+                    'OFF' if res[0]['message']['n']['ns'] == 0 else \
+                    'ERR'
+                response['timestamp'] = datetime.fromtimestamp(res[0]['@timestamp']).strftime('%Y-%m-%d %H:%M:%S')
+                response['age'] = str((datetime.now() - datetime.fromtimestamp(res[0]['@timestamp'])).seconds) + " seconds"
+            return response, 200
+        except ValueError as e:
+            if app.debug:
+                print(e)
+            return {"error": str(e)}, 400
+        except Exception as e:
+            if app.debug:
+                print(e)
+            return {"error": str(e)}, 500
+
 ######
 
-sensors_model = sensors.parser()
-sensors_model.add_argument(
+sensors_cfg_model = sensors.parser()
+sensors_cfg_model.add_argument(
     'sensor', type=str, help='Sensor', required=True, choices=list(app.config['SENSORS'].keys()), location='form')
-sensors_model.add_argument(
+sensors_cfg_model.add_argument(
     'value', type=int, help='Value (\u2103)', required=True, default=20, location='form')
 
+sensors_get_model = sensors.parser()
+sensors_get_model.add_argument(
+    'sensor', type=str, help='Sensor', required=True, choices=list(app.config['SENSORS'].keys()))
+
 @sensors.route("")
-@api.doc(description='Configure sensor thresholds', parser=sensors_model)
 class SensorControlApi(Resource):
 
     @requires_auth
+    @api.doc(description='Configure sensor thresholds', parser=sensors_cfg_model)
     def post(self):
-        args = sensors_model.parse_args()
+        args = sensors_cfg_model.parse_args()
         if app.debug : print('REQUEST: %s' % args)
         req = {}
         req['m'] = 'cfg'
@@ -254,6 +291,31 @@ class SensorControlApi(Resource):
             if app.debug : print(e)
             return {"error": str(e)}, 500
 
+    @requires_auth
+    @api.doc(description='Query sensor thresholds', parser=sensors_get_model)
+    def get(self):
+        if app.debug: print('REQUEST: %s' % request.args)
+        try:
+            id = app.config['SENSORS'][request.args['sensor']]
+            res = query_es({"query": {"bool": {"filter": [
+                {"term": {"headers.http_user_agent": "ESP8266"}},
+                {"term": {"m": "cfg"}},
+                {"term": {"s.id": id}},
+            ]}}, "sort": {"@timestamp": "desc"}, "size": 1})
+            response = {}
+            if len(res) > 0 and res[0]['message'] and res[0]['@timestamp']:
+                response['value'] = res[0]['message']['s']['v']
+                response['timestamp'] = datetime.fromtimestamp(res[0]['@timestamp']).strftime('%Y-%m-%d %H:%M:%S')
+                response['age'] = str((datetime.now() - datetime.fromtimestamp(res[0]['@timestamp'])).seconds) + " seconds"
+            return response, 200
+        except ValueError as e:
+            if app.debug:
+                print(e)
+            return {"error": str(e)}, 400
+        except Exception as e:
+            if app.debug:
+                print(e)
+            return {"error": str(e)}, 500
 ######
 
 deviceapi_model = deviceapi.parser()
