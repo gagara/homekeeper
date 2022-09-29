@@ -86,8 +86,9 @@ const int8_t SENSOR_WATER_PUMP_POWER_THERSHOLD = 50;
 const uint8_t MIN_UAC_VALUE = 160;
 
 // Servo positions
-const uint8_t SERVO_POSITION_OFF = 0;
-const uint8_t SERVO_POSITION_ON = 90;
+const uint8_t SERVO_POSITION_OFF = 18;
+const uint8_t SERVO_POSITION_ON = 108;
+const uint8_t SERVO_POSITION_EXTRA = 12;
 
 const uint8_t JSON_MAX_SIZE = 64;
 
@@ -536,14 +537,16 @@ void syncPvLoadSwitches() {
     if (NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
         // On-grid requested
         // 1. switch OFF off-grid
+        moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_OFF - SERVO_POSITION_EXTRA);
         moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_OFF);
         // check state
-        if (true /*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW*/) {
+        if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW) {
             // step 1 success. continue
             // 2. switch ON on-grid
+            moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_ON + SERVO_POSITION_EXTRA);
             moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_ON);
             // check state
-            if (false /*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW*/) {
+            if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW) {
                 // still OFF. Error!
                 NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
                 tsNodePvLoadSwitchError = tsCurr;
@@ -556,14 +559,16 @@ void syncPvLoadSwitches() {
     } else {
         // Off-grid requested
         // 1. switch OFF on-grid
+        moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_OFF - SERVO_POSITION_EXTRA);
         moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_OFF);
         // check state
-        if (true /*digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW*/) {
+        if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW) {
             // step 1 success. continue
             // 2. switch ON off-grid
+            moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_ON + SERVO_POSITION_EXTRA);
             moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_ON);
             // check state
-            if (false /*digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW*/) {
+            if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW) {
                 // still OFF. Error
                 NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
                 tsNodePvLoadSwitchError = tsCurr;
