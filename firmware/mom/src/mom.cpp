@@ -83,7 +83,7 @@ const int8_t TEMP_IN_OUT_HIST = 3;
 const int8_t SENSOR_WATER_PUMP_POWER_THERSHOLD = 50;
 
 // min grid voltage
-const uint8_t MIN_UAC_VALUE = 160;
+const uint8_t MIN_UAC_VALUE = 90;
 
 // Servo positions
 const uint8_t SERVO_POSITION_OFF = 18;
@@ -217,7 +217,7 @@ void setup() {
 
     // init energy meter
     emon.current(SENSOR_CURRENT_METER_PIN, 42.00);    // 47 Ohm - 42.55
-    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 190, 1.7); // ~ 1024000 / Vcc
+    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 190, -1.3); // ~ 1024000 / Vcc
 
     // init motor
     pinMode(MOTOR_PIN_5, OUTPUT);
@@ -637,11 +637,11 @@ void readSensors() {
     emon.calcVI(20, 2000);
     uac = emon.Vrms;
     iac = emon.Irms;
-    if (emon.realPower < 0) {
+    pac = emon.realPower;
+    if (pac < 0) {
         // reverse flow (production)
         iac = iac * (-1);
     }
-    pac = uac * iac;
     eac += (pac / (60 * 60)) * (tsCurr - tsLastSensorRead);
     dbgf(debug, F(":uac/iac/pac:%d/%d/%d\n"), (int) round(uac), (int) round(iac), (int) round(pac));
 
