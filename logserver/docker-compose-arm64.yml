@@ -29,6 +29,12 @@ services:
       - FRONIUS_PIPELINE_PORT=8086
       - GVDPR_UAC_MAX=265
       - GVDPR_REDUCTION_RATE=15
+      - SMTP_SERVER=localhost
+      - SMTP_PORT=587
+      - SMTP_USER=user@localhost
+      - SMTP_PASSWORD=secret
+      - EMAIL_SENDER=logstash@localhost
+      - EMAIL_RECIPIENTS_LIST=user@email.com
     ports:
       - "8085:8085"
       - "8086:8086"
