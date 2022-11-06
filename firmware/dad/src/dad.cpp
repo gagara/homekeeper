@@ -1448,7 +1448,7 @@ int8_t getSensorValue(const uint8_t sensor) {
         readSensorUID(sensor, uid);
         if (sensors.requestTemperaturesByAddress(uid)) {
             uint8_t retry = 0;
-            while ((result = sensors.getTempC(uid)) == DEVICE_DISCONNECTED_C && retry < 10) {
+            while ((result = sensors.getTempC(uid)) == DEVICE_DISCONNECTED_C && retry < 20) {
                 delay(10);
                 retry++;
             }
