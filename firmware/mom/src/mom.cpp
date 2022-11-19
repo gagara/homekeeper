@@ -80,7 +80,7 @@ const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
 const int8_t TEMP_IN_OUT_HIST = 3;
 
 // sensor WaterPumpPower
-const int8_t SENSOR_WATER_PUMP_POWER_THERSHOLD = 50;
+const int8_t SENSOR_WATER_PUMP_POWER_THERSHOLD = 60;
 
 // min grid voltage
 const uint8_t MIN_UAC_VALUE = 90;
@@ -646,7 +646,13 @@ void readSensors() {
     dbgf(debug, F(":uac/iac/pac:%d/%d/%d\n"), (int) round(uac), (int) round(iac), (int) round(pac));
 
     // read sensorWaterPumpPower value
-    int8_t state = getSensorWaterPumpPowerState();
+    uint8_t retry = 3;
+    int8_t state = 0;
+    // if state changed perform several retries to sort out possible errors
+    while (retry > 0 && (state = getSensorWaterPumpPowerState()) != sensorWaterPumpPowerState) {
+        delay(1000);
+        retry--;
+    }
     if (state != sensorWaterPumpPowerState) {
         // state changed
         sensorWaterPumpPowerState = state;
