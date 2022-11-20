@@ -53,7 +53,7 @@ const uint8_t NODE_HEATING_VALVE = 40;
 const uint8_t NODE_RESERVED = 42;
 
 // WiFi pins
-const uint8_t WIFI_RST_PIN = 12;
+const uint8_t WIFI_RST_PIN = /*12*/0; // disable
 
 const uint8_t HEARTBEAT_LED = 13;
 
@@ -256,8 +256,8 @@ void setup() {
     pinMode(HEARTBEAT_LED, OUTPUT);
     digitalWrite(HEARTBEAT_LED, LOW);
 
-    // init esp8266 hw reset pin
-    pinMode(WIFI_RST_PIN, OUTPUT);
+    // init esp8266 hw reset pin. disable
+    // pinMode(WIFI_RST_PIN, OUTPUT);
 
     // init boilerPower sensor
     pinMode(SENSOR_BOILER_POWER, INPUT);
