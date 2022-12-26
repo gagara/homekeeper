@@ -435,13 +435,15 @@ void ESP8266::errorsRecovery() {
         dbg(debug, F(":wifi:ERR_RECOVERY\n"));
         unsigned long ts = millis();
         if ((!validIP(staIp) && (ts - connectTs) > STA_RECONNECT_INTERVAL)
-                || (failureGracePeriod > 0 && (ts - lastSuccessRequestTs) > failureGracePeriod)) {
+                || (failureGracePeriod > 0 && abs(ts - lastSuccessRequestTs) > failureGracePeriod)) {
             if (reconnectCount < FAILURE_RECONNECTS_MAX_COUNT) {
+                dbg(debug, F(":wifi:ERR_RECONNECT\n"));
                 reconnect();
                 lastSuccessRequestTs = millis();
             } else {
                 // restart ESP8266
-                init(espSerial, cwMode, rstPin, failureGracePeriod);
+                dbg(debug, F(":wifi:ERR_RESTART\n"));
+                init(espSerial, cwMode, rstPin, failureGracePeriod / 1000);
                 startAP(apSsid, apPassword);
                 connect(staSsid, staPassword);
                 startTcpServer(tcpServerPort);
