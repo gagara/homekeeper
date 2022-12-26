@@ -85,8 +85,8 @@ const int8_t HEATING_ON_TEMP_THRESHOLD = 35;
 const int8_t HEATING_OFF_TEMP_THRESHOLD = 28;
 const int8_t FLOOR_ON_TEMP_THRESHOLD = 35;
 const int8_t FLOOR_OFF_TEMP_THRESHOLD = 28;
-const int8_t PRIMARY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 20;
 const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800; // 30m
+const int8_t SB_HEATER_OFF_HIST = 3;
 
 // Boiler heating
 const int8_t TANK_BOILER_HEATING_ON_HIST = 3;
@@ -121,7 +121,7 @@ const int8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
 // reporting
 const unsigned long STATUS_REPORTING_PERIOD_SEC = 5; // 5s
 const unsigned long SENSORS_READ_INTERVAL_SEC = 5; // 5s
-const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 300; // 5 minutes
+const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
 
 const uint8_t JSON_MAX_SIZE = 128;
 
@@ -447,12 +447,12 @@ void processHeatingCircuit() {
                     // supply is off
                     if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
                         // standby heater is on
-                        if (tempSbHeater <= tempMix && tempSbHeater <= tempTank) {
-                            // temp in standby heater <= (temp in Mix && Tank)
+                        if ((tempSbHeater - tempMix) < SB_HEATER_OFF_HIST) {
+                            // temp in standby heater < temp in Mix
                             // turn pump OFF
                             switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
                         } else {
-                            // temp in standby heater > (temp in Mix || Tank)
+                            // temp in standby heater > temp in Mix
                             // do nothing
                         }
                     } else {
@@ -525,12 +525,12 @@ void processFloorCircuit() {
                 // temp in all applicable sources is too low
                 if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
                     // standby heater is on
-                    if (tempSbHeater <= tempMix && tempSbHeater <= tempTank) {
-                        // temp in standby heater <= (temp in Mix && Tank)
+                    if ((tempSbHeater - tempMix) < SB_HEATER_OFF_HIST) {
+                        // temp in standby heater < temp in Mix
                         // turn pump OFF
                         switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
                     } else {
-                        // temp in standby heater > (temp in Mix || Tank)
+                        // temp in standby heater > temp in Mix
                         // do nothing
                     }
                 } else {
