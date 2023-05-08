@@ -1,7 +1,10 @@
 FROM docker.elastic.co/logstash/logstash-oss:6.6.0
 
 RUN set -ex; \
-	/usr/share/logstash/bin/logstash-plugin install logstash-filter-elasticsearch logstash-filter-aggregate
+	curl -s -o /tmp/logstash-filter-elasticsearch.gem https://rubygems.org/downloads/logstash-filter-elasticsearch-3.6.0.gem && \
+	curl -s -o /tmp/logstash-filter-aggregate.gem https://rubygems.org/downloads/logstash-filter-aggregate-2.9.0.gem && \
+	/usr/share/logstash/bin/logstash-plugin install /tmp/logstash-filter-elasticsearch.gem /tmp/logstash-filter-aggregate.gem && \
+	rm -f /tmp/logstash-filter-elasticsearch.gem /tmp/logstash-filter-aggregate.gem
 
 ADD pipelines.yml /usr/share/logstash/config/pipelines.yml
 

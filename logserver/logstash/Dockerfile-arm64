@@ -1,7 +1,10 @@
 FROM gagara/logstash-oss-arm64:6.6.0
 
 RUN set -ex; \
-	/usr/share/logstash/bin/logstash-plugin install logstash-filter-elasticsearch logstash-filter-aggregate
+	curl -s -o /tmp/logstash-filter-elasticsearch.gem https://rubygems.org/downloads/logstash-filter-elasticsearch-3.6.0.gem && \
+	curl -s -o /tmp/logstash-filter-aggregate.gem https://rubygems.org/downloads/logstash-filter-aggregate-2.9.0.gem && \
+	/usr/share/logstash/bin/logstash-plugin install /tmp/logstash-filter-elasticsearch.gem /tmp/logstash-filter-aggregate.gem && \
+	rm -f /tmp/logstash-filter-elasticsearch.gem /tmp/logstash-filter-aggregate.gem
 
 ADD pipelines.yml /usr/share/logstash/config/pipelines.yml
 
@@ -11,4 +14,3 @@ ADD logstash_solar.conf /usr/share/logstash/pipeline/logstash_solar.conf
 ADD template_solar.json /usr/share/logstash/config/template_solar.json 
 
 CMD ["-w", "1"]
-
