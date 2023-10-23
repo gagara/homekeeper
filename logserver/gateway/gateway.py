@@ -19,7 +19,7 @@ api = Api(app, version='1.0', title='Homekeeper API Server',
           description='API server for homekeeper backend')
 
 nodes = api.namespace('control', description='Node controlling API')
-sensors = api.namespace('config', description='Sensor configuration API')
+settings = api.namespace('config', description='Settings API')
 deviceapi = api.namespace('device', description='Device Raw API')
 
 # read config file
@@ -258,28 +258,28 @@ class NodeControlApi(Resource):
 
 ######
 
-sensors_cfg_model = sensors.parser()
-sensors_cfg_model.add_argument(
-    'sensor', type=str, help='Sensor', required=True, choices=list(app.config['SENSORS'].keys()), location='form')
-sensors_cfg_model.add_argument(
+settings_cfg_model = settings.parser()
+settings_cfg_model.add_argument(
+    'setting', type=str, help='Setting', required=True, choices=list(app.config['SETTINGS'].keys()), location='form')
+settings_cfg_model.add_argument(
     'value', type=int, help='Value (\u2103)', required=True, default=20, location='form')
 
-sensors_get_model = sensors.parser()
-sensors_get_model.add_argument(
-    'sensor', type=str, help='Sensor', required=True, choices=list(app.config['SENSORS'].keys()))
+settings_get_model = settings.parser()
+settings_get_model.add_argument(
+    'setting', type=str, help='Setting', required=True, choices=list(app.config['SETTINGS'].keys()))
 
-@sensors.route("")
-class SensorControlApi(Resource):
+@settings.route("")
+class SettingControlApi(Resource):
 
     @requires_auth
-    @api.doc(description='Configure sensor thresholds', parser=sensors_cfg_model)
+    @api.doc(description='Configure temperature settings', parser=settings_cfg_model)
     def post(self):
-        args = sensors_cfg_model.parse_args()
+        args = settings_cfg_model.parse_args()
         if app.debug : print('REQUEST: %s' % args)
         req = {}
         req['m'] = 'cfg'
         req['s'] = {}
-        req['s']['id'] = app.config['SENSORS'][args['sensor']]
+        req['s']['id'] = app.config['SETTINGS'][args['setting']]
         req['s']['v'] = args['value']
         try:
             controller_send(identify_target_controller(req), req)
@@ -293,11 +293,11 @@ class SensorControlApi(Resource):
             return {"error": str(e)}, 500
 
     @requires_auth
-    @api.doc(description='Query sensor thresholds', parser=sensors_get_model)
+    @api.doc(description='Query temperature setting', parser=settings_get_model)
     def get(self):
         if app.debug: print('REQUEST: %s' % request.args)
         try:
-            id = app.config['SENSORS'][request.args['sensor']]
+            id = app.config['SETTINGS'][request.args['setting']]
             res = query_es({"query": {"bool": {"filter": [
                 {"term": {"headers.http_user_agent": "ESP8266"}},
                 {"term": {"m": "cfg"}},
