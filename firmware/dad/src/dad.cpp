@@ -15,33 +15,43 @@
 /*============================= Global configuration ========================*/
 
 // Sensors IDs
-const uint8_t SENSOR_SUPPLY = 54;
-const uint8_t SENSOR_REVERSE = 55;
+const uint8_t SENSOR_HIGH_SUPPLY = 54;
+const uint8_t SENSOR_HIGH_REVERSE = 55;
 const uint8_t SENSOR_TANK = 56;
 const uint8_t SENSOR_BOILER = 57;
 const uint8_t SENSOR_MIX = 58;
-const uint8_t SENSOR_SB_HEATER = 59;
+const uint8_t SENSOR_LOW_SUPPLY = 59;
 const uint8_t SENSOR_BOILER_POWER = 60;
 const uint8_t SENSOR_SOLAR_PRIMARY = 61; //A7
 const uint8_t SENSOR_SOLAR_SECONDARY = 62;
 const uint8_t SENSOR_TEMP_ROOM_1 = (54 + 16) + (4 * 1) + 0;
 const uint8_t SENSOR_HUM_ROOM_1 = (54 + 16) + (4 * 1) + 1;
 
-const uint8_t SENSORS_ADDR_CFG[] = { SENSOR_SUPPLY, SENSOR_REVERSE, SENSOR_TANK, SENSOR_BOILER, SENSOR_MIX,
-        SENSOR_SB_HEATER, SENSOR_SOLAR_PRIMARY, SENSOR_SOLAR_SECONDARY, /*reserved*/0, 0 };
+const uint8_t SENSORS_ADDR_CFG[] = {SENSOR_HIGH_SUPPLY,
+                                    SENSOR_HIGH_REVERSE,
+                                    SENSOR_TANK,
+                                    SENSOR_BOILER,
+                                    SENSOR_MIX,
+                                    SENSOR_LOW_SUPPLY,
+                                    SENSOR_SOLAR_PRIMARY,
+                                    SENSOR_SOLAR_SECONDARY,
+                                    0,
+                                    0};
 
-// Sensor thresholds
-const uint8_t SENSOR_TH_ROOM1_SB_HEATER = 200 + 1;
-const uint8_t SENSOR_TH_ROOM1_PRIMARY_HEATER = 200 + 2;
+// Temperature settings IDs
+const uint8_t SETTING_LOW_MIN_TEMP = 200 + 1;
+const uint8_t SETTING_HIGH_MAX_TEMP = 200 + 2;
+const uint8_t SETTING_MIN_TEMP = 200 + 3;
+const uint8_t SETTING_MAX_TEMP = 200 + 4;
 
-const uint8_t SENSORS_TH_ADDR_CFG[] = { SENSOR_TH_ROOM1_SB_HEATER, SENSOR_TH_ROOM1_PRIMARY_HEATER, /*reserved*/0, 0, 0,
-        0, 0, 0, 0, 0 };
+const uint8_t SETTING_ADDR_CFG[] = {
+    SETTING_LOW_MIN_TEMP, SETTING_HIGH_MAX_TEMP, SETTING_MIN_TEMP, SETTING_MAX_TEMP, 0, 0, 0, 0, 0, 0};
 
 // Sensors Bus pin
 const uint8_t SENSORS_BUS = 49;
 
 // Nodes pins
-const uint8_t NODE_SUPPLY = 22; //7
+const uint8_t NODE_HIGH_SUPPLY = 22; //7
 const uint8_t NODE_HEATING = 24; //8
 const uint8_t NODE_FLOOR = 26; //9
 const uint8_t NODE_HOTWATER = 28; //10
@@ -50,7 +60,7 @@ const uint8_t NODE_SB_HEATER = 34;
 const uint8_t NODE_SOLAR_PRIMARY = 36;
 const uint8_t NODE_SOLAR_SECONDARY = 38;
 const uint8_t NODE_HEATING_VALVE = 40;
-const uint8_t NODE_RESERVED = 42;
+const uint8_t NODE_RESERVED = 42; // reserved
 
 // WiFi pins
 const uint8_t WIFI_RST_PIN = /*12*/0; // disable
@@ -58,7 +68,7 @@ const uint8_t WIFI_RST_PIN = /*12*/0; // disable
 const uint8_t HEARTBEAT_LED = 13;
 
 // Nodes State
-const uint16_t NODE_SUPPLY_BIT = 1;
+const uint16_t NODE_HIGH_SUPPLY_BIT = 1;
 const uint16_t NODE_HEATING_BIT = 2;
 const uint16_t NODE_FLOOR_BIT = 4;
 const uint16_t NODE_HOTWATER_BIT = 8;
@@ -67,7 +77,7 @@ const uint16_t NODE_SB_HEATER_BIT = 64;
 const uint16_t NODE_SOLAR_PRIMARY_BIT = 128;
 const uint16_t NODE_SOLAR_SECONDARY_BIT = 256;
 const uint16_t NODE_HEATING_VALVE_BIT = 512;
-//const uint16_t NODE_RESERVED_BIT = 1024;
+//const uint16_t NODE_RESERVED_BIT = 1024; // reserved
 
 // etc
 const unsigned long MAX_TIMESTAMP = -1;
@@ -75,17 +85,16 @@ const int8_t UNKNOWN_SENSOR_VALUE = -127;
 const uint8_t SENSORS_PRECISION = 9;
 const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 60;
 
-// Primary Heater
-const int8_t PRIMARY_HEATER_SUPPLY_REVERSE_HIST = 5;
-const int8_t PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
-const unsigned long PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_SEC = 1200; // 20 minutes
+// High temerature Heater
+const int8_t HIGH_TEMP_HEATER_SUPPLY_REVERSE_HIST = 5;
+const int8_t HIGH_TEMP_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP = 50;
+const unsigned long HIGH_TEMP_HEATER_SHORT_CIRCUIT_PERIOD_SEC = 1200; // 20 minutes
 
 // heating
 const int8_t HEATING_ON_TEMP_THRESHOLD = 35;
 const int8_t HEATING_OFF_TEMP_THRESHOLD = 28;
-const int8_t FLOOR_ON_TEMP_THRESHOLD = 35;
+const int8_t FLOOR_ON_TEMP_THRESHOLD = 30;
 const int8_t FLOOR_OFF_TEMP_THRESHOLD = 28;
-const unsigned long HEATING_ROOM_1_MAX_VALIDITY_PERIOD = 1800; // 30m
 const int8_t SB_HEATER_OFF_HIST = 3;
 
 // Boiler heating
@@ -99,9 +108,6 @@ const int8_t CIRCULATION_MIN_TEMP_THRESHOLD = 50;
 const int8_t CIRCULATION_COOLING_TEMP_THRESHOLD = 61;
 const unsigned long CIRCULATION_ACTIVE_PERIOD_SEC = 180; // 3m
 const unsigned long CIRCULATION_PASSIVE_PERIOD_SEC = 3420; // 57m
-
-// Standby Heater
-const int8_t STANDBY_HEATER_ROOM_TEMP_DEFAULT_THRESHOLD = 10;
 
 // Tank
 const int8_t TANK_MIN_TEMP_THRESHOLD = 3;
@@ -120,6 +126,7 @@ const int8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
 
 // reporting
 const unsigned long STATUS_REPORTING_PERIOD_SEC = 5; // 5s
+const unsigned long SETTINGS_REPORTING_PERIOD_SEC = 60; // 1m
 const unsigned long SENSORS_READ_INTERVAL_SEC = 5; // 5s
 const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
 
@@ -129,12 +136,12 @@ const uint8_t JSON_MAX_SIZE = 128;
 
 //// Sensors
 // Values
-int8_t tempSupply = UNKNOWN_SENSOR_VALUE;
-int8_t tempReverse = UNKNOWN_SENSOR_VALUE;
+int8_t tempHighSupply = UNKNOWN_SENSOR_VALUE;
+int8_t tempHighReverse = UNKNOWN_SENSOR_VALUE;
 int8_t tempTank = UNKNOWN_SENSOR_VALUE;
 int8_t tempBoiler = UNKNOWN_SENSOR_VALUE;
 int8_t tempMix = UNKNOWN_SENSOR_VALUE;
-int8_t tempSbHeater = UNKNOWN_SENSOR_VALUE;
+int8_t tempLowSupply = UNKNOWN_SENSOR_VALUE;
 int8_t tempRoom1 = UNKNOWN_SENSOR_VALUE;
 int8_t humRoom1 = UNKNOWN_SENSOR_VALUE;
 int8_t tempSolarPrimary = UNKNOWN_SENSOR_VALUE;
@@ -151,7 +158,7 @@ uint16_t NODE_FORCED_MODE_FLAGS = 0;
 uint16_t NODE_PERMANENTLY_FORCED_MODE_FLAGS = 0;
 
 // Nodes switch timestamps
-unsigned long tsNodeSupply = 0;
+unsigned long tsNodeHighSupply = 0;
 unsigned long tsNodeHeating = 0;
 unsigned long tsNodeFloor = 0;
 unsigned long tsNodeHotwater = 0;
@@ -162,7 +169,7 @@ unsigned long tsNodeSolarSecondary = 0;
 unsigned long tsNodeHeatingValve = 0;
 
 // Nodes forced mode timestamps
-unsigned long tsForcedNodeSupply = 0;
+unsigned long tsForcedNodeHighSupply = 0;
 unsigned long tsForcedNodeHeating = 0;
 unsigned long tsForcedNodeFloor = 0;
 unsigned long tsForcedNodeHotwater = 0;
@@ -176,10 +183,12 @@ unsigned long tsForcedNodeHeatingValve = 0;
 unsigned long tsSensorBoilerPower = 0;
 
 // reporting
-uint8_t nextEntryReport = 0;
+uint8_t nextStatusToReport = SENSOR_HIGH_SUPPLY;
+uint8_t nextSettingToReport = SETTING_LOW_MIN_TEMP;
 
 // Timestamps
 unsigned long tsLastStatusReport = 0;
+unsigned long tsLastSettingsReport = 0;
 unsigned long tsLastSensorsRead = 0;
 
 unsigned long tsLastSensorTempRoom1 = 0;
@@ -209,10 +218,10 @@ const int NODE_FORCED_MODE_FLAGS_EEPROM_ADDR = NODE_STATE_FLAGS_EEPROM_ADDR + si
 const int SENSORS_UIDS_EEPROM_ADDR = NODE_FORCED_MODE_FLAGS_EEPROM_ADDR + sizeof(NODE_FORCED_MODE_FLAGS);
 const int SENSORS_FACTORS_EEPROM_ADDR = SENSORS_UIDS_EEPROM_ADDR
         + sizeof(DeviceAddress) * sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]);
-const int SENSORS_TH_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR
+const int TEMP_SETTINGS_EEPROM_ADDR = SENSORS_FACTORS_EEPROM_ADDR
         + sizeof(double) * sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]);
-const int WIFI_REMOTE_AP_EEPROM_ADDR = SENSORS_TH_EEPROM_ADDR
-        + sizeof(int16_t) * sizeof(SENSORS_TH_ADDR_CFG) / sizeof(SENSORS_TH_ADDR_CFG[0]);
+const int WIFI_REMOTE_AP_EEPROM_ADDR = TEMP_SETTINGS_EEPROM_ADDR
+        + sizeof(int16_t) * sizeof(SETTING_ADDR_CFG) / sizeof(SETTING_ADDR_CFG[0]);
 const int WIFI_REMOTE_PW_EEPROM_ADDR = WIFI_REMOTE_AP_EEPROM_ADDR + sizeof(WIFI_REMOTE_AP);
 const int SERVER_IP_EEPROM_ADDR = WIFI_REMOTE_PW_EEPROM_ADDR + sizeof(WIFI_REMOTE_PW);
 const int SERVER_PORT_EEPROM_ADDR = SERVER_IP_EEPROM_ADDR + sizeof(SERVER_IP);
@@ -270,7 +279,7 @@ void setup() {
     restoreNodesState();
 
     // init nodes pins
-    pinMode(NODE_SUPPLY, OUTPUT);
+    pinMode(NODE_HIGH_SUPPLY, OUTPUT);
     pinMode(NODE_HEATING, OUTPUT);
     pinMode(NODE_FLOOR, OUTPUT);
     pinMode(NODE_HOTWATER, OUTPUT);
@@ -282,7 +291,7 @@ void setup() {
     pinMode(NODE_RESERVED, OUTPUT);
 
     // restore nodes state
-    digitalWrite(NODE_SUPPLY, (~NODE_STATE_FLAGS & NODE_SUPPLY_BIT) ? HIGH : LOW);
+    digitalWrite(NODE_HIGH_SUPPLY, (~NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT) ? HIGH : LOW);
     digitalWrite(NODE_HEATING, (~NODE_STATE_FLAGS & NODE_HEATING_BIT) ? HIGH : LOW);
     digitalWrite(NODE_FLOOR, (~NODE_STATE_FLAGS & NODE_FLOOR_BIT) ? HIGH : LOW);
     digitalWrite(NODE_HOTWATER, (~NODE_STATE_FLAGS & NODE_HOTWATER_BIT) ? HIGH : LOW);
@@ -316,8 +325,8 @@ void loop() {
         readSensors();
         tsLastSensorsRead = tsCurr;
 
-        // heater <--> tank
-        processSupplyCircuit();
+        // high temp heater <--> tank
+        processHighSupplyCircuit();
         // tank <--> heating system
         processHeatingCircuit();
         // floors
@@ -351,49 +360,53 @@ void loop() {
         reportStatus();
         tsLastStatusReport = tsCurr;
     }
+    if (diffTimestamps(tsCurr, tsLastSettingsReport) >= SETTINGS_REPORTING_PERIOD_SEC) {
+        reportSettings();
+        tsLastSettingsReport = tsCurr;
+    }
 
     tsPrev = tsCurr;
 }
 
 /*========================= Node processing methods =========================*/
 
-void processSupplyCircuit() {
-    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT;
-    if (isInForcedMode(NODE_SUPPLY_BIT, tsForcedNodeSupply)) {
+void processHighSupplyCircuit() {
+    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_HIGH_SUPPLY_BIT;
+    if (isInForcedMode(NODE_HIGH_SUPPLY_BIT, tsForcedNodeHighSupply)) {
         return;
     }
     if (wasForceMode) {
         char json[JSON_MAX_SIZE];
-        jsonifyNodeStatus(NODE_SUPPLY, NODE_STATE_FLAGS & NODE_SUPPLY_BIT, tsNodeSupply,
-                NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT, tsForcedNodeSupply, json, JSON_MAX_SIZE);
+        jsonifyNodeStatus(NODE_HIGH_SUPPLY, NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT, tsNodeHighSupply,
+                NODE_FORCED_MODE_FLAGS & NODE_HIGH_SUPPLY_BIT, tsForcedNodeHighSupply, json, JSON_MAX_SIZE);
         broadcastMsg(json);
     }
-    if (diffTimestamps(tsCurr, tsNodeSupply) >= NODE_SWITCH_SAFE_TIME_SEC) {
-        uint8_t sensIds[] = { SENSOR_SUPPLY, SENSOR_REVERSE };
-        int16_t sensVals[] = { tempSupply, tempReverse };
+    if (diffTimestamps(tsCurr, tsNodeHighSupply) >= NODE_SWITCH_SAFE_TIME_SEC) {
+        uint8_t sensIds[] = { SENSOR_HIGH_SUPPLY, SENSOR_HIGH_REVERSE };
+        int16_t sensVals[] = { tempHighSupply, tempHighReverse };
         uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
         if (!validSensorValues(sensVals, sensCnt)) {
             return;
         }
 
-        if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
+        if (NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT) {
             // pump is ON
-            if (tempSupply <= tempReverse) {
+            if (tempHighSupply <= tempHighReverse) {
                 // temp is equal
-                if (tempSupply <= PRIMARY_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP) {
+                if (tempHighSupply <= HIGH_TEMP_HEATER_SHORT_CIRCUIT_THRESHOLD_TEMP) {
                     // primary heater is on short circuit
-                    if (diffTimestamps(tsCurr, tsNodeSupply) < PRIMARY_HEATER_SHORT_CIRCUIT_PERIOD_SEC) {
+                    if (diffTimestamps(tsCurr, tsNodeHighSupply) < HIGH_TEMP_HEATER_SHORT_CIRCUIT_PERIOD_SEC) {
                         // pump active period is too short. give it some time
                         // do nothing
                     } else {
                         // pump active period is long enough
                         // turn pump OFF
-                        switchNodeState(NODE_SUPPLY, sensIds, sensVals, sensCnt);
+                        switchNodeState(NODE_HIGH_SUPPLY, sensIds, sensVals, sensCnt);
                     }
                 } else {
                     // primary heater is in production mode
                     // turn pump OFF
-                    switchNodeState(NODE_SUPPLY, sensIds, sensVals, sensCnt);
+                    switchNodeState(NODE_HIGH_SUPPLY, sensIds, sensVals, sensCnt);
                 }
             } else {
                 // delta is big enough
@@ -401,10 +414,10 @@ void processSupplyCircuit() {
             }
         } else {
             // pump is OFF
-            if (tempSupply >= (tempReverse + PRIMARY_HEATER_SUPPLY_REVERSE_HIST)) {
+            if (tempHighSupply >= (tempHighReverse + HIGH_TEMP_HEATER_SUPPLY_REVERSE_HIST)) {
                 // delta is big enough
                 // turn pump ON
-                switchNodeState(NODE_SUPPLY, sensIds, sensVals, sensCnt);
+                switchNodeState(NODE_HIGH_SUPPLY, sensIds, sensVals, sensCnt);
             } else {
                 // temp is equal
                 // do nothing
@@ -421,12 +434,12 @@ void processHeatingCircuit() {
     if (wasForceMode) {
         char json[JSON_MAX_SIZE];
         jsonifyNodeStatus(NODE_HEATING, NODE_STATE_FLAGS & NODE_HEATING_BIT, tsNodeHeating,
-                NODE_FORCED_MODE_FLAGS & NODE_HEATING_BIT, tsForcedNodeHeating, json, JSON_MAX_SIZE);
+                          NODE_FORCED_MODE_FLAGS & NODE_HEATING_BIT, tsForcedNodeHeating, json, JSON_MAX_SIZE);
         broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeHeating) >= NODE_SWITCH_SAFE_TIME_SEC) {
-        uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
-        int16_t sensVals[] = { tempTank, tempMix, tempSbHeater };
+        uint8_t sensIds[] = {SENSOR_TANK, SENSOR_MIX, SENSOR_LOW_SUPPLY};
+        int16_t sensVals[] = {tempTank, tempMix, tempLowSupply};
         uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
         if (!validSensorValues(sensVals, sensCnt)) {
             return;
@@ -434,62 +447,96 @@ void processHeatingCircuit() {
 
         if (NODE_STATE_FLAGS & NODE_HEATING_BIT) {
             // pump is ON
-            int16_t maxTemp = max(tempTank, max(tempMix, tempSbHeater));
-            if (NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) {
-                maxTemp = tempSbHeater;
-            }
-            if (maxTemp < HEATING_OFF_TEMP_THRESHOLD) {
-                // temp in all applicable sources is too low
-                if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
-                    // supply is on
-                    // do nothing
-                } else {
-                    // supply is off
-                    if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
-                        // standby heater is on
-                        if ((tempSbHeater - tempMix) < SB_HEATER_OFF_HIST) {
-                            // temp in standby heater < temp in Mix
+            if (tempRoom1 <= readSetting(SETTING_HIGH_MAX_TEMP)) {
+                // temp in Room1 < HighMax
+                if (tempRoom1 <= readSetting(SETTING_MAX_TEMP)) {
+                    // temp in Room1 < Max
+                    if (getMaxCurrentHeatingTemp() < HEATING_OFF_TEMP_THRESHOLD) {
+                        // temp in any applicable source is low
+                        if (NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT) {
+                          // high supply on
+                          // do nothing
+                        } else {
+                          // high supply is off
+                          if (!(NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) ||
+                              (tempLowSupply - tempMix) < SB_HEATER_OFF_HIST) {
+                            // standby heater is off OR temp in standby heater < temp in Mix
                             // turn pump OFF
                             switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
-                        } else {
-                            // temp in standby heater > temp in Mix
-                            // do nothing
+                          }
                         }
                     } else {
-                        // standby heater is off
+                        // temp in one of applicable sources is high
+                        if ((NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT) || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                          // high supply OR standby heater is on
+                          // do nothing
+                        } else {
+                          // high supply AND standby heater is off
+                          if (tempRoom1 < readSetting(SETTING_MIN_TEMP) && tempTank > tempLowSupply) {
+                            // temp in Room1 < Min AND temp tank > low supply
+                            // do nothing
+                          } else {
+                            // temp in Room1 > Min OR temp tank < low supply
+                            // turn pump OFF
+                            switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
+                          }
+                        }
+                    }
+                } else {
+                    // temp in Room1 > Max
+                    if (getMaxCurrentHeatingTemp() < HEATING_OFF_TEMP_THRESHOLD ||
+                        !(NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT)) {
+                        // temp in any applicable source is too low OR high supply is off
                         // turn pump OFF
                         switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
+                    } else {
+                        // temp in one of applicable sources is high AND high supply is on
+                        // do nothing
                     }
                 }
             } else {
-                // temp is high enough at least in one source
-                if (!room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
-                    // temp in Room1 is low OR standby heater is on
-                    // do nothing
-                } else {
-                    // temp in Room1 is high enough AND standby heater is off
-                    // turn pump OFF
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
-                }
+                // temp in Room1 > HighMax
+                // turn pump OFF
+                switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
             }
         } else {
             // pump is OFF
-            int16_t maxTemp = max(tempTank, max(tempMix, tempSbHeater));
-            if (NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) {
-                maxTemp = tempSbHeater;
-            }
-            if (maxTemp >= HEATING_ON_TEMP_THRESHOLD) {
-                // temp in one of applicable sources is high enough
-                if (!room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
-                    // temp in Room1 is low OR standby heater is on
-                    // turn pump ON
-                    switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
+            if (tempRoom1 <= readSetting(SETTING_HIGH_MAX_TEMP)) {
+                // temp in Room1 < HighMax
+                if (tempRoom1 <= readSetting(SETTING_MAX_TEMP)) {
+                    // temp in Room1 < Max
+                    if (getMaxCurrentHeatingTemp() >= HEATING_ON_TEMP_THRESHOLD) {
+                        // temp in one of applicable sources is high enough
+                        if ((NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT) || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
+                          // high supply OR standby heater is on
+                          // turn pump ON
+                          switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
+                        } else {
+                          // neither high supply NOR standby heater is on
+                          if (tempRoom1 < readSetting(SETTING_MIN_TEMP) && tempTank > tempLowSupply) {
+                            // temp in Room1 < Min AND temp tank > low supply
+                            // turn pump ON
+                            switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
+                          }
+                        }
+                    } else {
+                        // temp in any applicable source is too low
+                        // do nothing
+                    }
                 } else {
-                    // temp in Room1 is high enough AND standby heater is off
-                    // do nothing
+                    // temp in Room1 > Max
+                    if (getMaxCurrentHeatingTemp() >= HEATING_ON_TEMP_THRESHOLD &&
+                        (NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT)) {
+                        // temp in one of applicable sources is high enough AND high supply is on
+                        // turn pump ON
+                        switchNodeState(NODE_HEATING, sensIds, sensVals, sensCnt);
+                    } else {
+                        // temp in any of applicable sources is too low OR high supply is off
+                        // do nothing
+                    }
                 }
             } else {
-                // temp in (tank && mix && sb_heater) is too low
+                // temp in Room1 > HighMax
                 // do nothing
             }
         }
@@ -504,12 +551,12 @@ void processFloorCircuit() {
     if (wasForceMode) {
         char json[JSON_MAX_SIZE];
         jsonifyNodeStatus(NODE_FLOOR, NODE_STATE_FLAGS & NODE_FLOOR_BIT, tsNodeFloor,
-                NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT, tsForcedNodeFloor, json, JSON_MAX_SIZE);
+                          NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT, tsForcedNodeFloor, json, JSON_MAX_SIZE);
         broadcastMsg(json);
     }
     if (diffTimestamps(tsCurr, tsNodeFloor) >= NODE_SWITCH_SAFE_TIME_SEC) {
-        uint8_t sensIds[] = { SENSOR_TANK, SENSOR_MIX, SENSOR_SB_HEATER };
-        int16_t sensVals[] = { tempTank, tempMix, tempSbHeater };
+        uint8_t sensIds[] = {SENSOR_TANK, SENSOR_MIX, SENSOR_LOW_SUPPLY};
+        int16_t sensVals[] = {tempTank, tempMix, tempLowSupply};
         uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
         if (!validSensorValues(sensVals, sensCnt)) {
             return;
@@ -517,56 +564,67 @@ void processFloorCircuit() {
 
         if (NODE_STATE_FLAGS & NODE_FLOOR_BIT) {
             // pump is ON
-            int16_t maxTemp = max(tempTank, max(tempMix, tempSbHeater));
-            if (NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) {
-                maxTemp = tempSbHeater;
-            }
-            if (maxTemp < FLOOR_OFF_TEMP_THRESHOLD) {
-                // temp in all applicable sources is too low
-                if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
-                    // standby heater is on
-                    if ((tempSbHeater - tempMix) < SB_HEATER_OFF_HIST) {
-                        // temp in standby heater < temp in Mix
+            if (tempRoom1 <= readSetting(SETTING_HIGH_MAX_TEMP)) {
+                // temp in Room1 < HighMax
+                if (tempRoom1 <= readSetting(SETTING_MAX_TEMP)) {
+                    // temp in Room1 < Max
+                    if (getMaxCurrentHeatingTemp() >= FLOOR_OFF_TEMP_THRESHOLD) {
+                        // temp in one of applicable sources is high enough
+                        // do nothing
+                    } else {
+                        // temp in any applicable source is too low
+                        if (!(NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) ||
+                            (tempLowSupply - tempMix) < SB_HEATER_OFF_HIST) {
+                          // standby heater is off OR temp in standby heater < temp in Mix
+                          // turn pump OFF
+                          switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
+                        }
+                    }
+                } else {
+                    // temp in Room1 > Max
+                    if (getMaxCurrentHeatingTemp() < FLOOR_OFF_TEMP_THRESHOLD ||
+                        !(NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT)) {
+                        // temp in any applicable source is too low OR high supply is off
                         // turn pump OFF
                         switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
                     } else {
-                        // temp in standby heater > temp in Mix
+                        // temp in one of applicable sources is high AND high supply is on
                         // do nothing
                     }
-                } else {
-                    // standby heater is off
-                    // turn pump OFF
-                    switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
                 }
             } else {
-                // temp is high enough at least in one source
-                if (!room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
-                    // temp in Room1 is low OR standby heater is on
-                    // do nothing
-                } else {
-                    // temp in Room1 is high enough AND standby heater is off
-                    // turn pump OFF
-                    switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
-                }
+                // temp in Room1 > HighMax
+                // turn pump OFF
+                switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
             }
         } else {
             // pump is OFF
-            int16_t maxTemp = max(tempTank, max(tempMix, tempSbHeater));
-            if (NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) {
-                maxTemp = tempSbHeater;
-            }
-            if (maxTemp >= FLOOR_ON_TEMP_THRESHOLD) {
-                // temp in one of applicable sources is high enough
-                if (!room1TempSatisfyMaxThreshold() || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
-                    // temp in Room1 is low OR standby heater is on
-                    // turn pump ON
-                    switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
+            if (tempRoom1 <= readSetting(SETTING_HIGH_MAX_TEMP)) {
+                // temp in Room1 < HighMax
+                if (tempRoom1 <= readSetting(SETTING_MAX_TEMP)) {
+                    // temp in Room1 < Max
+                    if (getMaxCurrentHeatingTemp() >= FLOOR_ON_TEMP_THRESHOLD) {
+                        // temp in one of applicable sources is high enough
+                        // turn pump ON
+                        switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
+                    } else {
+                        // temp in any applicable source is too low
+                        // do nothing
+                    }
                 } else {
-                    // temp in Room1 is high enough AND standby heater is off
-                    // do nothing
+                    // temp in Room1 > Max
+                    if (getMaxCurrentHeatingTemp() >= FLOOR_ON_TEMP_THRESHOLD &&
+                        (NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT)) {
+                        // temp in one of applicable sources is high enough AND high supply is on
+                        // turn pump ON
+                        switchNodeState(NODE_FLOOR, sensIds, sensVals, sensCnt);
+                    } else {
+                        // temp in any of applicable sources is too low OR high supply is off
+                        // do nothing
+                    }
                 }
             } else {
-                // temp in (tank && mix && sb_heater) is too low
+                // temp in Room1 > HighMax
                 // do nothing
             }
         }
@@ -605,7 +663,7 @@ void processHeatingValve() {
                     // do nothing
                 } else {
                     // stand by heater is off
-                    if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
+                    if (NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT) {
                         // primary heater is ON
                         // CLOSE valve
                         switchNodeState(NODE_HEATING_VALVE, sensIds, sensVals, sensCnt);
@@ -613,7 +671,7 @@ void processHeatingValve() {
                         // primary heater is OFF
                         if ((NODE_STATE_FLAGS & NODE_HEATING_BIT) || (NODE_STATE_FLAGS & NODE_FLOOR_BIT)) {
                             // (heating || floor) node is ON
-                            if (tempTank > tempSbHeater) {
+                            if (tempTank > tempLowSupply) {
                                 // tempTank > tempSbHeater
                                 // CLOSE valve
                                 switchNodeState(NODE_HEATING_VALVE, sensIds, sensVals, sensCnt);
@@ -1000,13 +1058,13 @@ void processStandbyHeater() {
 
         if (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT) {
             // heater is ON
-            if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
+            if (NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT) {
                 // primary heater is on
                 // turn standby heater OFF
                 switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
             } else {
                 // primary heater is off
-                if (tempTank >= (TANK_MIN_TEMP_THRESHOLD + TANK_MIN_TEMP_HIST) && room1TempReachedMinThreshold()) {
+                if (tempTank >= (TANK_MIN_TEMP_THRESHOLD + TANK_MIN_TEMP_HIST) && tempRoom1 > readSetting(SETTING_LOW_MIN_TEMP)) {
                     // temp in (tank && room1) is high enough
                     // turn heater OFF
                     switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
@@ -1017,12 +1075,12 @@ void processStandbyHeater() {
             }
         } else {
             // heater is OFF
-            if (NODE_STATE_FLAGS & NODE_SUPPLY_BIT) {
+            if (NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT) {
                 // primary heater is on
                 // do nothing
             } else {
                 // primary heater is off
-                if (tempTank < TANK_MIN_TEMP_THRESHOLD || room1TempFailedMinThreshold()) {
+                if (tempTank < TANK_MIN_TEMP_THRESHOLD || tempRoom1 < readSetting(SETTING_LOW_MIN_TEMP)) {
                     // temp in (tank || room1) is too low
                     // turn heater ON
                     switchNodeState(NODE_SB_HEATER, sensIds, sensVals, sensCnt);
@@ -1035,6 +1093,16 @@ void processStandbyHeater() {
         }
     }
 }
+
+uint16_t getMaxCurrentHeatingTemp() {
+    if (NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT) {
+        // heating is on short circuit
+        return tempLowSupply;
+    }
+    return max(tempTank, max(tempMix, tempLowSupply));
+}
+
+/*========================== Node state changing ============================*/
 
 bool isInForcedMode(uint16_t bit, unsigned long ts) {
     if (NODE_FORCED_MODE_FLAGS & bit) { // forced mode
@@ -1056,10 +1124,10 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
     uint16_t bit;
     unsigned long* ts = NULL;
     unsigned long* tsf = NULL;
-    if (NODE_SUPPLY == id) {
-        bit = NODE_SUPPLY_BIT;
-        ts = &tsNodeSupply;
-        tsf = &tsForcedNodeSupply;
+    if (NODE_HIGH_SUPPLY == id) {
+        bit = NODE_HIGH_SUPPLY_BIT;
+        ts = &tsNodeHighSupply;
+        tsf = &tsForcedNodeHighSupply;
     } else if (NODE_HEATING == id) {
         bit = NODE_HEATING_BIT;
         ts = &tsNodeHeating;
@@ -1110,10 +1178,10 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
 
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
     char json[JSON_MAX_SIZE];
-    if (NODE_SUPPLY == id) {
-        forceNodeState(NODE_SUPPLY, NODE_SUPPLY_BIT, state, tsForcedNodeSupply, ts);
-        jsonifyNodeStatus(NODE_SUPPLY, NODE_STATE_FLAGS & NODE_SUPPLY_BIT, tsNodeSupply,
-                NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT, tsForcedNodeSupply, json, JSON_MAX_SIZE);
+    if (NODE_HIGH_SUPPLY == id) {
+        forceNodeState(NODE_HIGH_SUPPLY, NODE_HIGH_SUPPLY_BIT, state, tsForcedNodeHighSupply, ts);
+        jsonifyNodeStatus(NODE_HIGH_SUPPLY, NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT, tsNodeHighSupply,
+                NODE_FORCED_MODE_FLAGS & NODE_HIGH_SUPPLY_BIT, tsForcedNodeHighSupply, json, JSON_MAX_SIZE);
         broadcastMsg(json);
     } else if (NODE_HEATING == id) {
         forceNodeState(NODE_HEATING, NODE_HEATING_BIT, state, tsForcedNodeHeating, ts);
@@ -1185,11 +1253,11 @@ void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &node
 void unForceNodeState(uint8_t id) {
     char json[JSON_MAX_SIZE];
     uint16_t prevPermanentlyForcedModeFlags = NODE_PERMANENTLY_FORCED_MODE_FLAGS;
-    if (NODE_SUPPLY == id) {
-        NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_SUPPLY_BIT;
-        NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_SUPPLY_BIT;
-        jsonifyNodeStatus(NODE_SUPPLY, NODE_STATE_FLAGS & NODE_SUPPLY_BIT, tsNodeSupply,
-                NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT, tsForcedNodeSupply, json, JSON_MAX_SIZE);
+    if (NODE_HIGH_SUPPLY == id) {
+        NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_HIGH_SUPPLY_BIT;
+        NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_HIGH_SUPPLY_BIT;
+        jsonifyNodeStatus(NODE_HIGH_SUPPLY, NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT, tsNodeHighSupply,
+                NODE_FORCED_MODE_FLAGS & NODE_HIGH_SUPPLY_BIT, tsForcedNodeHighSupply, json, JSON_MAX_SIZE);
         broadcastMsg(json);
     } else if (NODE_HEATING == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_HEATING_BIT;
@@ -1246,152 +1314,6 @@ void unForceNodeState(uint8_t id) {
     }
 }
 
-bool room1TempReachedMinThreshold() {
-    return (tsLastSensorTempRoom1 != 0
-            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 > readSensorTH(SENSOR_TH_ROOM1_SB_HEATER))
-            || (tsLastSensorTempRoom1 != 0
-                    && diffTimestamps(tsCurr, tsLastSensorTempRoom1) >= HEATING_ROOM_1_MAX_VALIDITY_PERIOD)
-            || (tsLastSensorTempRoom1 == 0);
-}
-
-bool room1TempFailedMinThreshold() {
-    return (tsLastSensorTempRoom1 != 0
-            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 < readSensorTH(SENSOR_TH_ROOM1_SB_HEATER));
-}
-
-bool room1TempSatisfyMaxThreshold() {
-    return tsLastSensorTempRoom1 != 0
-            && diffTimestamps(tsCurr, tsLastSensorTempRoom1) < HEATING_ROOM_1_MAX_VALIDITY_PERIOD
-            && tempRoom1 >= readSensorTH(SENSOR_TH_ROOM1_PRIMARY_HEATER);
-}
-
-/*====================== Load/Save configuration in EEPROM ==================*/
-
-double readSensorCF(uint8_t sensor) {
-    double f = 0;
-    if (sensorCfOffset(sensor) >= 0) {
-        f = EEPROM.readDouble(SENSORS_FACTORS_EEPROM_ADDR + sensorCfOffset(sensor));
-        if (isnan(f) || f <= 0) {
-            f = 1;
-        }
-    }
-    return f;
-}
-
-void saveSensorCF(uint8_t sensor, double value) {
-    if (sensorCfOffset(sensor) >= 0) {
-        eepromWriteCount += EEPROM.updateDouble(SENSORS_FACTORS_EEPROM_ADDR + sensorCfOffset(sensor), value);
-    }
-}
-
-void readSensorUID(uint8_t sensor, DeviceAddress uid) {
-    uid[0] = uid[1] = uid[2] = uid[3] = uid[4] = uid[5] = uid[6] = uid[7] = 0;
-    if (sensorUidOffset(sensor) >= 0) {
-        EEPROM.readBlock(SENSORS_UIDS_EEPROM_ADDR + sensorUidOffset(sensor), uid, sizeof(DeviceAddress));
-    }
-}
-
-void saveSensorUID(uint8_t sensor, DeviceAddress uid) {
-    if (sensorUidOffset(sensor) >= 0) {
-        eepromWriteCount += EEPROM.updateBlock(SENSORS_UIDS_EEPROM_ADDR + sensorUidOffset(sensor), uid,
-                sizeof(DeviceAddress));
-    }
-}
-
-int16_t readSensorTH(uint8_t sensor) {
-    int16_t v = UNKNOWN_SENSOR_VALUE;
-    if (sensorThOffset(sensor) >= 0) {
-        v = EEPROM.readInt(SENSORS_TH_EEPROM_ADDR + sensorThOffset(sensor));
-    }
-    return v;
-}
-
-void saveSensorTH(uint8_t sensor, int16_t value) {
-    if (sensorThOffset(sensor) >= 0) {
-        eepromWriteCount += EEPROM.updateInt(SENSORS_TH_EEPROM_ADDR + sensorThOffset(sensor), value);
-    }
-}
-
-int sensorCfOffset(uint8_t sensor) {
-    int offset = 0;
-    for (uint8_t i = 0; i < sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]); i++) {
-        if (SENSORS_ADDR_CFG[i] == sensor) {
-            return offset;
-        }
-        offset += sizeof(double);
-    }
-    return -1;
-}
-
-int sensorUidOffset(uint8_t sensor) {
-    int offset = 0;
-    for (uint8_t i = 0; i < sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]); i++) {
-        if (SENSORS_ADDR_CFG[i] == sensor) {
-            return offset;
-        }
-        offset += sizeof(DeviceAddress);
-    }
-    return -1;
-}
-
-int sensorThOffset(uint8_t sensor) {
-    int offset = 0;
-    for (uint8_t i = 0; i < sizeof(SENSORS_TH_ADDR_CFG) / sizeof(SENSORS_TH_ADDR_CFG[0]); i++) {
-        if (SENSORS_TH_ADDR_CFG[i] == sensor) {
-            return offset;
-        }
-        offset += sizeof(int16_t);
-    }
-    return -1;
-}
-
-void restoreNodesState() {
-    NODE_STATE_FLAGS = EEPROM.readInt(NODE_STATE_FLAGS_EEPROM_ADDR);
-    NODE_FORCED_MODE_FLAGS = EEPROM.readInt(NODE_FORCED_MODE_FLAGS_EEPROM_ADDR);
-    NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS;
-    NODE_STATE_FLAGS = NODE_STATE_FLAGS & NODE_PERMANENTLY_FORCED_MODE_FLAGS;
-}
-
-void loadWifiConfig() {
-    EEPROM.readBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
-    validateStringParam(WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP) - 1);
-    EEPROM.readBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
-    validateStringParam(WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW) - 1);
-    EEPROM.readBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
-    SERVER_PORT = EEPROM.readInt(SERVER_PORT_EEPROM_ADDR);
-    EEPROM.readBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
-    validateStringParam(WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP) - 1);
-    EEPROM.readBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
-    validateStringParam(WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW) - 1);
-}
-
-void validateStringParam(char* str, int maxSize) {
-    char* ptr = str;
-    while (*ptr && (ptr - str) < maxSize) {
-        ptr++;
-    }
-    if (*ptr) {
-        str[0] = '\0';
-    }
-}
-
-void str2uid(const char *str, DeviceAddress uid) {
-    char buf[2];
-    for (uint8_t i = 0; i < 16; i = i + 2) {
-        buf[0] = str[i];
-        buf[1] = str[i + 1];
-        sscanf(buf, "%X", (unsigned int*) &uid[i / 2]);
-    }
-}
-
-void uid2str(const DeviceAddress uid, char *str) {
-    for (uint8_t i = 0; i < 8; i++) {
-        sprintf(&str[i * 2], "%02X", uid[i]);
-    }
-}
-
 /*====================== Sensors processing methods =========================*/
 
 void searchSensors() {
@@ -1407,12 +1329,12 @@ void searchSensors() {
 }
 
 void readSensors() {
-    tempSupply = getSensorValue(SENSOR_SUPPLY);
-    tempReverse = getSensorValue(SENSOR_REVERSE);
+    tempHighSupply = getSensorValue(SENSOR_HIGH_SUPPLY);
+    tempHighReverse = getSensorValue(SENSOR_HIGH_REVERSE);
     tempTank = getSensorValue(SENSOR_TANK);
     tempBoiler = getSensorValue(SENSOR_BOILER);
     tempMix = getSensorValue(SENSOR_MIX);
-    tempSbHeater = getSensorValue(SENSOR_SB_HEATER);
+    tempLowSupply = getSensorValue(SENSOR_LOW_SUPPLY);
     tempSolarPrimary = getSensorValue(SENSOR_SOLAR_PRIMARY);
     tempSolarSecondary = getSensorValue(SENSOR_SOLAR_SECONDARY);
     // read sensorBoilerPower value
@@ -1485,129 +1407,248 @@ bool validSensorValues(const int16_t values[], const uint8_t size) {
     }
     return true;
 }
+
+/*====================== Load/Save configuration in EEPROM ==================*/
+
+double readSensorCF(uint8_t sensor) {
+    double f = 0;
+    if (sensorCfOffset(sensor) >= 0) {
+        f = EEPROM.readDouble(SENSORS_FACTORS_EEPROM_ADDR + sensorCfOffset(sensor));
+        if (isnan(f) || f <= 0) {
+            f = 1;
+        }
+    }
+    return f;
+}
+
+void saveSensorCF(uint8_t sensor, double value) {
+    if (sensorCfOffset(sensor) >= 0) {
+        eepromWriteCount += EEPROM.updateDouble(SENSORS_FACTORS_EEPROM_ADDR + sensorCfOffset(sensor), value);
+    }
+}
+
+void readSensorUID(uint8_t sensor, DeviceAddress uid) {
+    uid[0] = uid[1] = uid[2] = uid[3] = uid[4] = uid[5] = uid[6] = uid[7] = 0;
+    if (sensorUidOffset(sensor) >= 0) {
+        EEPROM.readBlock(SENSORS_UIDS_EEPROM_ADDR + sensorUidOffset(sensor), uid, sizeof(DeviceAddress));
+    }
+}
+
+void saveSensorUID(uint8_t sensor, DeviceAddress uid) {
+    if (sensorUidOffset(sensor) >= 0) {
+        eepromWriteCount += EEPROM.updateBlock(SENSORS_UIDS_EEPROM_ADDR + sensorUidOffset(sensor), uid,
+                sizeof(DeviceAddress));
+    }
+}
+
+int16_t readSetting(uint8_t id) {
+    int16_t v = UNKNOWN_SENSOR_VALUE;
+    if (settingIdOffset(id) >= 0) {
+        v = EEPROM.readInt(TEMP_SETTINGS_EEPROM_ADDR + settingIdOffset(id));
+    }
+    return v;
+}
+
+void saveSetting(uint8_t id, int16_t value) {
+    if (settingIdOffset(id) >= 0) {
+        eepromWriteCount += EEPROM.updateInt(TEMP_SETTINGS_EEPROM_ADDR + settingIdOffset(id), value);
+    }
+}
+
+int sensorCfOffset(uint8_t sensor) {
+    int offset = 0;
+    for (uint8_t i = 0; i < sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]); i++) {
+        if (SENSORS_ADDR_CFG[i] == sensor) {
+            return offset;
+        }
+        offset += sizeof(double);
+    }
+    return -1;
+}
+
+int sensorUidOffset(uint8_t id) {
+    int offset = 0;
+    for (uint8_t i = 0; i < sizeof(SENSORS_ADDR_CFG) / sizeof(SENSORS_ADDR_CFG[0]); i++) {
+        if (SENSORS_ADDR_CFG[i] == id) {
+            return offset;
+        }
+        offset += sizeof(DeviceAddress);
+    }
+    return -1;
+}
+
+int settingIdOffset(uint8_t id) {
+    int offset = 0;
+    for (uint8_t i = 0; i < sizeof(SETTING_ADDR_CFG) / sizeof(SETTING_ADDR_CFG[0]); i++) {
+        if (SETTING_ADDR_CFG[i] == id) {
+            return offset;
+        }
+        offset += sizeof(int16_t);
+    }
+    return -1;
+}
+
+void restoreNodesState() {
+    NODE_STATE_FLAGS = EEPROM.readInt(NODE_STATE_FLAGS_EEPROM_ADDR);
+    NODE_FORCED_MODE_FLAGS = EEPROM.readInt(NODE_FORCED_MODE_FLAGS_EEPROM_ADDR);
+    NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS;
+    NODE_STATE_FLAGS = NODE_STATE_FLAGS & NODE_PERMANENTLY_FORCED_MODE_FLAGS;
+}
+
+void loadWifiConfig() {
+    EEPROM.readBlock(WIFI_REMOTE_AP_EEPROM_ADDR, WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP));
+    validateStringParam(WIFI_REMOTE_AP, sizeof(WIFI_REMOTE_AP) - 1);
+    EEPROM.readBlock(WIFI_REMOTE_PW_EEPROM_ADDR, WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW));
+    validateStringParam(WIFI_REMOTE_PW, sizeof(WIFI_REMOTE_PW) - 1);
+    EEPROM.readBlock(SERVER_IP_EEPROM_ADDR, SERVER_IP, sizeof(SERVER_IP));
+    SERVER_PORT = EEPROM.readInt(SERVER_PORT_EEPROM_ADDR);
+    EEPROM.readBlock(WIFI_LOCAL_AP_EEPROM_ADDR, WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP));
+    validateStringParam(WIFI_LOCAL_AP, sizeof(WIFI_LOCAL_AP) - 1);
+    EEPROM.readBlock(WIFI_LOCAL_PW_EEPROM_ADDR, WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW));
+    validateStringParam(WIFI_LOCAL_PW, sizeof(WIFI_LOCAL_PW) - 1);
+}
+
 /*============================ Reporting ====================================*/
 
 void reportStatus() {
     char json[JSON_MAX_SIZE];
-    if (nextEntryReport == 0) {
-        // start reporting
-        nextEntryReport = SENSOR_SUPPLY;
-    }
-    switch (nextEntryReport) {
-    case SENSOR_SUPPLY:
-        jsonifySensorValue(SENSOR_SUPPLY, tempSupply, json, JSON_MAX_SIZE);
+    switch (nextStatusToReport) {
+    case SENSOR_HIGH_SUPPLY:
+        jsonifySensorValue(SENSOR_HIGH_SUPPLY, tempHighSupply, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = SENSOR_REVERSE;
+        nextStatusToReport = SENSOR_HIGH_REVERSE;
         break;
-    case SENSOR_REVERSE:
-        jsonifySensorValue(SENSOR_REVERSE, tempReverse, json, JSON_MAX_SIZE);
+    case SENSOR_HIGH_REVERSE:
+        jsonifySensorValue(SENSOR_HIGH_REVERSE, tempHighReverse, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = SENSOR_TANK;
+        nextStatusToReport = SENSOR_TANK;
         break;
     case SENSOR_TANK:
         jsonifySensorValue(SENSOR_TANK, tempTank, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = SENSOR_MIX;
+        nextStatusToReport = SENSOR_MIX;
         break;
     case SENSOR_MIX:
         jsonifySensorValue(SENSOR_MIX, tempMix, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = SENSOR_SB_HEATER;
+        nextStatusToReport = SENSOR_LOW_SUPPLY;
         break;
-    case SENSOR_SB_HEATER:
-        jsonifySensorValue(SENSOR_SB_HEATER, tempSbHeater, json, JSON_MAX_SIZE);
+    case SENSOR_LOW_SUPPLY:
+        jsonifySensorValue(SENSOR_LOW_SUPPLY, tempLowSupply, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = SENSOR_BOILER;
+        nextStatusToReport = SENSOR_BOILER;
         break;
     case SENSOR_BOILER:
         jsonifySensorValue(SENSOR_BOILER, tempBoiler, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = SENSOR_TEMP_ROOM_1;
+        nextStatusToReport = SENSOR_TEMP_ROOM_1;
         break;
     case SENSOR_TEMP_ROOM_1:
         jsonifySensorValue(SENSOR_TEMP_ROOM_1, tempRoom1, tsLastSensorTempRoom1, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = SENSOR_HUM_ROOM_1;
+        nextStatusToReport = SENSOR_HUM_ROOM_1;
         break;
     case SENSOR_HUM_ROOM_1:
         jsonifySensorValue(SENSOR_HUM_ROOM_1, humRoom1, tsLastSensorHumRoom1, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = SENSOR_BOILER_POWER;
+        nextStatusToReport = SENSOR_BOILER_POWER;
         break;
     case SENSOR_BOILER_POWER:
         jsonifySensorValue(SENSOR_BOILER_POWER, sensorBoilerPowerState, tsSensorBoilerPower, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = SENSOR_SOLAR_PRIMARY;
+        nextStatusToReport = SENSOR_SOLAR_PRIMARY;
         break;
     case SENSOR_SOLAR_PRIMARY:
         jsonifySensorValue(SENSOR_SOLAR_PRIMARY, tempSolarPrimary, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = SENSOR_SOLAR_SECONDARY;
+        nextStatusToReport = SENSOR_SOLAR_SECONDARY;
         break;
     case SENSOR_SOLAR_SECONDARY:
         jsonifySensorValue(SENSOR_SOLAR_SECONDARY, tempSolarSecondary, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = NODE_SUPPLY;
+        nextStatusToReport = NODE_HIGH_SUPPLY;
         break;
-    case NODE_SUPPLY:
-        jsonifyNodeStatus(NODE_SUPPLY, NODE_STATE_FLAGS & NODE_SUPPLY_BIT, tsNodeSupply,
-                NODE_FORCED_MODE_FLAGS & NODE_SUPPLY_BIT, tsForcedNodeSupply, json, JSON_MAX_SIZE);
+    case NODE_HIGH_SUPPLY:
+        jsonifyNodeStatus(NODE_HIGH_SUPPLY, NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT, tsNodeHighSupply,
+                          NODE_FORCED_MODE_FLAGS & NODE_HIGH_SUPPLY_BIT, tsForcedNodeHighSupply, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = NODE_HEATING;
+        nextStatusToReport = NODE_HEATING;
         break;
     case NODE_HEATING:
         jsonifyNodeStatus(NODE_HEATING, NODE_STATE_FLAGS & NODE_HEATING_BIT, tsNodeHeating,
-                NODE_FORCED_MODE_FLAGS & NODE_HEATING_BIT, tsForcedNodeHeating, json, JSON_MAX_SIZE);
+                          NODE_FORCED_MODE_FLAGS & NODE_HEATING_BIT, tsForcedNodeHeating, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        jsonifySensorConfig(SENSOR_TH_ROOM1_PRIMARY_HEATER, F("v"), readSensorTH(SENSOR_TH_ROOM1_PRIMARY_HEATER), json,
-                JSON_MAX_SIZE);
-        broadcastMsg(json);
-        nextEntryReport = NODE_FLOOR;
+        nextStatusToReport = NODE_FLOOR;
         break;
     case NODE_FLOOR:
-        jsonifyNodeStatus(NODE_FLOOR, NODE_STATE_FLAGS & NODE_FLOOR_BIT, tsNodeFloor,
-                NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT, tsForcedNodeFloor, json, JSON_MAX_SIZE);
+        jsonifyNodeStatus(NODE_FLOOR, NODE_STATE_FLAGS & NODE_FLOOR_BIT, tsNodeFloor, NODE_FORCED_MODE_FLAGS & NODE_FLOOR_BIT,
+                          tsForcedNodeFloor, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = NODE_SB_HEATER;
+        nextStatusToReport = NODE_SB_HEATER;
         break;
     case NODE_SB_HEATER:
         jsonifyNodeStatus(NODE_SB_HEATER, NODE_STATE_FLAGS & NODE_SB_HEATER_BIT, tsNodeSbHeater,
-                NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT, tsForcedNodeSbHeater, json, JSON_MAX_SIZE);
+                          NODE_FORCED_MODE_FLAGS & NODE_SB_HEATER_BIT, tsForcedNodeSbHeater, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        jsonifySensorConfig(SENSOR_TH_ROOM1_SB_HEATER, F("v"), readSensorTH(SENSOR_TH_ROOM1_SB_HEATER), json,
-                JSON_MAX_SIZE);
-        broadcastMsg(json);
-        nextEntryReport = NODE_HOTWATER;
+        nextStatusToReport = NODE_HOTWATER;
         break;
     case NODE_HOTWATER:
         jsonifyNodeStatus(NODE_HOTWATER, NODE_STATE_FLAGS & NODE_HOTWATER_BIT, tsNodeHotwater,
-                NODE_FORCED_MODE_FLAGS & NODE_HOTWATER_BIT, tsForcedNodeHotwater, json, JSON_MAX_SIZE);
+                          NODE_FORCED_MODE_FLAGS & NODE_HOTWATER_BIT, tsForcedNodeHotwater, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = NODE_CIRCULATION;
+        nextStatusToReport = NODE_CIRCULATION;
         break;
     case NODE_CIRCULATION:
         jsonifyNodeStatus(NODE_CIRCULATION, NODE_STATE_FLAGS & NODE_CIRCULATION_BIT, tsNodeCirculation,
-                NODE_FORCED_MODE_FLAGS & NODE_CIRCULATION_BIT, tsForcedNodeCirculation, json, JSON_MAX_SIZE);
+                          NODE_FORCED_MODE_FLAGS & NODE_CIRCULATION_BIT, tsForcedNodeCirculation, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = NODE_SOLAR_PRIMARY;
+        nextStatusToReport = NODE_SOLAR_PRIMARY;
         break;
     case NODE_SOLAR_PRIMARY:
         jsonifyNodeStatus(NODE_SOLAR_PRIMARY, NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsNodeSolarPrimary,
-                NODE_FORCED_MODE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsForcedNodeSolarPrimary, json, JSON_MAX_SIZE);
+                          NODE_FORCED_MODE_FLAGS & NODE_SOLAR_PRIMARY_BIT, tsForcedNodeSolarPrimary, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = NODE_SOLAR_SECONDARY;
+        nextStatusToReport = NODE_SOLAR_SECONDARY;
         break;
     case NODE_SOLAR_SECONDARY:
         jsonifyNodeStatus(NODE_SOLAR_SECONDARY, NODE_STATE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsNodeSolarSecondary,
-                NODE_FORCED_MODE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsForcedNodeSolarSecondary, json, JSON_MAX_SIZE);
+                          NODE_FORCED_MODE_FLAGS & NODE_SOLAR_SECONDARY_BIT, tsForcedNodeSolarSecondary, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = NODE_HEATING_VALVE;
+        nextStatusToReport = NODE_HEATING_VALVE;
         break;
     case NODE_HEATING_VALVE:
         jsonifyNodeStatus(NODE_HEATING_VALVE, NODE_STATE_FLAGS & NODE_HEATING_VALVE_BIT, tsNodeHeatingValve,
-                NODE_FORCED_MODE_FLAGS & NODE_HEATING_VALVE_BIT, tsForcedNodeHeatingValve, json, JSON_MAX_SIZE);
+                          NODE_FORCED_MODE_FLAGS & NODE_HEATING_VALVE_BIT, tsForcedNodeHeatingValve, json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextEntryReport = 0;
+        nextStatusToReport = SENSOR_HIGH_SUPPLY;
+        break;
+    default:
+        break;
+    }
+}
+
+void reportSettings() {
+    char json[JSON_MAX_SIZE];
+    switch (nextSettingToReport) {
+    case SETTING_LOW_MIN_TEMP:
+        jsonifySettingConfig(SETTING_LOW_MIN_TEMP, F("v"), readSetting(SETTING_LOW_MIN_TEMP), json, JSON_MAX_SIZE);
+        broadcastMsg(json);
+        nextStatusToReport = SETTING_HIGH_MAX_TEMP;
+        break;
+    case SETTING_HIGH_MAX_TEMP:
+        jsonifySettingConfig(SETTING_HIGH_MAX_TEMP, F("v"), readSetting(SETTING_HIGH_MAX_TEMP), json, JSON_MAX_SIZE);
+        broadcastMsg(json);
+        nextStatusToReport = SETTING_MIN_TEMP;
+        break;
+    case SETTING_MIN_TEMP:
+        jsonifySettingConfig(SETTING_MIN_TEMP, F("v"), readSetting(SETTING_MIN_TEMP), json, JSON_MAX_SIZE);
+        broadcastMsg(json);
+        nextStatusToReport = SETTING_MAX_TEMP;
+        break;
+    case SETTING_MAX_TEMP:
+        jsonifySettingConfig(SETTING_MAX_TEMP, F("v"), readSetting(SETTING_MAX_TEMP), json, JSON_MAX_SIZE);
+        broadcastMsg(json);
+        nextStatusToReport = SETTING_LOW_MIN_TEMP;
         break;
     default:
         break;
@@ -1618,10 +1659,10 @@ void reportConfiguration() {
     char json[JSON_MAX_SIZE];
     char buf[16];
 
-    jsonifySensorConfig(SENSOR_SUPPLY, F("cf"), readSensorCF(SENSOR_SUPPLY), json, JSON_MAX_SIZE);
+    jsonifySensorConfig(SENSOR_HIGH_SUPPLY, F("cf"), readSensorCF(SENSOR_HIGH_SUPPLY), json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    jsonifySensorConfig(SENSOR_REVERSE, F("cf"), readSensorCF(SENSOR_REVERSE), json, JSON_MAX_SIZE);
+    jsonifySensorConfig(SENSOR_HIGH_REVERSE, F("cf"), readSensorCF(SENSOR_HIGH_REVERSE), json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
     jsonifySensorConfig(SENSOR_TANK, F("cf"), readSensorCF(SENSOR_TANK), json, JSON_MAX_SIZE);
@@ -1633,7 +1674,7 @@ void reportConfiguration() {
     jsonifySensorConfig(SENSOR_MIX, F("cf"), readSensorCF(SENSOR_MIX), json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    jsonifySensorConfig(SENSOR_SB_HEATER, F("cf"), readSensorCF(SENSOR_SB_HEATER), json, JSON_MAX_SIZE);
+    jsonifySensorConfig(SENSOR_LOW_SUPPLY, F("cf"), readSensorCF(SENSOR_LOW_SUPPLY), json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
     jsonifySensorConfig(SENSOR_SOLAR_PRIMARY, F("cf"), readSensorCF(SENSOR_SOLAR_PRIMARY), json, JSON_MAX_SIZE);
@@ -1644,14 +1685,14 @@ void reportConfiguration() {
     bt->println(json);
 
     DeviceAddress uid;
-    readSensorUID(SENSOR_SUPPLY, uid);
+    readSensorUID(SENSOR_HIGH_SUPPLY, uid);
     uid2str(uid, buf);
-    jsonifySensorConfig(SENSOR_SUPPLY, F("uid"), buf, json, JSON_MAX_SIZE);
+    jsonifySensorConfig(SENSOR_HIGH_SUPPLY, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    readSensorUID(SENSOR_REVERSE, uid);
+    readSensorUID(SENSOR_HIGH_REVERSE, uid);
     uid2str(uid, buf);
-    jsonifySensorConfig(SENSOR_REVERSE, F("uid"), buf, json, JSON_MAX_SIZE);
+    jsonifySensorConfig(SENSOR_HIGH_REVERSE, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
     readSensorUID(SENSOR_TANK, uid);
@@ -1669,9 +1710,9 @@ void reportConfiguration() {
     jsonifySensorConfig(SENSOR_MIX, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    readSensorUID(SENSOR_SB_HEATER, uid);
+    readSensorUID(SENSOR_LOW_SUPPLY, uid);
     uid2str(uid, buf);
-    jsonifySensorConfig(SENSOR_SB_HEATER, F("uid"), buf, json, JSON_MAX_SIZE);
+    jsonifySensorConfig(SENSOR_LOW_SUPPLY, F("uid"), buf, json, JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
     readSensorUID(SENSOR_SOLAR_SECONDARY, uid);
@@ -1680,11 +1721,19 @@ void reportConfiguration() {
     serial->println(json);
     bt->println(json);
 
-    jsonifySensorConfig(SENSOR_TH_ROOM1_PRIMARY_HEATER, F("v"), readSensorTH(SENSOR_TH_ROOM1_PRIMARY_HEATER), json,
+    jsonifySettingConfig(SETTING_LOW_MIN_TEMP, F("v"), readSetting(SETTING_LOW_MIN_TEMP), json,
             JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
-    jsonifySensorConfig(SENSOR_TH_ROOM1_SB_HEATER, F("v"), readSensorTH(SENSOR_TH_ROOM1_SB_HEATER), json,
+    jsonifySettingConfig(SETTING_MIN_TEMP, F("v"), readSetting(SETTING_MIN_TEMP), json,
+            JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySettingConfig(SETTING_MAX_TEMP, F("v"), readSetting(SETTING_MAX_TEMP), json,
+            JSON_MAX_SIZE);
+    serial->println(json);
+    bt->println(json);
+    jsonifySettingConfig(SETTING_HIGH_MAX_TEMP, F("v"), readSetting(SETTING_HIGH_MAX_TEMP), json,
             JSON_MAX_SIZE);
     serial->println(json);
     bt->println(json);
@@ -1830,10 +1879,12 @@ bool parseCommand(char* command) {
                 } else if (sensor.containsKey(F("id")) && sensor.containsKey(F("v"))) {
                     uint8_t id = sensor[F("id")].as<uint8_t>();
                     int16_t val = sensor[F("v")].as<int16_t>();
-                    saveSensorTH(id, val);
-                    char json[JSON_MAX_SIZE];
-                    jsonifySensorConfig(id, F("v"), readSensorTH(id), json, JSON_MAX_SIZE);
-                    broadcastMsg(json);
+                    if (validSettingValue(id, val)) {
+                        saveSetting(id, val);
+                        char json[JSON_MAX_SIZE];
+                        jsonifySettingConfig(id, F("v"), readSetting(id), json, JSON_MAX_SIZE);
+                        broadcastMsg(json);
+                    }
                 }
             } else if (root.containsKey(F("rap"))) {
                 sprintf(WIFI_REMOTE_AP, "%s", root[F("rap")].asString());
@@ -1895,3 +1946,41 @@ unsigned long diffTimestamps(unsigned long hi, unsigned long lo) {
     }
 }
 
+void validateStringParam(char* str, int maxSize) {
+    char* ptr = str;
+    while (*ptr && (ptr - str) < maxSize) {
+        ptr++;
+    }
+    if (*ptr) {
+        str[0] = '\0';
+    }
+}
+
+void str2uid(const char *str, DeviceAddress uid) {
+    char buf[2];
+    for (uint8_t i = 0; i < 16; i = i + 2) {
+        buf[0] = str[i];
+        buf[1] = str[i + 1];
+        sscanf(buf, "%X", (unsigned int*) &uid[i / 2]);
+    }
+}
+
+void uid2str(const DeviceAddress uid, char *str) {
+    for (uint8_t i = 0; i < 8; i++) {
+        sprintf(&str[i * 2], "%02X", uid[i]);
+    }
+}
+
+bool validSettingValue(uint8_t id, int16_t value) {
+    if (SETTING_LOW_MIN_TEMP == id) {
+        return value > 0;
+    } else if (SETTING_MIN_TEMP == id) {
+        return value >= readSetting(SETTING_LOW_MIN_TEMP);
+    } else if (SETTING_MAX_TEMP == id) {
+        return value >= readSetting(SETTING_MIN_TEMP);
+    } else if (SETTING_HIGH_MAX_TEMP == id) {
+        return value >= readSetting(SETTING_MAX_TEMP);
+    } else {
+        return false;
+    }
+}

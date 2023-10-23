@@ -45,7 +45,7 @@ void jsonifySensorConfig(const uint8_t id, //
         const char *value, //
         char *buffer, //
         const size_t bsize);
-void jsonifySensorConfig(const uint8_t id, //
+void jsonifySettingConfig(const uint8_t id, //
         const __FlashStringHelper *key, //
         const int16_t value, //
         char *buffer, //

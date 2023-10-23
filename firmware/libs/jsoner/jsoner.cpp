@@ -147,7 +147,7 @@ void jsonifySensorConfig(const uint8_t id, //
     root.printTo(buffer, bsize);
 }
 
-void jsonifySensorConfig(const uint8_t id, //
+void jsonifySettingConfig(const uint8_t id, //
         const __FlashStringHelper *key, //
         const int16_t value, //
         char *buffer, //
