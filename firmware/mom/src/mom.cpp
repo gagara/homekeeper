@@ -43,7 +43,7 @@ const uint8_t MOTOR_PIN_1 = 8; // blue
 const uint8_t MOTOR_PIN_2 = 9;
 const uint8_t MOTOR_PIN_3 = 10;
 const uint8_t MOTOR_PIN_4 = 11;
-const uint8_t MOTOR_PIN_5 = 12; // red
+const uint8_t MOTOR_PIN_5 = 2; // red
 const uint8_t MOTOR_STEPS = 32;
 const uint16_t MOTOR_STEPS_PER_REVOLUTION = 2048;
 const uint8_t REVOLUTION_COUNT = 15; // max 15
@@ -52,7 +52,7 @@ const uint8_t REVOLUTION_COUNT = 15; // max 15
 const uint8_t PV_LOAD_SWITCH_ON_GRID_PIN = 5;
 const uint8_t PV_LOAD_SWITCH_OFF_GRID_PIN = 4;
 const uint8_t PV_LOAD_SENSOR_ON_GRID_PIN = 3;
-const uint8_t PV_LOAD_SENSOR_OFF_GRID_PIN = 2;
+const uint8_t PV_LOAD_SENSOR_OFF_GRID_PIN = 12;
 
 // WiFi pins
 const uint8_t WIFI_RST_PIN = 0; // n/a
@@ -662,6 +662,11 @@ void readSensors() {
                            JSON_MAX_SIZE);
         broadcastMsg(json);
     }
+    //////
+    dbgf(debug, F(":PvSwitch:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
+         digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
+
+    //////
 }
 
 int8_t getSensorWaterPumpPowerState() {
