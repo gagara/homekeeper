@@ -1972,14 +1972,17 @@ void uid2str(const DeviceAddress uid, char *str) {
 }
 
 bool validSettingValue(uint8_t id, int16_t value) {
+    // temperature setting rule: 0 < low_min <= min <= max <= high_max < 51
     if (SETTING_LOW_MIN_TEMP == id) {
-        return value > 0;
+        return value > 0 && value < 51 && value <= readSetting(SETTING_MIN_TEMP);
     } else if (SETTING_MIN_TEMP == id) {
-        return value >= readSetting(SETTING_LOW_MIN_TEMP);
+        return value > 0 && value < 51 && value <= readSetting(SETTING_MAX_TEMP) &&
+               value >= readSetting(SETTING_LOW_MIN_TEMP);
     } else if (SETTING_MAX_TEMP == id) {
-        return value >= readSetting(SETTING_MIN_TEMP);
+        return value > 0 && value < 51 && value <= readSetting(SETTING_HIGH_MAX_TEMP) &&
+               value >= readSetting(SETTING_MIN_TEMP);
     } else if (SETTING_HIGH_MAX_TEMP == id) {
-        return value >= readSetting(SETTING_MAX_TEMP);
+        return value > 0 && value < 51 && value >= readSetting(SETTING_MAX_TEMP);
     } else {
         return false;
     }
