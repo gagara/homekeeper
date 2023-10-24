@@ -1360,7 +1360,7 @@ int8_t getSensorValue(const uint8_t sensor) {
         float vout = (vin / 1023.0) * v;
         float r1 = (vin / vout - 1) * r2;
 
-        dbgf(debug, F(":SolarPrimary:%d/%dOhm/%dC\n"), v, (int) r1, (int) ((r1 - 100) / 0.39));
+        //dbgf(debug, F(":SolarPrimary:%d/%dOhm/%dC\n"), v, (int) r1, (int) ((r1 - 100) / 0.39));
 
         if (v > 0) {
             result = (r1 - 100) / 0.39;
@@ -1395,7 +1395,7 @@ int8_t getSensorBoilerPowerState() {
         delay(1);
     }
     uint8_t state = (max > SENSOR_BOILER_POWER_THERSHOLD) ? 1 : 0;
-    dbgf(debug, F(":BoilerPower:%d/%d\n"), max, state);
+    //dbgf(debug, F(":BoilerPower:%d/%d\n"), max, state);
     return state;
 }
 
@@ -1633,22 +1633,22 @@ void reportSettings() {
     case SETTING_LOW_MIN_TEMP:
         jsonifySettingConfig(SETTING_LOW_MIN_TEMP, F("v"), readSetting(SETTING_LOW_MIN_TEMP), json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextStatusToReport = SETTING_HIGH_MAX_TEMP;
+        nextSettingToReport = SETTING_HIGH_MAX_TEMP;
         break;
     case SETTING_HIGH_MAX_TEMP:
         jsonifySettingConfig(SETTING_HIGH_MAX_TEMP, F("v"), readSetting(SETTING_HIGH_MAX_TEMP), json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextStatusToReport = SETTING_MIN_TEMP;
+        nextSettingToReport = SETTING_MIN_TEMP;
         break;
     case SETTING_MIN_TEMP:
         jsonifySettingConfig(SETTING_MIN_TEMP, F("v"), readSetting(SETTING_MIN_TEMP), json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextStatusToReport = SETTING_MAX_TEMP;
+        nextSettingToReport = SETTING_MAX_TEMP;
         break;
     case SETTING_MAX_TEMP:
         jsonifySettingConfig(SETTING_MAX_TEMP, F("v"), readSetting(SETTING_MAX_TEMP), json, JSON_MAX_SIZE);
         broadcastMsg(json);
-        nextStatusToReport = SETTING_LOW_MIN_TEMP;
+        nextSettingToReport = SETTING_LOW_MIN_TEMP;
         break;
     default:
         break;
