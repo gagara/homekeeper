@@ -503,8 +503,8 @@ void processHeatingCircuit() {
             // pump is OFF
             if (tempRoom1 <= readSetting(SETTING_HIGH_MAX_TEMP)) {
                 // temp in Room1 < HighMax
-                if (tempRoom1 <= readSetting(SETTING_MAX_TEMP)) {
-                    // temp in Room1 < Max
+                if (tempRoom1 <= readSetting(SETTING_MIN_TEMP)) {
+                    // temp in Room1 < Min
                     if (getMaxCurrentHeatingTemp() >= HEATING_ON_TEMP_THRESHOLD) {
                         // temp in one of applicable sources is high enough
                         if ((NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT) || (NODE_STATE_FLAGS & NODE_SB_HEATER_BIT)) {
@@ -524,7 +524,7 @@ void processHeatingCircuit() {
                         // do nothing
                     }
                 } else {
-                    // temp in Room1 > Max
+                    // temp in Room1 > Min
                     if (getMaxCurrentHeatingTemp() >= HEATING_ON_TEMP_THRESHOLD &&
                         (NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT)) {
                         // temp in one of applicable sources is high enough AND high supply is on
@@ -601,8 +601,8 @@ void processFloorCircuit() {
             // pump is OFF
             if (tempRoom1 <= readSetting(SETTING_HIGH_MAX_TEMP)) {
                 // temp in Room1 < HighMax
-                if (tempRoom1 <= readSetting(SETTING_MAX_TEMP)) {
-                    // temp in Room1 < Max
+                if (tempRoom1 <= readSetting(SETTING_MIN_TEMP)) {
+                    // temp in Room1 < Min
                     if (getMaxCurrentHeatingTemp() >= FLOOR_ON_TEMP_THRESHOLD) {
                         // temp in one of applicable sources is high enough
                         // turn pump ON
@@ -612,7 +612,7 @@ void processFloorCircuit() {
                         // do nothing
                     }
                 } else {
-                    // temp in Room1 > Max
+                    // temp in Room1 > Min
                     if (getMaxCurrentHeatingTemp() >= FLOOR_ON_TEMP_THRESHOLD &&
                         (NODE_STATE_FLAGS & NODE_HIGH_SUPPLY_BIT)) {
                         // temp in one of applicable sources is high enough AND high supply is on
