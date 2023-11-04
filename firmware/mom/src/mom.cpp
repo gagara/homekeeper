@@ -5,7 +5,6 @@
 #include <EEPROMex.h>
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
-#include <Stepper.h>
 #include <Servo.h>
 #include <EmonLib.h>
 
@@ -35,30 +34,18 @@ const uint8_t SENSOR_EAC = (54 + 16) + (4 * 3) + 3;
 const uint8_t SENSOR_WATER_PUMP_POWER = (54 + 16) + (4 * 4) + 0;
 
 // Node id
-const uint8_t NODE_VENTILATION = 44;
 const uint8_t NODE_PV_LOAD_SWITCH = 46; // 0 - Off-grid; 1 - On-grid
-
-// Stepper pins
-const uint8_t MOTOR_PIN_1 = 8; // blue
-const uint8_t MOTOR_PIN_2 = 9;
-const uint8_t MOTOR_PIN_3 = 10;
-const uint8_t MOTOR_PIN_4 = 11;
-const uint8_t MOTOR_PIN_5 = 2; // red
-const uint8_t MOTOR_STEPS = 32;
-const uint16_t MOTOR_STEPS_PER_REVOLUTION = 2048;
-const uint8_t REVOLUTION_COUNT = 15; // max 15
 
 // Servo pins
 const uint8_t PV_LOAD_SWITCH_ON_GRID_PIN = 5;
 const uint8_t PV_LOAD_SWITCH_OFF_GRID_PIN = 4;
 const uint8_t PV_LOAD_SENSOR_ON_GRID_PIN = 3;
-const uint8_t PV_LOAD_SENSOR_OFF_GRID_PIN = 12;
+const uint8_t PV_LOAD_SENSOR_OFF_GRID_PIN = 2;
 
 // WiFi pins
 const uint8_t WIFI_RST_PIN = 0; // n/a
 
 // Nodes bits
-const uint16_t NODE_VENTILATION_BIT     = 0b0000000000000001;
 const uint16_t NODE_PV_LOAD_SWITCH_BIT  = 0b0000000000000010;
 // last bit reseverd for errors
 const uint16_t NODE_ERROR_BIT           = 0b1000000000000000;
@@ -69,15 +56,11 @@ const uint8_t HEARTBEAT_LED = 13;
 const unsigned long MAX_TIMESTAMP = -1;
 const int16_t UNKNOWN_SENSOR_VALUE = -127;
 const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 30;
-const uint8_t NODE_ERROR_STATE = 2;
 
 // reporting
 const unsigned long STATUS_REPORTING_PERIOD_SEC = 60; // 1 minute
 const unsigned long SENSORS_READ_INTERVAL_SEC = 10; // 10 seconds
 const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
-
-// ventilation
-const int8_t TEMP_IN_OUT_HIST = 3;
 
 // sensor WaterPumpPower
 const int8_t SENSOR_WATER_PUMP_POWER_THERSHOLD = 60;
@@ -176,9 +159,6 @@ DHT dhtOut(DHT_OUT_PIN, DHT22);
 // Energy monitor
 EnergyMonitor emon;
 
-// Stepper
-Stepper motor(MOTOR_STEPS, MOTOR_PIN_1, MOTOR_PIN_3, MOTOR_PIN_2, MOTOR_PIN_4);
-
 // Servo
 Servo servo;
 
@@ -219,21 +199,9 @@ void setup() {
     emon.current(SENSOR_CURRENT_METER_PIN, 42.00);    // 47 Ohm - 42.55
     emon.voltage(SENSOR_VOLTAGE_METER_PIN, 190, -1.3); // ~ 1024000 / Vcc
 
-    // init motor
-    pinMode(MOTOR_PIN_5, OUTPUT);
-    digitalWrite(MOTOR_PIN_5, HIGH);
-    motor.setSpeed(800);
-    // default: closed state
-    motorCurrentMove = MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
-
     // restore forced node state flags from EEPROM
     // default node state -- OFF
     restoreNodesState();
-
-    // open ventilation valve if needed
-    if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
-        motorNextMove = -MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
-    }
 
     // init esp8266 hw reset pin. N/A
     // pinMode(WIFI_RST_PIN, OUTPUT);
@@ -256,8 +224,6 @@ void loop() {
 
         // pv load switch
         processPvLoadSwitch();
-        // ventilation valve
-        processVentilationValve();
 
         digitalWrite(HEARTBEAT_LED, digitalRead(HEARTBEAT_LED) ^ 1);
     }
@@ -273,8 +239,6 @@ void loop() {
         reportStatus();
         tsLastStatusReport = tsCurr;
     }
-
-    stepMotor();
 
     tsPrev = tsCurr;
 }
@@ -339,51 +303,6 @@ void processPvLoadSwitch() {
     }
 }
 
-void processVentilationValve() {
-    uint16_t wasForceMode = NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT;
-    if (isInForcedMode(NODE_VENTILATION_BIT, tsForcedNodeVentilation)) {
-        return;
-    }
-    if (wasForceMode) {
-        char json[JSON_MAX_SIZE];
-        jsonifyNodeStatus(NODE_VENTILATION, nodeState(NODE_VENTILATION_BIT), tsNodeVentilation,
-                          NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
-        broadcastMsg(json);
-    }
-    if (diffTimestamps(tsCurr, tsNodeVentilation) >= NODE_SWITCH_SAFE_TIME_SEC) {
-        uint8_t sensIds[] = { SENSOR_TEMP_IN, SENSOR_TEMP_OUT };
-        int16_t sensVals[] = { tempIn, tempOut };
-        // disabled due to lack of space in JSON buffer
-        //uint8_t sensCnt = sizeof(sensIds) / sizeof(sensIds[0]);
-        uint8_t sensCnt = 0;
-        if (!validSensorValues(sensVals, sensCnt)) {
-            return;
-        }
-
-        if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
-            // ventilation is OPEN
-            if (tempIn <= tempOut) {
-                // temp outside is high
-                // CLOSE ventilation
-                switchNodeState(NODE_VENTILATION, sensIds, sensVals, sensCnt);
-            } else {
-                // temp outside is low
-                // do nothing
-            }
-        } else {
-            // ventilation is CLOSED
-            if (tempIn >= (tempOut + TEMP_IN_OUT_HIST)) {
-                // temp outside is low enough
-                // OPEN ventilation
-                switchNodeState(NODE_VENTILATION, sensIds, sensVals, sensCnt);
-            } else {
-                // temp outside is high
-                // do nothing
-            }
-        }
-    }
-}
-
 bool isInForcedMode(uint16_t bit, unsigned long ts) {
     if (NODE_FORCED_MODE_FLAGS & bit) { // forced mode
         if (ts == 0) {
@@ -404,22 +323,7 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
     uint16_t bit;
     unsigned long* ts = NULL;
     unsigned long* tsf = NULL;
-    if (NODE_VENTILATION == id) {
-        bit = NODE_VENTILATION_BIT;
-        ts = &tsNodeVentilation;
-        tsf = &tsForcedNodeVentilation;
-
-        NODE_STATE_FLAGS = NODE_STATE_FLAGS ^ bit;
-
-        if (NODE_STATE_FLAGS & NODE_VENTILATION_BIT) {
-            motorNextMove = -MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
-        } else {
-            motorNextMove = MOTOR_STEPS_PER_REVOLUTION * REVOLUTION_COUNT;
-        }
-
-        *ts = getTimestamp();
-
-    } else if (NODE_PV_LOAD_SWITCH == id) {
+    if (NODE_PV_LOAD_SWITCH == id) {
         bit = NODE_PV_LOAD_SWITCH_BIT;
         ts = &tsNodePvLoadSwitch;
         tsf = &tsForcedNodePvLoadSwitch;
@@ -441,13 +345,7 @@ void switchNodeState(uint8_t id, uint8_t sensId[], int16_t sensVal[], uint8_t se
 }
 
 void forceNodeState(uint8_t id, uint8_t state, unsigned long ts) {
-    if (NODE_VENTILATION == id) {
-        forceNodeState(NODE_VENTILATION, NODE_VENTILATION_BIT, state, tsForcedNodeVentilation, ts);
-        char json[JSON_MAX_SIZE];
-        jsonifyNodeStatus(NODE_VENTILATION, nodeState(NODE_VENTILATION_BIT), tsNodeVentilation,
-                NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
-        broadcastMsg(json);
-    } else if (NODE_PV_LOAD_SWITCH == id) {
+    if (NODE_PV_LOAD_SWITCH == id) {
         forceNodeState(NODE_PV_LOAD_SWITCH, NODE_PV_LOAD_SWITCH_BIT, state, tsForcedNodePvLoadSwitch, ts);
         char json[JSON_MAX_SIZE];
         jsonifyNodeStatus(NODE_PV_LOAD_SWITCH, nodeState(NODE_PV_LOAD_SWITCH_BIT), tsNodePvLoadSwitch,
@@ -482,14 +380,7 @@ void forceNodeState(uint8_t id, uint16_t bit, uint8_t state, unsigned long &node
 
 void unForceNodeState(uint8_t id) {
     uint16_t prevPermanentlyForcedModeFlags = NODE_PERMANENTLY_FORCED_MODE_FLAGS;
-    if (NODE_VENTILATION == id) {
-        NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_VENTILATION_BIT;
-        NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_VENTILATION_BIT;
-        char json[JSON_MAX_SIZE];
-        jsonifyNodeStatus(NODE_VENTILATION, nodeState(NODE_VENTILATION_BIT), tsNodeVentilation,
-                          NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
-        broadcastMsg(json);
-    } else if (NODE_PV_LOAD_SWITCH == id) {
+    if (NODE_PV_LOAD_SWITCH == id) {
         NODE_FORCED_MODE_FLAGS = NODE_FORCED_MODE_FLAGS & ~NODE_PV_LOAD_SWITCH_BIT;
         NODE_PERMANENTLY_FORCED_MODE_FLAGS = NODE_PERMANENTLY_FORCED_MODE_FLAGS & ~NODE_PV_LOAD_SWITCH_BIT;
         char json[JSON_MAX_SIZE];
@@ -501,28 +392,6 @@ void unForceNodeState(uint8_t id) {
     // update node modes in EEPROM if unforced from permanent
     if (prevPermanentlyForcedModeFlags != NODE_PERMANENTLY_FORCED_MODE_FLAGS) {
         eepromWriteCount += EEPROM.updateInt(NODE_FORCED_MODE_FLAGS_EEPROM_ADDR, NODE_PERMANENTLY_FORCED_MODE_FLAGS);
-    }
-}
-
-void stepMotor() {
-    if (motorCurrentMove == 0) {
-        motorCurrentMove = motorNextMove;
-        motorNextMove = 0;
-    }
-    if (motorCurrentMove > 0) {
-        motor.step(1); //close
-        motorCurrentMove--;
-        if (motorNextMove > 0) {
-            // same direction -> cancel
-            motorNextMove = 0;
-        }
-    } else if (motorCurrentMove < 0) {
-        motor.step(-1); //open
-        motorCurrentMove++;
-        if (motorNextMove < 0) {
-            // same direction -> cancel
-            motorNextMove = 0;
-        }
     }
 }
 
@@ -718,9 +587,6 @@ void reportStatus() {
     jsonifySensorValue(SENSOR_WATER_PUMP_POWER, sensorWaterPumpPowerState, tsSensorWaterPumpPower, json, JSON_MAX_SIZE);
     broadcastMsg(json);
 
-    jsonifyNodeStatus(NODE_VENTILATION, nodeState(NODE_VENTILATION_BIT), tsNodeVentilation,
-                      NODE_FORCED_MODE_FLAGS & NODE_VENTILATION_BIT, tsForcedNodeVentilation, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
     jsonifyNodeStatus(NODE_PV_LOAD_SWITCH, nodeState(NODE_PV_LOAD_SWITCH_BIT), tsNodePvLoadSwitch,
                       NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch, json, JSON_MAX_SIZE);
     broadcastMsg(json);
