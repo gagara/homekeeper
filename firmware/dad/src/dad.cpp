@@ -317,6 +317,16 @@ void setup() {
     esp8266.startTcpServer(TCP_SERVER_PORT);
     esp8266.getStaIP(WIFI_STA_IP);
     dbgf(debug, F(":STA_IP: %d.%d.%d.%d\n"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
+
+    // for some reason first sensor read can return 85. bug?
+    // just make first read here
+    getSensorValue(SENSOR_HIGH_SUPPLY);
+    getSensorValue(SENSOR_HIGH_REVERSE);
+    getSensorValue(SENSOR_TANK);
+    getSensorValue(SENSOR_BOILER);
+    getSensorValue(SENSOR_MIX);
+    getSensorValue(SENSOR_LOW_SUPPLY);
+    getSensorValue(SENSOR_SOLAR_SECONDARY);
 }
 
 void loop() {
