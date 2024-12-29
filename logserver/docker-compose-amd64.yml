@@ -35,6 +35,9 @@ services:
       - SMTP_PASSWORD=secret
       - EMAIL_SENDER=logstash@localhost
       - EMAIL_RECIPIENTS_LIST=user@email.com
+      - HA_HOST=localhost
+      - HA_PORT=8123
+      - HA_API_KEY=secret
     ports:
       - "8085:8085"
       - "8086:8086"
