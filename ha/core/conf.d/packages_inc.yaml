@@ -1,0 +1,4 @@
+# Copy this to main configuration.yaml
+homeassistant:
+  packages:
+    homekeeper: !include conf.d/homekeeper/conf.yaml

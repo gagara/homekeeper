@@ -1,0 +1,151 @@
+# REST => MQTT: Listens for HA events and publish it's content to MQTT
+automation hk_rest_mqtt:
+  triggers:
+    - trigger: event
+      event_type: "hk_status"
+  actions:
+    - action: mqtt.publish
+      data:
+        topic: "hk/entity/{{trigger.event.data.id}}"
+        payload: "{{ trigger.event.data | tojson }}"
+
+# MQTT based sensors
+mqtt:
+  # HK sensors
+  sensor:
+    - name: "Room Humidity"
+      unique_id: "hk_entity_75"
+      state_topic: "hk/entity/75"
+      value_template: '{{ value_json.v }}'
+      unit_of_measurement: "%"
+      icon: mdi:water-percent
+    - name: "Solar Primary"
+      unique_id: "hk_entity_61"
+      state_topic: "hk/entity/61"
+      value_template: '{{ value_json.v }}'
+      unit_of_measurement: "°C"
+      icon: mdi:thermometer
+  # HK settings
+    - name: "Room1 High Max Setting"
+      unique_id: "hk_entity_202"
+      state_topic: "hk/entity/202"
+      value_template: '{{ value_json.v }}'
+      unit_of_measurement: "°C"
+      icon: mdi:thermometer-check
+  # HK nodes
+  binary_sensor:
+    - name: "Solar Secondary"
+      unique_id: "hk_entity_38"
+      state_topic: "hk/entity/38"
+      value_template: '{{ value_json.v }}'
+      payload_on: "1"
+      payload_off: "0"
+      json_attributes_topic: "hk/entity/38"
+      json_attributes_template: '{{ value_json.attr | tojson }}'
+      icon: mdi:pump
+
+# Input helpers for HK gateway api
+input_select:
+  hk_node_select:
+    name: HomeKeeper Node
+    options:
+      - High Supply
+      - Heating
+      - Hot Water
+      - Circulation
+      - Standby Heater
+      - Solar Primary
+      - Solar Secondary
+      - Heating Valve
+      - PV Load Switch
+    icon: mdi:pump
+  hk_setting_select:
+    name: HomeKeeper Setting
+    options:
+      - Room1 Low Min
+      - Room1 Min
+      - Room1 Max
+      - Room1 High Max
+    icon: mdi:thermometer
+input_boolean:
+  hk_node_manual_control:
+    name: Manual Control
+  hk_node_state:
+    name: State
+input_number:
+  hk_node_period:
+    name: Period
+    initial: 5
+    min: 5
+    max: 10000
+    step: 5
+    mode: box
+    unit_of_measurement: mins
+  hk_setting_value:
+    name: Value
+    initial: 20
+    min: 0
+    max: 50
+    step: 1
+    mode: box
+    unit_of_measurement: °C
+input_button:
+  hk_node_control:
+    name: Change State
+  hk_setting_config:
+    name: Change Setting
+
+# Actions to make HK gateway api requests
+automation hk_control:
+  triggers:
+    - trigger: state
+      entity_id: input_button.hk_node_control
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ states('input_select.hk_node_select') | urlencode }}"
+        mode: "{{ states('input_boolean.hk_node_manual_control') | replace('on', 'manual') | replace('off', 'auto') }}"
+        state: "{{ states('input_boolean.hk_node_state') | replace('on', 'ON') | replace('off', 'OFF') }}"
+        period: "{{ states('input_number.hk_node_period') | int }}"
+      response_variable: rest_response
+    - action: notify.persistent_notification
+      data:
+        title: "HomeKeeper Node Request"
+        message: "{{ rest_response['content'] }}"
+automation hk_config:
+  triggers:
+    - trigger: state
+      entity_id: input_button.hk_setting_config
+  actions:
+    - action: rest_command.hk_config_request
+      data:
+        setting: "{{ states('input_select.hk_setting_select') | urlencode }}"
+        value: "{{ states('input_number.hk_setting_value') | int }}"
+      response_variable: rest_response
+    - action: notify.persistent_notification
+      data:
+        title: "HomeKeeper Setting Request"
+        message: "{{ rest_response['content'] }}"
+
+# REST requests to HK gateway (control/config api calls)
+rest_command:
+  hk_control_request:
+    url: !secret control_request_url
+    method: POST
+    headers:
+      accept: "application/json"
+    username: !secret username
+    password: !secret password
+    content_type: "application/x-www-form-urlencoded"
+    payload: 'node={{ node }}&mode={{ mode }}&state={{ state }}&period={{ period }}'
+    verify_ssl: false
+  hk_config_request:
+    url: !secret config_request_url
+    method: POST
+    headers:
+      accept: "application/json"
+    username: !secret username
+    password: !secret password
+    content_type: "application/x-www-form-urlencoded"
+    payload: 'setting={{ setting }}&value={{ value }}'
+    verify_ssl: false

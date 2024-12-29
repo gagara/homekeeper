@@ -10,7 +10,6 @@ firmware/*/.travis.yml
 **/.pyenv
 **/*.pyc
 **/compile_commands.json
-*.d
 *.o
 *.eep
 *.elf
