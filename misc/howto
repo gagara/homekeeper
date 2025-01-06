@@ -140,3 +140,18 @@ $ esptool.py --port /dev/ttyUSB0 write_flash --flash_mode dout --flash_freq 26m 
 get firmware version: AT+GMR
 change default UART: AT+UART_DEF=57600,8,1,0,1
 
+pio
+~~~~~~~~~~~~~~~
+
+# compile
+pio run -d firmware/mom/
+
+# upload
+pio run -d firmware/mom/ -t upload
+
+# generate compile_db
+pio run -d firmware/mom/ -t compiledb
+
+# monitor serial port
+pio device monitor -b 57600 -p /dev/ttyUSB0
+
