@@ -14,136 +14,164 @@ mqtt:
   # HK sensors
   sensor:
     - name: "High Supply"
-      unique_id: "hk_entity_54"
+      object_id: "hk_high_supply"
       state_topic: "hk/entity/54"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "86cea945-004c-4463-8be9-9bcddedd6056"
     - name: "High Reverse"
-      unique_id: "hk_entity_55"
+      object_id: "hk_high_reverse"
       state_topic: "hk/entity/55"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "51bd7e39-c954-4883-83ed-a016521c740e"
     - name: "Tank"
-      unique_id: "hk_entity_56"
+      object_id: "hk_tank"
       state_topic: "hk/entity/56"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "5bd78733-8f73-44a7-956b-217a79d13572"
     - name: "Boiler"
-      unique_id: "hk_entity_57"
+      object_id: "hk_boiler"
       state_topic: "hk/entity/57"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "8d4035b9-47b9-4592-81ce-a343e9953404"
     - name: "Mix"
-      unique_id: "hk_entity_58"
+      object_id: "hk_mix"
       state_topic: "hk/entity/58"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "0e218bb1-987b-4ea1-8206-cf7e20086357"
     - name: "Low Supply"
-      unique_id: "hk_entity_59"
+      object_id: "hk_low_supply"
       state_topic: "hk/entity/59"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "60fc702b-081f-41da-93a8-250905b103a1"
     - name: "Solar Primary"
-      unique_id: "hk_entity_61"
+      object_id: "hk_solar_primary"
       state_topic: "hk/entity/61"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "d0676b71-4187-4ad4-b1f5-2b5231a33a9b"
     - name: "Solar Secondary"
-      unique_id: "hk_entity_62"
+      object_id: "hk_solar_secondary"
       state_topic: "hk/entity/62"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "17125c69-dac0-41b0-9770-bb2cbe1904ea"
     - name: "Room Temperature"
-      unique_id: "hk_entity_74"
+      object_id: "hk_room_temperature"
       state_topic: "hk/entity/74"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "04c93d6e-0f81-40f3-b3c4-7c3c179a2ecc"
     - name: "Room Humidity"
-      unique_id: "hk_entity_75"
+      object_id: "hk_room_humidity"
       state_topic: "hk/entity/75"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "%"
       icon: mdi:water-percent
+      unique_id: "52387076-be94-4220-bebb-9dddade4cc0f"
     - name: "Basement Temperature"
-      unique_id: "hk_entity_78"
+      object_id: "hk_basement_temperature"
       state_topic: "hk/entity/78"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "c0bbadad-bd2f-434d-8bf5-fa2c19510ac2"
     - name: "Basement Humidity"
-      unique_id: "hk_entity_79"
+      object_id: "hk_basement_humidity"
       state_topic: "hk/entity/79"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "%"
       icon: mdi:water-percent
+      unique_id: "386dd363-f078-4280-909e-a28c4561005a"
     - name: "Outdoor Temperature"
-      unique_id: "hk_entity_80"
+      object_id: "hk_outdoor_temperature"
       state_topic: "hk/entity/80"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer
+      unique_id: "d1e6e3cf-3f14-4792-a186-a842d300574c"
     - name: "Outdoor Humidity"
-      unique_id: "hk_entity_81"
+      object_id: "hk_outdoor_humidity"
       state_topic: "hk/entity/81"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "%"
       icon: mdi:water-percent
+      unique_id: "df8c10a3-17c1-4872-ae8a-74fcf061b178"
     - name: "AC Voltage"
-      unique_id: "hk_entity_82"
+      object_id: "hk_ac_voltage"
       state_topic: "hk/entity/82"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "V"
       icon: mdi:sine-wave
+      unique_id: "5f31237f-c3f2-472b-9696-4f86c27564d3"
     - name: "AC Current"
-      unique_id: "hk_entity_83"
+      object_id: "hk_ac_current"
       state_topic: "hk/entity/83"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "A"
       icon: mdi:current-ac
+      unique_id: "fec6a615-a3dd-435b-b190-58512a9e5caf"
     - name: "AC Power"
-      unique_id: "hk_entity_84"
+      object_id: "hk_ac_power"
       state_topic: "hk/entity/84"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "W"
       icon: mdi:flash
+      unique_id: "299f575f-f544-460e-a733-b278caaffb39"
+    - name: "AC Energy"
+      object_id: "hk_ac_energy"
+      state_topic: "hk/entity/85"
+      value_template: '{{ value_json.v }}'
+      unit_of_measurement: "Wh"
+      icon: mdi:counter
+      unique_id: "f72861e8-2131-48f6-bf5f-67c409a0db5a"
   # HK settings
     - name: "Room1 Low Min Setting"
-      unique_id: "hk_entity_201"
+      object_id: "hk_room1_low_min_setting"
       state_topic: "hk/entity/201"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
+      unique_id: "f87541ed-9ec0-4289-821d-16824e9bf66d"
     - name: "Room1 High Max Setting"
-      unique_id: "hk_entity_202"
+      object_id: "hk_room1_high_max_setting"
       state_topic: "hk/entity/202"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
+      unique_id: "fa84bfdd-6f4e-42ac-83b6-bd8c2edce69b"
     - name: "Room1 Min Setting"
-      unique_id: "hk_entity_203"
+      object_id: "hk_room1_min_setting"
       state_topic: "hk/entity/203"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
+      unique_id: "25126dd0-3db7-4067-b213-92f14f60188a"
     - name: "Room1 Max Setting"
-      unique_id: "hk_entity_204"
+      object_id: "hk_room1_max_setting"
       state_topic: "hk/entity/204"
       value_template: '{{ value_json.v }}'
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
+      unique_id: "8cf570ed-2cc5-4162-bb92-3d935585a3d6"
   # HK nodes/binary sensors
   binary_sensor:
     - name: "High Supply"
-      unique_id: "hk_entity_22"
+      object_id: "hk_high_supply"
       state_topic: "hk/entity/22"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
@@ -151,8 +179,9 @@ mqtt:
       json_attributes_topic: "hk/entity/22"
       json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:pump
+      unique_id: "8c7a513f-fee5-427d-b8ef-ce78638af8ff"
     - name: "Heating"
-      unique_id: "hk_entity_24"
+      object_id: "hk_heating"
       state_topic: "hk/entity/24"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
@@ -160,8 +189,9 @@ mqtt:
       json_attributes_topic: "hk/entity/24"
       json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:pump
+      unique_id: "b35bfd33-6028-4aa3-a090-1cafd83c8665"
     - name: "Floor"
-      unique_id: "hk_entity_26"
+      object_id: "hk_floor"
       state_topic: "hk/entity/26"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
@@ -169,8 +199,9 @@ mqtt:
       json_attributes_topic: "hk/entity/26"
       json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:pump
+      unique_id: "5408013f-23b3-4e80-8538-b8d17255e9c3"
     - name: "Hot water"
-      unique_id: "hk_entity_28"
+      object_id: "hk_how_water"
       state_topic: "hk/entity/28"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
@@ -178,8 +209,9 @@ mqtt:
       json_attributes_topic: "hk/entity/28"
       json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:pump
+      unique_id: "1a9a7332-dcf3-4127-ad23-459f1ec12637"
     - name: "Circulation"
-      unique_id: "hk_entity_30"
+      object_id: "hk_circulation"
       state_topic: "hk/entity/30"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
@@ -187,8 +219,9 @@ mqtt:
       json_attributes_topic: "hk/entity/30"
       json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:pump
+      unique_id: "61c1de8b-1353-451d-906f-2a7d3ba37882"
     - name: "Standby heater"
-      unique_id: "hk_entity_34"
+      object_id: "hk_standby_heater"
       state_topic: "hk/entity/34"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
@@ -196,8 +229,9 @@ mqtt:
       json_attributes_topic: "hk/entity/34"
       json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:heating-coil
+      unique_id: "a356801d-ee23-40a5-8c5b-bee2b911e601"
     - name: "Solar Primary"
-      unique_id: "hk_entity_36"
+      object_id: "hk_solar_primary"
       state_topic: "hk/entity/36"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
@@ -205,8 +239,9 @@ mqtt:
       json_attributes_topic: "hk/entity/36"
       json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:pump
+      unique_id: "5f0414ba-310f-47cf-945d-f3506a44b446"
     - name: "Solar Secondary"
-      unique_id: "hk_entity_38"
+      object_id: "hk_solar_secondary"
       state_topic: "hk/entity/38"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
@@ -214,8 +249,9 @@ mqtt:
       json_attributes_topic: "hk/entity/38"
       json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:pump
+      unique_id: "596b7dc8-6657-49a6-9792-8f1873ee80a5"
     - name: "Heating Valve"
-      unique_id: "hk_entity_40"
+      object_id: "hk_heating_valve"
       state_topic: "hk/entity/40"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
@@ -223,8 +259,9 @@ mqtt:
       json_attributes_topic: "hk/entity/40"
       json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:pipe-valve
+      unique_id: "0fc78d53-ae5c-4746-8bff-11e1818c0a25"
     - name: "PV Load Switch"
-      unique_id: "hk_entity_46"
+      object_id: "hk_pv_load_switch"
       state_topic: "hk/entity/46"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
@@ -232,20 +269,23 @@ mqtt:
       json_attributes_topic: "hk/entity/46"
       json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:toggle-switch-outline
+      unique_id: "087c610f-8a4b-409f-a8ee-d63db37e445d"
     - name: "Boiler Power"
-      unique_id: "hk_entity_60"
+      object_id: "hk_boiler_power"
       state_topic: "hk/entity/60"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
       payload_off: "0"
       icon: mdi:water-boiler
+      unique_id: "76c289e4-447f-4ca3-9439-66376cbb84a7"
     - name: "Water Pump Power"
-      unique_id: "hk_entity_86"
+      object_id: "hk_water_pump_power"
       state_topic: "hk/entity/86"
       value_template: '{{ value_json.v }}'
       payload_on: "1"
       payload_off: "0"
       icon: mdi:water-pump
+      unique_id: "cf6c7fdb-0637-4b9c-a374-60c8a6e0e4a9"
 
 # Input helpers for HK gateway api
 input_select:
@@ -291,7 +331,7 @@ input_number:
     max: 50
     step: 1
     mode: box
-    unit_of_measurement: °C
+    unit_of_measurement: "°C"
 input_button:
   hk_node_control:
     name: Change State
