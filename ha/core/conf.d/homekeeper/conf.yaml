@@ -17,6 +17,7 @@ mqtt:
       object_id: "hk_high_supply"
       state_topic: "hk/entity/54"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "86cea945-004c-4463-8be9-9bcddedd6056"
@@ -24,6 +25,7 @@ mqtt:
       object_id: "hk_high_reverse"
       state_topic: "hk/entity/55"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "51bd7e39-c954-4883-83ed-a016521c740e"
@@ -31,6 +33,7 @@ mqtt:
       object_id: "hk_tank"
       state_topic: "hk/entity/56"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "5bd78733-8f73-44a7-956b-217a79d13572"
@@ -38,6 +41,7 @@ mqtt:
       object_id: "hk_boiler"
       state_topic: "hk/entity/57"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "8d4035b9-47b9-4592-81ce-a343e9953404"
@@ -45,6 +49,7 @@ mqtt:
       object_id: "hk_mix"
       state_topic: "hk/entity/58"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "0e218bb1-987b-4ea1-8206-cf7e20086357"
@@ -52,6 +57,7 @@ mqtt:
       object_id: "hk_low_supply"
       state_topic: "hk/entity/59"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "60fc702b-081f-41da-93a8-250905b103a1"
@@ -59,6 +65,7 @@ mqtt:
       object_id: "hk_solar_primary"
       state_topic: "hk/entity/61"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "d0676b71-4187-4ad4-b1f5-2b5231a33a9b"
@@ -66,6 +73,7 @@ mqtt:
       object_id: "hk_solar_secondary"
       state_topic: "hk/entity/62"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "17125c69-dac0-41b0-9770-bb2cbe1904ea"
@@ -73,6 +81,7 @@ mqtt:
       object_id: "hk_room_temperature"
       state_topic: "hk/entity/74"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "04c93d6e-0f81-40f3-b3c4-7c3c179a2ecc"
@@ -80,6 +89,7 @@ mqtt:
       object_id: "hk_room_humidity"
       state_topic: "hk/entity/75"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "%"
       icon: mdi:water-percent
       unique_id: "52387076-be94-4220-bebb-9dddade4cc0f"
@@ -87,6 +97,7 @@ mqtt:
       object_id: "hk_basement_temperature"
       state_topic: "hk/entity/78"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "c0bbadad-bd2f-434d-8bf5-fa2c19510ac2"
@@ -94,6 +105,7 @@ mqtt:
       object_id: "hk_basement_humidity"
       state_topic: "hk/entity/79"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "%"
       icon: mdi:water-percent
       unique_id: "386dd363-f078-4280-909e-a28c4561005a"
@@ -101,6 +113,7 @@ mqtt:
       object_id: "hk_outdoor_temperature"
       state_topic: "hk/entity/80"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "d1e6e3cf-3f14-4792-a186-a842d300574c"
@@ -108,6 +121,7 @@ mqtt:
       object_id: "hk_outdoor_humidity"
       state_topic: "hk/entity/81"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "%"
       icon: mdi:water-percent
       unique_id: "df8c10a3-17c1-4872-ae8a-74fcf061b178"
@@ -115,6 +129,7 @@ mqtt:
       object_id: "hk_ac_voltage"
       state_topic: "hk/entity/82"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "V"
       icon: mdi:sine-wave
       unique_id: "5f31237f-c3f2-472b-9696-4f86c27564d3"
@@ -122,6 +137,7 @@ mqtt:
       object_id: "hk_ac_current"
       state_topic: "hk/entity/83"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "A"
       icon: mdi:current-ac
       unique_id: "fec6a615-a3dd-435b-b190-58512a9e5caf"
@@ -129,6 +145,7 @@ mqtt:
       object_id: "hk_ac_power"
       state_topic: "hk/entity/84"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "W"
       icon: mdi:flash
       unique_id: "299f575f-f544-460e-a733-b278caaffb39"
@@ -136,6 +153,7 @@ mqtt:
       object_id: "hk_ac_energy"
       state_topic: "hk/entity/85"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "Wh"
       icon: mdi:counter
       unique_id: "f72861e8-2131-48f6-bf5f-67c409a0db5a"
@@ -144,6 +162,7 @@ mqtt:
       object_id: "hk_room1_low_min_setting"
       state_topic: "hk/entity/201"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
       unique_id: "f87541ed-9ec0-4289-821d-16824e9bf66d"
@@ -151,6 +170,7 @@ mqtt:
       object_id: "hk_room1_high_max_setting"
       state_topic: "hk/entity/202"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
       unique_id: "fa84bfdd-6f4e-42ac-83b6-bd8c2edce69b"
@@ -158,6 +178,7 @@ mqtt:
       object_id: "hk_room1_min_setting"
       state_topic: "hk/entity/203"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
       unique_id: "25126dd0-3db7-4067-b213-92f14f60188a"
@@ -165,6 +186,7 @@ mqtt:
       object_id: "hk_room1_max_setting"
       state_topic: "hk/entity/204"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
       unique_id: "8cf570ed-2cc5-4162-bb92-3d935585a3d6"
@@ -174,6 +196,7 @@ mqtt:
       object_id: "hk_high_supply"
       state_topic: "hk/entity/22"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/22"
@@ -184,6 +207,7 @@ mqtt:
       object_id: "hk_heating"
       state_topic: "hk/entity/24"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/24"
@@ -194,6 +218,7 @@ mqtt:
       object_id: "hk_floor"
       state_topic: "hk/entity/26"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/26"
@@ -204,6 +229,7 @@ mqtt:
       object_id: "hk_how_water"
       state_topic: "hk/entity/28"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/28"
@@ -214,6 +240,7 @@ mqtt:
       object_id: "hk_circulation"
       state_topic: "hk/entity/30"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/30"
@@ -224,6 +251,7 @@ mqtt:
       object_id: "hk_standby_heater"
       state_topic: "hk/entity/34"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/34"
@@ -234,6 +262,7 @@ mqtt:
       object_id: "hk_solar_primary"
       state_topic: "hk/entity/36"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/36"
@@ -244,6 +273,7 @@ mqtt:
       object_id: "hk_solar_secondary"
       state_topic: "hk/entity/38"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/38"
@@ -254,6 +284,7 @@ mqtt:
       object_id: "hk_heating_valve"
       state_topic: "hk/entity/40"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/40"
@@ -264,6 +295,7 @@ mqtt:
       object_id: "hk_pv_load_switch"
       state_topic: "hk/entity/46"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/46"
@@ -274,6 +306,7 @@ mqtt:
       object_id: "hk_boiler_power"
       state_topic: "hk/entity/60"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       icon: mdi:water-boiler
@@ -282,6 +315,7 @@ mqtt:
       object_id: "hk_water_pump_power"
       state_topic: "hk/entity/86"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       icon: mdi:water-pump
