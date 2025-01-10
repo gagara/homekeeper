@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace_dashboards",
+  "data": {
+    "items": [
+      {
+        "id": "map",
+        "icon": "mdi:map",
+        "title": "Map",
+        "url_path": "map",
+        "require_admin": false,
+        "show_in_sidebar": false,
+        "mode": "storage"
+      },
+      {
+        "id": "dashboard_battery",
+        "show_in_sidebar": true,
+        "icon": "mdi:battery-10-bluetooth",
+        "title": "Battery",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "dashboard-battery"
+      },
+      {
+        "id": "dashboard_solar",
+        "show_in_sidebar": true,
+        "icon": "mdi:home-battery",
+        "title": "EAsun",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "dashboard-solar"
+      },
+      {
+        "id": "ha_status",
+        "show_in_sidebar": false,
+        "icon": "mdi:home-assistant",
+        "title": "HA Status",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "ha-status"
+      },
+      {
+        "id": "dashboard_fronius",
+        "show_in_sidebar": true,
+        "icon": "mdi:transmission-tower-import",
+        "title": "Fronius",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "dashboard-fronius"
+      },
+      {
+        "id": "dashboard_home",
+        "show_in_sidebar": true,
+        "icon": "mdi:home",
+        "title": "Home",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "dashboard-home"
+      },
+      {
+        "id": "dashboard_homekeeper",
+        "show_in_sidebar": true,
+        "icon": "mdi:home-thermometer",
+        "title": "HomeKeeper",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "dashboard-homekeeper"
+      }
+    ]
+  }
+}
