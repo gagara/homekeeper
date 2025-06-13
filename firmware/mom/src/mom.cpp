@@ -213,7 +213,7 @@ void setup() {
     esp8266.connect(&WIFI_REMOTE_AP, &WIFI_REMOTE_PW);
     esp8266.startTcpServer(TCP_SERVER_PORT);
     esp8266.getStaIP(WIFI_STA_IP);
-    dbgf(debug, F("STA IP: %d.%d.%d.%d\n"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
+    dbgf(debug, F(":STA IP: %d.%d.%d.%d\n"), WIFI_STA_IP[0], WIFI_STA_IP[1], WIFI_STA_IP[2], WIFI_STA_IP[3]);
 }
 
 void loop() {
@@ -400,7 +400,7 @@ void syncPvLoadSwitches() {
     NODE_ERROR_FLAGS = NODE_ERROR_FLAGS & ~NODE_PV_LOAD_SWITCH_BIT;
     tsNodePvLoadSwitchError = 0;
 
-    dbgf(debug, F(":SyncPvSwitch:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
+    dbgf(debug, F(":SyncPvSwitch1:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
          digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
 
     if (NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
@@ -449,7 +449,7 @@ void syncPvLoadSwitches() {
         }
     }
 
-    dbgf(debug, F(":SyncPvSwitch:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
+    dbgf(debug, F(":SyncPvSwitch2:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
          digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
 }
 
@@ -531,11 +531,8 @@ void readSensors() {
                            JSON_MAX_SIZE);
         broadcastMsg(json);
     }
-    //////
     dbgf(debug, F(":PvSwitch:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
          digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
-
-    //////
 }
 
 int8_t getSensorWaterPumpPowerState() {
