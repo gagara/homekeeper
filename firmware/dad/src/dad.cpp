@@ -119,7 +119,8 @@ const int8_t SOLAR_PRIMARY_CRITICAL_TEMP_THRESHOLD = 110; // stagnation
 const int8_t SOLAR_PRIMARY_CRITICAL_TEMP_HIST = 10;
 const int8_t SOLAR_PRIMARY_BOILER_ON_HIST = 9;
 const int8_t SOLAR_PRIMARY_BOILER_OFF_HIST = 0;
-const int8_t SOLAR_SECONDARY_BOILER_ON_HIST = 0;
+const int8_t SOLAR_SECONDARY_BOILER_ON_HIST = 2;
+const int8_t SOLAR_SECONDARY_BOILER_OFF_HIST = 0;
 
 // sensor BoilerPower
 const int8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
@@ -1021,7 +1022,14 @@ void processSolarSecondary() {
             // solar secondary is ON
             if (NODE_STATE_FLAGS & NODE_SOLAR_PRIMARY_BIT) {
                 // solar primary ON
-                // do nothing
+                if (tempSolarSecondary <= (tempBoiler + SOLAR_SECONDARY_BOILER_OFF_HIST)) {
+                    // temp in solar secondary is too low
+                    // turn solar secondary OFF
+                    switchNodeState(NODE_SOLAR_SECONDARY, sensIds, sensVals, sensCnt);
+                } else {
+                    // temp in solar secondary is too low
+                    // do nothing
+                }
             } else {
                 // solar primary OFF
                 // turn solar secondary OFF
@@ -1361,7 +1369,7 @@ int8_t getSensorValue(const uint8_t sensor) {
     float result = UNKNOWN_SENSOR_VALUE;
     if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
         float vin = 5; // 5V
-        float r2 = 93; // 100 Ohm + calibration
+        float r2 = 91; // 100 Ohm + calibration. +1 -> +3.5C (at ~50C)
         int v = 0;
         for (int i = 0; i < 10; i++) {
             v += analogRead(SENSOR_SOLAR_PRIMARY);
@@ -1371,7 +1379,7 @@ int8_t getSensorValue(const uint8_t sensor) {
         float vout = (vin / 1023.0) * v;
         float r1 = (vin / vout - 1) * r2;
 
-        //dbgf(debug, F(":SolarPrimary:%d/%dOhm/%dC\n"), v, (int) r1, (int) ((r1 - 100) / 0.39));
+        dbgf(debug, F(":SolarPrimary:%d/%dOhm/%dC\n"), v, (int) r1, (int) ((r1 - 100) / 0.39));
 
         if (v > 0) {
             result = ((r1 - 100) / 0.39) * readSensorCF(sensor);
