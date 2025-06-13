@@ -328,6 +328,7 @@ input_select:
     options:
       - High Supply
       - Heating
+      - Floor
       - Hot Water
       - Circulation
       - Standby Heater
