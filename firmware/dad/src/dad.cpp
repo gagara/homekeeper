@@ -1369,7 +1369,7 @@ int8_t getSensorValue(const uint8_t sensor) {
     float result = UNKNOWN_SENSOR_VALUE;
     if (SENSOR_SOLAR_PRIMARY == sensor) { // analog sensor
         float vin = 5; // 5V
-        float r2 = 91; // 100 Ohm + calibration. +1 -> +3.5C (at ~50C)
+        float r2 = 93; // 100 Ohm + calibration. +1 -> +3.5C (at ~50C)
         int v = 0;
         for (int i = 0; i < 10; i++) {
             v += analogRead(SENSOR_SOLAR_PRIMARY);
@@ -1414,7 +1414,7 @@ int8_t getSensorBoilerPowerState() {
         delay(1);
     }
     uint8_t state = (max > SENSOR_BOILER_POWER_THERSHOLD) ? 1 : 0;
-    //dbgf(debug, F(":BoilerPower:%d/%d\n"), max, state);
+    dbgf(debug, F(":BoilerPower:%d/%d\n"), max, state);
     return state;
 }
 
