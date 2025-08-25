@@ -1,3 +1,8 @@
+# Enable HTTPS. Make sure duckdns plugin is up
+#http:
+#  ssl_certificate: /ssl/fullchain.pem
+#  ssl_key: /ssl/privkey.pem
+
 # Copy this to main configuration.yaml
 homeassistant:
   packages:
