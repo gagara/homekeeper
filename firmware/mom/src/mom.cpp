@@ -17,8 +17,8 @@
 /*============================= Global configuration ========================*/
 
 // Sensor pin
-const uint8_t DHT_IN_PIN = 6;
-const uint8_t DHT_OUT_PIN = 7;
+const uint8_t DHT_IN_PIN = 7;
+const uint8_t DHT_OUT_PIN = 6;
 const uint8_t SENSOR_CURRENT_METER_PIN = A0;
 const uint8_t SENSOR_VOLTAGE_METER_PIN = A1;
 const uint8_t SENSOR_WATER_PUMP_POWER_PIN = A2;
