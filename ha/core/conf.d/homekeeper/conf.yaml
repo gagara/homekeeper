@@ -427,3 +427,12 @@ rest_command:
     content_type: "application/x-www-form-urlencoded"
     payload: 'setting={{ setting }}&value={{ value }}'
     verify_ssl: false
+
+# Extra
+template:
+  sensor:
+    - name: AC Directly Consumed Power
+      unique_id: b99e25e9-cb3a-4ec1-bbec-2d91f809e678
+      unit_of_measurement: W
+      device_class: power
+      state: "{{ [(([states('sensor.hk_ac_power') | int(0), 0] | max) - ([states('sensor.smgii1_grid_active_power') | int(0), 0] | max)), 0] | max }}"
