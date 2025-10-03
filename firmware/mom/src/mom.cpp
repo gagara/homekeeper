@@ -17,8 +17,8 @@
 /*============================= Global configuration ========================*/
 
 // Sensor pin
-const uint8_t DHT_IN_PIN = 7;
-const uint8_t DHT_OUT_PIN = 6;
+const uint8_t DHT_IN_PIN = 8;
+const uint8_t DHT_OUT_PIN = 9;
 const uint8_t SENSOR_CURRENT_METER_PIN = A0;
 const uint8_t SENSOR_VOLTAGE_METER_PIN = A1;
 const uint8_t SENSOR_WATER_PUMP_POWER_PIN = A2;
@@ -39,8 +39,8 @@ const uint8_t NODE_PV_LOAD_SWITCH = 46; // 0 - Off-grid; 1 - On-grid
 // Servo pins
 const uint8_t PV_LOAD_SWITCH_ON_GRID_PIN = 5;
 const uint8_t PV_LOAD_SWITCH_OFF_GRID_PIN = 4;
-const uint8_t PV_LOAD_SENSOR_ON_GRID_PIN = 3;
-const uint8_t PV_LOAD_SENSOR_OFF_GRID_PIN = 2;
+const uint8_t PV_LOAD_SENSOR_ON_GRID_PIN = A4;
+const uint8_t PV_LOAD_SENSOR_OFF_GRID_PIN = A3;
 
 // WiFi pins
 const uint8_t WIFI_RST_PIN = 0; // n/a
@@ -56,11 +56,13 @@ const uint8_t HEARTBEAT_LED = 13;
 const unsigned long MAX_TIMESTAMP = -1;
 const int16_t UNKNOWN_SENSOR_VALUE = -127;
 const unsigned long NODE_SWITCH_SAFE_TIME_SEC = 30;
+const uint16_t PV_LOAD_SENSOR_LOW_THRESHOLD = 700; // values < threshold => LOW else HIGH
 
 // reporting
-const unsigned long STATUS_REPORTING_PERIOD_SEC = 60; // 1 minute
+const unsigned long STATUS_REPORTING_PERIOD_SEC = 5; // 5 seconds
 const unsigned long SENSORS_READ_INTERVAL_SEC = 10; // 10 seconds
 const uint16_t WIFI_FAILURE_GRACE_PERIOD_SEC = 180; // 3 minutes
+uint8_t currentReportStep = 0;
 
 // sensor WaterPumpPower
 const int8_t SENSOR_WATER_PUMP_POWER_THERSHOLD = 60;
@@ -154,7 +156,7 @@ int eepromWriteCount = 0;
 
 // DHT sensors
 DHT dhtIn(DHT_IN_PIN, DHT11);
-DHT dhtOut(DHT_OUT_PIN, DHT22);
+DHT dhtOut(DHT_OUT_PIN, DHT11);
 
 // Energy monitor
 EnergyMonitor emon;
@@ -171,7 +173,8 @@ HardwareSerial *debug = NULL;
 #endif
 
 //WiFi
-HardwareSerial *wifi = &Serial3;
+//HardwareSerial *wifi = &Serial3;
+HardwareSerial *wifi = &Serial1;
 ESP8266 esp8266;
 
 void setup() {
@@ -400,8 +403,8 @@ void syncPvLoadSwitches() {
     NODE_ERROR_FLAGS = NODE_ERROR_FLAGS & ~NODE_PV_LOAD_SWITCH_BIT;
     tsNodePvLoadSwitchError = 0;
 
-    dbgf(debug, F(":SyncPvSwitch1:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
-         digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
+    dbgf(debug, F(":SyncPvSwitch1:ong/offg/err/errTs:%d/%d/%d/%d\n"), pvLoadSensorState(PV_LOAD_SENSOR_ON_GRID_PIN),
+         pvLoadSensorState(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
 
     if (NODE_STATE_FLAGS & NODE_PV_LOAD_SWITCH_BIT) {
         // On-grid requested
@@ -409,13 +412,13 @@ void syncPvLoadSwitches() {
         moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_OFF - SERVO_POSITION_EXTRA);
         moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_OFF);
         // check state
-        if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW) {
+        if (pvLoadSensorState(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW) {
             // step 1 success. continue
             // 2. switch ON on-grid
             moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_ON + SERVO_POSITION_EXTRA);
             moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_ON);
             // check state
-            if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW) {
+            if (pvLoadSensorState(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW) {
                 // still OFF. Error!
                 NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
                 tsNodePvLoadSwitchError = tsCurr;
@@ -431,13 +434,13 @@ void syncPvLoadSwitches() {
         moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_OFF - SERVO_POSITION_EXTRA);
         moveServo(PV_LOAD_SWITCH_ON_GRID_PIN, SERVO_POSITION_OFF);
         // check state
-        if (digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW) {
+        if (pvLoadSensorState(PV_LOAD_SENSOR_ON_GRID_PIN) == LOW) {
             // step 1 success. continue
             // 2. switch ON off-grid
             moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_ON + SERVO_POSITION_EXTRA);
             moveServo(PV_LOAD_SWITCH_OFF_GRID_PIN, SERVO_POSITION_ON);
             // check state
-            if (digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW) {
+            if (pvLoadSensorState(PV_LOAD_SENSOR_OFF_GRID_PIN) == LOW) {
                 // still OFF. Error
                 NODE_ERROR_FLAGS = NODE_ERROR_FLAGS | NODE_PV_LOAD_SWITCH_BIT;
                 tsNodePvLoadSwitchError = tsCurr;
@@ -449,8 +452,8 @@ void syncPvLoadSwitches() {
         }
     }
 
-    dbgf(debug, F(":SyncPvSwitch2:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
-         digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
+    dbgf(debug, F(":SyncPvSwitch2:ong/offg/err/errTs:%d/%d/%d/%d\n"), pvLoadSensorState(PV_LOAD_SENSOR_ON_GRID_PIN),
+         pvLoadSensorState(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
 }
 
 void moveServo(uint8_t servoId, uint8_t pos) {
@@ -498,9 +501,13 @@ void readSensors() {
     humIn = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
     dbgf(debug, F(":tempIn/humIn:%d/%d\n"), tempIn, humIn);
     v = dhtOut.readTemperature();
-    tempOut = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    if (!isnan(v) && v != 0) { // workaround: ignore possible errors
+        tempOut = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    }
     v = dhtOut.readHumidity();
-    humOut = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    if (!isnan(v) && v != 0) { // workaround: ignore possible errors
+        humOut = (int8_t) (v > 0) ? v + 0.5 : v - 0.5;
+    }
     dbgf(debug, F(":tempOut/humOut:%d/%d\n"), tempOut, humOut);
 
     emon.calcVI(20, 2000);
@@ -531,8 +538,8 @@ void readSensors() {
                            JSON_MAX_SIZE);
         broadcastMsg(json);
     }
-    dbgf(debug, F(":PvSwitch:ong/offg/err/errTs:%d/%d/%d/%d\n"), digitalRead(PV_LOAD_SENSOR_ON_GRID_PIN),
-         digitalRead(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
+    dbgf(debug, F(":PvSwitch:ong/offg/err/errTs:%d/%d/%d/%d\n"), pvLoadSensorState(PV_LOAD_SENSOR_ON_GRID_PIN),
+         pvLoadSensorState(PV_LOAD_SENSOR_OFF_GRID_PIN), NODE_ERROR_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsNodePvLoadSwitchError);
 }
 
 int8_t getSensorWaterPumpPowerState() {
@@ -558,35 +565,71 @@ bool validSensorValues(const int16_t values[], const uint8_t size) {
     return true;
 }
 
+uint8_t pvLoadSensorState(const uint8_t pin) {
+    int val = analogRead(pin);
+    dbgf(debug, F(":PvSensorRaw:id/val:%d/%d\n"), pin, val);
+    return val < PV_LOAD_SENSOR_LOW_THRESHOLD ? LOW : HIGH;
+}
+
 /*============================ Reporting ====================================*/
 
 void reportStatus() {
     char json[JSON_MAX_SIZE];
 
-    jsonifySensorValue(SENSOR_TEMP_IN, tempIn, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
-    jsonifySensorValue(SENSOR_HUM_IN, humIn, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
-    jsonifySensorValue(SENSOR_TEMP_OUT, tempOut, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
-    jsonifySensorValue(SENSOR_HUM_OUT, humOut, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
-
-    jsonifySensorValue(SENSOR_UAC, uac, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
-    jsonifySensorValue(SENSOR_IAC, iac, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
-    jsonifySensorValue(SENSOR_PAC, pac, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
-    jsonifySensorValue(SENSOR_EAC, eac, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
-    eac = 0; // reset energy counter
-    jsonifySensorValue(SENSOR_WATER_PUMP_POWER, sensorWaterPumpPowerState, tsSensorWaterPumpPower, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
-
-    jsonifyNodeStatus(NODE_PV_LOAD_SWITCH, nodeState(NODE_PV_LOAD_SWITCH_BIT), tsNodePvLoadSwitch,
-                      NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch, json, JSON_MAX_SIZE);
-    broadcastMsg(json);
+    // Note: report PAC more often to have better integral value in HA
+    switch(currentReportStep) {
+        case 0:
+            jsonifySensorValue(SENSOR_PAC, pac, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+        case 1:
+            jsonifySensorValue(SENSOR_TEMP_IN, tempIn, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+        case 2:
+            jsonifySensorValue(SENSOR_HUM_IN, humIn, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+        case 3:
+            jsonifySensorValue(SENSOR_TEMP_OUT, tempOut, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+        case 4:
+            jsonifySensorValue(SENSOR_PAC, pac, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+        case 5:
+            jsonifySensorValue(SENSOR_HUM_OUT, humOut, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+        case 6:
+            jsonifySensorValue(SENSOR_UAC, uac, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+        case 7:
+            jsonifySensorValue(SENSOR_IAC, iac, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+        case 8:
+            jsonifySensorValue(SENSOR_PAC, pac, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+        case 9:
+            jsonifySensorValue(SENSOR_EAC, eac, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            eac = 0; // reset energy counter
+            break;
+        case 10:
+            jsonifySensorValue(SENSOR_WATER_PUMP_POWER, sensorWaterPumpPowerState, tsSensorWaterPumpPower, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+        case 11:
+            jsonifyNodeStatus(NODE_PV_LOAD_SWITCH, nodeState(NODE_PV_LOAD_SWITCH_BIT), tsNodePvLoadSwitch,
+                    NODE_FORCED_MODE_FLAGS & NODE_PV_LOAD_SWITCH_BIT, tsForcedNodePvLoadSwitch, json, JSON_MAX_SIZE);
+            broadcastMsg(json);
+            break;
+    }
+    (currentReportStep < 11) ? currentReportStep++ : currentReportStep = 0;
 }
 
 void reportConfiguration() {
