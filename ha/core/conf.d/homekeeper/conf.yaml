@@ -354,7 +354,7 @@ input_number:
   hk_node_period:
     name: Period
     initial: 5
-    min: 5
+    min: 0
     max: 10000
     step: 5
     mode: box
