@@ -11,3 +11,4 @@ homeassistant:
   packages:
     easun_smg_ii: !include conf.d/easun/easun_smg_ii.yaml
     homekeeper: !include conf.d/homekeeper/conf.yaml
+    rf433: !include conf.d/rf433/conf.yaml

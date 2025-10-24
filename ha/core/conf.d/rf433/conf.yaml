@@ -1,0 +1,51 @@
+# Buttons to control gates
+input_button:
+  gates_control_full:
+    name: "Gates (full)"
+  gates_control_part:
+    name: "Gates (part)"
+
+# counters used to cycle over rf codes
+counter:
+  rf433_gates_next_code_idx_full:
+    restore: false
+  rf433_gates_next_code_idx_part:
+    restore: false
+
+automation rf433_gates_trigger_full:
+  triggers:
+    - trigger: state
+      entity_id: input_button.gates_control_full
+  actions:
+    - action: mqtt.publish
+      data:
+        topic: "cmnd/tasmota_9E1FC9/Backlog"
+        payload: >
+          {% set codes = {
+              0: 'AAB0580408019B0FA5030C4075380808080808080808080808182828282828282A0A082A0828282A082A0A0A08282828282A082A0A082A082A0A0A082A082A082A0A0A0A0A0A0A082A0A0A0A0A082A0A0A0A0A0A0A0A082A0A082855',
+              1: 'AAB0580408018F0FAD0317407838080808080808080808080818282A0A08282828282A0A0A0A082A0A08282A082A082828282828282A0A0A0A0A0A082A082A082A0A0A0A0A0A0A082A0A0A0A0A082A0A0A0A0A0A0A0A082A0A082855'
+            }
+          %}
+          RfRaw {{ codes[states('counter.rf433_gates_next_code_idx_full') | int(0) % (codes | length)] }}; RfRaw 0
+    - action: counter.increment
+      data:
+        entity_id: counter.rf433_gates_next_code_idx_full
+
+automation rf433_gates_trigger_part:
+  triggers:
+    - trigger: state
+      entity_id: input_button.gates_control_part
+  actions:
+    - action: mqtt.publish
+      data:
+        topic: "cmnd/tasmota_9E1FC9/Backlog"
+        payload: >
+          {% set codes = {
+              0: 'AAB0580408018F0FB7031F40903808080808080808080808081A0A082A0A0A082A0A082A082A08282828282A0A08282828282828282A0A0A082A0A082A082A082A0A0A0A0A0A0A082A0A0A0A0A082A0A0A0A0A0A0A082A0A0A082855',
+              1: 'AAB0580408018E0FA7032540743808080808080808080808081A0A08282A0A082A082A08282A082A082A0A0A0828282A08282A0A0A08282A0A0A0A082A082A082A0A0A0A0A0A0A082A0A0A0A0A082A0A0A0A0A0A0A082A0A0A082855'
+            }
+          %}
+          RfRaw {{ codes[states('counter.rf433_gates_next_code_idx_part') | int(0) % (codes | length)] }}; RfRaw 0
+    - action: counter.increment
+      data:
+        entity_id: counter.rf433_gates_next_code_idx_part
