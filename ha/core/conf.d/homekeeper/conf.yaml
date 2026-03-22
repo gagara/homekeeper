@@ -436,3 +436,191 @@ template:
       unit_of_measurement: W
       device_class: power
       state: "{{ [(([states('sensor.hk_ac_power') | int(0), 0] | max) - ([states('sensor.smgii1_grid_active_power') | int(0), 0] | max)), 0] | max }}"
+
+# Node maintenance automations
+
+# Heating node
+automation hk_maint_node_heating_on:
+  id: 04019a64-7219-40e6-935e-a4d78bc5d136
+  alias: maint_node_heating_on
+  triggers:
+    - trigger: time
+      at: "00:00:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_heating
+      state:
+        - "off"
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"Heating\" | urlencode }}"
+        mode: "manual"
+        state: "ON"
+        period: "1"
+      response_variable: rest_response
+automation hk_maint_node_heating_off:
+  id: 81b12f2c-a79f-44b3-82ba-f026358f1097
+  alias: maint_node_heating_off
+  triggers:
+    - trigger: time
+      at: "00:05:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_heating
+      state:
+        - "on"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.hk_heating
+          state:
+            - "on"
+          for:
+            hours: 0
+            minutes: 10
+            seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"Heating\" | urlencode }}"
+        mode: "manual"
+        state: "OFF"
+        period: "1"
+      response_variable: rest_response
+
+# Floor node
+automation hk_maint_node_floor_on:
+  id: 24ac214f-cfe3-4bfa-be1e-3fe3dee1b6d9
+  alias: maint_node_floor_on
+  triggers:
+    - trigger: time
+      at: "01:00:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_floor
+      state:
+        - "off"
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"Floor\" | urlencode }}"
+        mode: "manual"
+        state: "ON"
+        period: "1"
+      response_variable: rest_response
+automation hk_maint_node_floor_off:
+  id: f451d00d-0850-4597-ba18-4dbe0b60c5db
+  alias: maint_node_floor_off
+  triggers:
+    - trigger: time
+      at: "01:05:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_floor
+      state:
+        - "on"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.hk_floor
+          state:
+            - "on"
+          for:
+            hours: 0
+            minutes: 10
+            seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"Floor\" | urlencode }}"
+        mode: "manual"
+        state: "OFF"
+        period: "1"
+      response_variable: rest_response
+
+# High Supply node
+automation hk_maint_node_high_supply_on:
+  id: 51e49e3f-5581-4b7b-9762-cde44ed471fa
+  alias: maint_node_high_supply_on
+  triggers:
+    - trigger: time
+      at: "02:00:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_high_supply
+      state:
+        - "off"
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"High Supply\" | urlencode }}"
+        mode: "manual"
+        state: "ON"
+        period: "1"
+      response_variable: rest_response
+automation hk_maint_node_high_supply_off:
+  id: f0b0f6f1-5b71-46ae-be46-16027c24007c
+  alias: maint_node_high_supply_off
+  triggers:
+    - trigger: time
+      at: "02:05:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_high_supply
+      state:
+        - "on"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.hk_high_supply
+          state:
+            - "on"
+          for:
+            hours: 0
+            minutes: 10
+            seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"High Supply\" | urlencode }}"
+        mode: "manual"
+        state: "OFF"
+        period: "1"
+      response_variable: rest_response
