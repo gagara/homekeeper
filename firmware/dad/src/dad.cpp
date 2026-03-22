@@ -123,7 +123,7 @@ const int8_t SOLAR_SECONDARY_BOILER_ON_HIST = 2;
 const int8_t SOLAR_SECONDARY_BOILER_OFF_HIST = 0;
 
 // sensor BoilerPower
-const int8_t SENSOR_BOILER_POWER_THERSHOLD = 100;
+const int8_t SENSOR_BOILER_POWER_THERSHOLD = 120;
 
 // reporting
 const unsigned long STATUS_REPORTING_PERIOD_SEC = 5; // 5s
