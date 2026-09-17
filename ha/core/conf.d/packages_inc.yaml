@@ -1,4 +1,14 @@
-# Copy this to main configuration.yaml
+#
+# >> Copy this to main configuration.yaml <<
+#
+
+# Enable HTTPS. Make sure duckdns plugin is up
+#http:
+#  ssl_certificate: /ssl/fullchain.pem
+#  ssl_key: /ssl/privkey.pem
+
 homeassistant:
   packages:
+    easun_smg_ii: !include conf.d/easun/easun_smg_ii.yaml
     homekeeper: !include conf.d/homekeeper/conf.yaml
+    rf433: !include conf.d/rf433/conf.yaml

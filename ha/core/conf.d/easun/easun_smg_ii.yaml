@@ -1,0 +1,17 @@
+modbus:
+  - name: easun_smg_ii
+    type: serial
+    baudrate: 9600
+    bytesize: 8
+    method: rtu
+    parity: N
+    port: /dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0
+    stopbits: 1
+
+    sensors: !include easun_smg_ii_sensors.yaml
+    switches: !include easun_smg_ii_switches.yaml
+
+template:
+  select: !include easun_smg_ii_template_select.yaml
+  number: !include easun_smg_ii_template_number.yaml
+  sensor: !include easun_smg_ii_template_sensor.yaml

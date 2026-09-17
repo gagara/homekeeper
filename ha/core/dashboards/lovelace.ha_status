@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.ha_status",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "title": "Home",
+          "type": "panel",
+          "cards": [
+            {
+              "square": true,
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "history-graph",
+                  "entities": [
+                    {
+                      "entity": "sensor.system_monitor_disk_free"
+                    },
+                    {
+                      "entity": "sensor.system_monitor_load_5m"
+                    },
+                    {
+                      "entity": "sensor.system_monitor_memory_free"
+                    },
+                    {
+                      "entity": "sensor.system_monitor_processor_temperature"
+                    },
+                    {
+                      "entity": "sensor.system_monitor_processor_use"
+                    }
+                  ]
+                }
+              ],
+              "columns": 1
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

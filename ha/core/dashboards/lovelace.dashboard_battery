@@ -1,0 +1,228 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.dashboard_battery",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "title": "Home",
+          "cards": [
+            {
+              "square": true,
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.40418491612_batt_qso_soc",
+                  "name": "SOC",
+                  "needle": true
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.40418491612_batt_qso_charge",
+                  "name": "Remaining Capacity",
+                  "needle": true,
+                  "max": 280
+                }
+              ],
+              "columns": 2
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.40418491612_batt_qso_voltage",
+                  "name": "Voltage",
+                  "min": 44,
+                  "max": 56,
+                  "needle": true,
+                  "severity": {
+                    "green": 52.5,
+                    "yellow": 50,
+                    "red": 44
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.40418491612_batt_qso_current",
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": -50,
+                    "red": -100
+                  },
+                  "name": "Current",
+                  "min": -100,
+                  "max": 100
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.40418491612_batt_qso_power",
+                  "name": "Power",
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": -5000,
+                    "red": -1
+                  },
+                  "min": -5000,
+                  "max": 5000
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.40418491612_batt_qso_balance_current",
+                  "name": "Balance Current"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_delta",
+                  "name": "Delta Voltage"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_max",
+                  "name": "Max Voltage"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_average",
+                  "name": "Avg Voltage"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_min",
+                  "name": "Min Voltage"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.40418491612_batt_qso_temperatures_1",
+                  "name": "Temperature 1"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_temperatures_2",
+                  "name": "Temperature 2"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_temperatures_3",
+                  "name": "Temperature 3"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_temperatures_4",
+                  "name": "Temperature 4"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_mos_temperature",
+                  "name": "MOS Temperature"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.40418491612_batt_qso_total_energy_charge_meter",
+                  "name": "Total Charge"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_total_energy_discharge_meter",
+                  "name": "Total Discharge"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_total_energy_meter",
+                  "name": "Total Energy"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_num_cycles",
+                  "name": "Num Cycles"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cycle_capacity",
+                  "name": "Cycle Capacity"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_total_cycles_meter",
+                  "name": "Cycles"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_01",
+                  "name": "Cell 01"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_02",
+                  "name": "Cell 02"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_03",
+                  "name": "Cell 03"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_04",
+                  "name": "Cell 04"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_05",
+                  "name": "Cell 05"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_06",
+                  "name": "Cell 06"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_07",
+                  "name": "Cell 07"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_08",
+                  "name": "Cell 08"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_09",
+                  "name": "Cell 09"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_10",
+                  "name": "Cell 10"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_11",
+                  "name": "Cell 11"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_12",
+                  "name": "Cell 12"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_13",
+                  "name": "Cell 13"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_14",
+                  "name": "Cell 14"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_15",
+                  "name": "Cell 15"
+                },
+                {
+                  "entity": "sensor.40418491612_batt_qso_cell_volt_16",
+                  "name": "Cell 16"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

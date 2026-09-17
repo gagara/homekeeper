@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.dashboard_home",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "title": "Smart Home",
+          "sections": [],
+          "type": "masonry",
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "switch.heat_pump_switch",
+                  "name": "Switch"
+                },
+                {
+                  "entity": "sensor.heat_pump_temperature",
+                  "name": "Temperature"
+                },
+                {
+                  "entity": "sensor.1st_floor_temperature"
+                },
+                {
+                  "entity": "sensor.1st_floor_humidity"
+                },
+                {
+                  "entity": "sensor.1st_floor_battery"
+                }
+              ],
+              "title": "Heat Pump"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "switch.washing_machine_switch",
+                  "name": "Switch"
+                },
+                {
+                  "entity": "sensor.washing_machine_current",
+                  "name": "Current"
+                },
+                {
+                  "entity": "sensor.washing_machine_power",
+                  "name": "Power"
+                },
+                {
+                  "entity": "sensor.washing_machine_summation_delivered",
+                  "name": "Energy"
+                },
+                {
+                  "entity": "sensor.washing_machine_voltage",
+                  "name": "Voltage"
+                }
+              ],
+              "title": "Washing Machine"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "switch.raymer_switch"
+                },
+                {
+                  "entity": "sensor.raymer_temperature"
+                },
+                {
+                  "entity": "sensor.raymer_mode"
+                }
+              ],
+              "title": "Raymer (local)"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

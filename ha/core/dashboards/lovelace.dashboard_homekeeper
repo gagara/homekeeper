@@ -1,0 +1,304 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.dashboard_homekeeper",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "title": "Home",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading_style": "title",
+                  "heading": "Nodes"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "binary_sensor.hk_high_supply"
+                    },
+                    {
+                      "entity": "binary_sensor.hk_heating_valve"
+                    },
+                    {
+                      "entity": "binary_sensor.hk_heating"
+                    },
+                    {
+                      "entity": "binary_sensor.hk_floor"
+                    },
+                    {
+                      "entity": "binary_sensor.hk_how_water"
+                    },
+                    {
+                      "entity": "binary_sensor.hk_circulation"
+                    },
+                    {
+                      "entity": "binary_sensor.hk_standby_heater"
+                    },
+                    {
+                      "entity": "binary_sensor.hk_solar_primary"
+                    },
+                    {
+                      "entity": "binary_sensor.hk_solar_secondary"
+                    },
+                    {
+                      "entity": "binary_sensor.hk_pv_load_switch"
+                    }
+                  ]
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_select.hk_node_select"
+                    },
+                    {
+                      "entity": "input_boolean.hk_node_manual_control"
+                    },
+                    {
+                      "entity": "input_boolean.hk_node_state"
+                    },
+                    {
+                      "entity": "input_number.hk_node_period"
+                    },
+                    {
+                      "entity": "input_button.hk_node_control"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading_style": "title",
+                  "heading": "Energy"
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.hk_ac_voltage",
+                  "needle": true,
+                  "min": 0,
+                  "max": 280,
+                  "severity": {
+                    "green": 190,
+                    "yellow": 260,
+                    "red": 0
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.hk_ac_current",
+                  "severity": {
+                    "green": -30,
+                    "yellow": 25,
+                    "red": 35
+                  },
+                  "needle": true,
+                  "min": -60,
+                  "max": 60
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.hk_ac_power",
+                  "max": 10000,
+                  "min": -10000,
+                  "needle": true,
+                  "severity": {
+                    "green": -10000,
+                    "yellow": 0,
+                    "red": 10000
+                  }
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.hk_ac_energy"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading_style": "title",
+                  "heading": "Ambient"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.hk_room_temperature"
+                    },
+                    {
+                      "entity": "sensor.hk_basement_temperature"
+                    },
+                    {
+                      "entity": "sensor.hk_outdoor_temperature"
+                    },
+                    {
+                      "entity": "sensor.hk_room_humidity"
+                    },
+                    {
+                      "entity": "sensor.hk_basement_humidity"
+                    },
+                    {
+                      "entity": "sensor.hk_outdoor_humidity"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading_style": "title",
+                  "heading": "Sensors"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.hk_high_supply"
+                    },
+                    {
+                      "entity": "sensor.hk_high_reverse"
+                    },
+                    {
+                      "entity": "sensor.hk_low_supply"
+                    },
+                    {
+                      "entity": "sensor.hk_mix"
+                    },
+                    {
+                      "entity": "sensor.hk_tank"
+                    },
+                    {
+                      "entity": "sensor.hk_boiler"
+                    },
+                    {
+                      "entity": "sensor.hk_solar_primary"
+                    },
+                    {
+                      "entity": "sensor.hk_solar_secondary"
+                    }
+                  ]
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "binary_sensor.hk_boiler_power"
+                    },
+                    {
+                      "entity": "binary_sensor.hk_water_pump_power"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading_style": "title",
+                  "heading": "Settings"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.hk_room1_low_min_setting"
+                    },
+                    {
+                      "entity": "sensor.hk_room1_min_setting"
+                    },
+                    {
+                      "entity": "sensor.hk_room1_max_setting"
+                    },
+                    {
+                      "entity": "sensor.hk_room1_high_max_setting"
+                    }
+                  ]
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_select.hk_setting_select"
+                    },
+                    {
+                      "entity": "input_number.hk_setting_value"
+                    },
+                    {
+                      "entity": "input_button.hk_setting_config"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading_style": "title",
+                  "heading": "Sensors Hist"
+                },
+                {
+                  "type": "history-graph",
+                  "entities": [
+                    {
+                      "entity": "sensor.hk_high_supply"
+                    },
+                    {
+                      "entity": "sensor.hk_high_reverse"
+                    },
+                    {
+                      "entity": "sensor.hk_low_supply"
+                    },
+                    {
+                      "entity": "sensor.hk_mix"
+                    },
+                    {
+                      "entity": "sensor.hk_tank"
+                    },
+                    {
+                      "entity": "sensor.hk_boiler"
+                    },
+                    {
+                      "entity": "sensor.hk_solar_primary"
+                    },
+                    {
+                      "entity": "sensor.hk_solar_secondary"
+                    }
+                  ],
+                  "grid_options": {
+                    "columns": "full"
+                  },
+                  "hours_to_show": 12
+                }
+              ],
+              "column_span": 4
+            }
+          ],
+          "type": "sections"
+        }
+      ]
+    }
+  }
+}

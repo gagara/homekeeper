@@ -155,3 +155,6 @@ pio run -d firmware/mom/ -t compiledb
 # monitor serial port
 pio device monitor -b 57600 -p /dev/ttyUSB0
 
+# copy to ha
+cd conf.d
+scp -r -P **** * root@192.168.1.***:/root/config/conf.d/

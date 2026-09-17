@@ -14,166 +14,189 @@ mqtt:
   # HK sensors
   sensor:
     - name: "High Supply"
-      object_id: "hk_high_supply"
+      default_entity_id: "sensor.hk_high_supply"
       state_topic: "hk/entity/54"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "86cea945-004c-4463-8be9-9bcddedd6056"
     - name: "High Reverse"
-      object_id: "hk_high_reverse"
+      default_entity_id: "sensor.hk_high_reverse"
       state_topic: "hk/entity/55"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "51bd7e39-c954-4883-83ed-a016521c740e"
     - name: "Tank"
-      object_id: "hk_tank"
+      default_entity_id: "sensor.hk_tank"
       state_topic: "hk/entity/56"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "5bd78733-8f73-44a7-956b-217a79d13572"
     - name: "Boiler"
-      object_id: "hk_boiler"
+      default_entity_id: "sensor.hk_boiler"
       state_topic: "hk/entity/57"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "8d4035b9-47b9-4592-81ce-a343e9953404"
     - name: "Mix"
-      object_id: "hk_mix"
+      default_entity_id: "sensor.hk_mix"
       state_topic: "hk/entity/58"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "0e218bb1-987b-4ea1-8206-cf7e20086357"
     - name: "Low Supply"
-      object_id: "hk_low_supply"
+      default_entity_id: "sensor.hk_low_supply"
       state_topic: "hk/entity/59"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "60fc702b-081f-41da-93a8-250905b103a1"
     - name: "Solar Primary"
-      object_id: "hk_solar_primary"
+      default_entity_id: "sensor.hk_solar_primary"
       state_topic: "hk/entity/61"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "d0676b71-4187-4ad4-b1f5-2b5231a33a9b"
     - name: "Solar Secondary"
-      object_id: "hk_solar_secondary"
+      default_entity_id: "sensor.hk_solar_secondary"
       state_topic: "hk/entity/62"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "17125c69-dac0-41b0-9770-bb2cbe1904ea"
     - name: "Room Temperature"
-      object_id: "hk_room_temperature"
+      default_entity_id: "sensor.hk_room_temperature"
       state_topic: "hk/entity/74"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "04c93d6e-0f81-40f3-b3c4-7c3c179a2ecc"
     - name: "Room Humidity"
-      object_id: "hk_room_humidity"
+      default_entity_id: "sensor.hk_room_humidity"
       state_topic: "hk/entity/75"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "%"
       icon: mdi:water-percent
       unique_id: "52387076-be94-4220-bebb-9dddade4cc0f"
     - name: "Basement Temperature"
-      object_id: "hk_basement_temperature"
+      default_entity_id: "sensor.hk_basement_temperature"
       state_topic: "hk/entity/78"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "c0bbadad-bd2f-434d-8bf5-fa2c19510ac2"
     - name: "Basement Humidity"
-      object_id: "hk_basement_humidity"
+      default_entity_id: "sensor.hk_basement_humidity"
       state_topic: "hk/entity/79"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "%"
       icon: mdi:water-percent
       unique_id: "386dd363-f078-4280-909e-a28c4561005a"
     - name: "Outdoor Temperature"
-      object_id: "hk_outdoor_temperature"
+      default_entity_id: "sensor.hk_outdoor_temperature"
       state_topic: "hk/entity/80"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer
       unique_id: "d1e6e3cf-3f14-4792-a186-a842d300574c"
     - name: "Outdoor Humidity"
-      object_id: "hk_outdoor_humidity"
+      default_entity_id: "sensor.hk_outdoor_humidity"
       state_topic: "hk/entity/81"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "%"
       icon: mdi:water-percent
       unique_id: "df8c10a3-17c1-4872-ae8a-74fcf061b178"
     - name: "AC Voltage"
-      object_id: "hk_ac_voltage"
+      default_entity_id: "sensor.hk_ac_voltage"
       state_topic: "hk/entity/82"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "V"
       icon: mdi:sine-wave
       unique_id: "5f31237f-c3f2-472b-9696-4f86c27564d3"
     - name: "AC Current"
-      object_id: "hk_ac_current"
+      default_entity_id: "sensor.hk_ac_current"
       state_topic: "hk/entity/83"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "A"
       icon: mdi:current-ac
       unique_id: "fec6a615-a3dd-435b-b190-58512a9e5caf"
     - name: "AC Power"
-      object_id: "hk_ac_power"
+      default_entity_id: "sensor.hk_ac_power"
       state_topic: "hk/entity/84"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "W"
       icon: mdi:flash
       unique_id: "299f575f-f544-460e-a733-b278caaffb39"
     - name: "AC Energy"
-      object_id: "hk_ac_energy"
+      default_entity_id: "sensor.hk_ac_energy"
       state_topic: "hk/entity/85"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "Wh"
       icon: mdi:counter
       unique_id: "f72861e8-2131-48f6-bf5f-67c409a0db5a"
   # HK settings
     - name: "Room1 Low Min Setting"
-      object_id: "hk_room1_low_min_setting"
+      default_entity_id: "sensor.hk_room1_low_min_setting"
       state_topic: "hk/entity/201"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
       unique_id: "f87541ed-9ec0-4289-821d-16824e9bf66d"
     - name: "Room1 High Max Setting"
-      object_id: "hk_room1_high_max_setting"
+      default_entity_id: "sensor.hk_room1_high_max_setting"
       state_topic: "hk/entity/202"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
       unique_id: "fa84bfdd-6f4e-42ac-83b6-bd8c2edce69b"
     - name: "Room1 Min Setting"
-      object_id: "hk_room1_min_setting"
+      default_entity_id: "sensor.hk_room1_min_setting"
       state_topic: "hk/entity/203"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
       unique_id: "25126dd0-3db7-4067-b213-92f14f60188a"
     - name: "Room1 Max Setting"
-      object_id: "hk_room1_max_setting"
+      default_entity_id: "sensor.hk_room1_max_setting"
       state_topic: "hk/entity/204"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       unit_of_measurement: "°C"
       icon: mdi:thermometer-check
       unique_id: "8cf570ed-2cc5-4162-bb92-3d935585a3d6"
   # HK nodes/binary sensors
   binary_sensor:
     - name: "High Supply"
-      object_id: "hk_high_supply"
+      default_entity_id: "binary_sensor.hk_high_supply"
       state_topic: "hk/entity/22"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/22"
@@ -181,9 +204,10 @@ mqtt:
       icon: mdi:pump
       unique_id: "8c7a513f-fee5-427d-b8ef-ce78638af8ff"
     - name: "Heating"
-      object_id: "hk_heating"
+      default_entity_id: "binary_sensor.hk_heating"
       state_topic: "hk/entity/24"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/24"
@@ -191,9 +215,10 @@ mqtt:
       icon: mdi:pump
       unique_id: "b35bfd33-6028-4aa3-a090-1cafd83c8665"
     - name: "Floor"
-      object_id: "hk_floor"
+      default_entity_id: "binary_sensor.hk_floor"
       state_topic: "hk/entity/26"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/26"
@@ -201,9 +226,10 @@ mqtt:
       icon: mdi:pump
       unique_id: "5408013f-23b3-4e80-8538-b8d17255e9c3"
     - name: "Hot water"
-      object_id: "hk_how_water"
+      default_entity_id: "binary_sensor.hk_how_water"
       state_topic: "hk/entity/28"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/28"
@@ -211,9 +237,10 @@ mqtt:
       icon: mdi:pump
       unique_id: "1a9a7332-dcf3-4127-ad23-459f1ec12637"
     - name: "Circulation"
-      object_id: "hk_circulation"
+      default_entity_id: "binary_sensor.hk_circulation"
       state_topic: "hk/entity/30"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/30"
@@ -221,9 +248,10 @@ mqtt:
       icon: mdi:pump
       unique_id: "61c1de8b-1353-451d-906f-2a7d3ba37882"
     - name: "Standby heater"
-      object_id: "hk_standby_heater"
+      default_entity_id: "binary_sensor.hk_standby_heater"
       state_topic: "hk/entity/34"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/34"
@@ -231,9 +259,10 @@ mqtt:
       icon: mdi:heating-coil
       unique_id: "a356801d-ee23-40a5-8c5b-bee2b911e601"
     - name: "Solar Primary"
-      object_id: "hk_solar_primary"
+      default_entity_id: "binary_sensor.hk_solar_primary"
       state_topic: "hk/entity/36"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/36"
@@ -241,9 +270,10 @@ mqtt:
       icon: mdi:pump
       unique_id: "5f0414ba-310f-47cf-945d-f3506a44b446"
     - name: "Solar Secondary"
-      object_id: "hk_solar_secondary"
+      default_entity_id: "binary_sensor.hk_solar_secondary"
       state_topic: "hk/entity/38"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/38"
@@ -251,9 +281,10 @@ mqtt:
       icon: mdi:pump
       unique_id: "596b7dc8-6657-49a6-9792-8f1873ee80a5"
     - name: "Heating Valve"
-      object_id: "hk_heating_valve"
+      default_entity_id: "binary_sensor.hk_heating_valve"
       state_topic: "hk/entity/40"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/40"
@@ -261,9 +292,10 @@ mqtt:
       icon: mdi:pipe-valve
       unique_id: "0fc78d53-ae5c-4746-8bff-11e1818c0a25"
     - name: "PV Load Switch"
-      object_id: "hk_pv_load_switch"
+      default_entity_id: "binary_sensor.hk_pv_load_switch"
       state_topic: "hk/entity/46"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       json_attributes_topic: "hk/entity/46"
@@ -271,17 +303,19 @@ mqtt:
       icon: mdi:toggle-switch-outline
       unique_id: "087c610f-8a4b-409f-a8ee-d63db37e445d"
     - name: "Boiler Power"
-      object_id: "hk_boiler_power"
+      default_entity_id: "binary_sensor.hk_boiler_power"
       state_topic: "hk/entity/60"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       icon: mdi:water-boiler
       unique_id: "76c289e4-447f-4ca3-9439-66376cbb84a7"
     - name: "Water Pump Power"
-      object_id: "hk_water_pump_power"
+      default_entity_id: "binary_sensor.hk_water_pump_power"
       state_topic: "hk/entity/86"
       value_template: '{{ value_json.v }}'
+      expire_after: 600
       payload_on: "1"
       payload_off: "0"
       icon: mdi:water-pump
@@ -294,6 +328,7 @@ input_select:
     options:
       - High Supply
       - Heating
+      - Floor
       - Hot Water
       - Circulation
       - Standby Heater
@@ -319,7 +354,7 @@ input_number:
   hk_node_period:
     name: Period
     initial: 5
-    min: 5
+    min: 0
     max: 10000
     step: 5
     mode: box
@@ -392,3 +427,200 @@ rest_command:
     content_type: "application/x-www-form-urlencoded"
     payload: 'setting={{ setting }}&value={{ value }}'
     verify_ssl: false
+
+# Extra
+template:
+  sensor:
+    - name: AC Directly Consumed Power
+      unique_id: b99e25e9-cb3a-4ec1-bbec-2d91f809e678
+      unit_of_measurement: W
+      device_class: power
+      state: "{{ [(([states('sensor.hk_ac_power') | int(0), 0] | max) - ([states('sensor.smgii1_grid_active_power') | int(0), 0] | max)), 0] | max }}"
+
+# Node maintenance automations
+
+# Heating node
+automation hk_maint_node_heating_on:
+  id: 04019a64-7219-40e6-935e-a4d78bc5d136
+  alias: maint_node_heating_on
+  triggers:
+    - trigger: time
+      at: "00:00:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_heating
+      state:
+        - "off"
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"Heating\" | urlencode }}"
+        mode: "manual"
+        state: "ON"
+        period: "1"
+      response_variable: rest_response
+automation hk_maint_node_heating_off:
+  id: 81b12f2c-a79f-44b3-82ba-f026358f1097
+  alias: maint_node_heating_off
+  triggers:
+    - trigger: time
+      at: "00:05:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_heating
+      state:
+        - "on"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.hk_heating
+          state:
+            - "on"
+          for:
+            hours: 0
+            minutes: 10
+            seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"Heating\" | urlencode }}"
+        mode: "manual"
+        state: "OFF"
+        period: "1"
+      response_variable: rest_response
+
+# Floor node
+automation hk_maint_node_floor_on:
+  id: 24ac214f-cfe3-4bfa-be1e-3fe3dee1b6d9
+  alias: maint_node_floor_on
+  triggers:
+    - trigger: time
+      at: "01:00:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_floor
+      state:
+        - "off"
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"Floor\" | urlencode }}"
+        mode: "manual"
+        state: "ON"
+        period: "1"
+      response_variable: rest_response
+automation hk_maint_node_floor_off:
+  id: f451d00d-0850-4597-ba18-4dbe0b60c5db
+  alias: maint_node_floor_off
+  triggers:
+    - trigger: time
+      at: "01:05:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_floor
+      state:
+        - "on"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.hk_floor
+          state:
+            - "on"
+          for:
+            hours: 0
+            minutes: 10
+            seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"Floor\" | urlencode }}"
+        mode: "manual"
+        state: "OFF"
+        period: "1"
+      response_variable: rest_response
+
+# High Supply node
+automation hk_maint_node_high_supply_on:
+  id: 51e49e3f-5581-4b7b-9762-cde44ed471fa
+  alias: maint_node_high_supply_on
+  triggers:
+    - trigger: time
+      at: "02:00:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_high_supply
+      state:
+        - "off"
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"High Supply\" | urlencode }}"
+        mode: "manual"
+        state: "ON"
+        period: "1"
+      response_variable: rest_response
+automation hk_maint_node_high_supply_off:
+  id: f0b0f6f1-5b71-46ae-be46-16027c24007c
+  alias: maint_node_high_supply_off
+  triggers:
+    - trigger: time
+      at: "02:05:00"
+      weekday:
+        - mon
+        - wed
+        - fri
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.hk_high_supply
+      state:
+        - "on"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.hk_high_supply
+          state:
+            - "on"
+          for:
+            hours: 0
+            minutes: 10
+            seconds: 0
+  actions:
+    - action: rest_command.hk_control_request
+      data:
+        node: "{{ \"High Supply\" | urlencode }}"
+        mode: "manual"
+        state: "OFF"
+        period: "1"
+      response_variable: rest_response

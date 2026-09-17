@@ -39,6 +39,7 @@ void validateStringParam(char* str, int maxSize);
 void readSensors();
 int8_t getSensorWaterPumpPowerState();
 bool validSensorValues(const int16_t values[], const uint8_t size);
+uint8_t pvLoadSensorState(const uint8_t pin);
 
 void reportStatus();
 void reportConfiguration();

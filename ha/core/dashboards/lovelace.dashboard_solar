@@ -1,0 +1,369 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.dashboard_solar",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "title": "Home",
+          "cards": [
+            {
+              "square": false,
+              "type": "grid",
+              "cards": [
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_pv1_power",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_pv2_power",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_pv1_voltage",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_pv2_voltage",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_pv1_current",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_pv2_current",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_total_pv_power",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_total_pv_charging_power",
+                  "detail": 2,
+                  "hours_to_show": 5
+                }
+              ],
+              "columns": 2,
+              "title": "PV"
+            },
+            {
+              "square": false,
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "history-graph",
+                  "entities": [
+                    {
+                      "entity": "sensor.smgii1_pv1_power"
+                    },
+                    {
+                      "entity": "sensor.smgii1_pv2_power"
+                    }
+                  ],
+                  "hours_to_show": 12
+                },
+                {
+                  "type": "history-graph",
+                  "entities": [
+                    {
+                      "entity": "sensor.smgii1_pv1_voltage"
+                    },
+                    {
+                      "entity": "sensor.smgii1_pv2_voltage"
+                    }
+                  ],
+                  "hours_to_show": 12
+                },
+                {
+                  "type": "history-graph",
+                  "entities": [
+                    {
+                      "entity": "sensor.smgii1_pv1_current"
+                    },
+                    {
+                      "entity": "sensor.smgii1_pv2_current"
+                    }
+                  ],
+                  "hours_to_show": 12
+                }
+              ],
+              "columns": 1,
+              "title": "PV Hist"
+            },
+            {
+              "square": false,
+              "type": "grid",
+              "cards": [
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_grid_voltage",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_output_voltage",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_grid_active_power",
+                  "detail": 2,
+                  "hours_to_show": 5,
+                  "name": "Grid Power"
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_output_active_power",
+                  "detail": 2,
+                  "hours_to_show": 5,
+                  "name": "Output Power"
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_grid_apparent_power",
+                  "detail": 1
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_output_apparent_power",
+                  "detail": 1
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_ac_charging_power",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_output_current",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_inverter_active_power",
+                  "detail": 2,
+                  "hours_to_show": 5,
+                  "name": "Inverter Power"
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_inverter_current",
+                  "detail": 2,
+                  "hours_to_show": 5
+                }
+              ],
+              "columns": 2,
+              "title": "Grid"
+            },
+            {
+              "square": false,
+              "type": "grid",
+              "cards": [
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_battery_voltage",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_battery_current",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_battery_power",
+                  "detail": 2,
+                  "hours_to_show": 5
+                },
+                {
+                  "graph": "line",
+                  "type": "sensor",
+                  "entity": "sensor.smgii1_soc",
+                  "detail": 2,
+                  "hours_to_show": 5
+                }
+              ],
+              "columns": 2,
+              "title": "Battery"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.smgii1_pv_temperature"
+                },
+                {
+                  "entity": "sensor.smgii1_dc_module_temperature"
+                },
+                {
+                  "entity": "sensor.smgii1_inverter_module_temperature"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.smgii1_daily_pv_energy_generation"
+                },
+                {
+                  "entity": "sensor.smgii1_total_pv_energy_generation"
+                },
+                {
+                  "entity": "sensor.smgii1_consumed_house_energy"
+                },
+                {
+                  "entity": "sensor.smgii1_consumed_house_energy_daily"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.smgii1_operating_mode",
+                  "name": "Operating Mode"
+                },
+                {
+                  "entity": "sensor.smgii1_current_output_priority",
+                  "name": "Output Priority"
+                },
+                {
+                  "entity": "sensor.smgii1_current_charger_source_priority",
+                  "name": "Charger Source Priority"
+                },
+                {
+                  "entity": "sensor.smgii1_load_percentage"
+                },
+                {
+                  "entity": "sensor.smgii1_fault_message",
+                  "name": "Fault"
+                },
+                {
+                  "entity": "sensor.smgii1_warning_messages",
+                  "name": "Warn"
+                },
+                {
+                  "entity": "sensor.smgii1_info_messages",
+                  "name": "Info"
+                }
+              ],
+              "title": "Inverter Status"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "select.smgii1_output_priority_primary"
+                },
+                {
+                  "entity": "select.smgii1_charger_source_priority_primary"
+                },
+                {
+                  "entity": "select.smgii1_buzzer_mode"
+                },
+                {
+                  "entity": "number.smgii1_low_voltage_protection"
+                },
+                {
+                  "entity": "number.smgii1_back_to_grid_voltage"
+                },
+                {
+                  "entity": "number.smgii1_floating_charging_voltage"
+                },
+                {
+                  "entity": "number.smgii1_back_to_battery_voltage"
+                },
+                {
+                  "entity": "number.smgii1_bulk_charging_voltage"
+                },
+                {
+                  "entity": "number.smgii1_overvoltage_protection"
+                },
+                {
+                  "entity": "number.smgii1_bulk_charging_time"
+                },
+                {
+                  "entity": "number.smgii1_max_charging_current"
+                },
+                {
+                  "entity": "number.smgii1_max_mains_charging_current"
+                },
+                {
+                  "entity": "number.smgii1_max_discharge_current"
+                },
+                {
+                  "entity": "switch.smgii1_energy_saving_mode"
+                },
+                {
+                  "entity": "switch.smgii1_lcd_backlight"
+                },
+                {
+                  "entity": "switch.smgii1_lcd_return_to_homepage"
+                },
+                {
+                  "entity": "switch.smgii1_over_temperature_automatic_restart"
+                },
+                {
+                  "entity": "switch.smgii1_overload_automatic_restart"
+                },
+                {
+                  "entity": "switch.smgii1_overload_transfer_to_bypass"
+                },
+                {
+                  "entity": "switch.smgii1_exit_fault_state"
+                }
+              ],
+              "title": "Settings"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
