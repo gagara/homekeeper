@@ -1,16 +1,6 @@
-FROM gagara/cron-arm64
+FROM gagara/es-curator-arm64:6.0.0
 
 # curator
-RUN set -ex; \
-    apt-get update; \
-    apt-get install --no-install-recommends -y python3-minimal python3-pip python3-setuptools curl; \
-    pip install pysocks elasticsearch-curator==6.0.0; \
-    apt-get remove -y python-pip; \
-    apt-get autoremove -y; \
-    apt-get clean; \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
-    mkdir -p /etc/elasticsearch-curator
-
 COPY config.yml /etc/elasticsearch-curator
 COPY actions.yml /etc/elasticsearch-curator
 COPY backup.yml /etc/elasticsearch-curator
@@ -22,4 +12,3 @@ RUN mkdir -p /opt/scheduler
 COPY fronius_pull_stats.sh /opt/scheduler
 
 RUN chmod 0775 /opt/scheduler/fronius_pull_stats.sh
-
