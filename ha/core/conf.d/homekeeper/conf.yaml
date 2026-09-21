@@ -309,8 +309,6 @@ mqtt:
       expire_after: 600
       payload_on: "1"
       payload_off: "0"
-      json_attributes_topic: "hk/entity/60"
-      json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:water-boiler
       unique_id: "76c289e4-447f-4ca3-9439-66376cbb84a7"
     - name: "Water Pump Power"
@@ -320,8 +318,6 @@ mqtt:
       expire_after: 600
       payload_on: "1"
       payload_off: "0"
-      json_attributes_topic: "hk/entity/86"
-      json_attributes_template: '{{ value_json.attr | tojson }}'
       icon: mdi:water-pump
       unique_id: "cf6c7fdb-0637-4b9c-a374-60c8a6e0e4a9"
 
