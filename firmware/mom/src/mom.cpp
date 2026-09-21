@@ -199,8 +199,8 @@ void setup() {
     tsNodePvLoadSwitchError = -1;
 
     // init energy meter
-    emon.current(SENSOR_CURRENT_METER_PIN, 42.00);    // 47 Ohm - 42.55
-    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 190, -1.3); // ~ 1024000 / Vcc
+    emon.current(SENSOR_CURRENT_METER_PIN, 44.00);    // 47 Ohm - 42.55
+    emon.voltage(SENSOR_VOLTAGE_METER_PIN, 190, 1.7); // ~ 1024000 / Vcc
 
     // restore forced node state flags from EEPROM
     // default node state -- OFF
